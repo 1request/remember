@@ -7,12 +7,17 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8A1AE22E19DEFAF600EC84B0 /* LocationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1AE22D19DEFAF600EC84B0 /* LocationCell.swift */; };
 		8AC0A0B419DD1AB6004DEE3B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC0A0B319DD1AB6004DEE3B /* AppDelegate.swift */; };
 		8AC0A0B619DD1AB6004DEE3B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC0A0B519DD1AB6004DEE3B /* ViewController.swift */; };
 		8AC0A0B919DD1AB6004DEE3B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8AC0A0B719DD1AB6004DEE3B /* Main.storyboard */; };
 		8AC0A0BB19DD1AB6004DEE3B /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8AC0A0BA19DD1AB6004DEE3B /* Images.xcassets */; };
 		8AC0A0BE19DD1AB6004DEE3B /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8AC0A0BC19DD1AB6004DEE3B /* LaunchScreen.xib */; };
 		8AC0A0CA19DD1AB6004DEE3B /* RememberTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC0A0C919DD1AB6004DEE3B /* RememberTests.swift */; };
+		8AC0A0D419DD1C44004DEE3B /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC0A0D319DD1C44004DEE3B /* HomeViewController.swift */; };
+		8AC0A0D819DD1FDE004DEE3B /* DeviceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC0A0D719DD1FDE004DEE3B /* DeviceViewController.swift */; };
+		8AC0A0DC19DD343A004DEE3B /* DeviceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC0A0DB19DD343A004DEE3B /* DeviceCell.swift */; };
+		8AC0A0DE19DD3C25004DEE3B /* DeviceAddViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC0A0DD19DD3C25004DEE3B /* DeviceAddViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -26,6 +31,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		8A1AE22D19DEFAF600EC84B0 /* LocationCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationCell.swift; sourceTree = "<group>"; };
 		8AC0A0AE19DD1AB6004DEE3B /* Remember.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Remember.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8AC0A0B219DD1AB6004DEE3B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8AC0A0B319DD1AB6004DEE3B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -36,6 +42,10 @@
 		8AC0A0C319DD1AB6004DEE3B /* RememberTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RememberTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8AC0A0C819DD1AB6004DEE3B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8AC0A0C919DD1AB6004DEE3B /* RememberTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RememberTests.swift; sourceTree = "<group>"; };
+		8AC0A0D319DD1C44004DEE3B /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		8AC0A0D719DD1FDE004DEE3B /* DeviceViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceViewController.swift; sourceTree = "<group>"; };
+		8AC0A0DB19DD343A004DEE3B /* DeviceCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DeviceCell.swift; path = ../DeviceCell.swift; sourceTree = "<group>"; };
+		8AC0A0DD19DD3C25004DEE3B /* DeviceAddViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceAddViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,9 +89,14 @@
 			children = (
 				8AC0A0B319DD1AB6004DEE3B /* AppDelegate.swift */,
 				8AC0A0B519DD1AB6004DEE3B /* ViewController.swift */,
+				8AC0A0D319DD1C44004DEE3B /* HomeViewController.swift */,
+				8A1AE22D19DEFAF600EC84B0 /* LocationCell.swift */,
+				8AC0A0D719DD1FDE004DEE3B /* DeviceViewController.swift */,
+				8AC0A0DB19DD343A004DEE3B /* DeviceCell.swift */,
+				8AC0A0DD19DD3C25004DEE3B /* DeviceAddViewController.swift */,
 				8AC0A0B719DD1AB6004DEE3B /* Main.storyboard */,
-				8AC0A0BA19DD1AB6004DEE3B /* Images.xcassets */,
 				8AC0A0BC19DD1AB6004DEE3B /* LaunchScreen.xib */,
+				8AC0A0BA19DD1AB6004DEE3B /* Images.xcassets */,
 				8AC0A0B119DD1AB6004DEE3B /* Supporting Files */,
 			);
 			path = Remember;
@@ -214,6 +229,11 @@
 			files = (
 				8AC0A0B619DD1AB6004DEE3B /* ViewController.swift in Sources */,
 				8AC0A0B419DD1AB6004DEE3B /* AppDelegate.swift in Sources */,
+				8AC0A0D819DD1FDE004DEE3B /* DeviceViewController.swift in Sources */,
+				8AC0A0DC19DD343A004DEE3B /* DeviceCell.swift in Sources */,
+				8A1AE22E19DEFAF600EC84B0 /* LocationCell.swift in Sources */,
+				8AC0A0DE19DD3C25004DEE3B /* DeviceAddViewController.swift in Sources */,
+				8AC0A0D419DD1C44004DEE3B /* HomeViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -407,6 +427,7 @@
 				8AC0A0CF19DD1AB6004DEE3B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		8AC0A0D019DD1AB6004DEE3B /* Build configuration list for PBXNativeTarget "RememberTests" */ = {
 			isa = XCConfigurationList;
@@ -415,6 +436,7 @@
 				8AC0A0D219DD1AB6004DEE3B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
