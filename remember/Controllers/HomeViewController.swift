@@ -13,7 +13,10 @@ class HomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        // Add remember logo in navigation bar
+        let logo = UIImage(named: "remember-logo")
+        let logoImageView = UIImageView(image: logo)
+        self.navigationItem.titleView = logoImageView
     }
 
     override func didReceiveMemoryWarning() {
