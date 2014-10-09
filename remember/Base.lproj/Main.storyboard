@@ -2,12 +2,13 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="IPw-5K-A5d">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Home View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="remember" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="HomeViewController" customModule="remember" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -15,7 +16,30 @@
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="Dtd-qO-gU9">
+                                <rect key="frame" x="0.0" y="64" width="600" height="354"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </tableView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lyi-sS-abq">
+                                <rect key="frame" x="217" y="426" width="166" height="166"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="lyi-sS-abq" secondAttribute="height" multiplier="1:1" id="MyG-gw-fmA"/>
+                                </constraints>
+                                <state key="normal" image="record-button">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="centerX" secondItem="lyi-sS-abq" secondAttribute="centerX" id="5KW-OT-Ij2"/>
+                            <constraint firstItem="Dtd-qO-gU9" firstAttribute="trailing" secondItem="y3c-jy-aDJ" secondAttribute="trailing" id="8TA-k0-vVx"/>
+                            <constraint firstItem="Dtd-qO-gU9" firstAttribute="leading" secondItem="y3c-jy-aDJ" secondAttribute="leading" id="ADQ-pW-mgB"/>
+                            <constraint firstItem="Dtd-qO-gU9" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="aTF-7h-gcn"/>
+                            <constraint firstItem="lyi-sS-abq" firstAttribute="top" secondItem="Dtd-qO-gU9" secondAttribute="bottom" constant="8" id="hoQ-IP-odP"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="lyi-sS-abq" secondAttribute="bottom" constant="8" id="jJU-cb-NIM"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="TfE-9W-SDK"/>
                 </viewController>
@@ -43,4 +67,7 @@
             <point key="canvasLocation" x="241" y="136"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="record-button" width="160" height="166"/>
+    </resources>
 </document>
