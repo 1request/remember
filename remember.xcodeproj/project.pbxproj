@@ -10,6 +10,7 @@
 		7C088D9819E631CA005A51D9 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C088D9719E631CA005A51D9 /* LocationManager.swift */; };
 		7C088D9A19E631E2005A51D9 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C088D9919E631E2005A51D9 /* CoreLocation.framework */; };
 		7C088D9C19E63EE9005A51D9 /* BeaconFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C088D9B19E63EE9005A51D9 /* BeaconFactory.swift */; };
+		8A76A0B119E63C590031202A /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A76A0B019E63C590031202A /* NavigationController.swift */; };
 		8A9F0F6619E62C50007FB36B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9F0F6519E62C50007FB36B /* AppDelegate.swift */; };
 		8A9F0F6919E62C50007FB36B /* remember.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8A9F0F6719E62C50007FB36B /* remember.xcdatamodeld */; };
 		8A9F0F6B19E62C50007FB36B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9F0F6A19E62C50007FB36B /* ViewController.swift */; };
@@ -33,6 +34,7 @@
 		7C088D9719E631CA005A51D9 /* LocationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		7C088D9919E631E2005A51D9 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		7C088D9B19E63EE9005A51D9 /* BeaconFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BeaconFactory.swift; sourceTree = "<group>"; };
+		8A76A0B019E63C590031202A /* NavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NavigationController.swift; path = Controllers/NavigationController.swift; sourceTree = "<group>"; };
 		8A9F0F6019E62C50007FB36B /* remember.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = remember.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8A9F0F6419E62C50007FB36B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8A9F0F6519E62C50007FB36B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -65,6 +67,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8A76A0AF19E63C3D0031202A /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				8A76A0B019E63C590031202A /* NavigationController.swift */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
 		8A9F0F5719E62C50007FB36B = {
 			isa = PBXGroup;
 			children = (
@@ -87,13 +97,14 @@
 		8A9F0F6219E62C50007FB36B /* remember */ = {
 			isa = PBXGroup;
 			children = (
+				8A76A0AF19E63C3D0031202A /* Controllers */,
 				8A9F0F6519E62C50007FB36B /* AppDelegate.swift */,
 				7C088D9B19E63EE9005A51D9 /* BeaconFactory.swift */,
 				8A9F0F6A19E62C50007FB36B /* ViewController.swift */,
 				7C088D9719E631CA005A51D9 /* LocationManager.swift */,
 				8A9F0F6C19E62C50007FB36B /* Main.storyboard */,
-				8A9F0F6F19E62C50007FB36B /* Images.xcassets */,
 				8A9F0F7119E62C50007FB36B /* LaunchScreen.xib */,
+				8A9F0F6F19E62C50007FB36B /* Images.xcassets */,
 				8A9F0F6719E62C50007FB36B /* remember.xcdatamodeld */,
 				8A9F0F6319E62C50007FB36B /* Supporting Files */,
 			);
@@ -227,6 +238,7 @@
 			files = (
 				7C088D9819E631CA005A51D9 /* LocationManager.swift in Sources */,
 				8A9F0F6B19E62C50007FB36B /* ViewController.swift in Sources */,
+				8A76A0B119E63C590031202A /* NavigationController.swift in Sources */,
 				8A9F0F6919E62C50007FB36B /* remember.xcdatamodeld in Sources */,
 				7C088D9C19E63EE9005A51D9 /* BeaconFactory.swift in Sources */,
 				8A9F0F6619E62C50007FB36B /* AppDelegate.swift in Sources */,
