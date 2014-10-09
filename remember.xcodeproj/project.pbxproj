@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8A76A0B119E63C590031202A /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A76A0B019E63C590031202A /* NavigationController.swift */; };
 		8A9F0F6619E62C50007FB36B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9F0F6519E62C50007FB36B /* AppDelegate.swift */; };
 		8A9F0F6919E62C50007FB36B /* remember.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8A9F0F6719E62C50007FB36B /* remember.xcdatamodeld */; };
 		8A9F0F6B19E62C50007FB36B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9F0F6A19E62C50007FB36B /* ViewController.swift */; };
@@ -27,6 +28,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		8A76A0B019E63C590031202A /* NavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NavigationController.swift; path = Controllers/NavigationController.swift; sourceTree = "<group>"; };
 		8A9F0F6019E62C50007FB36B /* remember.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = remember.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8A9F0F6419E62C50007FB36B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8A9F0F6519E62C50007FB36B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -58,6 +60,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8A76A0AF19E63C3D0031202A /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				8A76A0B019E63C590031202A /* NavigationController.swift */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
 		8A9F0F5719E62C50007FB36B = {
 			isa = PBXGroup;
 			children = (
@@ -79,11 +89,12 @@
 		8A9F0F6219E62C50007FB36B /* remember */ = {
 			isa = PBXGroup;
 			children = (
+				8A76A0AF19E63C3D0031202A /* Controllers */,
 				8A9F0F6519E62C50007FB36B /* AppDelegate.swift */,
 				8A9F0F6A19E62C50007FB36B /* ViewController.swift */,
 				8A9F0F6C19E62C50007FB36B /* Main.storyboard */,
-				8A9F0F6F19E62C50007FB36B /* Images.xcassets */,
 				8A9F0F7119E62C50007FB36B /* LaunchScreen.xib */,
+				8A9F0F6F19E62C50007FB36B /* Images.xcassets */,
 				8A9F0F6719E62C50007FB36B /* remember.xcdatamodeld */,
 				8A9F0F6319E62C50007FB36B /* Supporting Files */,
 			);
@@ -216,6 +227,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8A9F0F6B19E62C50007FB36B /* ViewController.swift in Sources */,
+				8A76A0B119E63C590031202A /* NavigationController.swift in Sources */,
 				8A9F0F6919E62C50007FB36B /* remember.xcdatamodeld in Sources */,
 				8A9F0F6619E62C50007FB36B /* AppDelegate.swift in Sources */,
 			);
@@ -411,6 +423,7 @@
 				8A9F0F8419E62C50007FB36B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		8A9F0F8519E62C50007FB36B /* Build configuration list for PBXNativeTarget "rememberTests" */ = {
 			isa = XCConfigurationList;
@@ -419,6 +432,7 @@
 				8A9F0F8719E62C50007FB36B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
