@@ -230,7 +230,7 @@
         <!--Set Devices-->
         <scene sceneID="MUP-d4-Ctp">
             <objects>
-                <viewController id="3QA-C9-hzw" sceneMemberID="viewController">
+                <viewController id="3QA-C9-hzw" customClass="AddDeviceViewController" customModule="remember" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Oxl-i9-40V"/>
                         <viewControllerLayoutGuide type="bottom" id="4RQ-c6-cxq"/>
@@ -261,8 +261,15 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Set Devices" id="pdk-AI-J4r">
-                        <barButtonItem key="rightBarButtonItem" title="Save" id="qP6-M1-MUw"/>
+                        <barButtonItem key="rightBarButtonItem" title="Save" id="qP6-M1-MUw">
+                            <connections>
+                                <action selector="saveBarButtonItemPressed:" destination="3QA-C9-hzw" id="FwV-1a-Ugu"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="deviceNameTextField" destination="L99-nn-DyE" id="ChV-9g-6yM"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="D5g-m7-yMs" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

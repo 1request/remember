@@ -7,9 +7,12 @@
 //
 
 import UIKit
+import CoreData
 
 class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
-
+    
+    var managedObjectContext = NSManagedObjectContext()
+    
     @IBOutlet weak var tableView: UITableView!
     
     override func viewDidLoad() {
@@ -63,4 +66,10 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         }
     }
     
+    //MARK: - Navigation
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if let devicesVC = segue.destinationViewController as? DevicesTableViewController {
+            devicesVC.managedObjectContext = self.managedObjectContext
+        }
+    }
 }

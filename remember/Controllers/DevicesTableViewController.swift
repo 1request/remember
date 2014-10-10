@@ -9,10 +9,23 @@
 import Foundation
 import UIKit
 import CoreLocation
+import CoreData
 
 class DevicesTableViewController: UITableViewController, UITableViewDataSource, UITableViewDelegate {
+    
     let notificationCenter = NSNotificationCenter.defaultCenter()
     var rangedBeacons = [CLBeacon]()
+    var managedObjectContext:(NSManagedObjectContext) = NSManagedObjectContext() {
+        didSet {
+            let request = NSFetchRequest(entityName: "Location")
+            request.fetchBatchSize = 20
+            var error: NSError? = nil;
+            let result = self.managedObjectContext.executeFetchRequest(request, error: &error) as? [Location]
+            for resultItem in result! {
+                println("result item: \(resultItem)")
+            }
+        }
+    }
     
     //MARK: - View Life Cycle
     
@@ -63,6 +76,7 @@ class DevicesTableViewController: UITableViewController, UITableViewDataSource, 
         if let beacon = sender as? CLBeacon {
             if let addDeviceViewController = segue.destinationViewController as? AddDeviceViewController {
                 addDeviceViewController.beacon = beacon
+                addDeviceViewController.managedObjectContext = self.managedObjectContext
             }
         }
     }
