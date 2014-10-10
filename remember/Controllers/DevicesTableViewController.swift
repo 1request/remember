@@ -20,12 +20,10 @@ class DevicesTableViewController: UITableViewController, UITableViewDataSource, 
             let request = NSFetchRequest(entityName: "Location")
             request.fetchBatchSize = 20
             var error: NSError? = nil;
-            let result = self.managedObjectContext.executeFetchRequest(request, error: &error) as? [Location]
-            for resultItem in result! {
-                println("result item: \(resultItem)")
-            }
+            locations = self.managedObjectContext.executeFetchRequest(request, error: &error) as [Location]
         }
     }
+    var locations = [Location]()
     
     //MARK: - View Life Cycle
     
@@ -61,6 +59,16 @@ class DevicesTableViewController: UITableViewController, UITableViewDataSource, 
         cell.nameLabel.text = (beacon.proximityUUID.UUIDString as NSString).substringToIndex(8)
         
         let formattedRange = beacon.accuracy.format(".2")
+    
+        let predicate = NSPredicate(format: "uuid == %@ AND major == %@ AND minor == %@", beacon.proximityUUID.UUIDString, beacon.major, beacon.minor)
+        
+        let filteredLocations = self.locations.filter { predicate.evaluateWithObject($0) }
+        
+        if !filteredLocations.isEmpty {
+            cell.addButton.setTitle("Added", forState: UIControlState.Normal)
+            cell.addButton.setTitleColor(UIColor.appGreyColor(), forState: UIControlState.Normal)
+            cell.addButton.backgroundColor = nil
+        }
         
         cell.rangeLabel.text = "Within \(formattedRange)m"
         cell.didPressAddButtonBlock = {
