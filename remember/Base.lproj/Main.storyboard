@@ -3,6 +3,7 @@
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--Home View Controller-->
@@ -17,9 +18,98 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="Dtd-qO-gU9">
-                                <rect key="frame" x="0.0" y="64" width="600" height="354"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="60" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="Dtd-qO-gU9">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="418"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="locationsCell" id="91e-nw-3hP" customClass="LocationsTableViewCell" customModule="remember" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="91e-nw-3hP" id="dhV-4R-SWd">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="locationNameLabel" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="myQ-dB-jd6" customClass="Locations">
+                                                    <rect key="frame" x="60" y="19" width="148" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jrJ-E2-vW0" customClass="RadioButton" customModule="remember" customModuleProvider="target">
+                                                    <rect key="frame" x="20" y="18" width="24" height="24"/>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                </view>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="myQ-dB-jd6" firstAttribute="leading" secondItem="dhV-4R-SWd" secondAttribute="leading" constant="60" id="2ta-2m-6YG"/>
+                                                <constraint firstItem="myQ-dB-jd6" firstAttribute="leading" secondItem="jrJ-E2-vW0" secondAttribute="trailing" constant="16" id="6Ae-Ub-NlR"/>
+                                                <constraint firstAttribute="centerY" secondItem="myQ-dB-jd6" secondAttribute="centerY" id="W3k-f0-jIR"/>
+                                                <constraint firstItem="jrJ-E2-vW0" firstAttribute="top" secondItem="dhV-4R-SWd" secondAttribute="topMargin" constant="10" id="qpb-94-aPG"/>
+                                                <constraint firstItem="jrJ-E2-vW0" firstAttribute="leading" secondItem="dhV-4R-SWd" secondAttribute="leading" constant="20" id="van-6C-QLs"/>
+                                                <constraint firstAttribute="centerY" secondItem="jrJ-E2-vW0" secondAttribute="centerY" id="xMR-Ts-bUE"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="locationNameLabel" destination="myQ-dB-jd6" id="bPU-eL-E1S"/>
+                                            <outlet property="radioButton" destination="jrJ-E2-vW0" id="FDe-aZ-jGb"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="messagesCell" id="vsB-6J-kCc" customClass="MessagesTableViewCell" customModule="remember" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="vsB-6J-kCc" id="pJq-8y-bdQ">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="messageLabel" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zFU-c7-IqD">
+                                                    <rect key="frame" x="60" y="19" width="112" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="play-active" translatesAutoresizingMaskIntoConstraints="NO" id="xm7-WM-eV4">
+                                                    <rect key="frame" x="553" y="14" width="27" height="31"/>
+                                                </imageView>
+                                                <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pause" translatesAutoresizingMaskIntoConstraints="NO" id="Q2h-NY-yRK">
+                                                    <rect key="frame" x="553" y="12" width="27" height="36"/>
+                                                </imageView>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vlh-cJ-yWW" customClass="UnreadSpotView" customModule="remember" customModuleProvider="target">
+                                                    <rect key="frame" x="26" y="24" width="12" height="12"/>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="12" id="Lg4-LL-FwS"/>
+                                                    </constraints>
+                                                </view>
+                                                <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="play-inactive" translatesAutoresizingMaskIntoConstraints="NO" id="pjR-sM-nW2">
+                                                    <rect key="frame" x="553" y="14" width="27" height="31"/>
+                                                </imageView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="centerY" secondItem="zFU-c7-IqD" secondAttribute="centerY" id="0NM-Bx-Gye"/>
+                                                <constraint firstItem="vlh-cJ-yWW" firstAttribute="top" secondItem="pJq-8y-bdQ" secondAttribute="top" constant="24" id="6Rk-b2-mO6"/>
+                                                <constraint firstAttribute="trailing" secondItem="xm7-WM-eV4" secondAttribute="trailing" constant="20" id="9Xd-vh-Yqo"/>
+                                                <constraint firstAttribute="centerY" secondItem="vlh-cJ-yWW" secondAttribute="centerY" id="HYc-g6-atP"/>
+                                                <constraint firstItem="zFU-c7-IqD" firstAttribute="leading" secondItem="vlh-cJ-yWW" secondAttribute="trailing" constant="22" id="QTh-IJ-Hrv"/>
+                                                <constraint firstAttribute="centerY" secondItem="Q2h-NY-yRK" secondAttribute="centerY" id="TYG-kd-Ni4"/>
+                                                <constraint firstAttribute="centerY" secondItem="xm7-WM-eV4" secondAttribute="centerY" id="YEM-bq-0xM"/>
+                                                <constraint firstItem="zFU-c7-IqD" firstAttribute="leading" secondItem="pJq-8y-bdQ" secondAttribute="leading" constant="60" id="lki-QF-s2P"/>
+                                                <constraint firstAttribute="trailing" secondItem="pjR-sM-nW2" secondAttribute="trailing" constant="20" id="nvb-ne-f2B"/>
+                                                <constraint firstAttribute="trailing" secondItem="Q2h-NY-yRK" secondAttribute="trailing" constant="20" id="uHS-Hu-DIg"/>
+                                                <constraint firstAttribute="centerY" secondItem="pjR-sM-nW2" secondAttribute="centerY" id="uOm-kk-Z1M"/>
+                                                <constraint firstItem="vlh-cJ-yWW" firstAttribute="leading" secondItem="pJq-8y-bdQ" secondAttribute="leading" constant="26" id="yyN-37-Ckf"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="inactiveIcon" destination="pjR-sM-nW2" id="75F-df-2ZW"/>
+                                            <outlet property="messageLabel" destination="zFU-c7-IqD" id="Ea0-Jh-Ufu"/>
+                                            <outlet property="pauseIcon" destination="Q2h-NY-yRK" id="2fB-Nb-NsK"/>
+                                            <outlet property="playIcon" destination="xm7-WM-eV4" id="kro-fG-kL3"/>
+                                            <outlet property="unreadSpotIcon" destination="vlh-cJ-yWW" id="0zP-a8-HXp"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="BYZ-38-t0r" id="TE1-kf-NFp"/>
+                                    <outlet property="delegate" destination="BYZ-38-t0r" id="TRM-YI-fAK"/>
+                                </connections>
                             </tableView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lyi-sS-abq">
                                 <rect key="frame" x="217" y="426" width="166" height="166"/>
@@ -34,18 +124,21 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="centerX" secondItem="lyi-sS-abq" secondAttribute="centerX" id="5KW-OT-Ij2"/>
-                            <constraint firstItem="Dtd-qO-gU9" firstAttribute="trailing" secondItem="y3c-jy-aDJ" secondAttribute="trailing" id="8TA-k0-vVx"/>
-                            <constraint firstItem="Dtd-qO-gU9" firstAttribute="leading" secondItem="y3c-jy-aDJ" secondAttribute="leading" id="ADQ-pW-mgB"/>
-                            <constraint firstItem="Dtd-qO-gU9" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="aTF-7h-gcn"/>
+                            <constraint firstItem="Dtd-qO-gU9" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="8cu-Zi-BL6"/>
+                            <constraint firstAttribute="trailing" secondItem="Dtd-qO-gU9" secondAttribute="trailing" id="Fog-gZ-gsx"/>
+                            <constraint firstItem="Dtd-qO-gU9" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="d5D-L0-u9h"/>
                             <constraint firstItem="lyi-sS-abq" firstAttribute="top" secondItem="Dtd-qO-gU9" secondAttribute="bottom" constant="8" id="hoQ-IP-odP"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="lyi-sS-abq" secondAttribute="bottom" constant="8" id="jJU-cb-NIM"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="TfE-9W-SDK"/>
+                    <connections>
+                        <outlet property="tableView" destination="Dtd-qO-gU9" id="bLx-Xg-VIw"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="951" y="136"/>
+            <point key="canvasLocation" x="951" y="133"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="9Mk-jn-KWs">
@@ -68,6 +161,9 @@
         </scene>
     </scenes>
     <resources>
+        <image name="pause" width="27" height="36"/>
+        <image name="play-active" width="27" height="31"/>
+        <image name="play-inactive" width="27" height="31"/>
         <image name="record-button" width="160" height="166"/>
     </resources>
 </document>

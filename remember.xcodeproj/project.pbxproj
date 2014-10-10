@@ -15,6 +15,11 @@
 		8A9F0F7019E62C50007FB36B /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8A9F0F6F19E62C50007FB36B /* Images.xcassets */; };
 		8A9F0F7319E62C50007FB36B /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8A9F0F7119E62C50007FB36B /* LaunchScreen.xib */; };
 		8A9F0F7F19E62C50007FB36B /* rememberTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9F0F7E19E62C50007FB36B /* rememberTests.swift */; };
+		8ABFAA6519E6665700FCE6EF /* LocationsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABFAA6419E6665700FCE6EF /* LocationsTableViewCell.swift */; };
+		8ABFAA6719E668DB00FCE6EF /* MessagesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABFAA6619E668DB00FCE6EF /* MessagesTableViewCell.swift */; };
+		8ABFAA6919E67CEB00FCE6EF /* UnreadSpotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABFAA6819E67CEB00FCE6EF /* UnreadSpotView.swift */; };
+		8ABFAA6B19E68AB600FCE6EF /* RadioButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABFAA6A19E68AB600FCE6EF /* RadioButton.swift */; };
+		8ABFAAA219E77E0B00FCE6EF /* UIColorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABFAAA119E77E0B00FCE6EF /* UIColorExtensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,6 +45,11 @@
 		8A9F0F7819E62C50007FB36B /* rememberTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = rememberTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8A9F0F7D19E62C50007FB36B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8A9F0F7E19E62C50007FB36B /* rememberTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = rememberTests.swift; sourceTree = "<group>"; };
+		8ABFAA6419E6665700FCE6EF /* LocationsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LocationsTableViewCell.swift; path = Views/LocationsTableViewCell.swift; sourceTree = "<group>"; };
+		8ABFAA6619E668DB00FCE6EF /* MessagesTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MessagesTableViewCell.swift; path = Views/MessagesTableViewCell.swift; sourceTree = "<group>"; };
+		8ABFAA6819E67CEB00FCE6EF /* UnreadSpotView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UnreadSpotView.swift; path = Views/UnreadSpotView.swift; sourceTree = "<group>"; };
+		8ABFAA6A19E68AB600FCE6EF /* RadioButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RadioButton.swift; path = Views/RadioButton.swift; sourceTree = "<group>"; };
+		8ABFAAA119E77E0B00FCE6EF /* UIColorExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UIColorExtensions.swift; path = Categories/UIColorExtensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -74,6 +84,10 @@
 			children = (
 				8A9F0F7119E62C50007FB36B /* LaunchScreen.xib */,
 				8A9F0F6C19E62C50007FB36B /* Main.storyboard */,
+				8ABFAA6419E6665700FCE6EF /* LocationsTableViewCell.swift */,
+				8ABFAA6619E668DB00FCE6EF /* MessagesTableViewCell.swift */,
+				8ABFAA6A19E68AB600FCE6EF /* RadioButton.swift */,
+				8ABFAA6819E67CEB00FCE6EF /* UnreadSpotView.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -99,6 +113,7 @@
 		8A9F0F6219E62C50007FB36B /* remember */ = {
 			isa = PBXGroup;
 			children = (
+				8ABFAA9E19E77C8B00FCE6EF /* Categories */,
 				8A76A0B419E63FA80031202A /* Views */,
 				8A76A0AF19E63C3D0031202A /* Controllers */,
 				8A9F0F6519E62C50007FB36B /* AppDelegate.swift */,
@@ -132,6 +147,14 @@
 				8A9F0F7D19E62C50007FB36B /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		8ABFAA9E19E77C8B00FCE6EF /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				8ABFAAA119E77E0B00FCE6EF /* UIColorExtensions.swift */,
+			);
+			name = Categories;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -235,9 +258,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				8A76A0B319E63DEC0031202A /* HomeViewController.swift in Sources */,
+				8ABFAA6719E668DB00FCE6EF /* MessagesTableViewCell.swift in Sources */,
+				8ABFAA6519E6665700FCE6EF /* LocationsTableViewCell.swift in Sources */,
 				8A76A0B119E63C590031202A /* NavigationController.swift in Sources */,
 				8A9F0F6919E62C50007FB36B /* remember.xcdatamodeld in Sources */,
+				8ABFAA6919E67CEB00FCE6EF /* UnreadSpotView.swift in Sources */,
 				8A9F0F6619E62C50007FB36B /* AppDelegate.swift in Sources */,
+				8ABFAA6B19E68AB600FCE6EF /* RadioButton.swift in Sources */,
+				8ABFAAA219E77E0B00FCE6EF /* UIColorExtensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
