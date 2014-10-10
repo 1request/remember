@@ -36,6 +36,10 @@ class MessagesTableViewCell: UITableViewCell {
         unreadSpotIcon.hidden = true
     }
     
+    func markAsUnread() {
+        unreadSpotIcon.hidden = false
+    }
+    
     func startPlaying() {
         markAsRead()
         

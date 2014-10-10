@@ -40,6 +40,8 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         let logo = UIImage(named: "remember-logo")
         let logoImageView = UIImageView(image: logo)
         self.navigationItem.titleView = logoImageView
+        
+        recordButton.addTarget(self, action: Selector("finishRecordingAudio"), forControlEvents: UIControlEvents.TouchUpInside)
       
         setManagedObjectContext()
 
@@ -66,7 +68,8 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        if indexPath.row == 0 {
+        var object: AnyObject = objectsInTable.objectAtIndex(indexPath.row)
+        if object is Location {
             let location:Location = objectsInTable.objectAtIndex(indexPath.row) as Location
             
             var cell = tableView.dequeueReusableCellWithIdentifier("locationsCell", forIndexPath: indexPath) as LocationsTableViewCell
@@ -83,6 +86,8 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
             cell.messageLabel.text = message.name
             if message.isRead.boolValue {
                 cell.markAsRead()
+            } else {
+                cell.markAsUnread()
             }
             
             return cell
@@ -105,6 +110,11 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 messageCell.finishPlaying()
             } else {
                 messageCell.startPlaying()
+                
+                var message: Message = objectsInTable.objectAtIndex(indexPath.row) as Message
+                message.isRead = true
+                message.updatedAt = NSDate()
+                appDelegate.saveContext()
             }
         }
     }
@@ -113,6 +123,23 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     func controllerDidChangeContent(controller: NSFetchedResultsController) {
         setObjectsInTable()
         tableView.reloadData()
+    }
+    
+    // MARK: Actions
+    func finishRecordingAudio() {
+        let entityDescription = NSEntityDescription.entityForName("Message", inManagedObjectContext: manageObjectContext)
+        let message = Message(entity: entityDescription!, insertIntoManagedObjectContext: manageObjectContext)
+        
+        let createTime = NSDate()
+        
+        message.location = manageObjectContext.objectWithID(selectedLocationObjectID()) as Location
+        message.location.messageCount = message.location.messageCount + 1
+        message.name = "Record \(message.location.messageCount)"
+        message.isRead = false
+        message.createdAt = createTime
+        message.updatedAt = createTime
+        
+        appDelegate.saveContext()
     }
     
     // Data
@@ -137,6 +164,9 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
     
     func setObjectsInTable() {
+        // clear table
+        objectsInTable = []
+
         var fetchedLocations = fetchedResultController.fetchedObjects
         for var i = 0; i < fetchedLocations?.count; i++ {
             var location: Location = fetchedLocations?[i] as Location
@@ -158,35 +188,6 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         location.name = "Testing Area"
         location.createdAt = createTime
         location.updatedAt = createTime
-
-        let messageEntityDescription = NSEntityDescription.entityForName("Message", inManagedObjectContext: manageObjectContext)
-
-        createTime = NSDate()
-        let message = Message(entity: messageEntityDescription!, insertIntoManagedObjectContext: manageObjectContext)
-        message.location = location
-        message.location.messageCount = message.location.messageCount + 1
-        message.name = "Record \(message.location.messageCount)"
-        message.isRead = false
-        message.createdAt = createTime
-        message.updatedAt = createTime
-        
-        createTime = NSDate()
-        let message2 = Message(entity: messageEntityDescription!, insertIntoManagedObjectContext: manageObjectContext)
-        message2.location = location
-        message2.location.messageCount = message.location.messageCount + 1
-        message2.name = "Record \(message.location.messageCount)"
-        message2.isRead = true
-        message2.createdAt = createTime
-        message2.updatedAt = createTime
-
-        createTime = NSDate()
-        let message3 = Message(entity: messageEntityDescription!, insertIntoManagedObjectContext: manageObjectContext)
-        message3.location = location
-        message3.location.messageCount = message.location.messageCount + 1
-        message3.name = "Record \(message.location.messageCount)"
-        message3.isRead = false
-        message3.createdAt = createTime
-        message3.updatedAt = createTime
 
         appDelegate.saveContext()
     }
