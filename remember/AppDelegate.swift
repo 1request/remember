@@ -16,7 +16,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        // Override point for customization after application launch.
+        if let navigationController = self.window?.rootViewController as? NavigationController {
+            if let homeViewController = navigationController.topViewController as? HomeViewController {
+                homeViewController.managedObjectContext = self.managedObjectContext!
+            }
+        }
         return true
     }
 

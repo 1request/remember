@@ -8,7 +8,6 @@
 
 import Foundation
 import CoreData
-
 class Location: NSManagedObject {
 
     @NSManaged var createdAt: NSDate
