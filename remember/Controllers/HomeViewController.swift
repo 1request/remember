@@ -141,22 +141,53 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         for var i = 0; i < fetchedLocations?.count; i++ {
             var location: Location = fetchedLocations?[i] as Location
             objectsInTable.addObject(location)
-            objectsInTable.addObjectsFromArray(location.messages.allObjects)
+            
+            var sortByIsRead = NSSortDescriptor(key: "isRead", ascending: true)
+            var sortByCreatedAt = NSSortDescriptor(key: "createdAt", ascending: false)
+            var sortedMessages = location.messages.sortedArrayUsingDescriptors([sortByIsRead, sortByCreatedAt])
+            objectsInTable.addObjectsFromArray(sortedMessages)
         }
     }
     
     // Testing
     func addTestingData() {
+        var createTime = NSDate()
+        
         let locationEntityDescription = NSEntityDescription.entityForName("Location", inManagedObjectContext: manageObjectContext)
         let location = Location(entity: locationEntityDescription!, insertIntoManagedObjectContext: manageObjectContext)
         location.name = "Testing Area"
+        location.createdAt = createTime
+        location.updatedAt = createTime
 
         let messageEntityDescription = NSEntityDescription.entityForName("Message", inManagedObjectContext: manageObjectContext)
+
+        createTime = NSDate()
         let message = Message(entity: messageEntityDescription!, insertIntoManagedObjectContext: manageObjectContext)
         message.location = location
         message.location.messageCount = message.location.messageCount + 1
         message.name = "Record \(message.location.messageCount)"
+        message.isRead = false
+        message.createdAt = createTime
+        message.updatedAt = createTime
         
+        createTime = NSDate()
+        let message2 = Message(entity: messageEntityDescription!, insertIntoManagedObjectContext: manageObjectContext)
+        message2.location = location
+        message2.location.messageCount = message.location.messageCount + 1
+        message2.name = "Record \(message.location.messageCount)"
+        message2.isRead = true
+        message2.createdAt = createTime
+        message2.updatedAt = createTime
+
+        createTime = NSDate()
+        let message3 = Message(entity: messageEntityDescription!, insertIntoManagedObjectContext: manageObjectContext)
+        message3.location = location
+        message3.location.messageCount = message.location.messageCount + 1
+        message3.name = "Record \(message.location.messageCount)"
+        message3.isRead = false
+        message3.createdAt = createTime
+        message3.updatedAt = createTime
+
         appDelegate.saveContext()
     }
 }
