@@ -14,7 +14,6 @@ class MessagesTableViewCell: UITableViewCell {
     @IBOutlet weak var messageLabel: UILabel!
     @IBOutlet weak var playIcon: UIImageView!
     @IBOutlet weak var pauseIcon: UIImageView!
-    @IBOutlet weak var inactiveIcon: UIImageView!
     
     enum PlayerStatus {
         case Normal, Playing
@@ -33,9 +32,17 @@ class MessagesTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
-    func startPlaying() {
+    func markAsRead() {
         unreadSpotIcon.hidden = true
-
+    }
+    
+    func markAsUnread() {
+        unreadSpotIcon.hidden = false
+    }
+    
+    func startPlaying() {
+        markAsRead()
+        
         setPlayerStatus(PlayerStatus.Playing)
     }
     
@@ -50,14 +57,12 @@ class MessagesTableViewCell: UITableViewCell {
             
             playIcon.hidden = true
             pauseIcon.hidden = false
-            inactiveIcon.hidden = true
         default:
             // Normal
             playing = false
             
             playIcon.hidden = false
             pauseIcon.hidden = true
-            inactiveIcon.hidden = true
         }
     }
     

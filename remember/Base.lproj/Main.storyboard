@@ -132,6 +132,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="recordButton" destination="lyi-sS-abq" id="Ssd-os-HRM"/>
                         <outlet property="tableView" destination="Dtd-qO-gU9" id="bLx-Xg-VIw"/>
                     </connections>
                 </viewController>
