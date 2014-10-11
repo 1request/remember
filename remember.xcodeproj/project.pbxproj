@@ -112,8 +112,6 @@
 		8A76A0B419E63FA80031202A /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				8A9F0F7119E62C50007FB36B /* LaunchScreen.xib */,
-				8A9F0F6C19E62C50007FB36B /* Main.storyboard */,
 				8ABFAA6419E6665700FCE6EF /* LocationsTableViewCell.swift */,
 				8ABFAA6619E668DB00FCE6EF /* MessagesTableViewCell.swift */,
 				8ABFAA6A19E68AB600FCE6EF /* RadioButton.swift */,
@@ -149,12 +147,9 @@
 				8A76A0B419E63FA80031202A /* Views */,
 				8A76A0AF19E63C3D0031202A /* Controllers */,
 				8A9F0F6519E62C50007FB36B /* AppDelegate.swift */,
-
-				8A9F0F6A19E62C50007FB36B /* ViewController.swift */,
 				7C088D9719E631CA005A51D9 /* LocationManager.swift */,
 				8A9F0F6C19E62C50007FB36B /* Main.storyboard */,
 				8A9F0F7119E62C50007FB36B /* LaunchScreen.xib */,
-
 				8A9F0F6F19E62C50007FB36B /* Images.xcassets */,
 				8A9F0F6319E62C50007FB36B /* Supporting Files */,
 			);
@@ -303,7 +298,6 @@
 				8ABFAA6B19E68AB600FCE6EF /* RadioButton.swift in Sources */,
 				8ABFAAA219E77E0B00FCE6EF /* UIColorExtensions.swift in Sources */,
 				7C088D9819E631CA005A51D9 /* LocationManager.swift in Sources */,
-				8A9F0F6B19E62C50007FB36B /* ViewController.swift in Sources */,
 				8A9F0F6919E62C50007FB36B /* remember.xcdatamodeld in Sources */,
 				7C088D9C19E63EE9005A51D9 /* BeaconFactory.swift in Sources */,
 				7C108D8B19E66E6F0013C4A3 /* Message.swift in Sources */,
