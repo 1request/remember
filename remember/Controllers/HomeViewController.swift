@@ -8,9 +8,18 @@
 
 import UIKit
 import CoreData
+import AVFoundation
 
 class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate {
-
+    //MARK: - Constants
+    
+    let kSlideUpToCancel = "Slide Up To Cancel"
+    let kReleaseToCancel = "Release To Cancel"
+    let kMinimumRecordLength = 1.0
+    var kApplicationPath = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true).last! as String
+    
+    //MARK: - Variables
+    
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var recordButton: UIButton!
 
@@ -20,7 +29,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     var objectsInTable: NSMutableArray = []
     var _selectedLocationObjectID: NSManagedObjectID? = nil
-    
+    var activePlayerIndexPath: NSIndexPath?
     func selectedLocationObjectID() -> NSManagedObjectID {
         if _selectedLocationObjectID == nil {
             var location: Location? = objectsInTable.firstObject as? Location
@@ -32,7 +41,38 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         return _selectedLocationObjectID!
     }
     
-    // UIView Lifecycle
+    //MARK: variables for audio recorder
+
+    lazy var recorder: AVAudioRecorder = {
+        [unowned self] in
+        let path = "\(self.kApplicationPath)/memo.m4a"
+        println("path = \(path)")
+        let fileURL = NSURL(fileURLWithPath: path)
+        let settings = [
+            AVFormatIDKey: kAudioFormatMPEG4AAC,
+            AVSampleRateKey: 44100.0,
+            AVNumberOfChannelsKey: 2
+        ]
+        var error: NSError?
+        var recorder = AVAudioRecorder(URL: fileURL, settings: settings, error: &error)
+        if let e = error {
+            println("error initializing recorder: \(e)")
+        }
+        else {
+            recorder.delegate = self
+            recorder.meteringEnabled = true
+            recorder.prepareToRecord()
+        }
+        return recorder
+    }()
+    
+    lazy var startDate = NSDate()
+    lazy var timer = NSTimer()
+    lazy var timeInterval = NSTimeInterval()
+    
+    var player:AVAudioPlayer?
+    
+    //MARK: - UIView Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -40,17 +80,15 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         let logo = UIImage(named: "remember-logo")
         let logoImageView = UIImageView(image: logo)
         self.navigationItem.titleView = logoImageView
-        
-        recordButton.addTarget(self, action: Selector("finishRecordingAudio"), forControlEvents: UIControlEvents.TouchUpInside)
-      
+
         setManagedObjectContext()
 
         if fetchedResultController.fetchedObjects?.count == 0 {
-            addTestingData()
-            
 //            tableView.hidden = true
 //            recordButton.hidden = true
         }
+        
+        self.configureAudioSession()
     }
 
     override func didReceiveMemoryWarning() {
@@ -58,7 +96,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         // Dispose of any resources that can be recreated.
     }
     
-    // UITableViewDataSource
+    //MARK: - UITableViewDataSource
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
     }
@@ -81,7 +119,6 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
             return cell
         } else {
             let message:Message = objectsInTable.objectAtIndex(indexPath.row) as Message
-            
             var cell = tableView.dequeueReusableCellWithIdentifier("messagesCell", forIndexPath: indexPath) as MessagesTableViewCell
             cell.messageLabel.text = message.name
             if message.isRead.boolValue {
@@ -94,7 +131,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         }
     }
     
-    // UITableViewDelegate
+    //MARK: - UITableViewDelegate
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         var cell = tableView.cellForRowAtIndexPath(indexPath)
         if cell is LocationsTableViewCell {
@@ -108,9 +145,15 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
             var messageCell: MessagesTableViewCell = cell as MessagesTableViewCell
             if messageCell.playing {
                 messageCell.finishPlaying()
+                self.stopPlayingAudio()
             } else {
+                if let indexPath = self.activePlayerIndexPath {
+                    let cell = self.tableView.cellForRowAtIndexPath(indexPath) as MessagesTableViewCell
+                    cell.finishPlaying()
+                }
                 messageCell.startPlaying()
-                
+                self.playAudioAtIndexPath(indexPath)
+                self.activePlayerIndexPath = indexPath
                 var message: Message = objectsInTable.objectAtIndex(indexPath.row) as Message
                 message.isRead = true
                 message.updatedAt = NSDate()
@@ -125,31 +168,40 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
             devicesVC.managedObjectContext = self.managedObjectContext
         }
     }
+    
+    //MARK: - IBActions
+    //MARK: record button actions
+    @IBAction func recordButtonTouchedDown(sender: UIButton) {
+        self.recordAudio()
+    }
+    
+    @IBAction func recordButtonTouchedUpInside(sender: UIButton) {
+        self.finishRecordingAudio()
+    }
+    
+    @IBAction func recordButtonTouchedUpOutside(sender: UIButton) {
+        self.stopRecordingAudio()
+    }
+    
+    @IBAction func recordButtonTouchedDragEnter(sender: UIButton) {
+    }
 
+    @IBAction func recordButtonTouchedDragExit(sender: UIButton) {
+    }
+    
+    func tappedMessageCellAtIndexPath(indexPath: NSIndexPath) {
+        println("tapped message cell at index path: \(indexPath)")
+        
+    }
+
+    
     // NSFetchedResultControllerDelegate
     func controllerDidChangeContent(controller: NSFetchedResultsController) {
         setObjectsInTable()
         tableView.reloadData()
     }
     
-    // MARK: Actions
-    func finishRecordingAudio() {
-        let entityDescription = NSEntityDescription.entityForName("Message", inManagedObjectContext: managedObjectContext)
-        let message = Message(entity: entityDescription!, insertIntoManagedObjectContext: managedObjectContext)
-        
-        let createTime = NSDate()
-        
-        message.location = managedObjectContext.objectWithID(selectedLocationObjectID()) as Location
-        message.location.messageCount = message.location.messageCount + 1
-        message.name = "Record \(message.location.messageCount)"
-        message.isRead = false
-        message.createdAt = createTime
-        message.updatedAt = createTime
-        
-        appDelegate.saveContext()
-    }
-    
-    // Data
+    //MARK: - Core Data
     func getFetchedResultController() -> NSFetchedResultsController {
         let fetchRequest = NSFetchRequest(entityName: "Location")
         fetchRequest.relationshipKeyPathsForPrefetching = ["messages"]
@@ -183,17 +235,123 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         }
     }
     
-    // Testing
-    func addTestingData() {
-        var createTime = NSDate()
+    //MARK: - record audio
+    func recordAudio () {
+        if let player = self.player {
+            if player.playing {
+                player.stop()
+            }
+        }
         
-        let locationEntityDescription = NSEntityDescription.entityForName("Location", inManagedObjectContext: managedObjectContext)
-        let location = Location(entity: locationEntityDescription!, insertIntoManagedObjectContext: managedObjectContext)
-        location.name = "Testing Area"
-        location.createdAt = createTime
-        location.updatedAt = createTime
-
-        appDelegate.saveContext()
+        let session = AVAudioSession.sharedInstance()
+        session.setActive(true, error: nil)
+        self.recorder.record()
+        self.startDate = NSDate()
+        self.timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("updateTimer"), userInfo: nil, repeats: true)
     }
+    
+    func configureAudioSession () {
+        let session = AVAudioSession.sharedInstance()
+        var error: NSError?
+        
+        if !session.setCategory(AVAudioSessionCategoryPlayAndRecord, error: &error) {
+            println("could not set session category")
+            if let e = error {
+                println("set session category error: \(e.localizedDescription)")
+            }
+        }
+        
+        if !session.setActive(true, error: &error) {
+            println("could not activate session")
+            if let e = error {
+                println("activate session error: \(e.localizedDescription)")
+            }
+        }
+        
+        if !session.overrideOutputAudioPort(AVAudioSessionPortOverride.Speaker, error: &error) {
+            println("could not override output audio port to speaker")
+            if let e = error {
+                println("override output audio port error: \(e.localizedDescription)")
+            }
+        }
+    }
+    
+    func updateTimer () {
+        self.timeInterval = NSDate().timeIntervalSinceDate(self.startDate)
+    }
+    
+    func finishRecordingAudio () {
+        self.stopRecordingAudio()
+        if self.timeInterval > kMinimumRecordLength {
+            self.createMessage()
+        }
+        else {
+            println("Record is too short")
+        }
+        self.timeInterval = 0
+    }
+    
+    func createMessage () {
+        let entityDescription = NSEntityDescription.entityForName("Message", inManagedObjectContext: managedObjectContext)
+        let message = Message(entity: entityDescription!, insertIntoManagedObjectContext: managedObjectContext)
+        
+        let createTime = NSDate()
+        let filePathString = kApplicationPath + "/" + createTime.timeIntervalSince1970.format(".0") + ".m4a"
+        println("filePath: \(filePathString)")
+        
+        let outputFileURL = NSURL(fileURLWithPath: filePathString)
+        
+        var error: NSError?
+        if !NSFileManager.defaultManager().copyItemAtURL(self.recorder.url, toURL: outputFileURL, error: &error) {
+            println("error copying item to url: \(error?.localizedDescription)")
+        }
+        
+        message.location = managedObjectContext.objectWithID(selectedLocationObjectID()) as Location
+        message.location.messageCount = message.location.messageCount + 1
+        message.name = "Record \(message.location.messageCount)"
+        message.isRead = false
+        message.createdAt = createTime
+        message.updatedAt = createTime
+        
+        if !managedObjectContext.save(&error) {
+            println("error saving audio: \(error?.localizedDescription)")
+        }
+    }
+    
+    func stopRecordingAudio () {
+        self.recorder.stop()
+        self.timer.invalidate()
+    }
+    
+    //MARK: - Play Audio
+    
+    func playAudioAtIndexPath (indexPath: NSIndexPath) {
+        let message = self.objectsInTable.objectAtIndex(indexPath.row) as Message
+        let filePath = self.kApplicationPath + "/" + message.createdAt.timeIntervalSince1970.format(".0") + ".m4a"
+        if NSFileManager.defaultManager().fileExistsAtPath(filePath) {
+            var error: NSError?
+            self.player = AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: filePath), error: &error)
+            if let e = error {
+                println("error playing audio at indexpath:\(indexPath), error: \(e.localizedDescription)")
+            }
+            else {
+                self.player?.delegate = self
+                self.player?.play()
+            }
+        }
+    }
+    
+    func stopPlayingAudio () {
+        self.player?.stop()
+    }
+}
 
+extension HomeViewController : AVAudioPlayerDelegate {
+    func audioPlayerDidFinishPlaying(player: AVAudioPlayer!,
+        successfully flag: Bool) {
+        let cell = self.tableView.cellForRowAtIndexPath(self.activePlayerIndexPath!) as MessagesTableViewCell
+        cell.finishPlaying()
+        self.activePlayerIndexPath = nil
+        self.tableView.reloadData()
+    }
 }
