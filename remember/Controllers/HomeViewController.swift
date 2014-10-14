@@ -22,6 +22,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var recordButton: UIButton!
+    @IBOutlet weak var pressHereImageView: UIImageView!
 
     var appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
     var managedObjectContext = NSManagedObjectContext()
@@ -83,8 +84,11 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         setManagedObjectContext()
 
         if fetchedResultController.fetchedObjects?.count == 0 {
-//            tableView.hidden = true
-//            recordButton.hidden = true
+            tableView.hidden = true
+            recordButton.hidden = true
+        }
+        else {
+            pressHereImageView.hidden = true
         }
         
         self.configureAudioSession()
@@ -197,6 +201,14 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
     
     // NSFetchedResultControllerDelegate
+    
+    func controllerWillChangeContent(controller: NSFetchedResultsController) {
+        if self.tableView.hidden {
+            self.tableView.hidden = false
+            self.recordButton.hidden = false
+        }
+    }
+    
     func controllerDidChangeContent(controller: NSFetchedResultsController) {
         setObjectsInTable()
         tableView.reloadData()
