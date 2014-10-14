@@ -29,10 +29,10 @@ class MessagesTableViewCell: UITableViewCell, UIGestureRecognizerDelegate {
     var delegate: MessagesTableViewCellDelegate!
     var panStartPoint: CGPoint!
     var startingRightLayoutConstraintConstant: CGFloat!
-    var contentViewLeftConstraint: NSLayoutConstraint!
-    var contentViewRightConstraint: NSLayoutConstraint!
-    var topViewLeftConstraint: NSLayoutConstraint!
-    var topViewRightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var contentViewLeftConstraint: NSLayoutConstraint!
+    @IBOutlet weak var contentViewRightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var topViewLeftConstraint: NSLayoutConstraint!
+    @IBOutlet weak var topViewRightConstraint: NSLayoutConstraint!
     
     let kBounceValue: CGFloat = 20.0
     
@@ -49,14 +49,6 @@ class MessagesTableViewCell: UITableViewCell, UIGestureRecognizerDelegate {
         panRecognizer.addTarget(self, action: "panThisCell:")
         panRecognizer.delegate = self
         topView.addGestureRecognizer(panRecognizer)
-        
-        contentViewLeftConstraint = NSLayoutConstraint(
-            item: topView, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal,
-            toItem: contentView, attribute: NSLayoutAttribute.Leading, multiplier: 1.0, constant: 0.0)
-        contentViewRightConstraint = NSLayoutConstraint(
-            item: contentView, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal,
-            toItem: topView, attribute: NSLayoutAttribute.Leading, multiplier: 1.0, constant: 0.0)
-        contentView.addConstraints([contentViewLeftConstraint, contentViewRightConstraint])
     }
 
     override func setSelected(selected: Bool, animated: Bool) {
@@ -115,13 +107,11 @@ class MessagesTableViewCell: UITableViewCell, UIGestureRecognizerDelegate {
             panStartPoint = recognizer.translationInView(topView)
             startingRightLayoutConstraintConstant = contentViewRightConstraint.constant
             delegate.cellWillOpen(self)
-            
-            break;
         case UIGestureRecognizerState.Changed:
-            var currentPoint: CGPoint = recognizer.translationInView(topView)
-            var deltaX = currentPoint.x - panStartPoint.x
+            let currentPoint = recognizer.translationInView(topView)
+            let deltaX = currentPoint.x - panStartPoint.x
             
-            var panningLeft: Bool = false
+            var panningLeft = false
             if currentPoint.x < panStartPoint.x {
                 panningLeft = true
             }
@@ -129,14 +119,14 @@ class MessagesTableViewCell: UITableViewCell, UIGestureRecognizerDelegate {
             if startingRightLayoutConstraintConstant == 0 {
                 // the cell was closed and is now opening
                 if !panningLeft {
-                    var constant: CGFloat = max(-deltaX, 0)
+                    let constant = max(-deltaX, 0)
                     if (constant == 0) {
                         resetConstraintConstantsToZero(true, notifyDelegateDidClose: false)
                     } else {
                         contentViewRightConstraint.constant = constant
                     }
                 } else {
-                    var constant: CGFloat = min(-deltaX, buttonTotalWidth())
+                    let constant = min(-deltaX, buttonTotalWidth())
                     if constant == buttonTotalWidth() {
                         setConstraintConstantsToShowAllButtons(true, notifyDelegateDidOpen: false)
                     } else {
@@ -145,16 +135,16 @@ class MessagesTableViewCell: UITableViewCell, UIGestureRecognizerDelegate {
                 }
             } else {
                 // The cell was at least partially open
-                var adjustment: CGFloat = startingRightLayoutConstraintConstant - deltaX
+                let adjustment = startingRightLayoutConstraintConstant - deltaX
                 if !panningLeft {
-                    var constant: CGFloat = max(adjustment, 0)
+                    let constant = max(adjustment, 0)
                     if constant == 0 {
                         resetConstraintConstantsToZero(true, notifyDelegateDidClose: false)
                     } else {
                         contentViewRightConstraint.constant = constant
                     }
                 } else {
-                    var constant: CGFloat = min(adjustment, buttonTotalWidth())
+                    let constant = min(adjustment, buttonTotalWidth())
                     if constant == buttonTotalWidth() {
                         setConstraintConstantsToShowAllButtons(true, notifyDelegateDidOpen: false)
                     } else {
@@ -164,16 +154,13 @@ class MessagesTableViewCell: UITableViewCell, UIGestureRecognizerDelegate {
             }
             
             contentViewLeftConstraint.constant = -contentViewRightConstraint.constant
-            break;
         case UIGestureRecognizerState.Ended:
-            var halfOfButton = CGRectGetWidth(self.deleteButton.frame)
+            let halfOfButton = CGRectGetWidth(self.deleteButton.frame)
             if contentViewRightConstraint.constant >= halfOfButton {
                 setConstraintConstantsToShowAllButtons(true, notifyDelegateDidOpen: true)
             } else {
                 resetConstraintConstantsToZero(true, notifyDelegateDidClose: true)
             }
-            
-            break;
         case UIGestureRecognizerState.Cancelled:
             if startingRightLayoutConstraintConstant == 0 {
                 resetConstraintConstantsToZero(true, notifyDelegateDidClose: true)
@@ -181,7 +168,7 @@ class MessagesTableViewCell: UITableViewCell, UIGestureRecognizerDelegate {
                 setConstraintConstantsToShowAllButtons(true, notifyDelegateDidOpen: true)
             }
         default:
-            break;
+            break
         }
     }
     
@@ -191,10 +178,9 @@ class MessagesTableViewCell: UITableViewCell, UIGestureRecognizerDelegate {
         }
         
         if startingRightLayoutConstraintConstant == 0 && contentViewRightConstraint == 0 {
-            return;
+            return
         }
         
-        println("resetConstraintConstantsToZero")
         contentViewRightConstraint.constant = -kBounceValue
         contentViewLeftConstraint.constant = kBounceValue
         
@@ -212,13 +198,12 @@ class MessagesTableViewCell: UITableViewCell, UIGestureRecognizerDelegate {
             delegate.cellDidOpen(self)
         }
         
-        if startingRightLayoutConstraintConstant == buttonTotalWidth() && contentViewRightConstraint == buttonTotalWidth() {
-            return;
+        if startingRightLayoutConstraintConstant == buttonTotalWidth() && contentViewRightConstraint.constant == buttonTotalWidth() {
+            return
         }
         
-        println("setConstraintConstantsToShowAllButtons")
-        contentViewRightConstraint.constant = -self.buttonTotalWidth() - kBounceValue
-        contentViewLeftConstraint.constant = self.buttonTotalWidth() + kBounceValue
+        contentViewLeftConstraint.constant = -self.buttonTotalWidth() - kBounceValue
+        contentViewRightConstraint.constant = self.buttonTotalWidth() + kBounceValue
         
         updateConstraintsIfNeeded(animated, completion: { finished in
             self.contentViewLeftConstraint.constant = -self.buttonTotalWidth()

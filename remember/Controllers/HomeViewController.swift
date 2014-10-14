@@ -132,7 +132,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         var previousEditingCell: MessagesTableViewCell? = tableView.cellForRowAtIndexPath(indexPath) as? MessagesTableViewCell
         
         if previousEditingCell != nil {
-            previousEditingCell?.closeCell(true)
+//            previousEditingCell?.closeCell(true)
         }
         
         editingCellRowNumber = 0
