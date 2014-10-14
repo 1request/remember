@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate {
+class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate, MessagesTableViewCellDelegate {
 
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var recordButton: UIButton!
@@ -20,6 +20,8 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     var objectsInTable: NSMutableArray = []
     var _selectedLocationObjectID: NSManagedObjectID? = nil
+    
+    var editingCellRowNumber:NSInteger = 0
     
     func selectedLocationObjectID() -> NSManagedObjectID {
         if _selectedLocationObjectID == nil {
@@ -82,12 +84,18 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         } else {
             let message:Message = objectsInTable.objectAtIndex(indexPath.row) as Message
             
+            println("Creating cell for " + message.name)
             var cell = tableView.dequeueReusableCellWithIdentifier("messagesCell", forIndexPath: indexPath) as MessagesTableViewCell
+            cell.delegate = self
             cell.messageLabel.text = message.name
             if message.isRead.boolValue {
                 cell.markAsRead()
             } else {
                 cell.markAsUnread()
+            }
+            
+            if indexPath.row == self.editingCellRowNumber {
+                cell.openCell()
             }
             
             return cell
@@ -117,6 +125,46 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 appDelegate.saveContext()
             }
         }
+    }
+    
+    func closeEditingCell() {
+        var indexPath = NSIndexPath(forRow: editingCellRowNumber, inSection: 0)
+        var previousEditingCell: MessagesTableViewCell? = tableView.cellForRowAtIndexPath(indexPath) as? MessagesTableViewCell
+        
+        if previousEditingCell != nil {
+            previousEditingCell?.closeCell(true)
+        }
+        
+        editingCellRowNumber = 0
+    }
+    
+    //MARK: MessagesTableViewCellDelegate
+    
+    func deleteButtonClicked(cell: UITableViewCell) {
+        var indexPath: NSIndexPath = tableView.indexPathForCell(cell)!
+        var message: Message = objectsInTable.objectAtIndex(indexPath.row) as Message
+        managedObjectContext.deleteObject(message)
+        editingCellRowNumber = 0
+        
+        var error: NSError? = nil
+        if managedObjectContext.save(&error) {
+            NSLog("Unable to save managed object content.")
+        }
+    }
+    
+    func cellWillOpen(cell: UITableViewCell) {
+        if editingCellRowNumber != 0 {
+            closeEditingCell()
+        }
+    }
+    
+    func cellDidOpen(cell: UITableViewCell) {
+        var indexPath: NSIndexPath = tableView.indexPathForCell(cell)!
+        editingCellRowNumber = indexPath.row
+    }
+    
+    func cellDidClose(cell: UITableViewCell) {
+        editingCellRowNumber = 0
     }
     
     //MARK: - Navigation
