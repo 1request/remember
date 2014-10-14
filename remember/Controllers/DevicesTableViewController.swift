@@ -68,12 +68,15 @@ class DevicesTableViewController: UITableViewController, UITableViewDataSource, 
             cell.addButton.setTitle("Added", forState: UIControlState.Normal)
             cell.addButton.setTitleColor(UIColor.appGreyColor(), forState: UIControlState.Normal)
             cell.addButton.backgroundColor = nil
+
+        }
+        else {
+            cell.didPressAddButtonBlock = {
+                self.performSegueWithIdentifier("toAddDevice", sender: beacon)
+            }
         }
         
         cell.rangeLabel.text = "Within \(formattedRange)m"
-        cell.didPressAddButtonBlock = {
-            self.performSegueWithIdentifier("toAddDevice", sender: beacon)
-        }
         
         return cell
     }

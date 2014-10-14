@@ -8,6 +8,9 @@
 
 import UIKit
 import CoreData
+import Crashlytics
+import CoreLocation
+import AVFoundation
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -16,12 +19,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+        Crashlytics.startWithAPIKey("a73df0ceadf9f0995f97da85f3a3ca791c3e0de1")
+        
+        Mixpanel.sharedInstanceWithToken("3b27052c32a6e7426f27e17b0a1f2e7e").track("Swift")
+        
         if let navigationController = self.window?.rootViewController as? NavigationController {
             if let homeViewController = navigationController.topViewController as? HomeViewController {
                 homeViewController.managedObjectContext = self.managedObjectContext!
             }
         }
+        self.monitorLocations()
         return true
+    }
+    
+    func application(application: UIApplication, didReceiveLocalNotification notification: UILocalNotification) {
+        self.clearNotifications()
+        let state = application.applicationState
+        if state == UIApplicationState.Active {
+            AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
+            AudioServicesPlaySystemSound(1007)
+        }
     }
 
     func applicationWillResignActive(application: UIApplication) {
@@ -110,6 +127,59 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
     }
-
 }
 
+extension AppDelegate {
+    func monitorLocations () {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "enteredRegion:", name: kEnteredBeaconRegionNotificationName, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "exitedRegion:", name: kExitedBeaconRegionNotificationName, object: nil)
+        println("monitored region: \(LocationManager.sharedInstance.locationManager.monitoredRegions)")
+    }
+    
+    func enteredRegion (notification: NSNotification) {
+        if let dict = notification.userInfo as? Dictionary<String, CLBeaconRegion> {
+            let beaconRegionObject = dict[kEnteredBeaconRegionNotificationUserInfoRegionKey]!
+            if let location = Location.locationFromBeaconRegion(beaconRegionObject as CLBeaconRegion, managedObjectContext: self.managedObjectContext!) {
+                let previousTriggerDate = location.lastTriggerDate.timeIntervalSince1970
+                location.lastTriggerDate = NSDate()
+                let currentTime = location.lastTriggerDate.timeIntervalSince1970
+                self.managedObjectContext?.save(nil)
+                let predicate = NSPredicate(format: "isRead == 0")
+                let unreadMessages = location.messages.filteredSetUsingPredicate(predicate)
+                if currentTime - previousTriggerDate > 3600 {
+                    self.sendLocalNotificationWithMessage("\(location.name) got \(unreadMessages.count) new notification" + (unreadMessages.count > 1 ? "s" : ""))
+                }
+            }
+        }
+    }
+    
+    func exitedRegion (notification: NSNotification) {
+        // exit region
+        println("exited region: \(notification.userInfo)")
+    }
+    
+    func sendLocalNotificationWithMessage (message: String) {
+        var notification = UILocalNotification()
+        notification.alertBody = message
+        notification.alertAction = "View Details"
+        notification.soundName = UILocalNotificationDefaultSoundName
+        notification.applicationIconBadgeNumber = UIApplication.sharedApplication().applicationIconBadgeNumber + 1
+        
+        if notification.respondsToSelector("regionTriggersOnce") {
+            notification.regionTriggersOnce = true
+        }
+        
+        if UIApplication.sharedApplication().respondsToSelector("registerUserNotificationSettings:") {
+            let types = UIUserNotificationType.Badge | UIUserNotificationType.Sound | UIUserNotificationType.Alert
+            let settings = UIUserNotificationSettings(forTypes: types, categories: nil)
+            UIApplication.sharedApplication().registerUserNotificationSettings(settings)
+        }
+        
+        UIApplication.sharedApplication().presentLocalNotificationNow(notification)
+    }
+    
+    func clearNotifications () {
+        UIApplication.sharedApplication().applicationIconBadgeNumber = 0
+        UIApplication.sharedApplication().cancelAllLocalNotifications()
+    }
+}

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="IPw-5K-A5d">
     <dependencies>
+        <deployment defaultVersion="1792" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
@@ -18,8 +19,15 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="press-here" translatesAutoresizingMaskIntoConstraints="NO" id="eeq-nU-IfG">
+                                <rect key="frame" x="399" y="64" width="185" height="159"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="185" id="FbI-lZ-w9E"/>
+                                    <constraint firstAttribute="width" secondItem="eeq-nU-IfG" secondAttribute="height" multiplier="185:159" id="uK9-JO-bou"/>
+                                </constraints>
+                            </imageView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="60" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="Dtd-qO-gU9">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="418"/>
+                                <rect key="frame" x="0.0" y="64" width="600" height="354"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="locationsCell" id="91e-nw-3hP" customClass="LocationsTableViewCell" customModule="remember" customModuleProvider="target">
@@ -29,7 +37,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="locationNameLabel" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="myQ-dB-jd6">
-                                                    <rect key="frame" x="60" y="19" width="148" height="21"/>
+                                                    <rect key="frame" x="60" y="19" width="148" height="20.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
@@ -69,7 +77,7 @@
                                                     <rect key="frame" x="0.0" y="0.0" width="600" height="59"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="messageLabel" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zFU-c7-IqD">
-                                                            <rect key="frame" x="60" y="20" width="485" height="20.5"/>
+                                                            <rect key="frame" x="60" y="19" width="485" height="20.5"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                             <nil key="highlightedColor"/>
@@ -90,7 +98,7 @@
                                                             </constraints>
                                                         </imageView>
                                                         <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pause" translatesAutoresizingMaskIntoConstraints="NO" id="Q2h-NY-yRK">
-                                                            <rect key="frame" x="553" y="13.5" width="27" height="32"/>
+                                                            <rect key="frame" x="553" y="13" width="27" height="32"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="27" id="2eM-ix-p8G"/>
                                                                 <constraint firstAttribute="width" secondItem="Q2h-NY-yRK" secondAttribute="height" multiplier="27:32" id="K9J-fS-wMI"/>
@@ -145,21 +153,30 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lyi-sS-abq">
                                 <rect key="frame" x="217" y="426" width="166" height="166"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" secondItem="lyi-sS-abq" secondAttribute="height" multiplier="1:1" id="MyG-gw-fmA"/>
+                                    <constraint firstAttribute="width" secondItem="lyi-sS-abq" secondAttribute="height" multiplier="1:1" id="Hqx-Iq-AJQ"/>
                                 </constraints>
                                 <state key="normal" image="record-button">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="recordButtonTouchedDown:" destination="BYZ-38-t0r" eventType="touchDown" id="uP1-ZZ-XjY"/>
+                                    <action selector="recordButtonTouchedDragEnter:" destination="BYZ-38-t0r" eventType="touchDragEnter" id="es7-5g-F28"/>
+                                    <action selector="recordButtonTouchedDragExit:" destination="BYZ-38-t0r" eventType="touchDragExit" id="0y0-gI-7wD"/>
+                                    <action selector="recordButtonTouchedUpInside:" destination="BYZ-38-t0r" eventType="touchUpInside" id="G7n-QK-oeM"/>
+                                    <action selector="recordButtonTouchedUpOutside:" destination="BYZ-38-t0r" eventType="touchUpOutside" id="JdE-b6-KVF"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="centerX" secondItem="lyi-sS-abq" secondAttribute="centerX" id="5KW-OT-Ij2"/>
-                            <constraint firstItem="Dtd-qO-gU9" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="d5D-L0-u9h"/>
-                            <constraint firstItem="lyi-sS-abq" firstAttribute="top" secondItem="Dtd-qO-gU9" secondAttribute="bottom" constant="8" id="hoQ-IP-odP"/>
-                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="lyi-sS-abq" secondAttribute="bottom" constant="8" id="jJU-cb-NIM"/>
-                            <constraint firstItem="Dtd-qO-gU9" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="ko1-SE-WjG"/>
-                            <constraint firstAttribute="trailing" secondItem="Dtd-qO-gU9" secondAttribute="trailing" id="yyh-vd-Zhb"/>
+                            <constraint firstItem="Dtd-qO-gU9" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="D0k-tK-9Hh"/>
+                            <constraint firstItem="lyi-sS-abq" firstAttribute="top" secondItem="Dtd-qO-gU9" secondAttribute="bottom" constant="8" id="FDx-qx-KCS"/>
+                            <constraint firstItem="Dtd-qO-gU9" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="MNP-Ke-pxe"/>
+                            <constraint firstItem="eeq-nU-IfG" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="QKQ-1N-00Z"/>
+                            <constraint firstAttribute="trailing" secondItem="Dtd-qO-gU9" secondAttribute="trailing" id="Qo5-Sf-ohl"/>
+                            <constraint firstAttribute="centerX" secondItem="lyi-sS-abq" secondAttribute="centerX" id="ayA-wg-Zvn"/>
+                            <constraint firstAttribute="trailing" secondItem="eeq-nU-IfG" secondAttribute="trailing" constant="16" id="kON-C6-DEN"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="lyi-sS-abq" secondAttribute="bottom" constant="8" id="lZj-Cy-8rv"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="TfE-9W-SDK">
@@ -170,6 +187,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="pressHereImageView" destination="eeq-nU-IfG" id="Byf-Y3-znG"/>
                         <outlet property="recordButton" destination="lyi-sS-abq" id="Ssd-os-HRM"/>
                         <outlet property="tableView" destination="Dtd-qO-gU9" id="bLx-Xg-VIw"/>
                     </connections>
@@ -343,6 +361,7 @@
         <image name="device" width="90" height="98"/>
         <image name="pause" width="27" height="36"/>
         <image name="play-active" width="27" height="31"/>
+        <image name="press-here" width="305" height="300"/>
         <image name="record-button" width="160" height="166"/>
         <image name="trash" width="99" height="111"/>
     </resources>

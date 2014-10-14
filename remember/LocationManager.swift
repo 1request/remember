@@ -46,7 +46,6 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
         for beaconRegion: CLBeaconRegion in beaconRegions {
             self.locationManager.startRangingBeaconsInRegion(beaconRegion)
         }
-        println("ranged region: \(self.locationManager.rangedRegions)")
     }
     
     func stopRangingBeaconRegions (beaconRegions: [CLBeaconRegion]) {
