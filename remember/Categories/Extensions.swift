@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import CoreLocation
 
 extension UIColor {
     class func appBlueColor() -> UIColor {
@@ -22,5 +23,16 @@ extension UIColor {
 extension Double {
     func format(f: String) -> String {
         return NSString(format: "%\(f)f", self)
+    }
+}
+
+extension Location {
+    func beaconRegion () -> CLBeaconRegion {
+        let proximityUUID = NSUUID(UUIDString: self.uuid)
+        let major = self.major.unsignedShortValue
+        let minor = self.minor.unsignedShortValue
+        let identifier = "\(self.name)-" + self.createdAt.timeIntervalSince1970.format(".0")
+        let region = CLBeaconRegion(proximityUUID: proximityUUID, major: major, minor: minor, identifier: identifier)
+        return region
     }
 }

@@ -28,18 +28,19 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     var fetchedResultController: NSFetchedResultsController!
     
     var objectsInTable: NSMutableArray = []
-    var _selectedLocationObjectID: NSManagedObjectID? = nil
-    var activePlayerIndexPath: NSIndexPath?
-    func selectedLocationObjectID() -> NSManagedObjectID {
-        if _selectedLocationObjectID == nil {
-            var location: Location? = objectsInTable.firstObject as? Location
-            if location != nil {
-                _selectedLocationObjectID = location?.objectID
-            }
+    
+    lazy var selectedLocationObjectID: NSManagedObjectID? = {
+        [unowned self] in
+        if let location = self.objectsInTable[0] as? Location {
+            let objectID = location.objectID
+            return objectID
         }
-        
-        return _selectedLocationObjectID!
-    }
+        else {
+            return nil
+        }
+    }()
+    
+    var activePlayerIndexPath: NSIndexPath?
     
     //MARK: variables for audio recorder
 
@@ -59,7 +60,6 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
             println("error initializing recorder: \(e)")
         }
         else {
-            recorder.delegate = self
             recorder.meteringEnabled = true
             recorder.prepareToRecord()
         }
@@ -112,8 +112,12 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
             
             var cell = tableView.dequeueReusableCellWithIdentifier("locationsCell", forIndexPath: indexPath) as LocationsTableViewCell
             cell.locationNameLabel.text = location.name
-            if location.objectID == selectedLocationObjectID() {
+            
+            if location.objectID == selectedLocationObjectID {
                 cell.checkRadioButton()
+            }
+            else {
+                cell.uncheckedRadioButton()
             }
             
             return cell
@@ -136,11 +140,9 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         var cell = tableView.cellForRowAtIndexPath(indexPath)
         if cell is LocationsTableViewCell {
             var locationCell: LocationsTableViewCell = cell as LocationsTableViewCell
-            if locationCell.isChecked() {
-                locationCell.uncheckedRadioButton()
-            } else {
-                locationCell.checkRadioButton()
-            }
+            let location = self.objectsInTable[indexPath.row] as Location
+            self.selectedLocationObjectID = location.objectID
+            self.tableView.reloadData()
         } else {
             var messageCell: MessagesTableViewCell = cell as MessagesTableViewCell
             if messageCell.playing {
@@ -283,7 +285,9 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     func finishRecordingAudio () {
         self.stopRecordingAudio()
         if self.timeInterval > kMinimumRecordLength {
-            self.createMessage()
+            let location = managedObjectContext.objectWithID(selectedLocationObjectID!) as Location
+            self.createMessageForLocation(location)
+            self.monitorLocation(location)
         }
         else {
             println("Record is too short")
@@ -291,13 +295,12 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         self.timeInterval = 0
     }
     
-    func createMessage () {
+    func createMessageForLocation (location: Location) {
         let entityDescription = NSEntityDescription.entityForName("Message", inManagedObjectContext: managedObjectContext)
         let message = Message(entity: entityDescription!, insertIntoManagedObjectContext: managedObjectContext)
         
         let createTime = NSDate()
         let filePathString = kApplicationPath + "/" + createTime.timeIntervalSince1970.format(".0") + ".m4a"
-        println("filePath: \(filePathString)")
         
         let outputFileURL = NSURL(fileURLWithPath: filePathString)
         
@@ -306,7 +309,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
             println("error copying item to url: \(error?.localizedDescription)")
         }
         
-        message.location = managedObjectContext.objectWithID(selectedLocationObjectID()) as Location
+        message.location = location
         message.location.messageCount = message.location.messageCount + 1
         message.name = "Record \(message.location.messageCount)"
         message.isRead = false
@@ -344,7 +347,18 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     func stopPlayingAudio () {
         self.player?.stop()
     }
+    
+    //MARK: - Monitor Location
+    func monitorLocation(location: Location) {
+        let beaconRegion = location.beaconRegion()
+        println("monitored region before adding location: \(LocationManager.sharedInstance.locationManager.monitoredRegions)")
+        LocationManager.sharedInstance.startRangingBeaconRegions([beaconRegion])
+        LocationManager.sharedInstance.startMonitoringBeaconRegions([beaconRegion])
+        println("monitored region after adding location: \(LocationManager.sharedInstance.locationManager.monitoredRegions)")
+    }
 }
+
+//MARK: - AVAudioPlayerDelegate
 
 extension HomeViewController : AVAudioPlayerDelegate {
     func audioPlayerDidFinishPlaying(player: AVAudioPlayer!,
