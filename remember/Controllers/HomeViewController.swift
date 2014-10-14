@@ -351,10 +351,8 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     //MARK: - Monitor Location
     func monitorLocation(location: Location) {
         let beaconRegion = location.beaconRegion()
-        println("monitored region before adding location: \(LocationManager.sharedInstance.locationManager.monitoredRegions)")
         LocationManager.sharedInstance.startRangingBeaconRegions([beaconRegion])
         LocationManager.sharedInstance.startMonitoringBeaconRegions([beaconRegion])
-        println("monitored region after adding location: \(LocationManager.sharedInstance.locationManager.monitoredRegions)")
     }
 }
 
