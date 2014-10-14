@@ -356,7 +356,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
     
     func checkUnmonitorLocation(location: Location) {
-        let predicate = NSPredicate(format: "isRead == nil")
+        let predicate = NSPredicate(format: "isRead == 0")
         let unreadMessages = location.messages.filteredSetUsingPredicate(predicate)
         if unreadMessages.count == 0 {
             let beaconRegion = location.beaconRegion()
