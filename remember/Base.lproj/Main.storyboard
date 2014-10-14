@@ -4,7 +4,6 @@
         <deployment defaultVersion="1792" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--Home View Controller-->
@@ -37,7 +36,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="locationNameLabel" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="myQ-dB-jd6">
-                                                    <rect key="frame" x="60" y="19" width="148" height="20.5"/>
+                                                    <rect key="frame" x="60" y="19" width="524" height="20.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
@@ -45,15 +44,18 @@
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jrJ-E2-vW0" customClass="RadioButton" customModule="remember" customModuleProvider="target">
                                                     <rect key="frame" x="20" y="18" width="24" height="24"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="24" id="yGJ-NP-NGd"/>
+                                                        <constraint firstAttribute="width" constant="24" id="ztv-2H-cZ7"/>
+                                                    </constraints>
                                                 </view>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="myQ-dB-jd6" firstAttribute="leading" secondItem="dhV-4R-SWd" secondAttribute="leading" constant="60" id="2ta-2m-6YG"/>
-                                                <constraint firstItem="myQ-dB-jd6" firstAttribute="leading" secondItem="jrJ-E2-vW0" secondAttribute="trailing" constant="16" id="6Ae-Ub-NlR"/>
-                                                <constraint firstAttribute="centerY" secondItem="myQ-dB-jd6" secondAttribute="centerY" id="W3k-f0-jIR"/>
-                                                <constraint firstItem="jrJ-E2-vW0" firstAttribute="top" secondItem="dhV-4R-SWd" secondAttribute="topMargin" constant="10" id="qpb-94-aPG"/>
-                                                <constraint firstItem="jrJ-E2-vW0" firstAttribute="leading" secondItem="dhV-4R-SWd" secondAttribute="leading" constant="20" id="van-6C-QLs"/>
-                                                <constraint firstAttribute="centerY" secondItem="jrJ-E2-vW0" secondAttribute="centerY" id="xMR-Ts-bUE"/>
+                                                <constraint firstAttribute="centerY" secondItem="jrJ-E2-vW0" secondAttribute="centerY" id="5j8-Pn-rMl"/>
+                                                <constraint firstItem="jrJ-E2-vW0" firstAttribute="leading" secondItem="dhV-4R-SWd" secondAttribute="leading" constant="20" id="Khr-ti-zQ5"/>
+                                                <constraint firstItem="myQ-dB-jd6" firstAttribute="leading" secondItem="jrJ-E2-vW0" secondAttribute="trailing" constant="16" id="a23-nm-n8k"/>
+                                                <constraint firstAttribute="centerY" secondItem="myQ-dB-jd6" secondAttribute="centerY" id="kI2-6h-GAf"/>
+                                                <constraint firstAttribute="trailing" secondItem="myQ-dB-jd6" secondAttribute="trailing" constant="16" id="pDh-9e-e6v"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
