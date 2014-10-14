@@ -167,8 +167,7 @@ class MessagesTableViewCell: UITableViewCell, UIGestureRecognizerDelegate {
             } else {
                 setConstraintConstantsToShowAllButtons(true, notifyDelegateDidOpen: true)
             }
-        default:
-            break
+        default: ()
         }
     }
     
