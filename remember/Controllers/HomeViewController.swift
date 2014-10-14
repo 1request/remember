@@ -47,7 +47,6 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     lazy var recorder: AVAudioRecorder = {
         [unowned self] in
         let path = "\(self.kApplicationPath)/memo.m4a"
-        println("path = \(path)")
         let fileURL = NSURL(fileURLWithPath: path)
         let settings = [
             AVFormatIDKey: kAudioFormatMPEG4AAC,
@@ -349,10 +348,22 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
     
     //MARK: - Monitor Location
+
     func monitorLocation(location: Location) {
         let beaconRegion = location.beaconRegion()
         LocationManager.sharedInstance.startRangingBeaconRegions([beaconRegion])
         LocationManager.sharedInstance.startMonitoringBeaconRegions([beaconRegion])
+    }
+    
+    func checkUnmonitorLocation(location: Location) {
+        let predicate = NSPredicate(format: "isRead == 0")
+        let unreadMessages = location.messages.filteredSetUsingPredicate(predicate)
+        if unreadMessages.count == 0 {
+            let beaconRegion = location.beaconRegion()
+            let locationManager = LocationManager.sharedInstance
+            locationManager.stopRangingBeaconRegions([beaconRegion])
+            locationManager.stopMonitoringBeaconRegions([beaconRegion])
+        }
     }
 }
 
@@ -363,6 +374,9 @@ extension HomeViewController : AVAudioPlayerDelegate {
         successfully flag: Bool) {
         let cell = self.tableView.cellForRowAtIndexPath(self.activePlayerIndexPath!) as MessagesTableViewCell
         cell.finishPlaying()
+        let message = self.objectsInTable[self.activePlayerIndexPath!.row] as Message
+        let location = message.location
+        self.checkUnmonitorLocation(location)
         self.activePlayerIndexPath = nil
         self.tableView.reloadData()
     }
