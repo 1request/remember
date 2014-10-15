@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="IPw-5K-A5d">
     <dependencies>
+        <deployment defaultVersion="1792" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
@@ -68,12 +69,21 @@
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="vsB-6J-kCc" id="pJq-8y-bdQ">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="trash" translatesAutoresizingMaskIntoConstraints="NO" id="fzG-Xa-6X5">
-                                                    <rect key="frame" x="533" y="0.0" width="67" height="59"/>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="trash" translatesAutoresizingMaskIntoConstraints="NO" id="fzG-Xa-6X5">
+                                                    <rect key="frame" x="547.5" y="0.0" width="52.5" height="59"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" secondItem="fzG-Xa-6X5" secondAttribute="height" multiplier="67:59" id="hyC-8O-BQn"/>
+                                                        <constraint firstAttribute="width" secondItem="fzG-Xa-6X5" secondAttribute="height" multiplier="99:111" id="hyC-8O-BQn"/>
                                                     </constraints>
                                                 </imageView>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Czz-B0-jsi" userLabel="Trash Button">
+                                                    <rect key="frame" x="547.5" y="0.0" width="52.5" height="59"/>
+                                                    <state key="normal">
+                                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                    </state>
+                                                    <connections>
+                                                        <action selector="buttonClicked:" destination="vsB-6J-kCc" eventType="touchUpInside" id="8eZ-zZ-hek"/>
+                                                    </connections>
+                                                </button>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1oM-Np-bS1" userLabel="topView">
                                                     <rect key="frame" x="0.0" y="0.0" width="600" height="59"/>
                                                     <subviews>
@@ -122,20 +132,24 @@
                                                 </view>
                                             </subviews>
                                             <constraints>
+                                                <constraint firstItem="Czz-B0-jsi" firstAttribute="bottom" secondItem="fzG-Xa-6X5" secondAttribute="bottom" id="7Ym-fI-Wix"/>
+                                                <constraint firstItem="Czz-B0-jsi" firstAttribute="top" secondItem="fzG-Xa-6X5" secondAttribute="top" id="7dU-JA-n42"/>
                                                 <constraint firstItem="fzG-Xa-6X5" firstAttribute="top" secondItem="pJq-8y-bdQ" secondAttribute="top" id="86t-Fb-dTu"/>
                                                 <constraint firstAttribute="bottom" secondItem="1oM-Np-bS1" secondAttribute="bottom" id="HTs-pI-bVE"/>
                                                 <constraint firstAttribute="trailing" secondItem="fzG-Xa-6X5" secondAttribute="trailing" id="LvM-xL-xvr"/>
                                                 <constraint firstAttribute="trailing" secondItem="1oM-Np-bS1" secondAttribute="trailing" id="Paf-tZ-Lpe"/>
                                                 <constraint firstAttribute="bottom" secondItem="fzG-Xa-6X5" secondAttribute="bottom" id="RYl-QH-CgX"/>
+                                                <constraint firstItem="Czz-B0-jsi" firstAttribute="leading" secondItem="fzG-Xa-6X5" secondAttribute="leading" id="ZHr-qs-wq2"/>
                                                 <constraint firstItem="1oM-Np-bS1" firstAttribute="top" secondItem="pJq-8y-bdQ" secondAttribute="top" id="i3a-b4-rAJ"/>
                                                 <constraint firstItem="1oM-Np-bS1" firstAttribute="leading" secondItem="pJq-8y-bdQ" secondAttribute="leading" id="utf-fX-GWk"/>
+                                                <constraint firstItem="Czz-B0-jsi" firstAttribute="trailing" secondItem="fzG-Xa-6X5" secondAttribute="trailing" id="vPW-SV-a6C"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <gestureRecognizers/>
                                         <connections>
                                             <outlet property="contentViewLeftConstraint" destination="utf-fX-GWk" id="Hlb-qN-0Lw"/>
                                             <outlet property="contentViewRightConstraint" destination="Paf-tZ-Lpe" id="QlL-zs-W8h"/>
-                                            <outlet property="deleteButton" destination="fzG-Xa-6X5" id="NZp-ji-kK2"/>
+                                            <outlet property="deleteButton" destination="Czz-B0-jsi" id="062-pt-0hH"/>
                                             <outlet property="messageLabel" destination="zFU-c7-IqD" id="Ea0-Jh-Ufu"/>
                                             <outlet property="pauseIcon" destination="Q2h-NY-yRK" id="2fB-Nb-NsK"/>
                                             <outlet property="playIcon" destination="xm7-WM-eV4" id="kro-fG-kL3"/>
@@ -195,7 +209,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="951" y="133"/>
+            <point key="canvasLocation" x="951" y="132.5"/>
         </scene>
         <!--Devices-->
         <scene sceneID="v3v-Zd-xEL">

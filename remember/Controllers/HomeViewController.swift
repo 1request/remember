@@ -194,9 +194,9 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         managedObjectContext.deleteObject(message)
         editingCellRowNumber = 0
 
-        var error: NSError? = nil
-        if managedObjectContext.save(&error) {
-            NSLog("Unable to save managed object content.")
+        var error: NSError?
+        if !managedObjectContext.save(&error) {
+            println("unable to delete message, error: \(error?.localizedDescription)")
         }
     }
 

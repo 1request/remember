@@ -22,7 +22,7 @@ class MessagesTableViewCell: UITableViewCell, UIGestureRecognizerDelegate {
     @IBOutlet weak var messageLabel: UILabel!
     @IBOutlet weak var playIcon: UIImageView!
     @IBOutlet weak var pauseIcon: UIImageView!
-    @IBOutlet weak var deleteButton: UIImageView!
+    @IBOutlet weak var deleteButton: UIButton!
     
     var panRecognizer: UIPanGestureRecognizer = UIPanGestureRecognizer()
     
@@ -91,7 +91,7 @@ class MessagesTableViewCell: UITableViewCell, UIGestureRecognizerDelegate {
         }
     }
     
-    func buttonClicked(sender: UIButton) {
+    @IBAction func buttonClicked(sender: UIButton) {
         if sender == self.deleteButton {
             delegate.deleteButtonClicked(self)
         }
@@ -155,7 +155,7 @@ class MessagesTableViewCell: UITableViewCell, UIGestureRecognizerDelegate {
             
             contentViewLeftConstraint.constant = -contentViewRightConstraint.constant
         case UIGestureRecognizerState.Ended:
-            let halfOfButton = CGRectGetWidth(self.deleteButton.frame)
+            let halfOfButton = CGRectGetWidth(self.deleteButton.frame) / 2
             if contentViewRightConstraint.constant >= halfOfButton {
                 setConstraintConstantsToShowAllButtons(true, notifyDelegateDidOpen: true)
             } else {
