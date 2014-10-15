@@ -59,3 +59,9 @@ extension Location {
         }
     }
 }
+
+extension UITableView {
+    func removeFooterBorder () {
+        self.tableFooterView = UIView(frame: CGRectZero)
+    }
+}
