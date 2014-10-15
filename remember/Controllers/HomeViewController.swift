@@ -82,7 +82,8 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         let logo = UIImage(named: "remember-logo")
         let logoImageView = UIImageView(image: logo)
         self.navigationItem.titleView = logoImageView
-
+        self.tableView.removeFooterBorder()
+        
         setManagedObjectContext()
 
         if fetchedResultController.fetchedObjects?.count == 0 {
@@ -94,6 +95,11 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         }
 
         self.configureAudioSession()
+        
+        // detect tap gesture
+        let tapRecognizer = UITapGestureRecognizer(target: self, action: "tapView:")
+        tapRecognizer.delegate = self
+        self.view.addGestureRecognizer(tapRecognizer)
     }
 
     override func didReceiveMemoryWarning() {
@@ -148,35 +154,45 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
     //MARK: - UITableViewDelegate
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        if editingCellRowNumber != 0 {
+            // has editing cell, close cell
+            closeEditingCell()
+            return
+        }
+        
         let cell = tableView.cellForRowAtIndexPath(indexPath)
-        if cell is LocationsTableViewCell {
-            let locationCell = cell as LocationsTableViewCell
+        if let locationCell = cell as? LocationsTableViewCell {
             let location = self.objectsInTable[indexPath.row] as Location
             self.selectedLocationObjectID = location.objectID
             self.tableView.reloadData()
         } else {
-            if editingCellRowNumber != indexPath.row {
-                let messageCell = cell as MessagesTableViewCell
-                if messageCell.playing {
-                    messageCell.finishPlaying()
-                    self.stopPlayingAudio()
-                } else {
-                    if let indexPath = self.activePlayerIndexPath {
-                        let cell = self.tableView.cellForRowAtIndexPath(indexPath) as MessagesTableViewCell
-                        cell.finishPlaying()
-                    }
-                    messageCell.startPlaying()
-                    self.playAudioAtIndexPath(indexPath)
-                    self.activePlayerIndexPath = indexPath
-                    let message = objectsInTable.objectAtIndex(indexPath.row) as Message
-                    message.isRead = true
-                    message.updatedAt = NSDate()
-                    appDelegate.saveContext()
+            let messageCell = cell as MessagesTableViewCell
+            if messageCell.playing {
+                messageCell.finishPlaying()
+                self.stopPlayingAudio()
+            } else {
+                // stop any existing playing record
+                if let indexPath = self.activePlayerIndexPath {
+                    let cell = self.tableView.cellForRowAtIndexPath(indexPath) as MessagesTableViewCell
+                    cell.finishPlaying()
                 }
+                messageCell.startPlaying()
+                self.playAudioAtIndexPath(indexPath)
+                self.activePlayerIndexPath = indexPath
+                let message = objectsInTable.objectAtIndex(indexPath.row) as Message
+                message.isRead = true
+                message.updatedAt = NSDate()
+                appDelegate.saveContext()
+                self.monitorLocation(message.location)
             }
         }
     }
 
+    func resetEditingRowNumber () {
+        editingCellRowNumber = 0
+        recordButton.enabled = true
+    }
+    
     func closeEditingCell() {
         var indexPath = NSIndexPath(forRow: editingCellRowNumber, inSection: 0)
         var previousEditingCell: MessagesTableViewCell? = tableView.cellForRowAtIndexPath(indexPath) as? MessagesTableViewCell
@@ -185,7 +201,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
             previousEditingCell?.closeCell(animated: true)
         }
 
-        editingCellRowNumber = 0
+        resetEditingRowNumber()
     }
 
     //MARK: MessagesTableViewCellDelegate
@@ -195,7 +211,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         let messageCell = cell as MessagesTableViewCell
         messageCell.closeCell(animated: false)
 
-        editingCellRowNumber = 0
+        resetEditingRowNumber()
         
         let indexPath = tableView.indexPathForCell(cell)!
         let message = objectsInTable.objectAtIndex(indexPath.row) as Message
@@ -216,10 +232,11 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     func cellDidOpen(cell: UITableViewCell) {
         let indexPath = tableView.indexPathForCell(cell)!
         editingCellRowNumber = indexPath.row
+        recordButton.enabled = false
     }
 
     func cellDidClose(cell: UITableViewCell) {
-        editingCellRowNumber = 0
+        resetEditingRowNumber()
     }
 
     //MARK: - Navigation
@@ -249,13 +266,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     @IBAction func recordButtonTouchedDragExit(sender: UIButton) {
     }
 
-    func tappedMessageCellAtIndexPath(indexPath: NSIndexPath) {
-        println("tapped message cell at index path: \(indexPath)")
-
-    }
-
-
-    // NSFetchedResultControllerDelegate
+    //MARK: - NSFetchedResultControllerDelegate
 
     func controllerWillChangeContent(controller: NSFetchedResultsController) {
         if self.tableView.hidden {
@@ -263,7 +274,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
             self.recordButton.hidden = false
         }
     }
-
+    
     func controllerDidChangeContent(controller: NSFetchedResultsController) {
         setObjectsInTable()
         tableView.reloadData()
@@ -417,19 +428,17 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     //MARK: - Monitor Location
 
     func monitorLocation(location: Location) {
-        let beaconRegion = location.beaconRegion()
-        LocationManager.sharedInstance.startRangingBeaconRegions([beaconRegion])
-        LocationManager.sharedInstance.startMonitoringBeaconRegions([beaconRegion])
-    }
-
-    func checkUnmonitorLocation(location: Location) {
         let predicate = NSPredicate(format: "isRead == 0")
         let unreadMessages = location.messages.filteredSetUsingPredicate(predicate)
+        let locationManager = LocationManager.sharedInstance
+        let beaconRegion = location.beaconRegion()
         if unreadMessages.count == 0 {
-            let beaconRegion = location.beaconRegion()
-            let locationManager = LocationManager.sharedInstance
             locationManager.stopRangingBeaconRegions([beaconRegion])
             locationManager.stopMonitoringBeaconRegions([beaconRegion])
+        }
+        else {
+            locationManager.startRangingBeaconRegions([beaconRegion])
+            locationManager.startMonitoringBeaconRegions([beaconRegion])
         }
     }
 }
@@ -443,8 +452,22 @@ extension HomeViewController : AVAudioPlayerDelegate {
         cell.finishPlaying()
         let message = self.objectsInTable[self.activePlayerIndexPath!.row] as Message
         let location = message.location
-        self.checkUnmonitorLocation(location)
         self.activePlayerIndexPath = nil
         self.tableView.reloadData()
+    }
+}
+
+//MARK: - UIGestureRecognizerDelegate
+
+extension HomeViewController : UIGestureRecognizerDelegate {
+    func tapView (recognizer: UITapGestureRecognizer) {
+        closeEditingCell()
+    }
+    
+    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
+        if editingCellRowNumber != 0 {
+            return true
+        }
+        return false
     }
 }

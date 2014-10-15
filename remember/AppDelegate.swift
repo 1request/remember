@@ -133,7 +133,6 @@ extension AppDelegate {
     func monitorLocations () {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "enteredRegion:", name: kEnteredBeaconRegionNotificationName, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "exitedRegion:", name: kExitedBeaconRegionNotificationName, object: nil)
-        println("monitored region: \(LocationManager.sharedInstance.locationManager.monitoredRegions)")
     }
     
     func enteredRegion (notification: NSNotification) {

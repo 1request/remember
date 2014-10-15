@@ -28,7 +28,7 @@ class DevicesTableViewController: UITableViewController, UITableViewDataSource, 
     //MARK: - View Life Cycle
     
     override func viewDidLoad() {
-        self.tableView.tableFooterView = UIView(frame: CGRectZero)
+        self.tableView.removeFooterBorder()
         LocationManager.sharedInstance.startRangingBeaconRegions(BeaconFactory.beaconRegionsToBeRanged())
     }
     

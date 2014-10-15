@@ -88,7 +88,7 @@
                                                     <rect key="frame" x="0.0" y="0.0" width="600" height="59"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="messageLabel" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zFU-c7-IqD">
-                                                            <rect key="frame" x="60" y="19" width="485" height="20.5"/>
+                                                            <rect key="frame" x="60" y="19" width="492" height="20.5"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                             <nil key="highlightedColor"/>
@@ -101,17 +101,17 @@
                                                                 <constraint firstAttribute="width" secondItem="vlh-cJ-yWW" secondAttribute="height" multiplier="1:1" id="oke-yU-Oac"/>
                                                             </constraints>
                                                         </view>
-                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="play-active" translatesAutoresizingMaskIntoConstraints="NO" id="xm7-WM-eV4">
-                                                            <rect key="frame" x="553" y="14" width="27" height="32"/>
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="play-active" translatesAutoresizingMaskIntoConstraints="NO" id="xm7-WM-eV4">
+                                                            <rect key="frame" x="560" y="18" width="20" height="24"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" secondItem="xm7-WM-eV4" secondAttribute="height" multiplier="27:32" id="3Gf-Xx-0rC"/>
-                                                                <constraint firstAttribute="width" constant="27" id="riv-7L-NEd"/>
+                                                                <constraint firstAttribute="width" constant="20" id="riv-7L-NEd"/>
                                                             </constraints>
                                                         </imageView>
-                                                        <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pause" translatesAutoresizingMaskIntoConstraints="NO" id="Q2h-NY-yRK">
-                                                            <rect key="frame" x="553" y="13" width="27" height="32"/>
+                                                        <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pause" translatesAutoresizingMaskIntoConstraints="NO" id="Q2h-NY-yRK">
+                                                            <rect key="frame" x="560" y="17" width="20" height="24"/>
                                                             <constraints>
-                                                                <constraint firstAttribute="width" constant="27" id="2eM-ix-p8G"/>
+                                                                <constraint firstAttribute="width" constant="20" id="2eM-ix-p8G"/>
                                                                 <constraint firstAttribute="width" secondItem="Q2h-NY-yRK" secondAttribute="height" multiplier="27:32" id="K9J-fS-wMI"/>
                                                             </constraints>
                                                         </imageView>
