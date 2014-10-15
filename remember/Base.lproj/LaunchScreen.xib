@@ -11,16 +11,16 @@
             <rect key="frame" x="0.0" y="0.0" width="480" height="480"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Splash" translatesAutoresizingMaskIntoConstraints="NO" id="ZoN-o6-AvN">
+                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Splash" translatesAutoresizingMaskIntoConstraints="NO" id="ZWP-vi-Ujr">
                     <rect key="frame" x="0.0" y="0.0" width="480" height="480"/>
                 </imageView>
             </subviews>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <color key="backgroundColor" red="0.12941176469999999" green="0.6705882353" blue="0.21960784310000001" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
-                <constraint firstAttribute="bottom" secondItem="ZoN-o6-AvN" secondAttribute="bottom" id="guU-TP-BiT"/>
-                <constraint firstAttribute="trailing" secondItem="ZoN-o6-AvN" secondAttribute="trailing" id="qT6-xy-BgN"/>
-                <constraint firstItem="ZoN-o6-AvN" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="swS-2h-cgZ"/>
-                <constraint firstItem="ZoN-o6-AvN" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="vqZ-UZ-p4g"/>
+                <constraint firstAttribute="trailing" secondItem="ZWP-vi-Ujr" secondAttribute="trailing" id="TAz-sN-hjt"/>
+                <constraint firstItem="ZWP-vi-Ujr" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Uro-LW-UZ6"/>
+                <constraint firstAttribute="bottom" secondItem="ZWP-vi-Ujr" secondAttribute="bottom" id="jmh-9G-HCo"/>
+                <constraint firstItem="ZWP-vi-Ujr" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="ucG-eT-TxQ"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
