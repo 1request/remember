@@ -106,16 +106,15 @@ class MessagesTableViewCell: UITableViewCell, UIGestureRecognizerDelegate {
         case UIGestureRecognizerState.Began:
             panStartPoint = recognizer.translationInView(topView)
             startingRightLayoutConstraintConstant = contentViewRightConstraint.constant
-            delegate.cellWillOpen(self)
         case UIGestureRecognizerState.Changed:
+
             let currentPoint = recognizer.translationInView(topView)
             let deltaX = currentPoint.x - panStartPoint.x
-            
+
             var panningLeft = false
             if currentPoint.x < panStartPoint.x {
                 panningLeft = true
             }
-            
             if startingRightLayoutConstraintConstant == 0 {
                 // the cell was closed and is now opening
                 if !panningLeft {
@@ -130,12 +129,14 @@ class MessagesTableViewCell: UITableViewCell, UIGestureRecognizerDelegate {
                     if constant == buttonTotalWidth() {
                         setConstraintConstantsToShowAllButtons(true, notifyDelegateDidOpen: false)
                     } else {
+                        delegate.cellWillOpen(self)
                         contentViewRightConstraint.constant = constant
                     }
                 }
             } else {
                 // The cell was at least partially open
                 let adjustment = startingRightLayoutConstraintConstant - deltaX
+                
                 if !panningLeft {
                     let constant = max(adjustment, 0)
                     if constant == 0 {
@@ -175,7 +176,7 @@ class MessagesTableViewCell: UITableViewCell, UIGestureRecognizerDelegate {
         if notifyDelegateDidClose {
             delegate.cellDidClose(self)
         }
-        
+
         if startingRightLayoutConstraintConstant == 0 && contentViewRightConstraint == 0 {
             return
         }
@@ -196,7 +197,7 @@ class MessagesTableViewCell: UITableViewCell, UIGestureRecognizerDelegate {
         if notifyDelegateDidOpen {
             delegate.cellDidOpen(self)
         }
-        
+
         if startingRightLayoutConstraintConstant == buttonTotalWidth() && contentViewRightConstraint.constant == buttonTotalWidth() {
             return
         }
@@ -226,7 +227,7 @@ class MessagesTableViewCell: UITableViewCell, UIGestureRecognizerDelegate {
         setConstraintConstantsToShowAllButtons(false, notifyDelegateDidOpen: false)
     }
     
-    func closeCell(animated: Bool) {
+    func closeCell(#animated: Bool) {
         resetConstraintConstantsToZero(animated, notifyDelegateDidClose: false)
     }
     

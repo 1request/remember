@@ -180,7 +180,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         var previousEditingCell: MessagesTableViewCell? = tableView.cellForRowAtIndexPath(indexPath) as? MessagesTableViewCell
 
         if previousEditingCell != nil {
-//            previousEditingCell?.closeCell(true)
+            previousEditingCell?.closeCell(animated: true)
         }
 
         editingCellRowNumber = 0
