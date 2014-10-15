@@ -56,7 +56,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationDidBecomeActive(application: UIApplication) {
-        // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+        self.clearNotifications()
     }
 
     func applicationWillTerminate(application: UIApplication) {
@@ -131,6 +131,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 extension AppDelegate {
     func monitorLocations () {
+        LocationManager.sharedInstance.locationManager.monitoredRegions
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "enteredRegion:", name: kEnteredBeaconRegionNotificationName, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "exitedRegion:", name: kExitedBeaconRegionNotificationName, object: nil)
     }
@@ -154,7 +155,7 @@ extension AppDelegate {
     
     func exitedRegion (notification: NSNotification) {
         // exit region
-        println("exited region: \(notification.userInfo)")
+        println("app delegate exited region: \(notification.userInfo)")
     }
     
     func sendLocalNotificationWithMessage (message: String) {

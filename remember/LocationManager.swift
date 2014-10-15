@@ -62,7 +62,6 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
         for beaconRegion: CLBeaconRegion in beaconRegions {
             self.locationManager.startMonitoringForRegion(beaconRegion)
         }
-        println("monitored region: \(self.locationManager.monitoredRegions)")
     }
     
     func stopMonitoringBeaconRegions (beaconRegions: [CLBeaconRegion]) {
@@ -90,6 +89,7 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
     }
     
     func locationManager(manager: CLLocationManager!, didEnterRegion region: CLRegion!) {
+        println("did enter region: \(region)")
         if let beaconRegion = region as? CLBeaconRegion {
             if beaconRegion.major != nil && beaconRegion.minor != nil {
                 NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: kEnteredBeaconRegionNotificationName, object: self, userInfo: [kEnteredBeaconRegionNotificationUserInfoRegionKey: beaconRegion]))
@@ -98,6 +98,7 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
     }
     
     func locationManager(manager: CLLocationManager!, didExitRegion region: CLRegion!) {
+        println("did exit region: \(region)")
         if let beaconRegion = region as? CLBeaconRegion {
             if beaconRegion.major != nil && beaconRegion.minor != nil {
                 NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: kExitedBeaconRegionNotificationName, object: self, userInfo: [kExitedBeaconRegionNotificationUserInfoRegionKey: beaconRegion]))
