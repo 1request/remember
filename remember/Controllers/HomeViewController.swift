@@ -148,29 +148,31 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
     //MARK: - UITableViewDelegate
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        var cell = tableView.cellForRowAtIndexPath(indexPath)
+        let cell = tableView.cellForRowAtIndexPath(indexPath)
         if cell is LocationsTableViewCell {
-            var locationCell: LocationsTableViewCell = cell as LocationsTableViewCell
+            let locationCell = cell as LocationsTableViewCell
             let location = self.objectsInTable[indexPath.row] as Location
             self.selectedLocationObjectID = location.objectID
             self.tableView.reloadData()
         } else {
-            var messageCell: MessagesTableViewCell = cell as MessagesTableViewCell
-            if messageCell.playing {
-                messageCell.finishPlaying()
-                self.stopPlayingAudio()
-            } else {
-                if let indexPath = self.activePlayerIndexPath {
-                    let cell = self.tableView.cellForRowAtIndexPath(indexPath) as MessagesTableViewCell
-                    cell.finishPlaying()
+            if editingCellRowNumber != indexPath.row {
+                let messageCell = cell as MessagesTableViewCell
+                if messageCell.playing {
+                    messageCell.finishPlaying()
+                    self.stopPlayingAudio()
+                } else {
+                    if let indexPath = self.activePlayerIndexPath {
+                        let cell = self.tableView.cellForRowAtIndexPath(indexPath) as MessagesTableViewCell
+                        cell.finishPlaying()
+                    }
+                    messageCell.startPlaying()
+                    self.playAudioAtIndexPath(indexPath)
+                    self.activePlayerIndexPath = indexPath
+                    let message = objectsInTable.objectAtIndex(indexPath.row) as Message
+                    message.isRead = true
+                    message.updatedAt = NSDate()
+                    appDelegate.saveContext()
                 }
-                messageCell.startPlaying()
-                self.playAudioAtIndexPath(indexPath)
-                self.activePlayerIndexPath = indexPath
-                var message: Message = objectsInTable.objectAtIndex(indexPath.row) as Message
-                message.isRead = true
-                message.updatedAt = NSDate()
-                appDelegate.saveContext()
             }
         }
     }
@@ -189,10 +191,15 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     //MARK: MessagesTableViewCellDelegate
 
     func deleteButtonClicked(cell: UITableViewCell) {
-        var indexPath: NSIndexPath = tableView.indexPathForCell(cell)!
-        var message: Message = objectsInTable.objectAtIndex(indexPath.row) as Message
-        managedObjectContext.deleteObject(message)
+
+        let messageCell = cell as MessagesTableViewCell
+        messageCell.closeCell(animated: false)
+
         editingCellRowNumber = 0
+        
+        let indexPath = tableView.indexPathForCell(cell)!
+        let message = objectsInTable.objectAtIndex(indexPath.row) as Message
+        managedObjectContext.deleteObject(message)
 
         var error: NSError?
         if !managedObjectContext.save(&error) {
@@ -207,7 +214,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
 
     func cellDidOpen(cell: UITableViewCell) {
-        var indexPath: NSIndexPath = tableView.indexPathForCell(cell)!
+        let indexPath = tableView.indexPathForCell(cell)!
         editingCellRowNumber = indexPath.row
     }
 
