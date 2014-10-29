@@ -62,7 +62,7 @@ class DevicesTableViewController: UITableViewController, UITableViewDataSource, 
     
         let predicate = NSPredicate(format: "uuid == %@ AND major == %@ AND minor == %@", beacon.proximityUUID.UUIDString, beacon.major, beacon.minor)
         
-        let filteredLocations = self.locations.filter { predicate.evaluateWithObject($0) }
+        let filteredLocations = self.locations.filter { predicate!.evaluateWithObject($0) }
         
         if !filteredLocations.isEmpty {
             cell.addButton.setTitle("Added", forState: UIControlState.Normal)
@@ -101,7 +101,7 @@ class DevicesTableViewController: UITableViewController, UITableViewDataSource, 
                 for object in beacons {
                     let beacon = object as CLBeacon
                     let predicate = NSPredicate(format: "proximityUUID.UUIDString == %@ AND major == %@ AND minor == %@", beacon.proximityUUID.UUIDString, beacon.major, beacon.minor)
-                    let filteredArray = self.rangedBeacons.filter { predicate.evaluateWithObject($0) }
+                    let filteredArray = self.rangedBeacons.filter { predicate!.evaluateWithObject($0) }
                     if filteredArray.isEmpty {
                         self.rangedBeacons.append(beacon)
                     }

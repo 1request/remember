@@ -382,12 +382,13 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         let outputFileURL = NSURL(fileURLWithPath: filePathString)
 
         var error: NSError?
-        if !NSFileManager.defaultManager().copyItemAtURL(self.recorder.url, toURL: outputFileURL, error: &error) {
+        if !NSFileManager.defaultManager().copyItemAtURL(self.recorder.url, toURL: outputFileURL!, error: &error) {
             println("error copying item to url: \(error?.localizedDescription)")
         }
 
         message.location = location
-        message.location.messageCount = message.location.messageCount + 1
+        
+        message.location.messageCount = NSNumber(integer: (message.location.messageCount.integerValue + 1))
         message.name = "Record \(message.location.messageCount)"
         message.isRead = false
         message.createdAt = createTime
@@ -429,7 +430,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
     func monitorLocation(location: Location) {
         let predicate = NSPredicate(format: "isRead == 0")
-        let unreadMessages = location.messages.filteredSetUsingPredicate(predicate)
+        let unreadMessages = location.messages.filteredSetUsingPredicate(predicate!)
         let locationManager = LocationManager.sharedInstance
         let beaconRegion = location.beaconRegion()
         if unreadMessages.count == 0 {
