@@ -12,6 +12,8 @@ import Crashlytics
 import CoreLocation
 import AVFoundation
 
+let kEnterLocationNotificationName = "kEnterLocationNotification"
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
@@ -147,7 +149,10 @@ extension AppDelegate {
                 let predicate = NSPredicate(format: "isRead == 0")
                 let unreadMessages = location.messages.filteredSetUsingPredicate(predicate!)
                 if currentTime - previousTriggerDate > 3600 {
-                    self.sendLocalNotificationWithMessage("\(location.name) got \(unreadMessages.count) new notification" + (unreadMessages.count > 1 ? "s" : ""))
+                    let title = "New message from \(location.name)"
+                    let message = "\(location.name) got \(unreadMessages.count) new notification" + (unreadMessages.count > 1 ? "s" : "")
+                    self.sendLocalNotificationWithMessage(message)
+                    NSNotificationCenter.defaultCenter().postNotificationName(kEnterLocationNotificationName, object: self, userInfo: ["title": title, "message": message])
                 }
             }
         }

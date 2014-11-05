@@ -96,6 +96,12 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         let tapRecognizer = UITapGestureRecognizer(target: self, action: "tapView:")
         tapRecognizer.delegate = self
         view.addGestureRecognizer(tapRecognizer)
+        monitorEnterLocationNotification()
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        unmonitorEnterLocationNotification()
     }
 
     //MARK: - UITableViewDataSource
@@ -483,6 +489,26 @@ extension HomeViewController: SwipeableTableViewCellDelegate {
                 let location = objectsInTable.objectAtIndex(indexPath.row) as Location
                 performSegueWithIdentifier("editLocation", sender: location)
             }
+        }
+    }
+}
+
+// Observe Location Notification
+extension HomeViewController: UIAlertViewDelegate {
+    func monitorEnterLocationNotification() {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "triggerNotification:", name: kEnterLocationNotificationName, object: nil)
+    }
+    
+    func unmonitorEnterLocationNotification() {
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: kEnterLocationNotificationName, object: nil)
+    }
+    
+    func triggerNotification(notification: NSNotification) {
+        if let dict = notification.userInfo as? Dictionary<String, String> {
+            let title = dict["title"]
+            let message = dict["message"]
+            let alertView = UIAlertView(title: title, message: message, delegate: self, cancelButtonTitle: "OK")
+            alertView.show()
         }
     }
 }
