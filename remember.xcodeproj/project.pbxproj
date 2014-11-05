@@ -13,6 +13,7 @@
 		7C088D9C19E63EE9005A51D9 /* BeaconFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C088D9B19E63EE9005A51D9 /* BeaconFactory.swift */; };
 		7C108D8919E66E6F0013C4A3 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C108D8819E66E6F0013C4A3 /* Location.swift */; };
 		7C108D8B19E66E6F0013C4A3 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C108D8A19E66E6F0013C4A3 /* Message.swift */; };
+		7C28F48E1A0A0B40006A7CA0 /* EditLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C28F48D1A0A0B40006A7CA0 /* EditLocationViewController.swift */; };
 		7C6109B019E793400082AC7B /* DevicesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6109AF19E793400082AC7B /* DevicesTableViewController.swift */; };
 		7C6109B219E793730082AC7B /* DevicesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6109B119E793730082AC7B /* DevicesTableViewCell.swift */; };
 		7C6109B419E796E00082AC7B /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6109B319E796E00082AC7B /* Extensions.swift */; };
@@ -79,6 +80,7 @@
 		7C088D9B19E63EE9005A51D9 /* BeaconFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BeaconFactory.swift; sourceTree = "<group>"; };
 		7C108D8819E66E6F0013C4A3 /* Location.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Location.swift; path = Models/Location.swift; sourceTree = "<group>"; };
 		7C108D8A19E66E6F0013C4A3 /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Message.swift; path = Models/Message.swift; sourceTree = "<group>"; };
+		7C28F48D1A0A0B40006A7CA0 /* EditLocationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EditLocationViewController.swift; path = Controllers/EditLocationViewController.swift; sourceTree = "<group>"; };
 		7C6109AF19E793400082AC7B /* DevicesTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DevicesTableViewController.swift; path = Controllers/DevicesTableViewController.swift; sourceTree = "<group>"; };
 		7C6109B119E793730082AC7B /* DevicesTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DevicesTableViewCell.swift; path = Views/DevicesTableViewCell.swift; sourceTree = "<group>"; };
 		7C6109B319E796E00082AC7B /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Extensions.swift; path = Categories/Extensions.swift; sourceTree = "<group>"; };
@@ -177,6 +179,7 @@
 				8A76A0B219E63DEC0031202A /* HomeViewController.swift */,
 				7C6109AF19E793400082AC7B /* DevicesTableViewController.swift */,
 				7C6109B519E797F30082AC7B /* AddDeviceViewController.swift */,
+				7C28F48D1A0A0B40006A7CA0 /* EditLocationViewController.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -520,6 +523,7 @@
 				8A9F0F6919E62C50007FB36B /* remember.xcdatamodeld in Sources */,
 				7C6109B419E796E00082AC7B /* Extensions.swift in Sources */,
 				7CA8AC721A07202D00566252 /* SwipeableTableViewCell.swift in Sources */,
+				7C28F48E1A0A0B40006A7CA0 /* EditLocationViewController.swift in Sources */,
 				7C6109B219E793730082AC7B /* DevicesTableViewCell.swift in Sources */,
 				7C088D9C19E63EE9005A51D9 /* BeaconFactory.swift in Sources */,
 				7C108D8B19E66E6F0013C4A3 /* Message.swift in Sources */,

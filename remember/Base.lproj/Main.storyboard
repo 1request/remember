@@ -73,6 +73,7 @@
                         <outlet property="pressHereImageView" destination="eeq-nU-IfG" id="Byf-Y3-znG"/>
                         <outlet property="recordButton" destination="lyi-sS-abq" id="Ssd-os-HRM"/>
                         <outlet property="tableView" destination="Dtd-qO-gU9" id="bLx-Xg-VIw"/>
+                        <segue destination="1fN-WH-tHk" kind="show" identifier="editLocation" id="I2H-A1-na7"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -165,7 +166,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="78H-FO-udG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1627" y="133"/>
+            <point key="canvasLocation" x="1667" y="-252"/>
         </scene>
         <!--Set Devices-->
         <scene sceneID="MUP-d4-Ctp">
@@ -213,7 +214,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="D5g-m7-yMs" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2333" y="136"/>
+            <point key="canvasLocation" x="2371" y="-252"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="9Mk-jn-KWs">
@@ -237,6 +238,54 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8PO-Xo-p5T" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="241" y="136"/>
+        </scene>
+        <!--Update Location-->
+        <scene sceneID="pwi-T8-5fH">
+            <objects>
+                <viewController id="1fN-WH-tHk" customClass="EditLocationViewController" customModule="remember" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Ffm-35-vfH"/>
+                        <viewControllerLayoutGuide type="bottom" id="J8g-it-tXs"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="hb0-f0-zlz">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Location Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IWR-Ao-Er3">
+                                <rect key="frame" x="16" y="72" width="117" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="8p8-a3-arm">
+                                <rect key="frame" x="16" y="101" width="568" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="IWR-Ao-Er3" firstAttribute="top" secondItem="Ffm-35-vfH" secondAttribute="bottom" constant="8" id="8JD-uL-Bsi"/>
+                            <constraint firstAttribute="trailing" secondItem="8p8-a3-arm" secondAttribute="trailing" constant="16" id="BeM-m1-zk0"/>
+                            <constraint firstItem="IWR-Ao-Er3" firstAttribute="leading" secondItem="hb0-f0-zlz" secondAttribute="leading" constant="16" id="CjJ-Mq-aHs"/>
+                            <constraint firstItem="8p8-a3-arm" firstAttribute="leading" secondItem="hb0-f0-zlz" secondAttribute="leading" constant="16" id="MYM-u6-9nX"/>
+                            <constraint firstItem="8p8-a3-arm" firstAttribute="top" secondItem="IWR-Ao-Er3" secondAttribute="bottom" constant="8" id="nWT-cL-crD"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Update Location" id="tsv-uq-Hzh">
+                        <barButtonItem key="rightBarButtonItem" title="Save" id="VVu-78-Stu">
+                            <connections>
+                                <action selector="saveButtonClicked:" destination="1fN-WH-tHk" id="eXb-Ty-3nC"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="editLocationNameTextField" destination="8p8-a3-arm" id="4nD-8t-XOS"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="XxO-ma-Gy9" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1667" y="520"/>
         </scene>
     </scenes>
     <resources>

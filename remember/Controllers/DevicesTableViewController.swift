@@ -15,12 +15,12 @@ class DevicesTableViewController: UITableViewController, UITableViewDataSource, 
     
     let notificationCenter = NSNotificationCenter.defaultCenter()
     var rangedBeacons = [CLBeacon]()
-    var managedObjectContext:(NSManagedObjectContext) = NSManagedObjectContext() {
+    weak var managedObjectContext:NSManagedObjectContext? {
         didSet {
             let request = NSFetchRequest(entityName: "Location")
             request.fetchBatchSize = 20
             var error: NSError? = nil;
-            locations = self.managedObjectContext.executeFetchRequest(request, error: &error) as [Location]
+            locations = managedObjectContext!.executeFetchRequest(request, error: &error) as [Location]
         }
     }
     var locations = [Location]()
@@ -87,7 +87,7 @@ class DevicesTableViewController: UITableViewController, UITableViewDataSource, 
         if let beacon = sender as? CLBeacon {
             if let addDeviceViewController = segue.destinationViewController as? AddDeviceViewController {
                 addDeviceViewController.beacon = beacon
-                addDeviceViewController.managedObjectContext = self.managedObjectContext
+                addDeviceViewController.managedObjectContext = self.managedObjectContext!
             }
         }
     }

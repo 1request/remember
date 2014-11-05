@@ -26,8 +26,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     @IBOutlet weak var pressHereImageView: UIImageView!
     var editingCellRowNumber = -1
 
-    var appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
-    var managedObjectContext = NSManagedObjectContext()
+    weak var managedObjectContext: NSManagedObjectContext!
     var fetchedResultController: NSFetchedResultsController!
 
     var objectsInTable: NSMutableArray = []
@@ -182,7 +181,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 let message = objectsInTable.objectAtIndex(indexPath.row) as Message
                 message.isRead = true
                 message.updatedAt = NSDate()
-                appDelegate.saveContext()
+                managedObjectContext.save(nil)
                 self.monitorLocation(message.location)
             }
         }
@@ -208,7 +207,13 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     //MARK: - Navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if let devicesVC = segue.destinationViewController as? DevicesTableViewController {
-            devicesVC.managedObjectContext = self.managedObjectContext
+            devicesVC.managedObjectContext = managedObjectContext
+        }
+        if let editLocationVC = segue.destinationViewController as? EditLocationViewController {
+            if let location = sender as? Location {
+                editLocationVC.location = location
+                editLocationVC.managedObjectContext = managedObjectContext
+            }
         }
     }
 
@@ -328,7 +333,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     func finishRecordingAudio () {
         self.stopRecordingAudio()
         if self.timeInterval > kMinimumRecordLength {
-            let location = managedObjectContext.objectWithID(selectedLocationObjectID!) as Location
+            let location = managedObjectContext!.objectWithID(selectedLocationObjectID!) as Location
             self.createMessageForLocation(location)
             self.monitorLocation(location)
         }
@@ -339,8 +344,8 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
 
     func createMessageForLocation (location: Location) {
-        let entityDescription = NSEntityDescription.entityForName("Message", inManagedObjectContext: managedObjectContext)
-        let message = Message(entity: entityDescription!, insertIntoManagedObjectContext: managedObjectContext)
+        let entityDescription = NSEntityDescription.entityForName("Message", inManagedObjectContext: managedObjectContext!)
+        let message = Message(entity: entityDescription!, insertIntoManagedObjectContext: managedObjectContext!)
 
         let createTime = NSDate()
         let filePathString = kApplicationPath + "/" + createTime.timeIntervalSince1970.format(".0") + ".m4a"
@@ -360,7 +365,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         message.createdAt = createTime
         message.updatedAt = createTime
 
-        if !managedObjectContext.save(&error) {
+        if !managedObjectContext!.save(&error) {
             println("error saving audio: \(error?.localizedDescription)")
         }
     }
@@ -454,15 +459,17 @@ extension HomeViewController: SwipeableTableViewCellDelegate {
 
     func swipeableCell(cell: SwipeableTableViewCell, didSelectButtonAtIndex index: Int) {
         resetEditMode()
-        if index == 0 {
-            if let indexPath = tableView.indexPathForCell(cell) {
+        if let indexPath = tableView.indexPathForCell(cell) {
+            if index == 0 {
                 let object = objectsInTable.objectAtIndex(indexPath.row) as NSManagedObject
-                managedObjectContext.deleteObject(object)
-                
+                managedObjectContext!.deleteObject(object)
                 var error: NSError? = nil
-                if !managedObjectContext.save(&error) {
+                if !managedObjectContext!.save(&error) {
                     println("unable to delete object, error: \(error?.localizedDescription)")
                 }
+            } else {
+                let location = objectsInTable.objectAtIndex(indexPath.row) as Location
+                performSegueWithIdentifier("editLocation", sender: location)
             }
         }
     }
