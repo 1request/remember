@@ -36,6 +36,24 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
             self.locationManager.delegate = self
             
         }
+        
+        // Ask for permission for notifications
+        let notificationSettings = UIUserNotificationSettings(forTypes: UIUserNotificationType.Badge | UIUserNotificationType.Alert, categories: nil)
+        UIApplication.sharedApplication().registerUserNotificationSettings(notificationSettings)
+
+        locationManager.requestWhenInUseAuthorization()
+
+        let notification = UILocalNotification()
+        notification.alertBody = "Remember nearly there"
+        
+        var lat: CLLocationDegrees = 22.28412851
+        var lng: CLLocationDegrees = 114.15892601
+        var center: CLLocationCoordinate2D = CLLocationCoordinate2DMake(lat, lng)
+        notification.region = CLCircularRegion(center: center, radius: 1000, identifier: "Destination")
+        notification.regionTriggersOnce = false
+        println("\(notification), \(notification.region)")
+        UIApplication.sharedApplication().scheduleLocalNotification(notification)
+
     }
     
     func startRangingBeaconRegions (beaconRegions: [CLBeaconRegion]) {
@@ -82,6 +100,10 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
     
     //MARK: - CLLocationManagerDelegate
     
+    func locationManager(manager: CLLocationManager!, didStartMonitoringForRegion region: CLRegion!) {
+        println("did start monitoring region: \(region)")
+    }
+    
     func locationManager(manager: CLLocationManager!, didRangeBeacons beacons: [AnyObject]!, inRegion region: CLBeaconRegion!) {
         if !beacons.isEmpty {
             NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: kRangedBeaconRegionNotificationName, object: self, userInfo: [kRangedBeaconRegionNotificationUserInfoBeaconsKey: beacons]))
@@ -103,6 +125,15 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
             if beaconRegion.major != nil && beaconRegion.minor != nil {
                 NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: kExitedBeaconRegionNotificationName, object: self, userInfo: [kExitedBeaconRegionNotificationUserInfoRegionKey: beaconRegion]))
             }
+        }
+    }
+    
+    // MARK:- CLLocationManagerDelegate
+    func locationManager(manager: CLLocationManager!, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
+        if status == .AuthorizedWhenInUse {
+            println("Ready to go!")
+        } else {
+            println("Status: \(status)")
         }
     }
 }

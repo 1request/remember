@@ -33,6 +33,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(application: UIApplication, didReceiveLocalNotification notification: UILocalNotification) {
+        println("didReceive")
         self.clearNotifications()
         let state = application.applicationState
         if state == UIApplicationState.Active {
@@ -179,7 +180,7 @@ extension AppDelegate {
     }
     
     func clearNotifications () {
-        UIApplication.sharedApplication().applicationIconBadgeNumber = 0
-        UIApplication.sharedApplication().cancelAllLocalNotifications()
+//        UIApplication.sharedApplication().applicationIconBadgeNumber = 0
+//        UIApplication.sharedApplication().cancelAllLocalNotifications()
     }
 }
