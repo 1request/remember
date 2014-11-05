@@ -17,6 +17,7 @@
 		7C6109B219E793730082AC7B /* DevicesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6109B119E793730082AC7B /* DevicesTableViewCell.swift */; };
 		7C6109B419E796E00082AC7B /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6109B319E796E00082AC7B /* Extensions.swift */; };
 		7C6109B619E797F30082AC7B /* AddDeviceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6109B519E797F30082AC7B /* AddDeviceViewController.swift */; };
+		7CA8AC721A07202D00566252 /* SwipeableTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA8AC711A07202D00566252 /* SwipeableTableViewCell.swift */; };
 		7CD2B08619EB819F004D5A29 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CD2B08519EB819F004D5A29 /* AVFoundation.framework */; };
 		7CD2B08819EB81A8004D5A29 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CD2B08719EB81A8004D5A29 /* CoreData.framework */; };
 		8A76A0B119E63C590031202A /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A76A0B019E63C590031202A /* NavigationController.swift */; };
@@ -57,6 +58,7 @@
 		7C6109B119E793730082AC7B /* DevicesTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DevicesTableViewCell.swift; path = Views/DevicesTableViewCell.swift; sourceTree = "<group>"; };
 		7C6109B319E796E00082AC7B /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Extensions.swift; path = Categories/Extensions.swift; sourceTree = "<group>"; };
 		7C6109B519E797F30082AC7B /* AddDeviceViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AddDeviceViewController.swift; path = Controllers/AddDeviceViewController.swift; sourceTree = "<group>"; };
+		7CA8AC711A07202D00566252 /* SwipeableTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwipeableTableViewCell.swift; path = Views/SwipeableTableViewCell.swift; sourceTree = "<group>"; };
 		7CD2B08519EB819F004D5A29 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		7CD2B08719EB81A8004D5A29 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		8A76A0B019E63C590031202A /* NavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NavigationController.swift; path = Controllers/NavigationController.swift; sourceTree = "<group>"; };
@@ -145,6 +147,7 @@
 			children = (
 				8ABFAA6419E6665700FCE6EF /* LocationsTableViewCell.swift */,
 				8ABFAA6619E668DB00FCE6EF /* MessagesTableViewCell.swift */,
+				7CA8AC711A07202D00566252 /* SwipeableTableViewCell.swift */,
 				7C6109B119E793730082AC7B /* DevicesTableViewCell.swift */,
 				8ABFAA6A19E68AB600FCE6EF /* RadioButton.swift */,
 				8ABFAA6819E67CEB00FCE6EF /* UnreadSpotView.swift */,
@@ -397,6 +400,7 @@
 				7C088D9819E631CA005A51D9 /* LocationManager.swift in Sources */,
 				8A9F0F6919E62C50007FB36B /* remember.xcdatamodeld in Sources */,
 				7C6109B419E796E00082AC7B /* Extensions.swift in Sources */,
+				7CA8AC721A07202D00566252 /* SwipeableTableViewCell.swift in Sources */,
 				7C6109B219E793730082AC7B /* DevicesTableViewCell.swift in Sources */,
 				7C088D9C19E63EE9005A51D9 /* BeaconFactory.swift in Sources */,
 				7C108D8B19E66E6F0013C4A3 /* Message.swift in Sources */,
