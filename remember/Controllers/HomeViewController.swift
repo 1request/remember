@@ -88,15 +88,9 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         tableView.registerClass(MessagesTableViewCell.self, forCellReuseIdentifier: "messageCell")
         tableView.registerClass(LocationsTableViewCell.self, forCellReuseIdentifier: "locationCell")
         tableView.delegate = self
-        if fetchedResultController.fetchedObjects?.count == 0 {
-            tableView.hidden = true
-            recordButton.hidden = true
-        }
-        else {
-            pressHereImageView.hidden = true
-        }
-
-        self.configureAudioSession()
+        
+        updateViewToBePresented()
+        configureAudioSession()
 
         // detect tap gesture
         let tapRecognizer = UITapGestureRecognizer(target: self, action: "tapView:")
@@ -249,8 +243,21 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     func controllerDidChangeContent(controller: NSFetchedResultsController) {
         setObjectsInTable()
         tableView.reloadData()
+        updateViewToBePresented()
     }
-
+    //MARK: - Layout
+    
+    func updateViewToBePresented() {
+        if fetchedResultController.fetchedObjects?.count == 0 {
+            tableView.hidden = true
+            recordButton.hidden = true
+            pressHereImageView.hidden = false
+        }
+        else {
+            pressHereImageView.hidden = true
+        }
+    }
+    
     //MARK: - Core Data
     func getFetchedResultController() -> NSFetchedResultsController {
         let fetchRequest = NSFetchRequest(entityName: "Location")
@@ -466,6 +473,11 @@ extension HomeViewController: SwipeableTableViewCellDelegate {
                 var error: NSError? = nil
                 if !managedObjectContext!.save(&error) {
                     println("unable to delete object, error: \(error?.localizedDescription)")
+                }
+                if let location = objectsInTable[0] as? Location {
+                    selectedLocationObjectID = location.objectID
+                } else {
+                    selectedLocationObjectID = nil
                 }
             } else {
                 let location = objectsInTable.objectAtIndex(indexPath.row) as Location

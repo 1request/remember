@@ -81,6 +81,7 @@
 		7C108D8819E66E6F0013C4A3 /* Location.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Location.swift; path = Models/Location.swift; sourceTree = "<group>"; };
 		7C108D8A19E66E6F0013C4A3 /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Message.swift; path = Models/Message.swift; sourceTree = "<group>"; };
 		7C28F48D1A0A0B40006A7CA0 /* EditLocationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EditLocationViewController.swift; path = Controllers/EditLocationViewController.swift; sourceTree = "<group>"; };
+		7C516BB51A0A1526005AEF24 /* remember 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "remember 2.xcdatamodel"; sourceTree = "<group>"; };
 		7C6109AF19E793400082AC7B /* DevicesTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DevicesTableViewController.swift; path = Controllers/DevicesTableViewController.swift; sourceTree = "<group>"; };
 		7C6109B119E793730082AC7B /* DevicesTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DevicesTableViewCell.swift; path = Views/DevicesTableViewCell.swift; sourceTree = "<group>"; };
 		7C6109B319E796E00082AC7B /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Extensions.swift; path = Categories/Extensions.swift; sourceTree = "<group>"; };
@@ -836,9 +837,10 @@
 		8A9F0F6719E62C50007FB36B /* remember.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				7C516BB51A0A1526005AEF24 /* remember 2.xcdatamodel */,
 				8A9F0F6819E62C50007FB36B /* remember.xcdatamodel */,
 			);
-			currentVersion = 8A9F0F6819E62C50007FB36B /* remember.xcdatamodel */;
+			currentVersion = 7C516BB51A0A1526005AEF24 /* remember 2.xcdatamodel */;
 			path = remember.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
