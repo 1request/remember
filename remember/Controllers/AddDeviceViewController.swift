@@ -13,22 +13,22 @@ import CoreData
 class AddDeviceViewController: UIViewController {
 
     var beacon = CLBeacon()
-    var managedObjectContext = NSManagedObjectContext()
+    weak var managedObjectContext: NSManagedObjectContext?
     
     @IBOutlet weak var deviceNameTextField: UITextField!
     
     
     @IBAction func saveBarButtonItemPressed(sender: UIBarButtonItem) {
-        let location = NSEntityDescription.insertNewObjectForEntityForName("Location", inManagedObjectContext: self.managedObjectContext) as Location
-        location.name = self.deviceNameTextField.text
-        location.uuid = self.beacon.proximityUUID.UUIDString
-        location.major = self.beacon.major
-        location.minor = self.beacon.minor
+        let location = NSEntityDescription.insertNewObjectForEntityForName("Location", inManagedObjectContext: managedObjectContext!) as Location
+        location.name = deviceNameTextField.text
+        location.uuid = beacon.proximityUUID.UUIDString
+        location.major = beacon.major
+        location.minor = beacon.minor
         location.createdAt = NSDate()
         location.updatedAt = location.createdAt
         
-        self.managedObjectContext.save(nil)
+        managedObjectContext!.save(nil)
         
-        self.navigationController?.popToRootViewControllerAnimated(true)
+        navigationController?.popToRootViewControllerAnimated(true)
     }
 }

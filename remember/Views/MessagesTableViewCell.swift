@@ -8,227 +8,87 @@
 
 import UIKit
 
-protocol MessagesTableViewCellDelegate {
-    func deleteButtonClicked(cell: UITableViewCell)
-    func cellWillOpen(cell: UITableViewCell)
-    func cellDidOpen(cell: UITableViewCell)
-    func cellDidClose(cell: UITableViewCell)
-}
+class MessagesTableViewCell: SwipeableTableViewCell {
 
-class MessagesTableViewCell: UITableViewCell, UIGestureRecognizerDelegate {
+    let unreadSpotIcon = UnreadSpotView()
+    let playButton = UIButton.buttonWithType(UIButtonType.Custom) as UIButton
+    let messageLabel = UILabel()
+    var playing = false
 
-    @IBOutlet weak var topView: UIView!
-    @IBOutlet weak var unreadSpotIcon: UnreadSpotView!
-    @IBOutlet weak var messageLabel: UILabel!
-    @IBOutlet weak var playIcon: UIImageView!
-    @IBOutlet weak var pauseIcon: UIImageView!
-    @IBOutlet weak var deleteButton: UIButton!
-    
-    var panRecognizer: UIPanGestureRecognizer = UIPanGestureRecognizer()
-    
-    var delegate: MessagesTableViewCellDelegate!
-    var panStartPoint: CGPoint!
-    var startingRightLayoutConstraintConstant: CGFloat!
-    @IBOutlet weak var contentViewLeftConstraint: NSLayoutConstraint!
-    @IBOutlet weak var contentViewRightConstraint: NSLayoutConstraint!
-    @IBOutlet weak var topViewLeftConstraint: NSLayoutConstraint!
-    @IBOutlet weak var topViewRightConstraint: NSLayoutConstraint!
-    
-    let kBounceValue: CGFloat = 20.0
-    
     enum PlayerStatus {
         case Normal, Playing
     }
 
-    var playing: Bool = false
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()	
-
-        // Initialization code
-        panRecognizer.addTarget(self, action: "panThisCell:")
-        panRecognizer.delegate = self
-        topView.addGestureRecognizer(panRecognizer)
+    override func commonInit() {
+        super.commonInit()
+        dataSource = self
+        makeLayout()
     }
 
-    override func setSelected(selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
+    private func makeLayout() {
+        unreadSpotIcon.setTranslatesAutoresizingMaskIntoConstraints(false)
+        playButton.setTranslatesAutoresizingMaskIntoConstraints(false)
+        playButton.setBackgroundImage(UIImage(named: "play-active"), forState: UIControlState.Normal)
+        messageLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
 
-        // Configure the view for the selected state
+        customContentView.addSubview(unreadSpotIcon)
+        customContentView.addSubview(playButton)
+        customContentView.addSubview(messageLabel)
+
+        let viewsDict = ["unreadSpotIcon": unreadSpotIcon, "playButton": playButton, "messageLabel": messageLabel]
+
+        let metricsDict = ["unreadSpotIconLeftMargin": 26, "unreadSpotIconRightMargin": 22, "unreadSpotIconWidth": 12, "buttonWidth": 20, "buttonRightMargin": 20]
+
+        let horizontalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("|-unreadSpotIconLeftMargin-[unreadSpotIcon(unreadSpotIconWidth)]-unreadSpotIconRightMargin-[messageLabel]-[playButton(buttonWidth)]-buttonRightMargin-|", options: NSLayoutFormatOptions.AlignAllCenterY, metrics: metricsDict, views: viewsDict)
+
+        let unreadSpotViewHeightConstraint = NSLayoutConstraint(item: unreadSpotIcon, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: unreadSpotIcon, attribute: NSLayoutAttribute.Width, multiplier: 1.0, constant: 0.0)
+
+        let unreadSpotViewCenterYConstraint = NSLayoutConstraint(item: unreadSpotIcon, attribute: NSLayoutAttribute.CenterY, relatedBy: NSLayoutRelation.Equal, toItem: self.customContentView, attribute: NSLayoutAttribute.CenterY, multiplier: 1.0, constant: 0.0)
+
+        let playButtonRatioConstraint = NSLayoutConstraint(item: playButton, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: playButton, attribute: NSLayoutAttribute.Width, multiplier: (32.0/27.0), constant: 0.0)
+
+        unreadSpotIcon.backgroundColor = UIColor.clearColor()
+
+        customContentView.addConstraints(horizontalConstraints)
+        customContentView.addConstraints([unreadSpotViewHeightConstraint, unreadSpotViewCenterYConstraint, playButtonRatioConstraint])
     }
-    
+
     func markAsRead() {
         unreadSpotIcon.hidden = true
     }
-    
+
     func markAsUnread() {
         unreadSpotIcon.hidden = false
     }
-    
+
     func startPlaying() {
         markAsRead()
-        
+
         setPlayerStatus(PlayerStatus.Playing)
     }
     
     func finishPlaying() {
         setPlayerStatus(PlayerStatus.Normal)
     }
-    
+
     func setPlayerStatus(status: PlayerStatus) {
         switch status {
         case PlayerStatus.Playing:
             playing = true
-            
-            playIcon.hidden = true
-            pauseIcon.hidden = false
+            playButton.setBackgroundImage(UIImage(named: "pause"), forState: UIControlState.Normal)
         default:
-            // Normal
             playing = false
-            
-            playIcon.hidden = false
-            pauseIcon.hidden = true
+            playButton.setBackgroundImage(UIImage(named: "play-active"), forState: UIControlState.Normal)
         }
     }
-    
-    @IBAction func buttonClicked(sender: UIButton) {
-        if sender == self.deleteButton {
-            delegate.deleteButtonClicked(self)
-        }
+}
+
+extension MessagesTableViewCell: SwipeableTableViewCellDataSource {
+    func numberOfButtonsInSwipeableCell(cell: SwipeableTableViewCell) -> Int {
+        return 1
     }
 
-    func buttonTotalWidth() -> CGFloat {
-        return CGRectGetWidth(self.frame) - CGRectGetMinX(self.deleteButton.frame)
+    func swipeableCell(cell: SwipeableTableViewCell, backgroundImageForButtonAtIndex index: Int) -> UIImage? {
+        return UIImage(named: "trash")
     }
-    
-    func panThisCell(recognizer: UIPanGestureRecognizer) {
-        switch (recognizer.state) {
-        case UIGestureRecognizerState.Began:
-            panStartPoint = recognizer.translationInView(topView)
-            startingRightLayoutConstraintConstant = contentViewRightConstraint.constant
-        case UIGestureRecognizerState.Changed:
-
-            let currentPoint = recognizer.translationInView(topView)
-            let deltaX = currentPoint.x - panStartPoint.x
-
-            var panningLeft = false
-            if currentPoint.x < panStartPoint.x {
-                panningLeft = true
-            }
-            if startingRightLayoutConstraintConstant == 0 {
-                // the cell was closed and is now opening
-                if !panningLeft {
-                    let constant = max(-deltaX, 0)
-                    if (constant == 0) {
-                        resetConstraintConstantsToZero(true, notifyDelegateDidClose: false)
-                    } else {
-                        contentViewRightConstraint.constant = constant
-                    }
-                } else {
-                    let constant = min(-deltaX, buttonTotalWidth())
-                    if constant == buttonTotalWidth() {
-                        setConstraintConstantsToShowAllButtons(true, notifyDelegateDidOpen: false)
-                    } else {
-                        delegate.cellWillOpen(self)
-                        contentViewRightConstraint.constant = constant
-                    }
-                }
-            } else {
-                // The cell was at least partially open
-                let adjustment = startingRightLayoutConstraintConstant - deltaX
-                
-                if !panningLeft {
-                    let constant = max(adjustment, 0)
-                    if constant == 0 {
-                        resetConstraintConstantsToZero(true, notifyDelegateDidClose: false)
-                    } else {
-                        contentViewRightConstraint.constant = constant
-                    }
-                } else {
-                    let constant = min(adjustment, buttonTotalWidth())
-                    if constant == buttonTotalWidth() {
-                        setConstraintConstantsToShowAllButtons(true, notifyDelegateDidOpen: false)
-                    } else {
-                        contentViewRightConstraint.constant = constant
-                    }
-                }
-            }
-            
-            contentViewLeftConstraint.constant = -contentViewRightConstraint.constant
-        case UIGestureRecognizerState.Ended:
-            let halfOfButton = CGRectGetWidth(self.deleteButton.frame) / 2
-            if contentViewRightConstraint.constant >= halfOfButton {
-                setConstraintConstantsToShowAllButtons(true, notifyDelegateDidOpen: true)
-            } else {
-                resetConstraintConstantsToZero(true, notifyDelegateDidClose: true)
-            }
-        case UIGestureRecognizerState.Cancelled:
-            if startingRightLayoutConstraintConstant == 0 {
-                resetConstraintConstantsToZero(true, notifyDelegateDidClose: true)
-            } else {
-                setConstraintConstantsToShowAllButtons(true, notifyDelegateDidOpen: true)
-            }
-        default: ()
-        }
-    }
-    
-    func resetConstraintConstantsToZero(animated: Bool, notifyDelegateDidClose: Bool) {
-        if notifyDelegateDidClose {
-            delegate.cellDidClose(self)
-        }
-
-        if startingRightLayoutConstraintConstant == 0 && contentViewRightConstraint == 0 {
-            return
-        }
-        
-        contentViewRightConstraint.constant = -kBounceValue
-        contentViewLeftConstraint.constant = kBounceValue
-        
-        updateConstraintsIfNeeded(animated, completion: { finished in
-            self.contentViewLeftConstraint.constant = 0
-            self.contentViewRightConstraint.constant = 0
-            self.updateConstraintsIfNeeded(animated, completion: { finished in
-                self.startingRightLayoutConstraintConstant = self.contentViewRightConstraint.constant
-            })
-        })
-    }
-    
-    func setConstraintConstantsToShowAllButtons(animated: Bool, notifyDelegateDidOpen: Bool) {
-        if notifyDelegateDidOpen {
-            delegate.cellDidOpen(self)
-        }
-
-        if startingRightLayoutConstraintConstant == buttonTotalWidth() && contentViewRightConstraint.constant == buttonTotalWidth() {
-            return
-        }
-        
-        contentViewLeftConstraint.constant = -self.buttonTotalWidth() - kBounceValue
-        contentViewRightConstraint.constant = self.buttonTotalWidth() + kBounceValue
-        
-        updateConstraintsIfNeeded(animated, completion: { finished in
-            self.contentViewLeftConstraint.constant = -self.buttonTotalWidth()
-            self.contentViewRightConstraint.constant = self.buttonTotalWidth()
-            self.updateConstraintsIfNeeded(animated, completion: { finished in
-                self.startingRightLayoutConstraintConstant = self.contentViewRightConstraint.constant
-            })
-        })
-    }
-    
-   func updateConstraintsIfNeeded(animated: Bool, completion: Bool -> Void) {
-        var duration: NSTimeInterval = 0
-        if animated {
-            duration = 0.1
-        }
-    
-        UIView.animateWithDuration(duration, delay: 0, options: UIViewAnimationOptions.CurveEaseOut, animations: { self.layoutIfNeeded() }, completion: completion)
-    }
-    
-    func openCell() {
-        setConstraintConstantsToShowAllButtons(false, notifyDelegateDidOpen: false)
-    }
-    
-    func closeCell(#animated: Bool) {
-        resetConstraintConstantsToZero(animated, notifyDelegateDidClose: false)
-    }
-    
 }

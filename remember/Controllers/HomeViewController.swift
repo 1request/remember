@@ -10,7 +10,7 @@ import UIKit
 import CoreData
 import AVFoundation
 
-class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate, MessagesTableViewCellDelegate {
+class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate {
 
     //MARK: - Constants
 
@@ -24,10 +24,9 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var recordButton: UIButton!
     @IBOutlet weak var pressHereImageView: UIImageView!
-    var editingCellRowNumber = 0
+    var editingCellRowNumber = -1
 
-    var appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
-    var managedObjectContext = NSManagedObjectContext()
+    weak var managedObjectContext: NSManagedObjectContext!
     var fetchedResultController: NSFetchedResultsController!
 
     var objectsInTable: NSMutableArray = []
@@ -81,30 +80,22 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         // Add remember logo to navigation bar
         let logo = UIImage(named: "remember-logo")
         let logoImageView = UIImageView(image: logo)
-        self.navigationItem.titleView = logoImageView
-        self.tableView.removeFooterBorder()
-        
+        navigationItem.titleView = logoImageView
+        tableView.removeFooterBorder()
+
         setManagedObjectContext()
 
-        if fetchedResultController.fetchedObjects?.count == 0 {
-            tableView.hidden = true
-            recordButton.hidden = true
-        }
-        else {
-            pressHereImageView.hidden = true
-        }
-
-        self.configureAudioSession()
+        tableView.registerClass(MessagesTableViewCell.self, forCellReuseIdentifier: "messageCell")
+        tableView.registerClass(LocationsTableViewCell.self, forCellReuseIdentifier: "locationCell")
+        tableView.delegate = self
         
+        updateViewToBePresented()
+        configureAudioSession()
+
         // detect tap gesture
         let tapRecognizer = UITapGestureRecognizer(target: self, action: "tapView:")
         tapRecognizer.delegate = self
-        self.view.addGestureRecognizer(tapRecognizer)
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        view.addGestureRecognizer(tapRecognizer)
     }
 
     //MARK: - UITableViewDataSource
@@ -117,49 +108,51 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
 
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var object: AnyObject = objectsInTable.objectAtIndex(indexPath.row)
+        let cell = setCellAtIndexPath(indexPath)
+        if let swipeableCell = cell as? SwipeableTableViewCell {
+            swipeableCell.delegate = self
+            swipeableCell.updateConstraints()
+            if indexPath.row == editingCellRowNumber {
+                swipeableCell.openCell(animated: false)
+            }
+        }
+        return cell
+    }
+
+    func setCellAtIndexPath(indexPath: NSIndexPath) -> UITableViewCell {
+        let object: AnyObject = objectsInTable.objectAtIndex(indexPath.row)
         if object is Location {
-            let location:Location = objectsInTable.objectAtIndex(indexPath.row) as Location
-
-            var cell = tableView.dequeueReusableCellWithIdentifier("locationsCell", forIndexPath: indexPath) as LocationsTableViewCell
+            let location = object as Location
+            let cell = tableView.dequeueReusableCellWithIdentifier("locationCell", forIndexPath: indexPath) as LocationsTableViewCell
             cell.locationNameLabel.text = location.name
-
             if location.objectID == selectedLocationObjectID {
                 cell.checkRadioButton()
-            }
-            else {
+            } else {
                 cell.uncheckedRadioButton()
             }
-
             return cell
         } else {
-            let message:Message = objectsInTable.objectAtIndex(indexPath.row) as Message
-
-            var cell = tableView.dequeueReusableCellWithIdentifier("messagesCell", forIndexPath: indexPath) as MessagesTableViewCell
-            cell.delegate = self
+            let message = object as Message
+            let cell = tableView.dequeueReusableCellWithIdentifier("messageCell", forIndexPath: indexPath) as MessagesTableViewCell
             cell.messageLabel.text = message.name
             if message.isRead.boolValue {
                 cell.markAsRead()
             } else {
                 cell.markAsUnread()
             }
-
-            if indexPath.row == self.editingCellRowNumber {
-                cell.openCell()
-            }
-
             return cell
         }
     }
 
     //MARK: - UITableViewDelegate
+
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if editingCellRowNumber != 0 {
+        if editingCellRowNumber != -1 {
             // has editing cell, close cell
             closeEditingCell()
             return
         }
-        
+
         let cell = tableView.cellForRowAtIndexPath(indexPath)
         if let locationCell = cell as? LocationsTableViewCell {
             let location = self.objectsInTable[indexPath.row] as Location
@@ -182,67 +175,39 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 let message = objectsInTable.objectAtIndex(indexPath.row) as Message
                 message.isRead = true
                 message.updatedAt = NSDate()
-                appDelegate.saveContext()
+                managedObjectContext.save(nil)
                 self.monitorLocation(message.location)
             }
         }
     }
+    
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return 60
+    }
 
-    func resetEditingRowNumber () {
-        editingCellRowNumber = 0
+    func resetEditMode () {
+        editingCellRowNumber = -1
         recordButton.enabled = true
     }
-    
+
     func closeEditingCell() {
-        var indexPath = NSIndexPath(forRow: editingCellRowNumber, inSection: 0)
-        var previousEditingCell: MessagesTableViewCell? = tableView.cellForRowAtIndexPath(indexPath) as? MessagesTableViewCell
+        let indexPath = NSIndexPath(forRow: editingCellRowNumber, inSection: 0)
 
-        if previousEditingCell != nil {
-            previousEditingCell?.closeCell(animated: true)
+        if let previousEditingCell = tableView.cellForRowAtIndexPath(indexPath) as? SwipeableTableViewCell {
+            previousEditingCell.closeCell(animated: true)
         }
-
-        resetEditingRowNumber()
-    }
-
-    //MARK: MessagesTableViewCellDelegate
-
-    func deleteButtonClicked(cell: UITableViewCell) {
-
-        let messageCell = cell as MessagesTableViewCell
-        messageCell.closeCell(animated: false)
-
-        resetEditingRowNumber()
-        
-        let indexPath = tableView.indexPathForCell(cell)!
-        let message = objectsInTable.objectAtIndex(indexPath.row) as Message
-        managedObjectContext.deleteObject(message)
-
-        var error: NSError?
-        if !managedObjectContext.save(&error) {
-            println("unable to delete message, error: \(error?.localizedDescription)")
-        }
-    }
-
-    func cellWillOpen(cell: UITableViewCell) {
-        if editingCellRowNumber != 0 {
-            closeEditingCell()
-        }
-    }
-
-    func cellDidOpen(cell: UITableViewCell) {
-        let indexPath = tableView.indexPathForCell(cell)!
-        editingCellRowNumber = indexPath.row
-        recordButton.enabled = false
-    }
-
-    func cellDidClose(cell: UITableViewCell) {
-        resetEditingRowNumber()
     }
 
     //MARK: - Navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if let devicesVC = segue.destinationViewController as? DevicesTableViewController {
-            devicesVC.managedObjectContext = self.managedObjectContext
+            devicesVC.managedObjectContext = managedObjectContext
+        }
+        if let editLocationVC = segue.destinationViewController as? EditLocationViewController {
+            if let location = sender as? Location {
+                editLocationVC.location = location
+                editLocationVC.managedObjectContext = managedObjectContext
+            }
         }
     }
 
@@ -274,12 +239,25 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
             self.recordButton.hidden = false
         }
     }
-    
+
     func controllerDidChangeContent(controller: NSFetchedResultsController) {
         setObjectsInTable()
         tableView.reloadData()
+        updateViewToBePresented()
     }
-
+    //MARK: - Layout
+    
+    func updateViewToBePresented() {
+        if fetchedResultController.fetchedObjects?.count == 0 {
+            tableView.hidden = true
+            recordButton.hidden = true
+            pressHereImageView.hidden = false
+        }
+        else {
+            pressHereImageView.hidden = true
+        }
+    }
+    
     //MARK: - Core Data
     func getFetchedResultController() -> NSFetchedResultsController {
         let fetchRequest = NSFetchRequest(entityName: "Location")
@@ -301,7 +279,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     func setObjectsInTable() {
         // clear table
         objectsInTable = []
-
+        
         var fetchedLocations = fetchedResultController.fetchedObjects
         for var i = 0; i < fetchedLocations?.count; i++ {
             var location: Location = fetchedLocations?[i] as Location
@@ -362,7 +340,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     func finishRecordingAudio () {
         self.stopRecordingAudio()
         if self.timeInterval > kMinimumRecordLength {
-            let location = managedObjectContext.objectWithID(selectedLocationObjectID!) as Location
+            let location = managedObjectContext!.objectWithID(selectedLocationObjectID!) as Location
             self.createMessageForLocation(location)
             self.monitorLocation(location)
         }
@@ -373,8 +351,8 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
 
     func createMessageForLocation (location: Location) {
-        let entityDescription = NSEntityDescription.entityForName("Message", inManagedObjectContext: managedObjectContext)
-        let message = Message(entity: entityDescription!, insertIntoManagedObjectContext: managedObjectContext)
+        let entityDescription = NSEntityDescription.entityForName("Message", inManagedObjectContext: managedObjectContext!)
+        let message = Message(entity: entityDescription!, insertIntoManagedObjectContext: managedObjectContext!)
 
         let createTime = NSDate()
         let filePathString = kApplicationPath + "/" + createTime.timeIntervalSince1970.format(".0") + ".m4a"
@@ -387,14 +365,14 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         }
 
         message.location = location
-        
+
         message.location.messageCount = NSNumber(integer: (message.location.messageCount.integerValue + 1))
         message.name = "Record \(message.location.messageCount)"
         message.isRead = false
         message.createdAt = createTime
         message.updatedAt = createTime
 
-        if !managedObjectContext.save(&error) {
+        if !managedObjectContext!.save(&error) {
             println("error saving audio: \(error?.localizedDescription)")
         }
     }
@@ -449,12 +427,12 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
 extension HomeViewController : AVAudioPlayerDelegate {
     func audioPlayerDidFinishPlaying(player: AVAudioPlayer!,
         successfully flag: Bool) {
-        let cell = self.tableView.cellForRowAtIndexPath(self.activePlayerIndexPath!) as MessagesTableViewCell
-        cell.finishPlaying()
-        let message = self.objectsInTable[self.activePlayerIndexPath!.row] as Message
-        let location = message.location
-        self.activePlayerIndexPath = nil
-        self.tableView.reloadData()
+            let cell = self.tableView.cellForRowAtIndexPath(activePlayerIndexPath!) as MessagesTableViewCell
+            cell.finishPlaying()
+            let message = self.objectsInTable[self.activePlayerIndexPath!.row] as Message
+            let location = message.location
+            activePlayerIndexPath = nil
+            tableView.reloadData()
     }
 }
 
@@ -464,11 +442,47 @@ extension HomeViewController : UIGestureRecognizerDelegate {
     func tapView (recognizer: UITapGestureRecognizer) {
         closeEditingCell()
     }
-    
+
     func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
-        if editingCellRowNumber != 0 {
+        if editingCellRowNumber != -1 {
             return true
         }
         return false
+    }
+}
+
+extension HomeViewController: SwipeableTableViewCellDelegate {
+    func swipeableCellDidOpen(cell: SwipeableTableViewCell) {
+        closeEditingCell()
+
+        if let indexPath = tableView.indexPathForCell(cell) {
+            editingCellRowNumber = indexPath.row
+        }
+    }
+
+    func swipeableCellDidClose(cell: SwipeableTableViewCell) {
+        resetEditMode()
+    }
+
+    func swipeableCell(cell: SwipeableTableViewCell, didSelectButtonAtIndex index: Int) {
+        resetEditMode()
+        if let indexPath = tableView.indexPathForCell(cell) {
+            if index == 0 {
+                let object = objectsInTable.objectAtIndex(indexPath.row) as NSManagedObject
+                managedObjectContext!.deleteObject(object)
+                var error: NSError? = nil
+                if !managedObjectContext!.save(&error) {
+                    println("unable to delete object, error: \(error?.localizedDescription)")
+                }
+                if let location = objectsInTable[0] as? Location {
+                    selectedLocationObjectID = location.objectID
+                } else {
+                    selectedLocationObjectID = nil
+                }
+            } else {
+                let location = objectsInTable.objectAtIndex(indexPath.row) as Location
+                performSegueWithIdentifier("editLocation", sender: location)
+            }
+        }
     }
 }
