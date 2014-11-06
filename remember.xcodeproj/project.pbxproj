@@ -35,6 +35,9 @@
 		8ABFAA6919E67CEB00FCE6EF /* UnreadSpotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABFAA6819E67CEB00FCE6EF /* UnreadSpotView.swift */; };
 		8ABFAA6B19E68AB600FCE6EF /* RadioButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABFAA6A19E68AB600FCE6EF /* RadioButton.swift */; };
 		D116335019EC9AC100884C60 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D116334F19EC9AC100884C60 /* Crashlytics.framework */; };
+		D1B9DE441A0C2F1100C4243E /* HUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CF32E621A0B21B00056F873 /* HUD.swift */; };
+		D1B9DE451A0C2F1100C4243E /* SwipeableTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA8AC711A07202D00566252 /* SwipeableTableViewCell.swift */; };
+		D1B9DE461A0C2F1100C4243E /* EditLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C28F48D1A0A0B40006A7CA0 /* EditLocationViewController.swift */; };
 		D1EE65141A0740A600A65EF0 /* DevicesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6109AF19E793400082AC7B /* DevicesTableViewController.swift */; };
 		D1EE65151A0740A600A65EF0 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A76A0B219E63DEC0031202A /* HomeViewController.swift */; };
 		D1EE65161A0740A600A65EF0 /* MessagesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABFAA6619E668DB00FCE6EF /* MessagesTableViewCell.swift */; };
@@ -549,6 +552,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D1B9DE441A0C2F1100C4243E /* HUD.swift in Sources */,
+				D1B9DE451A0C2F1100C4243E /* SwipeableTableViewCell.swift in Sources */,
+				D1B9DE461A0C2F1100C4243E /* EditLocationViewController.swift in Sources */,
 				D1EE65141A0740A600A65EF0 /* DevicesTableViewController.swift in Sources */,
 				D1EE65151A0740A600A65EF0 /* HomeViewController.swift in Sources */,
 				D1EE65161A0740A600A65EF0 /* MessagesTableViewCell.swift in Sources */,
