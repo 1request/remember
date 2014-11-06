@@ -12,7 +12,7 @@ import Crashlytics
 import CoreLocation
 import AVFoundation
 
-let kEnterLocationNotificationName = "kEnterLocationNotification"
+let kAlertLocationNotificationName = "kAlertLocationNotification"
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -134,37 +134,46 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 extension AppDelegate {
     func monitorLocations () {
         LocationManager.sharedInstance.locationManager.monitoredRegions
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "enteredRegion:", name: kEnteredBeaconRegionNotificationName, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "exitedRegion:", name: kExitedBeaconRegionNotificationName, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleLocationEvent:", name: kEnteredBeaconRegionNotificationName, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleLocationEvent:", name: kExitedBeaconRegionNotificationName, object: nil)
     }
     
-    func enteredRegion (notification: NSNotification) {
+    func locationFromNotification(notification: NSNotification) -> Location? {
         if let dict = notification.userInfo as? Dictionary<String, CLBeaconRegion> {
-            let beaconRegionObject = dict[kEnteredBeaconRegionNotificationUserInfoRegionKey]!
-            if let location = Location.locationFromBeaconRegion(beaconRegionObject as CLBeaconRegion, managedObjectContext: self.managedObjectContext!) {
-                let previousTriggerDate = location.lastTriggerDate.timeIntervalSince1970
+            let beaconRegionObject = dict["region"]!
+            if let location = Location.locationFromBeaconRegion(beaconRegionObject as CLBeaconRegion, managedObjectContext: managedObjectContext!) {
+                return location
+            }
+        }
+        return nil
+    }
+    
+    func  handleLocationEvent(notification: NSNotification) {
+        if let location = locationFromNotification(notification) {
+            let previousTriggerDate = location.lastTriggerDate.timeIntervalSince1970
+            let currentTime = location.lastTriggerDate.timeIntervalSince1970
+            managedObjectContext?.save(nil)
+            let predicate = NSPredicate(format: "isRead == 0")
+            let unreadMessages = location.messages.filteredSetUsingPredicate(predicate!)
+            if unreadMessages.count > 0 && currentTime - previousTriggerDate > 3600 {
+                var title = ""
+                var message = ""
                 location.lastTriggerDate = NSDate()
-                let currentTime = location.lastTriggerDate.timeIntervalSince1970
-                self.managedObjectContext?.save(nil)
-                let predicate = NSPredicate(format: "isRead == 0")
-                let unreadMessages = location.messages.filteredSetUsingPredicate(predicate!)
-                if currentTime - previousTriggerDate > 3600 {
-                    let title = "New message from \(location.name)"
-                    let message = "\(location.name) got \(unreadMessages.count) new notification" + (unreadMessages.count > 1 ? "s" : "")
-                    self.sendLocalNotificationWithMessage(message)
-                    NSNotificationCenter.defaultCenter().postNotificationName(kEnterLocationNotificationName, object: self, userInfo: ["title": title, "message": message])
+                if notification.name == kEnteredBeaconRegionNotificationName {
+                    title = "New message from \(location.name)"
+                    message = "\(location.name) got \(unreadMessages.count) new notification" + (unreadMessages.count > 1 ? "s" : "")
+                } else if notification.name == kExitedBeaconRegionNotificationName {
+                    title = "New message from \(location.name)"
+                    message = "You got \(unreadMessages.count) new notification" + (unreadMessages.count > 1 ? "s" : "") + "before you leave \(location.name)"
                 }
+                sendLocalNotificationWithMessage(message)
+                NSNotificationCenter.defaultCenter().postNotificationName(kAlertLocationNotificationName, object: self, userInfo: ["title": title, "message": message])
             }
         }
     }
     
-    func exitedRegion (notification: NSNotification) {
-        // exit region
-        println("app delegate exited region: \(notification.userInfo)")
-    }
-    
     func sendLocalNotificationWithMessage (message: String) {
-        var notification = UILocalNotification()
+        let notification = UILocalNotification()
         notification.alertBody = message
         notification.alertAction = "View Details"
         notification.soundName = UILocalNotificationDefaultSoundName
