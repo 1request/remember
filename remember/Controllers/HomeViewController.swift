@@ -18,7 +18,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     let kReleaseToCancel = "Release To Cancel"
     let kMinimumRecordLength = 1.0
     var kApplicationPath = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true).last! as String
-
+    var hudView = HUD()
     //MARK: - Variables
 
     @IBOutlet weak var tableView: UITableView!
@@ -224,21 +224,34 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     //MARK: - IBActions
     //MARK: record button actions
     @IBAction func recordButtonTouchedDown(sender: UIButton) {
-        self.recordAudio()
+        if editingCellRowNumber != -1 {
+            closeEditingCell()
+        } else {
+            hudView = HUD.hudInView(view)
+            hudView.text = kSlideUpToCancel
+        }
+        
+        recordAudio()
     }
 
     @IBAction func recordButtonTouchedUpInside(sender: UIButton) {
-        self.finishRecordingAudio()
+        hudView.removeFromSuperview()
+        finishRecordingAudio()
     }
 
     @IBAction func recordButtonTouchedUpOutside(sender: UIButton) {
-        self.stopRecordingAudio()
+        hudView.removeFromSuperview()
+        stopRecordingAudio()
     }
 
     @IBAction func recordButtonTouchedDragEnter(sender: UIButton) {
+        hudView.text = kSlideUpToCancel
+        hudView.setNeedsDisplay()
     }
 
     @IBAction func recordButtonTouchedDragExit(sender: UIButton) {
+        hudView.text = kReleaseToCancel
+        hudView.setNeedsDisplay()
     }
 
     //MARK: - NSFetchedResultControllerDelegate
