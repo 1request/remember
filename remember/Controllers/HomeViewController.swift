@@ -33,13 +33,11 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
     lazy var selectedLocationObjectID: NSManagedObjectID? = {
         [unowned self] in
-        if let location = self.objectsInTable[0] as? Location {
-            let objectID = location.objectID
-            return objectID
-        }
-        else {
+        if self.objectsInTable.count == 0 {
             return nil
         }
+        let location = self.objectsInTable[0] as Location
+        return location.objectID
     }()
 
     var activePlayerIndexPath: NSIndexPath?
@@ -165,14 +163,14 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
         let cell = tableView.cellForRowAtIndexPath(indexPath)
         if let locationCell = cell as? LocationsTableViewCell {
-            let location = self.objectsInTable[indexPath.row] as Location
-            self.selectedLocationObjectID = location.objectID
-            self.tableView.reloadData()
+            let location = objectsInTable[indexPath.row] as Location
+            selectedLocationObjectID = location.objectID
+            tableView.reloadData()
         } else {
             let messageCell = cell as MessagesTableViewCell
             if messageCell.playing {
                 messageCell.finishPlaying()
-                self.stopPlayingAudio()
+                stopPlayingAudio()
             } else {
                 // stop any existing playing record
                 if let indexPath = self.activePlayerIndexPath {
@@ -180,13 +178,13 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
                     cell.finishPlaying()
                 }
                 messageCell.startPlaying()
-                self.playAudioAtIndexPath(indexPath)
-                self.activePlayerIndexPath = indexPath
+                playAudioAtIndexPath(indexPath)
+                activePlayerIndexPath = indexPath
                 let message = objectsInTable.objectAtIndex(indexPath.row) as Message
                 message.isRead = true
                 message.updatedAt = NSDate()
                 managedObjectContext.save(nil)
-                self.monitorLocation(message.location)
+                monitorLocation(message.location)
             }
         }
     }
@@ -433,14 +431,24 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         let predicate = NSPredicate(format: "isRead == 0")
         let unreadMessages = location.messages.filteredSetUsingPredicate(predicate!)
         let locationManager = LocationManager.sharedInstance
-        let beaconRegion = location.beaconRegion()
-        if unreadMessages.count == 0 {
-            locationManager.stopRangingBeaconRegions([beaconRegion])
-            locationManager.stopMonitoringBeaconRegions([beaconRegion])
-        }
-        else {
-            locationManager.startRangingBeaconRegions([beaconRegion])
-            locationManager.startMonitoringBeaconRegions([beaconRegion])
+        if location.uuid != "" {
+            let beaconRegion = location.beaconRegion()
+            if unreadMessages.count == 0 {
+                locationManager.stopRangingBeaconRegions([beaconRegion])
+                locationManager.stopMonitoringRegions([beaconRegion])
+            }
+            else {
+                locationManager.startRangingBeaconRegions([beaconRegion])
+                locationManager.startMonitoringRegions([beaconRegion])
+            }
+        } else {
+            let circularRegion = location.circularRegion()
+            if unreadMessages.count == 0 {
+                locationManager.stopMonitoringRegions([circularRegion])
+            }
+            else {
+                locationManager.startMonitoringRegions([circularRegion])
+            }
         }
     }
 }
@@ -450,7 +458,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
 extension HomeViewController : AVAudioPlayerDelegate {
     func audioPlayerDidFinishPlaying(player: AVAudioPlayer!,
         successfully flag: Bool) {
-            let cell = self.tableView.cellForRowAtIndexPath(activePlayerIndexPath!) as MessagesTableViewCell
+            let cell = tableView.cellForRowAtIndexPath(activePlayerIndexPath!) as MessagesTableViewCell
             cell.finishPlaying()
             let message = self.objectsInTable[self.activePlayerIndexPath!.row] as Message
             let location = message.location
@@ -492,15 +500,23 @@ extension HomeViewController: SwipeableTableViewCellDelegate {
         if let indexPath = tableView.indexPathForCell(cell) {
             if index == 0 {
                 let object = objectsInTable.objectAtIndex(indexPath.row) as NSManagedObject
+                if let location = object as? Location {
+                    LocationManager.sharedInstance.stopMonitoringRegions([location.region()])
+                    if location.uuid != "" {
+                        LocationManager.sharedInstance.stopRangingBeaconRegions([location.beaconRegion()])
+                    }
+                }
                 managedObjectContext!.deleteObject(object)
                 var error: NSError? = nil
                 if !managedObjectContext!.save(&error) {
                     println("unable to delete object, error: \(error?.localizedDescription)")
                 }
+                if objectsInTable.count == 0 {
+                    selectedLocationObjectID = nil
+                    return
+                }
                 if let location = objectsInTable[0] as? Location {
                     selectedLocationObjectID = location.objectID
-                } else {
-                    selectedLocationObjectID = nil
                 }
             } else {
                 let location = objectsInTable.objectAtIndex(indexPath.row) as Location
