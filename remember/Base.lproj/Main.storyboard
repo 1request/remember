@@ -119,15 +119,24 @@
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pin" translatesAutoresizingMaskIntoConstraints="NO" id="EQv-XC-poF">
+                                            <rect key="frame" x="8" y="8" width="44" height="44"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" secondItem="EQv-XC-poF" secondAttribute="height" multiplier="1:1" id="ePz-Ji-bRV"/>
+                                            </constraints>
+                                        </imageView>
                                     </subviews>
                                     <constraints>
+                                        <constraint firstItem="EQv-XC-poF" firstAttribute="leading" secondItem="3zy-NO-o64" secondAttribute="leading" constant="8" id="41P-2S-61m"/>
                                         <constraint firstItem="U0l-U1-5qZ" firstAttribute="leading" secondItem="3zy-NO-o64" secondAttribute="leading" constant="60" id="8vr-aN-CEB"/>
                                         <constraint firstAttribute="bottom" secondItem="6nX-lr-qJb" secondAttribute="bottom" constant="8" id="Gzi-zy-IxH"/>
                                         <constraint firstAttribute="centerY" secondItem="U0l-U1-5qZ" secondAttribute="centerY" id="PEN-t9-88d"/>
+                                        <constraint firstItem="EQv-XC-poF" firstAttribute="top" secondItem="3zy-NO-o64" secondAttribute="top" constant="8" id="aDf-Hw-IwZ"/>
                                         <constraint firstItem="6nX-lr-qJb" firstAttribute="top" secondItem="3zy-NO-o64" secondAttribute="top" constant="8" id="aoV-m1-b2H"/>
                                         <constraint firstItem="U0l-U1-5qZ" firstAttribute="top" secondItem="3zy-NO-o64" secondAttribute="top" constant="8" id="bCD-sU-c0h"/>
                                         <constraint firstAttribute="trailing" secondItem="6nX-lr-qJb" secondAttribute="trailing" constant="8" id="bbv-Bf-xY4"/>
                                         <constraint firstItem="6nX-lr-qJb" firstAttribute="leading" secondItem="U0l-U1-5qZ" secondAttribute="trailing" constant="8" id="dLt-pz-pHM"/>
+                                        <constraint firstItem="U0l-U1-5qZ" firstAttribute="leading" secondItem="EQv-XC-poF" secondAttribute="trailing" constant="8" id="zqh-th-xAx"/>
                                     </constraints>
                                 </tableViewCellContentView>
                             </tableViewCell>
@@ -333,6 +342,7 @@
     <resources>
         <image name="add" width="38" height="38"/>
         <image name="device" width="90" height="98"/>
+        <image name="pin" width="73" height="82"/>
         <image name="press-here" width="305" height="300"/>
         <image name="record-button" width="160" height="166"/>
     </resources>
