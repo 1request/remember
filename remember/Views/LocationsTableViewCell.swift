@@ -16,6 +16,7 @@ class LocationsTableViewCell: SwipeableTableViewCell {
     override func commonInit() {
         super.commonInit()
         dataSource = self
+        selectionStyle = UITableViewCellSelectionStyle.None
         makeLayout()
     }
 
@@ -52,6 +53,22 @@ class LocationsTableViewCell: SwipeableTableViewCell {
     func isChecked() -> Bool {
         return radioButton._checked
     }
+    
+    override func setHighlighted(highlighted: Bool, animated: Bool) {
+        super.setHighlighted(highlighted, animated: animated)
+        if highlighted {
+            customContentView.backgroundColor = UIColor.lightGrayColor()
+            for button in buttons {
+                button.hidden = true
+            }
+        } else {
+            customContentView.backgroundColor = UIColor.whiteColor()
+            for button in buttons {
+                button.hidden = false
+            }
+        }
+    }
+    
 }
 
 extension LocationsTableViewCell: SwipeableTableViewCellDataSource {
@@ -67,3 +84,4 @@ extension LocationsTableViewCell: SwipeableTableViewCellDataSource {
         }
     }
 }
+

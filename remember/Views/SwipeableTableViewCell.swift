@@ -37,7 +37,7 @@ class SwipeableTableViewCell: UITableViewCell, UIGestureRecognizerDelegate {
     weak var delegate: SwipeableTableViewCellDelegate?
     weak var dataSource: SwipeableTableViewCellDataSource?
     
-    private var buttons: [UIButton] = []
+    var buttons: [UIButton] = []
     private var panStartPoint = CGPointZero
     private var startingRightLayoutConstraintConstant: CGFloat = 0
     private var contentViewRightConstraint: NSLayoutConstraint?

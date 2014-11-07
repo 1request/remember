@@ -163,14 +163,14 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
         let cell = tableView.cellForRowAtIndexPath(indexPath)
         if let locationCell = cell as? LocationsTableViewCell {
-            let location = self.objectsInTable[indexPath.row] as Location
-            self.selectedLocationObjectID = location.objectID
-            self.tableView.reloadData()
+            let location = objectsInTable[indexPath.row] as Location
+            selectedLocationObjectID = location.objectID
+            tableView.reloadData()
         } else {
             let messageCell = cell as MessagesTableViewCell
             if messageCell.playing {
                 messageCell.finishPlaying()
-                self.stopPlayingAudio()
+                stopPlayingAudio()
             } else {
                 // stop any existing playing record
                 if let indexPath = self.activePlayerIndexPath {
@@ -178,13 +178,13 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
                     cell.finishPlaying()
                 }
                 messageCell.startPlaying()
-                self.playAudioAtIndexPath(indexPath)
-                self.activePlayerIndexPath = indexPath
+                playAudioAtIndexPath(indexPath)
+                activePlayerIndexPath = indexPath
                 let message = objectsInTable.objectAtIndex(indexPath.row) as Message
                 message.isRead = true
                 message.updatedAt = NSDate()
                 managedObjectContext.save(nil)
-                self.monitorLocation(message.location)
+                monitorLocation(message.location)
             }
         }
     }
