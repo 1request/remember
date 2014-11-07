@@ -33,13 +33,11 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
     lazy var selectedLocationObjectID: NSManagedObjectID? = {
         [unowned self] in
-        if let location = self.objectsInTable[0] as? Location {
-            let objectID = location.objectID
-            return objectID
-        }
-        else {
+        if self.objectsInTable.count == 0 {
             return nil
         }
+        let location = self.objectsInTable[0] as Location
+        return location.objectID
     }()
 
     var activePlayerIndexPath: NSIndexPath?
@@ -453,7 +451,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
 extension HomeViewController : AVAudioPlayerDelegate {
     func audioPlayerDidFinishPlaying(player: AVAudioPlayer!,
         successfully flag: Bool) {
-            let cell = self.tableView.cellForRowAtIndexPath(activePlayerIndexPath!) as MessagesTableViewCell
+            let cell = tableView.cellForRowAtIndexPath(activePlayerIndexPath!) as MessagesTableViewCell
             cell.finishPlaying()
             let message = self.objectsInTable[self.activePlayerIndexPath!.row] as Message
             let location = message.location
@@ -500,10 +498,12 @@ extension HomeViewController: SwipeableTableViewCellDelegate {
                 if !managedObjectContext!.save(&error) {
                     println("unable to delete object, error: \(error?.localizedDescription)")
                 }
+                if objectsInTable.count == 0 {
+                    selectedLocationObjectID = nil
+                    return
+                }
                 if let location = objectsInTable[0] as? Location {
                     selectedLocationObjectID = location.objectID
-                } else {
-                    selectedLocationObjectID = nil
                 }
             } else {
                 let location = objectsInTable.objectAtIndex(indexPath.row) as Location
