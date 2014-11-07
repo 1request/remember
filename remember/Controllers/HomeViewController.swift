@@ -433,14 +433,17 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         let predicate = NSPredicate(format: "isRead == 0")
         let unreadMessages = location.messages.filteredSetUsingPredicate(predicate!)
         let locationManager = LocationManager.sharedInstance
-        let beaconRegion = location.beaconRegion()
-        if unreadMessages.count == 0 {
-            locationManager.stopRangingBeaconRegions([beaconRegion])
-            locationManager.stopMonitoringBeaconRegions([beaconRegion])
-        }
-        else {
-            locationManager.startRangingBeaconRegions([beaconRegion])
-            locationManager.startMonitoringBeaconRegions([beaconRegion])
+        println("location: \(location.uuid)")
+        if location.uuid != "" {
+            let beaconRegion = location.beaconRegion()
+            if unreadMessages.count == 0 {
+                locationManager.stopRangingBeaconRegions([beaconRegion])
+                locationManager.stopMonitoringBeaconRegions([beaconRegion])
+            }
+            else {
+                locationManager.startRangingBeaconRegions([beaconRegion])
+                locationManager.startMonitoringBeaconRegions([beaconRegion])
+            }
         }
     }
 }
