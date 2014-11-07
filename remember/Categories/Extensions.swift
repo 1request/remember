@@ -29,17 +29,36 @@ extension Double {
 
 extension Location {
     func beaconRegion () -> CLBeaconRegion {
-        let proximityUUID = NSUUID(UUIDString: self.uuid)
-        let major = self.major.unsignedShortValue
-        let minor = self.minor.unsignedShortValue
-        let identifier = "\(self.name)-" + self.createdAt.timeIntervalSince1970.format(".0")
-        let region = CLBeaconRegion(proximityUUID: proximityUUID, major: major, minor: minor, identifier: identifier)
+        let proximityUUID = NSUUID(UUIDString: uuid)
+        let majorValue = major.unsignedShortValue
+        let minorValue = minor.unsignedShortValue
+        let region = CLBeaconRegion(proximityUUID: proximityUUID, major: majorValue, minor: minorValue, identifier: identifier)
         return region
     }
     
-    class func locationFromBeaconRegion (beaconRegion: CLBeaconRegion, managedObjectContext: NSManagedObjectContext) -> Location? {
+    func createIndentifier() -> String {
+        return "\(name)-" + createdAt.timeIntervalSince1970.format(".0")
+    }
+    
+    func circularRegion() -> CLCircularRegion {
+        let center = CLLocationCoordinate2D(latitude: Double(latitude), longitude: Double(longitude))
+        let region = CLCircularRegion(center: center, radius: kCLLocationAccuracyNearestTenMeters, identifier: identifier)
+        return region
+    }
+    
+    func region() -> CLRegion {
+        if uuid != "" {
+            return beaconRegion()
+        } else {
+            return circularRegion()
+        }
+    }
+    
+    class func locationFromRegion (region: CLRegion, managedObjectContext: NSManagedObjectContext) -> Location? {
         let request = NSFetchRequest(entityName: "Location")
-        let predicate = NSPredicate(format: "uuid == %@ AND major == %@ AND minor == %@", beaconRegion.proximityUUID.UUIDString, beaconRegion.major, beaconRegion.minor)
+
+        let predicate = NSPredicate(format: "identifier == %@", region.identifier)
+        
         request.predicate = predicate
         request.relationshipKeyPathsForPrefetching = ["messages"]
         var error: NSError?

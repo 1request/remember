@@ -20,6 +20,7 @@ class EditLocationViewController: UIViewController {
         super.viewDidLoad()
         editLocationNameTextField.text = location?.name
     }
+    
     @IBAction func saveButtonClicked(sender: UIBarButtonItem) {
         location?.name = editLocationNameTextField.text
         var error: NSError? = nil

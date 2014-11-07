@@ -21,6 +21,7 @@ class Location: NSManagedObject {
     @NSManaged var name: String
     @NSManaged var updatedAt: NSDate
     @NSManaged var uuid: String
+    @NSManaged var identifier: String
     @NSManaged var messages: NSSet
 
 }

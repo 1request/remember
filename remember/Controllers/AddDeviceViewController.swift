@@ -39,6 +39,8 @@ class AddDeviceViewController: UIViewController {
         locationToBeAdded.createdAt = NSDate()
         locationToBeAdded.updatedAt = locationToBeAdded.createdAt
         
+        locationToBeAdded.identifier = locationToBeAdded.createIndentifier()
+        
         managedObjectContext!.save(nil)
         
         navigationController?.popToRootViewControllerAnimated(true)

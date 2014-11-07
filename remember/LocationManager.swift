@@ -65,19 +65,21 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
         locationManager.stopUpdatingLocation()
     }
     
-    func startMonitoringBeaconRegions (beaconRegions: [CLBeaconRegion]) {
+    func startMonitoringRegions (regions: [CLRegion]) {
         if !CLLocationManager.isMonitoringAvailableForClass(CLBeaconRegion) {
-            println("Couldn't turn on region monitoring: Region monitoring is not available for this device.")
-            return
+            println("Couldn't turn on beacon region monitoring: Region monitoring is not available for this device.")
         }
-        for beaconRegion: CLBeaconRegion in beaconRegions {
-            self.locationManager.startMonitoringForRegion(beaconRegion)
+        if !CLLocationManager.isMonitoringAvailableForClass(CLCircularRegion) {
+            println("Couldn't turn on gps region monitoring: Region monitoring is not available for this device.")
+        }
+        for region in regions {
+            self.locationManager.startMonitoringForRegion(region)
         }
     }
     
-    func stopMonitoringBeaconRegions (beaconRegions: [CLBeaconRegion]) {
-        for beaconRegion: CLBeaconRegion in beaconRegions {
-            self.locationManager.stopMonitoringForRegion(beaconRegion)
+    func stopMonitoringRegions (regions: [CLRegion]) {
+        for region in regions {
+            self.locationManager.stopMonitoringForRegion(region)
         }
     }
     
@@ -103,8 +105,10 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
         println("did enter region: \(region)")
         if let beaconRegion = region as? CLBeaconRegion {
             if beaconRegion.major != nil && beaconRegion.minor != nil {
-                NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: kEnteredBeaconRegionNotificationName, object: self, userInfo: [kEnteredBeaconRegionNotificationUserInfoRegionKey: beaconRegion]))
+                NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: kEnteredBeaconRegionNotificationName, object: self, userInfo: [kEnteredBeaconRegionNotificationUserInfoRegionKey: beaconRegion as CLRegion]))
             }
+        } else {
+            NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: kEnteredBeaconRegionNotificationName, object: self, userInfo: [kEnteredBeaconRegionNotificationUserInfoRegionKey: region as CLRegion]))
         }
     }
     
@@ -114,6 +118,8 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
             if beaconRegion.major != nil && beaconRegion.minor != nil {
                 NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: kExitedBeaconRegionNotificationName, object: self, userInfo: [kExitedBeaconRegionNotificationUserInfoRegionKey: beaconRegion]))
             }
+        } else {
+            NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: kExitedBeaconRegionNotificationName, object: self, userInfo: [kExitedBeaconRegionNotificationUserInfoRegionKey: region as CLRegion]))
         }
     }
     

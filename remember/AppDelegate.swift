@@ -140,9 +140,9 @@ extension AppDelegate {
     }
     
     func locationFromNotification(notification: NSNotification) -> Location? {
-        if let dict = notification.userInfo as? Dictionary<String, CLBeaconRegion> {
-            let beaconRegionObject = dict["region"]!
-            if let location = Location.locationFromBeaconRegion(beaconRegionObject as CLBeaconRegion, managedObjectContext: managedObjectContext!) {
+        if let dict = notification.userInfo as? Dictionary<String, CLRegion> {
+            let regionObject = dict["region"]!
+            if let location = Location.locationFromRegion(regionObject, managedObjectContext: managedObjectContext!) {
                 return location
             }
         }
@@ -165,7 +165,7 @@ extension AppDelegate {
                     message = "\(location.name) got \(unreadMessages.count) new notification" + (unreadMessages.count > 1 ? "s" : "")
                 } else if notification.name == kExitedBeaconRegionNotificationName {
                     title = "New message from \(location.name)"
-                    message = "You got \(unreadMessages.count) new notification" + (unreadMessages.count > 1 ? "s" : "") + "before you leave \(location.name)"
+                    message = "You got \(unreadMessages.count) new notification" + (unreadMessages.count > 1 ? "s" : "") + " before you leave \(location.name)"
                 }
                 sendLocalNotificationWithMessage(message)
                 NSNotificationCenter.defaultCenter().postNotificationName(kAlertLocationNotificationName, object: self, userInfo: ["title": title, "message": message])

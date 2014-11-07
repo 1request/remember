@@ -431,16 +431,23 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         let predicate = NSPredicate(format: "isRead == 0")
         let unreadMessages = location.messages.filteredSetUsingPredicate(predicate!)
         let locationManager = LocationManager.sharedInstance
-        println("location: \(location.uuid)")
         if location.uuid != "" {
             let beaconRegion = location.beaconRegion()
             if unreadMessages.count == 0 {
                 locationManager.stopRangingBeaconRegions([beaconRegion])
-                locationManager.stopMonitoringBeaconRegions([beaconRegion])
+                locationManager.stopMonitoringRegions([beaconRegion])
             }
             else {
                 locationManager.startRangingBeaconRegions([beaconRegion])
-                locationManager.startMonitoringBeaconRegions([beaconRegion])
+                locationManager.startMonitoringRegions([beaconRegion])
+            }
+        } else {
+            let circularRegion = location.circularRegion()
+            if unreadMessages.count == 0 {
+                locationManager.stopMonitoringRegions([circularRegion])
+            }
+            else {
+                locationManager.startMonitoringRegions([circularRegion])
             }
         }
     }
@@ -493,6 +500,12 @@ extension HomeViewController: SwipeableTableViewCellDelegate {
         if let indexPath = tableView.indexPathForCell(cell) {
             if index == 0 {
                 let object = objectsInTable.objectAtIndex(indexPath.row) as NSManagedObject
+                if let location = object as? Location {
+                    LocationManager.sharedInstance.stopMonitoringRegions([location.region()])
+                    if location.uuid != "" {
+                        LocationManager.sharedInstance.stopRangingBeaconRegions([location.beaconRegion()])
+                    }
+                }
                 managedObjectContext!.deleteObject(object)
                 var error: NSError? = nil
                 if !managedObjectContext!.save(&error) {
