@@ -16,7 +16,6 @@ class LocationsTableViewCell: SwipeableTableViewCell {
     override func commonInit() {
         super.commonInit()
         dataSource = self
-        selectionStyle = UITableViewCellSelectionStyle.None
         makeLayout()
     }
 
