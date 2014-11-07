@@ -32,6 +32,7 @@ import UIKit
 //MARK: - SwipeableTableViewCell Class
 
 class SwipeableTableViewCell: UITableViewCell, UIGestureRecognizerDelegate {
+    var opened = false
     
     var customContentView = UIView()
     weak var delegate: SwipeableTableViewCellDelegate?
@@ -231,6 +232,7 @@ class SwipeableTableViewCell: UITableViewCell, UIGestureRecognizerDelegate {
     
     //MARK: Private
     private func setConstraintsToShowAllButtons(animated: Bool, notifyDelegateDidOpen notifyDelegate: Bool) {
+        opened = true
         if notifyDelegate {
             delegate?.swipeableCellDidOpen(self)
         }
@@ -249,6 +251,7 @@ class SwipeableTableViewCell: UITableViewCell, UIGestureRecognizerDelegate {
     }
     
     private func resetConstraintContstantsToZero(animated: Bool, notifyDelegateDidClose notifyDelegate: Bool) {
+        opened = false
         if notifyDelegate {
             delegate?.swipeableCellDidClose(self)
         }

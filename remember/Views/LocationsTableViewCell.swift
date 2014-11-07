@@ -57,8 +57,14 @@ class LocationsTableViewCell: SwipeableTableViewCell {
         super.setHighlighted(highlighted, animated: animated)
         if highlighted {
             customContentView.backgroundColor = UIColor.lightGrayColor()
-            for button in buttons {
-                button.hidden = true
+            if opened {
+                for button in buttons {
+                    button.hidden = false
+                }
+            } else {
+                for button in buttons {
+                    button.hidden = true
+                }
             }
         } else {
             customContentView.backgroundColor = UIColor.whiteColor()
