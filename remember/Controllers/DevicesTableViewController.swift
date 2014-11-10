@@ -25,7 +25,7 @@ class DevicesTableViewController: UITableViewController, UITableViewDataSource, 
         didSet {
             let request = NSFetchRequest(entityName: "Location")
             request.fetchBatchSize = 20
-            var error: NSError? = nil;
+            var error: NSError? = nil
             locations = managedObjectContext!.executeFetchRequest(request, error: &error) as [Location]
         }
     }
