@@ -31,14 +31,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
     var objectsInTable: NSMutableArray = []
 
-    lazy var selectedLocationObjectID: NSManagedObjectID? = {
-        [unowned self] in
-        if self.objectsInTable.count == 0 {
-            return nil
-        }
-        let location = self.objectsInTable[0] as Location
-        return location.objectID
-    }()
+    var selectedLocationObjectID: NSManagedObjectID?
 
     var activePlayerIndexPath: NSIndexPath?
 
@@ -100,6 +93,8 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         super.viewDidAppear(animated)
         monitorEnterLocationNotification()
         monitorAudioRouteChange()
+        setSelectedLocationObjectID()
+        tableView.reloadData()
     }
     
     
@@ -255,9 +250,9 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     //MARK: - NSFetchedResultControllerDelegate
 
     func controllerWillChangeContent(controller: NSFetchedResultsController) {
-        if self.tableView.hidden {
-            self.tableView.hidden = false
-            self.recordButton.hidden = false
+        if tableView.hidden {
+            tableView.hidden = false
+            recordButton.hidden = false
         }
     }
 
@@ -311,11 +306,23 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
             var sortedMessages = location.messages.sortedArrayUsingDescriptors([sortByIsRead, sortByCreatedAt])
             objectsInTable.addObjectsFromArray(sortedMessages)
         }
+        
+        setSelectedLocationObjectID()
+    }
+    
+    func setSelectedLocationObjectID() {
+        if objectsInTable.count == 0 {
+            selectedLocationObjectID = nil
+            return
+        }
+        if let location = objectsInTable[0] as? Location {
+            selectedLocationObjectID = location.objectID
+        }
     }
 
     //MARK: - record audio
     func recordAudio () {
-        if let player = self.player {
+        if let player = player {
             if player.playing {
                 player.stop()
             }
@@ -323,9 +330,9 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
         let session = AVAudioSession.sharedInstance()
         session.setActive(true, error: nil)
-        self.recorder.record()
-        self.startDate = NSDate()
-        self.timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("updateTimer"), userInfo: nil, repeats: true)
+        recorder.record()
+        startDate = NSDate()
+        timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("updateTimer"), userInfo: nil, repeats: true)
     }
 
     func configureAudioSession () {
@@ -376,20 +383,20 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
 
     func updateTimer () {
-        self.timeInterval = NSDate().timeIntervalSinceDate(self.startDate)
+        timeInterval = NSDate().timeIntervalSinceDate(startDate)
     }
 
     func finishRecordingAudio () {
-        self.stopRecordingAudio()
-        if self.timeInterval > kMinimumRecordLength {
+        stopRecordingAudio()
+        if timeInterval > kMinimumRecordLength {
             let location = managedObjectContext!.objectWithID(selectedLocationObjectID!) as Location
-            self.createMessageForLocation(location)
-            self.monitorLocation(location)
+            createMessageForLocation(location)
+            monitorLocation(location)
         }
         else {
             println("Record is too short")
         }
-        self.timeInterval = 0
+        timeInterval = 0
     }
 
     func createMessageForLocation (location: Location) {
@@ -402,7 +409,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         let outputFileURL = NSURL(fileURLWithPath: filePathString)
 
         var error: NSError?
-        if !NSFileManager.defaultManager().copyItemAtURL(self.recorder.url, toURL: outputFileURL!, error: &error) {
+        if !NSFileManager.defaultManager().copyItemAtURL(recorder.url, toURL: outputFileURL!, error: &error) {
             println("error copying item to url: \(error?.localizedDescription)")
         }
 
@@ -420,24 +427,24 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
 
     func stopRecordingAudio () {
-        self.recorder.stop()
-        self.timer.invalidate()
+        recorder.stop()
+        timer.invalidate()
     }
 
     //MARK: - Play Audio
 
     func playAudioAtIndexPath (indexPath: NSIndexPath) {
-        let message = self.objectsInTable.objectAtIndex(indexPath.row) as Message
-        let filePath = self.kApplicationPath + "/" + message.createdAt.timeIntervalSince1970.format(".0") + ".m4a"
+        let message = objectsInTable.objectAtIndex(indexPath.row) as Message
+        let filePath = kApplicationPath + "/" + message.createdAt.timeIntervalSince1970.format(".0") + ".m4a"
         if NSFileManager.defaultManager().fileExistsAtPath(filePath) {
             var error: NSError?
-            self.player = AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: filePath), error: &error)
+            player = AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: filePath), error: &error)
             if let e = error {
                 println("error playing audio at indexpath:\(indexPath), error: \(e.localizedDescription)")
             }
             else {
-                self.player?.delegate = self
-                self.player?.play()
+                player?.delegate = self
+                player?.play()
             }
         }
     }
@@ -448,7 +455,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
             messageCell.finishPlaying()
         }
         
-        self.player?.stop()
+        player?.stop()
     }
 
     //MARK: - Monitor Location
@@ -485,7 +492,7 @@ extension HomeViewController : AVAudioPlayerDelegate {
     func audioPlayerDidFinishPlaying(player: AVAudioPlayer!,
         successfully flag: Bool) {
             stopPlayingAudio()
-            let message = self.objectsInTable[self.activePlayerIndexPath!.row] as Message
+            let message = objectsInTable[activePlayerIndexPath!.row] as Message
             let location = message.location
             activePlayerIndexPath = nil
             tableView.reloadData()
