@@ -369,6 +369,11 @@
 					8A9F0F5F19E62C50007FB36B = {
 						CreatedOnToolsVersion = 6.0.1;
 						DevelopmentTeam = 49V87TT95M;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
 					};
 					8A9F0F7719E62C50007FB36B = {
 						CreatedOnToolsVersion = 6.0.1;
