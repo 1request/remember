@@ -42,7 +42,7 @@ extension Location {
     
     func circularRegion() -> CLCircularRegion {
         let center = CLLocationCoordinate2D(latitude: Double(latitude), longitude: Double(longitude))
-        let region = CLCircularRegion(center: center, radius: kCLLocationAccuracyNearestTenMeters, identifier: identifier)
+        let region = CLCircularRegion(center: center, radius: 50, identifier: identifier)
         return region
     }
     
