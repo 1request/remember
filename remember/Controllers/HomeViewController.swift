@@ -101,9 +101,11 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         monitorEnterLocationNotification()
     }
     
+    
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
         unmonitorEnterLocationNotification()
+        resetEditMode()
     }
 
     //MARK: - UITableViewDataSource
