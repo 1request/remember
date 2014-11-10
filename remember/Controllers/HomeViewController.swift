@@ -372,10 +372,12 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     func isHeadsetPluggedIn() -> Bool {
         let route = AVAudioSession.sharedInstance().currentRoute
-        for object in route.outputs {
-            if let desc = object as? AVAudioSessionPortDescription {
-                if desc.portType == AVAudioSessionPortHeadphones {
-                    return true
+        if route.outputs != nil {
+            for object in route.outputs {
+                if let desc = object as? AVAudioSessionPortDescription {
+                    if desc.portType == AVAudioSessionPortHeadphones {
+                        return true
+                    }
                 }
             }
         }
