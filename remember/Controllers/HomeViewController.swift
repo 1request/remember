@@ -99,12 +99,14 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         monitorEnterLocationNotification()
+        monitorAudioRouteChange()
     }
     
     
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
         unmonitorEnterLocationNotification()
+        unmonitorAudioRouteChange()
         resetEditMode()
     }
 
@@ -171,14 +173,10 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         } else {
             let messageCell = cell as MessagesTableViewCell
             if messageCell.playing {
-                messageCell.finishPlaying()
                 stopPlayingAudio()
             } else {
                 // stop any existing playing record
-                if let indexPath = self.activePlayerIndexPath {
-                    let cell = self.tableView.cellForRowAtIndexPath(indexPath) as MessagesTableViewCell
-                    cell.finishPlaying()
-                }
+                stopPlayingAudio()
                 messageCell.startPlaying()
                 playAudioAtIndexPath(indexPath)
                 activePlayerIndexPath = indexPath
@@ -347,13 +345,34 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 println("activate session error: \(e.localizedDescription)")
             }
         }
-
-        if !session.overrideOutputAudioPort(AVAudioSessionPortOverride.Speaker, error: &error) {
-            println("could not override output audio port to speaker")
-            if let e = error {
-                println("override output audio port error: \(e.localizedDescription)")
+        
+        if !isHeadsetPluggedIn() {
+            if !session.overrideOutputAudioPort(AVAudioSessionPortOverride.Speaker, error: &error) {
+                println("could not override output audio port to speaker")
+                if let e = error {
+                    println("override output audio port error: \(e.localizedDescription)")
+                }
+            }
+        } else {
+            if !session.overrideOutputAudioPort(AVAudioSessionPortOverride.None, error: &error) {
+                println("could not override output audio port to none")
+                if let e = error {
+                    println("override output audio port error: \(e.localizedDescription)")
+                }
             }
         }
+    }
+    
+    func isHeadsetPluggedIn() -> Bool {
+        let route = AVAudioSession.sharedInstance().currentRoute
+        for object in route.outputs {
+            if let desc = object as? AVAudioSessionPortDescription {
+                if desc.portType == AVAudioSessionPortHeadphones {
+                    return true
+                }
+            }
+        }
+        return false
     }
 
     func updateTimer () {
@@ -424,6 +443,11 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
 
     func stopPlayingAudio () {
+        if let indexPath = activePlayerIndexPath {
+            let messageCell = tableView.cellForRowAtIndexPath(indexPath) as MessagesTableViewCell
+            messageCell.finishPlaying()
+        }
+        
         self.player?.stop()
     }
 
@@ -460,8 +484,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
 extension HomeViewController : AVAudioPlayerDelegate {
     func audioPlayerDidFinishPlaying(player: AVAudioPlayer!,
         successfully flag: Bool) {
-            let cell = tableView.cellForRowAtIndexPath(activePlayerIndexPath!) as MessagesTableViewCell
-            cell.finishPlaying()
+            stopPlayingAudio()
             let message = self.objectsInTable[self.activePlayerIndexPath!.row] as Message
             let location = message.location
             activePlayerIndexPath = nil
@@ -544,6 +567,30 @@ extension HomeViewController: UIAlertViewDelegate {
             let message = dict["message"]
             let alertView = UIAlertView(title: title, message: message, delegate: self, cancelButtonTitle: "OK")
             alertView.show()
+        }
+    }
+}
+
+extension HomeViewController {
+    func monitorAudioRouteChange() {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateAudioRoute:", name: AVAudioSessionRouteChangeNotification, object: nil)
+    }
+    
+    func unmonitorAudioRouteChange() {
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: AVAudioSessionRouteChangeNotification, object: nil)
+    }
+    
+    func updateAudioRoute(notification: NSNotification) {
+        if let dict = notification.userInfo as? Dictionary<String, AnyObject> {
+            let routeChangeReason = dict[AVAudioSessionRouteChangeReasonKey] as Int
+            switch routeChangeReason {
+            case kAudioSessionRouteChangeReason_NewDeviceAvailable:
+                configureAudioSession()
+            case kAudioSessionRouteChangeReason_OldDeviceUnavailable:
+                configureAudioSession()
+                stopPlayingAudio()
+            default: ()
+            }
         }
     }
 }
