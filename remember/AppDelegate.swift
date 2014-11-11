@@ -156,7 +156,8 @@ extension AppDelegate {
             managedObjectContext?.save(nil)
             let predicate = NSPredicate(format: "isRead == 0")
             let unreadMessages = location.messages.filteredSetUsingPredicate(predicate!)
-            if unreadMessages.count > 0 && currentTime - previousTriggerDate > 3600 {
+//            if unreadMessages.count > 0 && currentTime - previousTriggerDate > 3600 {
+            if unreadMessages.count > 0 {
                 var title = ""
                 var message = ""
                 location.lastTriggerDate = NSDate()
