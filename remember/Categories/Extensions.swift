@@ -27,6 +27,29 @@ extension Double {
     }
 }
 
+extension CLLocationCoordinate2D {
+    func printCoordinate() -> String {
+        let lat = latitude.format("0.4")
+        let long = longitude.format("0.4")
+        return "\(lat), \(long)"
+    }
+    
+    func distanceFromCoordinate(coordinate: CLLocationCoordinate2D) -> CLLocationDistance {
+        let location1 = CLLocation(latitude: latitude, longitude: longitude)
+        let location2 = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
+        return location1.distanceFromLocation(location2)
+    }
+}
+
+extension NSDate {
+    func dateStringOfLocalTimeZone() -> String {
+        let formatter = NSDateFormatter()
+        formatter.dateFormat = "YYYY-MM-dd HH:mm:ss"
+        formatter.timeZone = NSTimeZone.systemTimeZone()
+        return formatter.stringFromDate(self)
+    }
+}
+
 extension Location {
     func beaconRegion () -> CLBeaconRegion {
         let proximityUUID = NSUUID(UUIDString: uuid)
@@ -42,7 +65,7 @@ extension Location {
     
     func circularRegion() -> CLCircularRegion {
         let center = CLLocationCoordinate2D(latitude: Double(latitude), longitude: Double(longitude))
-        let region = CLCircularRegion(center: center, radius: 50, identifier: identifier)
+        let region = CLCircularRegion(center: center, radius: 200, identifier: identifier)
         return region
     }
     
@@ -81,6 +104,6 @@ extension Location {
 
 extension UITableView {
     func removeFooterBorder () {
-        self.tableFooterView = UIView(frame: CGRectZero)
+        tableFooterView = UIView(frame: CGRectZero)
     }
 }

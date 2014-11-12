@@ -299,8 +299,8 @@ class SwipeableTableViewCell: UITableViewCell, UIGestureRecognizerDelegate {
         case UIGestureRecognizerState.Began:
             configureButtonsIfNeeded()
             panStartPoint = currentPoint
-            if let constant = self.contentViewRightConstraint?.constant {
-                self.startingRightLayoutConstraintConstant = constant
+            if let constant = contentViewRightConstraint?.constant {
+                startingRightLayoutConstraintConstant = constant
             }
         case UIGestureRecognizerState.Changed:
             if movingHorizontally {

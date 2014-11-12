@@ -28,12 +28,6 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     //MARK: - Test labels
     
-    @IBOutlet weak var selectedLocationLatitudeLabel: UILabel!
-    @IBOutlet weak var selectedLocationLongitudeLabel: UILabel!
-    @IBOutlet weak var currentLocationLatitudeLabel: UILabel!
-    @IBOutlet weak var currentLocationLongitudeLabel: UILabel!
-    @IBOutlet weak var distanceLabel: UILabel!
-    
     var editingCellRowNumber = -1
 
     weak var managedObjectContext: NSManagedObjectContext!
@@ -44,8 +38,6 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     var selectedLocationObjectID: NSManagedObjectID?
 
     var activePlayerIndexPath: NSIndexPath?
-    
-    var selectedLocation: CLLocation? = nil
 
     //MARK: variables for audio recorder
 
@@ -105,7 +97,6 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         super.viewDidAppear(animated)
         monitorEnterLocationNotification()
         monitorAudioRouteChange()
-        monitorGPS()
         setSelectedLocationObjectID()
         tableView.reloadData()
     }
@@ -115,7 +106,6 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         super.viewDidDisappear(animated)
         unmonitorEnterLocationNotification()
         unmonitorAudioRouteChange()
-        unmonitorGPS()
         resetEditMode()
     }
 
@@ -179,13 +169,6 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
             let location = objectsInTable[indexPath.row] as Location
             selectedLocationObjectID = location.objectID
             tableView.reloadData()
-            
-            if location.uuid == "" {
-                selectedLocation = CLLocation(latitude: Double(location.latitude), longitude: Double(location.longitude))
-                selectedLocationLatitudeLabel.text = "\(location.latitude)"
-                selectedLocationLongitudeLabel.text = "\(location.longitude)"
-            }
-            
         } else {
             let messageCell = cell as MessagesTableViewCell
             if messageCell.playing {
@@ -620,32 +603,6 @@ extension HomeViewController {
                 configureAudioSession()
                 stopPlayingAudio()
             default: ()
-            }
-        }
-    }
-}
-
-// GPS testing
-extension HomeViewController{
-    func monitorGPS() {
-        LocationManager.sharedInstance.startUpdatingLocation()
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateGPSLabel:", name: kGPSLocationUpdateNotificationName, object: nil)
-    }
-    
-    func unmonitorGPS() {
-        LocationManager.sharedInstance.stopUpdatingLocation()
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: kGPSLocationUpdateNotificationName, object: nil)
-    }
-    
-    func updateGPSLabel(notification: NSNotification) {
-        if let dict = notification.userInfo as? Dictionary<String, CLLocation> {
-            if let location = dict[kGPSLocationUpdateNotificationUserInfoLocationKey] {
-                currentLocationLatitudeLabel.text = "\(location.coordinate.latitude)"
-                currentLocationLongitudeLabel.text = "\(location.coordinate.longitude)"
-                
-                let distance = location.distanceFromLocation(selectedLocation).format(".2")
-                
-                distanceLabel.text = "\(distance)m"
             }
         }
     }

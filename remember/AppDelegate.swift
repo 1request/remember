@@ -25,17 +25,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         Mixpanel.sharedInstanceWithToken("3b27052c32a6e7426f27e17b0a1f2e7e").track("Swift")
         
-        if let navigationController = self.window?.rootViewController as? NavigationController {
+        if let navigationController = window?.rootViewController as? NavigationController {
             if let homeViewController = navigationController.topViewController as? HomeViewController {
-                homeViewController.managedObjectContext = self.managedObjectContext!
+                homeViewController.managedObjectContext = managedObjectContext!
             }
         }
-        self.monitorLocations()
+        monitorLocations()
+        LocationManager.sharedInstance.startUpdatingLocation()
+        
+        if LocationManager.sharedInstance.locationManager.respondsToSelector("startMonitoringVisits") {
+            LocationManager.sharedInstance.locationManager.startMonitoringVisits()
+        }
+        
         return true
     }
     
     func application(application: UIApplication, didReceiveLocalNotification notification: UILocalNotification) {
-        self.clearNotifications()
+        clearNotifications()
         let state = application.applicationState
         if state == UIApplicationState.Active {
             AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
@@ -58,13 +64,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationDidBecomeActive(application: UIApplication) {
-        self.clearNotifications()
+        clearNotifications()
     }
 
     func applicationWillTerminate(application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
         // Saves changes in the application's managed object context before the application terminates.
-        self.saveContext()
+        saveContext()
     }
 
     // MARK: - Core Data stack
@@ -134,7 +140,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 extension AppDelegate {
     func monitorLocations () {
-        LocationManager.sharedInstance.locationManager.monitoredRegions
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleLocationEvent:", name: kEnteredBeaconRegionNotificationName, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleLocationEvent:", name: kExitedBeaconRegionNotificationName, object: nil)
     }
@@ -156,8 +161,7 @@ extension AppDelegate {
             managedObjectContext?.save(nil)
             let predicate = NSPredicate(format: "isRead == 0")
             let unreadMessages = location.messages.filteredSetUsingPredicate(predicate!)
-//            if unreadMessages.count > 0 && currentTime - previousTriggerDate > 3600 {
-            if unreadMessages.count > 0 {
+            if unreadMessages.count > 0 && currentTime - previousTriggerDate > 3600 {
                 var title = ""
                 var message = ""
                 location.lastTriggerDate = NSDate()
