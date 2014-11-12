@@ -157,7 +157,7 @@ extension AppDelegate {
     func  handleLocationEvent(notification: NSNotification) {
         if let location = locationFromNotification(notification) {
             let previousTriggerDate = location.lastTriggerDate.timeIntervalSince1970
-            let currentTime = location.lastTriggerDate.timeIntervalSince1970
+            let currentTime = NSDate().timeIntervalSince1970
             managedObjectContext?.save(nil)
             let predicate = NSPredicate(format: "isRead == 0")
             let unreadMessages = location.messages.filteredSetUsingPredicate(predicate!)
