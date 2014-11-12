@@ -38,6 +38,9 @@
 		8ABFAA6719E668DB00FCE6EF /* MessagesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABFAA6619E668DB00FCE6EF /* MessagesTableViewCell.swift */; };
 		8ABFAA6919E67CEB00FCE6EF /* UnreadSpotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABFAA6819E67CEB00FCE6EF /* UnreadSpotView.swift */; };
 		8ABFAA6B19E68AB600FCE6EF /* RadioButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABFAA6A19E68AB600FCE6EF /* RadioButton.swift */; };
+		D10D94041A139BA400B3FEC1 /* UserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB306EB1A13020900BF5EF7 /* UserDefaults.swift */; };
+		D10D94051A139BA400B3FEC1 /* LogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB306E71A13007500BF5EF7 /* LogViewController.swift */; };
+		D10D94061A139BA400B3FEC1 /* GPSSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C9BAE2D1A135CD000670D68 /* GPSSettingsViewController.swift */; };
 		D116335019EC9AC100884C60 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D116334F19EC9AC100884C60 /* Crashlytics.framework */; };
 		D12249391A0D03FE008AC2BD /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C84AFAF1A0CB13500D905A0 /* Location.swift */; };
 		D122493A1A0D03FE008AC2BD /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C4B6F8B1A0C738400B3C6C6 /* Message.swift */; };
@@ -576,6 +579,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D10D94041A139BA400B3FEC1 /* UserDefaults.swift in Sources */,
+				D10D94051A139BA400B3FEC1 /* LogViewController.swift in Sources */,
+				D10D94061A139BA400B3FEC1 /* GPSSettingsViewController.swift in Sources */,
 				D12249391A0D03FE008AC2BD /* Location.swift in Sources */,
 				D122493A1A0D03FE008AC2BD /* Message.swift in Sources */,
 				D122493B1A0D03FE008AC2BD /* GPSLocationTableViewCell.swift in Sources */,
