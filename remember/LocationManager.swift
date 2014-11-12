@@ -176,7 +176,7 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
             dict[kTriggerDistance] = "\(distance)km"
         }
         
-        NSUserDefaults.standardUserDefaults().setValue(dict, forKey: kExitDetails)
+        NSUserDefaults.standardUserDefaults().setValue(dict, forKey: kVisitDetails)
         NSNotificationCenter.defaultCenter().postNotification(notification)
     }
 }
