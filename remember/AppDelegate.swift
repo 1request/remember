@@ -26,7 +26,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let mixpanel = Mixpanel.sharedInstanceWithToken("3b27052c32a6e7426f27e17b0a1f2e7e")
         mixpanel.track("Swift")
         if UIDevice.currentDevice().model != "iPhone Simulator" {
-            mixpanel.identify(NSUUID().UUIDString)
+            mixpanel.identify(UIDevice.currentDevice().identifierForVendor.UUIDString)
             mixpanel.people.set(["language": "Swift"])
         }
         
