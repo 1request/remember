@@ -27,6 +27,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         mixpanel.track("Swift")
         if UIDevice.currentDevice().model != "iPhone Simulator" {
             mixpanel.identify(NSUUID().UUIDString)
+            mixpanel.people.set(["language": "Swift"])
         }
         
         if let navigationController = window?.rootViewController as? NavigationController {

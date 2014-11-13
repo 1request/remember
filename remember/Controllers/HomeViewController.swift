@@ -393,6 +393,8 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
 
     func finishRecordingAudio () {
+        Mixpanel.sharedInstance().track("audioRecorded")
+        
         stopRecordingAudio()
         if timeInterval > kMinimumRecordLength {
             let location = managedObjectContext!.objectWithID(selectedLocationObjectID!) as Location
@@ -440,6 +442,8 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     //MARK: - Play Audio
 
     func playAudioAtIndexPath (indexPath: NSIndexPath) {
+        Mixpanel.sharedInstance().track("startPlaying")
+        
         let message = objectsInTable.objectAtIndex(indexPath.row) as Message
         let filePath = kApplicationPath + "/" + message.createdAt.timeIntervalSince1970.format(".0") + ".m4a"
         if NSFileManager.defaultManager().fileExistsAtPath(filePath) {
