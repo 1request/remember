@@ -165,8 +165,6 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
     
     func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
         if let location = locations.last as? CLLocation {
-            Mixpanel.sharedInstance().track("didUpdateLocation")
-            
             let notification = NSNotification(name: kGPSLocationUpdateNotificationName, object: self, userInfo: [kGPSLocationUpdateNotificationUserInfoLocationKey: location])
             NSNotificationCenter.defaultCenter().postNotification(notification)
             currentLocation = location
