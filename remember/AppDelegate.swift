@@ -23,7 +23,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         Crashlytics.startWithAPIKey("a73df0ceadf9f0995f97da85f3a3ca791c3e0de1")
         
-        Mixpanel.sharedInstanceWithToken("3b27052c32a6e7426f27e17b0a1f2e7e").track("Swift")
+        let mixpanel = Mixpanel.sharedInstanceWithToken("3b27052c32a6e7426f27e17b0a1f2e7e")
+        mixpanel.track("Swift")
+        if UIDevice.currentDevice().model != "iPhone Simulator" {
+            mixpanel.identify(NSUUID().UUIDString)
+        }
         
         if let navigationController = window?.rootViewController as? NavigationController {
             if let homeViewController = navigationController.topViewController as? HomeViewController {

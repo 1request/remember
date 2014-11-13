@@ -118,10 +118,14 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
     func locationManager(manager: CLLocationManager!, didEnterRegion region: CLRegion!) {
         println("did enter region: \(region)")
         if let beaconRegion = region as? CLBeaconRegion {
+            Mixpanel.sharedInstance().track("didEnterRegion: \(beaconRegion.identifier)")
+            
             if beaconRegion.major != nil && beaconRegion.minor != nil {
                 NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: kEnteredBeaconRegionNotificationName, object: self, userInfo: [kEnteredBeaconRegionNotificationUserInfoRegionKey: beaconRegion as CLRegion]))
             }
         } else {
+            Mixpanel.sharedInstance().track("didEnterRegion: \(region.identifier)")
+            
             var dict = [kTriggerDate: NSDate(), kRegionName: region.identifier]
             
             if let locationAvailable = currentLocation {
@@ -138,10 +142,14 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
     func locationManager(manager: CLLocationManager!, didExitRegion region: CLRegion!) {
         println("did exit region: \(region)")
         if let beaconRegion = region as? CLBeaconRegion {
+            Mixpanel.sharedInstance().track("didExitRegion: \(beaconRegion.identifier)")
+            
             if beaconRegion.major != nil && beaconRegion.minor != nil {
                 NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: kExitedBeaconRegionNotificationName, object: self, userInfo: [kExitedBeaconRegionNotificationUserInfoRegionKey: beaconRegion]))
             }
         } else {
+            Mixpanel.sharedInstance().track("didExitRegion: \(region.identifier)")
+            
             var dict = [kTriggerDate: NSDate(), kRegionName: region.identifier]
             
             if let locationAvailable = currentLocation {
@@ -157,6 +165,8 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
     
     func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
         if let location = locations.last as? CLLocation {
+            Mixpanel.sharedInstance().track("didUpdateLocation: \(location)")
+            
             let notification = NSNotification(name: kGPSLocationUpdateNotificationName, object: self, userInfo: [kGPSLocationUpdateNotificationUserInfoLocationKey: location])
             NSNotificationCenter.defaultCenter().postNotification(notification)
             currentLocation = location
@@ -166,6 +176,8 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
     }
     
     func locationManager(manager: CLLocationManager!, didVisit visit: CLVisit!) {
+        Mixpanel.sharedInstance().track("didVisit: \(visit)")
+        
         let notification = NSNotification(name: kVisitsNotificationName, object: self, userInfo: [kVisitsNotificationUserInfoVisitKey: visit])
         
         var dict = [kTriggerDate: NSDate(), kVisitCoordinate: visit.coordinate.printCoordinate()]
