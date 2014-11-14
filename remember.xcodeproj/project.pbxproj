@@ -49,6 +49,12 @@
 		D12249391A0D03FE008AC2BD /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C84AFAF1A0CB13500D905A0 /* Location.swift */; };
 		D122493A1A0D03FE008AC2BD /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C4B6F8B1A0C738400B3C6C6 /* Message.swift */; };
 		D122493B1A0D03FE008AC2BD /* GPSLocationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CE2CA5A1A0C68A000369D8B /* GPSLocationTableViewCell.swift */; };
+		D12E82CC1A165B040016778F /* MixpanelEventProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C18BBE41A160145001F15CA /* MixpanelEventProtocols.swift */; };
+		D12E82CD1A165B040016778F /* GeographicRegionEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C69B1721A160089005494A3 /* GeographicRegionEvent.swift */; };
+		D12E82CE1A165B040016778F /* BeaconRegionEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C18BBE71A16018B001F15CA /* BeaconRegionEvent.swift */; };
+		D12E82CF1A165B040016778F /* VisitEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C18BBE91A1601BD001F15CA /* VisitEvent.swift */; };
+		D12E82D01A165B040016778F /* AddLocationEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C18BBEB1A1601DB001F15CA /* AddLocationEvent.swift */; };
+		D12E82D11A165B040016778F /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CD4486B1A15FFC7004F4C19 /* Constants.swift */; };
 		D1B9DE441A0C2F1100C4243E /* HUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CF32E621A0B21B00056F873 /* HUD.swift */; };
 		D1B9DE451A0C2F1100C4243E /* SwipeableTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA8AC711A07202D00566252 /* SwipeableTableViewCell.swift */; };
 		D1B9DE461A0C2F1100C4243E /* EditLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C28F48D1A0A0B40006A7CA0 /* EditLocationViewController.swift */; };
@@ -614,6 +620,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D12E82CC1A165B040016778F /* MixpanelEventProtocols.swift in Sources */,
+				D12E82CD1A165B040016778F /* GeographicRegionEvent.swift in Sources */,
+				D12E82CE1A165B040016778F /* BeaconRegionEvent.swift in Sources */,
+				D12E82CF1A165B040016778F /* VisitEvent.swift in Sources */,
+				D12E82D01A165B040016778F /* AddLocationEvent.swift in Sources */,
+				D12E82D11A165B040016778F /* Constants.swift in Sources */,
 				D10D94051A139BA400B3FEC1 /* LogViewController.swift in Sources */,
 				D10D94061A139BA400B3FEC1 /* GPSSettingsViewController.swift in Sources */,
 				D12249391A0D03FE008AC2BD /* Location.swift in Sources */,
