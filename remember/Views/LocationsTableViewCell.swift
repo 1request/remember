@@ -22,6 +22,7 @@ class LocationsTableViewCell: SwipeableTableViewCell {
     private func makeLayout() {
         radioButton.setTranslatesAutoresizingMaskIntoConstraints(false)
         locationNameLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
+        locationNameLabel.textColor = UIColor.appGreenTextColor()
 
         customContentView.addSubview(radioButton)
         customContentView.addSubview(locationNameLabel)

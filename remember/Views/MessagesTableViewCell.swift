@@ -55,10 +55,12 @@ class MessagesTableViewCell: SwipeableTableViewCell {
 
     func markAsRead() {
         unreadSpotIcon.hidden = true
+        messageLabel.textColor = UIColor.appGrayTextColor()
     }
 
     func markAsUnread() {
         unreadSpotIcon.hidden = false
+        messageLabel.textColor = UIColor.appBlackTextColor()
     }
 
     func startPlaying() {

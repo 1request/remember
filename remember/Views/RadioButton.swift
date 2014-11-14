@@ -28,7 +28,7 @@ import UIKit
         
         // Drawing code
         var outterCirclePath = UIBezierPath(ovalInRect: CGRectMake(strokeWidth, strokeWidth, width, height))
-        var outterCircleColor = UIColor.appGreyColor()
+        var outterCircleColor = UIColor.appGrayColor()
         
         outterCircleColor.setStroke()
         outterCirclePath.lineWidth = 1

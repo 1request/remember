@@ -199,9 +199,13 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
     func closeEditingCell() {
         let indexPath = NSIndexPath(forRow: editingCellRowNumber, inSection: 0)
-
-        if let previousEditingCell = tableView.cellForRowAtIndexPath(indexPath) as? SwipeableTableViewCell {
+        let cell = tableView.cellForRowAtIndexPath(indexPath)
+        if let previousEditingCell = cell as? SwipeableTableViewCell {
             previousEditingCell.closeCell(animated: true)
+        }
+        
+        if let messageCell = cell as? MessagesTableViewCell {
+            messageCell.playButton.setBackgroundImage(UIImage(named: "play-active"), forState: UIControlState.Normal)
         }
     }
 
@@ -530,6 +534,9 @@ extension HomeViewController: SwipeableTableViewCellDelegate {
 
         if let indexPath = tableView.indexPathForCell(cell) {
             editingCellRowNumber = indexPath.row
+        }
+        if let messageCell = cell as? MessagesTableViewCell {
+            messageCell.playButton.setBackgroundImage(UIImage(named: "play-inactive"), forState: UIControlState.Normal)
         }
     }
 

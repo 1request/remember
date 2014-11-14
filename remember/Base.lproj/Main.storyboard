@@ -458,41 +458,60 @@
                                     <constraint firstAttribute="width" secondItem="eeq-nU-IfG" secondAttribute="height" multiplier="185:159" id="uK9-JO-bou"/>
                                 </constraints>
                             </imageView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hQp-ZG-RTu">
+                                <rect key="frame" x="0.0" y="399" width="600" height="201"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Separator" translatesAutoresizingMaskIntoConstraints="NO" id="TEi-dk-lub">
+                                        <rect key="frame" x="0.0" y="0.0" width="600" height="201"/>
+                                    </imageView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lyi-sS-abq">
+                                        <rect key="frame" x="217" y="27" width="166" height="166"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="lyi-sS-abq" secondAttribute="height" multiplier="1:1" id="Hqx-Iq-AJQ"/>
+                                        </constraints>
+                                        <state key="normal" image="record-button">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="recordButtonTouchedDown:" destination="BYZ-38-t0r" eventType="touchDown" id="uP1-ZZ-XjY"/>
+                                            <action selector="recordButtonTouchedDragEnter:" destination="BYZ-38-t0r" eventType="touchDragEnter" id="es7-5g-F28"/>
+                                            <action selector="recordButtonTouchedDragExit:" destination="BYZ-38-t0r" eventType="touchDragExit" id="0y0-gI-7wD"/>
+                                            <action selector="recordButtonTouchedUpInside:" destination="BYZ-38-t0r" eventType="touchUpInside" id="G7n-QK-oeM"/>
+                                            <action selector="recordButtonTouchedUpOutside:" destination="BYZ-38-t0r" eventType="touchUpOutside" id="JdE-b6-KVF"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="centerX" secondItem="lyi-sS-abq" secondAttribute="centerX" id="0sI-Au-NPh"/>
+                                    <constraint firstItem="TEi-dk-lub" firstAttribute="top" secondItem="hQp-ZG-RTu" secondAttribute="top" id="3UW-of-2aq"/>
+                                    <constraint firstAttribute="width" secondItem="hQp-ZG-RTu" secondAttribute="height" multiplier="640:214" id="3uI-jx-OaC"/>
+                                    <constraint firstAttribute="bottom" secondItem="TEi-dk-lub" secondAttribute="bottom" id="ACr-kP-atQ"/>
+                                    <constraint firstAttribute="bottom" secondItem="lyi-sS-abq" secondAttribute="bottom" constant="8" id="VwU-Fe-BaI"/>
+                                    <constraint firstItem="TEi-dk-lub" firstAttribute="leading" secondItem="hQp-ZG-RTu" secondAttribute="leading" id="dA2-6X-CWD"/>
+                                    <constraint firstAttribute="trailing" secondItem="TEi-dk-lub" secondAttribute="trailing" id="gvl-eh-22y"/>
+                                </constraints>
+                            </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="60" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="Dtd-qO-gU9">
-                                <rect key="frame" x="0.0" y="64" width="600" height="354"/>
+                                <rect key="frame" x="0.0" y="64" width="600" height="327"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
                                     <outlet property="dataSource" destination="BYZ-38-t0r" id="TE1-kf-NFp"/>
                                     <outlet property="delegate" destination="BYZ-38-t0r" id="TRM-YI-fAK"/>
                                 </connections>
                             </tableView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lyi-sS-abq">
-                                <rect key="frame" x="217" y="426" width="166" height="166"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" secondItem="lyi-sS-abq" secondAttribute="height" multiplier="1:1" id="Hqx-Iq-AJQ"/>
-                                </constraints>
-                                <state key="normal" image="record-button">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="recordButtonTouchedDown:" destination="BYZ-38-t0r" eventType="touchDown" id="uP1-ZZ-XjY"/>
-                                    <action selector="recordButtonTouchedDragEnter:" destination="BYZ-38-t0r" eventType="touchDragEnter" id="es7-5g-F28"/>
-                                    <action selector="recordButtonTouchedDragExit:" destination="BYZ-38-t0r" eventType="touchDragExit" id="0y0-gI-7wD"/>
-                                    <action selector="recordButtonTouchedUpInside:" destination="BYZ-38-t0r" eventType="touchUpInside" id="G7n-QK-oeM"/>
-                                    <action selector="recordButtonTouchedUpOutside:" destination="BYZ-38-t0r" eventType="touchUpOutside" id="JdE-b6-KVF"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="Dtd-qO-gU9" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="D0k-tK-9Hh"/>
-                            <constraint firstItem="lyi-sS-abq" firstAttribute="top" secondItem="Dtd-qO-gU9" secondAttribute="bottom" constant="8" id="FDx-qx-KCS"/>
                             <constraint firstItem="Dtd-qO-gU9" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="MNP-Ke-pxe"/>
                             <constraint firstItem="eeq-nU-IfG" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="QKQ-1N-00Z"/>
                             <constraint firstAttribute="trailing" secondItem="Dtd-qO-gU9" secondAttribute="trailing" id="Qo5-Sf-ohl"/>
-                            <constraint firstAttribute="centerX" secondItem="lyi-sS-abq" secondAttribute="centerX" id="ayA-wg-Zvn"/>
+                            <constraint firstItem="hQp-ZG-RTu" firstAttribute="top" secondItem="Dtd-qO-gU9" secondAttribute="bottom" constant="8" id="V4u-zQ-Q7y"/>
+                            <constraint firstItem="hQp-ZG-RTu" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="Wcx-fZ-bg9"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="hQp-ZG-RTu" secondAttribute="bottom" id="dCL-qq-z8l"/>
                             <constraint firstAttribute="trailing" secondItem="eeq-nU-IfG" secondAttribute="trailing" constant="16" id="kON-C6-DEN"/>
-                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="lyi-sS-abq" secondAttribute="bottom" constant="8" id="lZj-Cy-8rv"/>
+                            <constraint firstAttribute="trailing" secondItem="hQp-ZG-RTu" secondAttribute="trailing" id="xn0-FR-oE2"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="TfE-9W-SDK">
@@ -516,7 +535,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="951" y="132.5"/>
+            <point key="canvasLocation" x="951" y="132"/>
         </scene>
         <!--Devices-->
         <scene sceneID="v3v-Zd-xEL">
@@ -778,6 +797,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="Separator" width="640" height="214"/>
         <image name="add" width="38" height="38"/>
         <image name="device" width="90" height="98"/>
         <image name="pin" width="73" height="82"/>

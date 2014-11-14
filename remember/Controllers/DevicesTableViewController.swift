@@ -90,7 +90,7 @@ class DevicesTableViewController: UITableViewController, UITableViewDataSource, 
             
             if !filteredLocations.isEmpty {
                 cell.addButton.setTitle("Added", forState: UIControlState.Normal)
-                cell.addButton.setTitleColor(UIColor.appGreyColor(), forState: UIControlState.Normal)
+                cell.addButton.setTitleColor(UIColor.appGrayColor(), forState: UIControlState.Normal)
                 cell.addButton.backgroundColor = nil
                 
             }
