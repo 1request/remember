@@ -26,8 +26,6 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     @IBOutlet weak var recordButton: UIButton!
     @IBOutlet weak var pressHereImageView: UIImageView!
     
-    //MARK: - Test labels
-    
     var editingCellRowNumber = -1
 
     weak var managedObjectContext: NSManagedObjectContext!
@@ -203,9 +201,16 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         if let previousEditingCell = cell as? SwipeableTableViewCell {
             previousEditingCell.closeCell(animated: true)
         }
-        
         if let messageCell = cell as? MessagesTableViewCell {
-            messageCell.playButton.setBackgroundImage(UIImage(named: "play-active"), forState: UIControlState.Normal)
+            setPlayButton(active: true, ForCell: messageCell)
+        }
+    }
+    
+    func setPlayButton(#active: Bool, ForCell cell: MessagesTableViewCell) {
+        if active {
+            cell.playButton.setBackgroundImage(UIImage(named: "play-active"), forState: UIControlState.Normal)
+        } else {
+            cell.playButton.setBackgroundImage(UIImage(named: "play-inactive"), forState: UIControlState.Normal)
         }
     }
 
@@ -535,13 +540,18 @@ extension HomeViewController: SwipeableTableViewCellDelegate {
         if let indexPath = tableView.indexPathForCell(cell) {
             editingCellRowNumber = indexPath.row
         }
+        
         if let messageCell = cell as? MessagesTableViewCell {
-            messageCell.playButton.setBackgroundImage(UIImage(named: "play-inactive"), forState: UIControlState.Normal)
+            setPlayButton(active: false, ForCell: messageCell)
         }
     }
 
     func swipeableCellDidClose(cell: SwipeableTableViewCell) {
         resetEditMode()
+        
+        if let messageCell = cell as? MessagesTableViewCell {
+            setPlayButton(active: true, ForCell: messageCell)
+        }
     }
 
     func swipeableCell(cell: SwipeableTableViewCell, didSelectButtonAtIndex index: Int) {
