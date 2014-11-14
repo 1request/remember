@@ -801,7 +801,7 @@
         <image name="add" width="38" height="38"/>
         <image name="device" width="90" height="98"/>
         <image name="pin" width="73" height="82"/>
-        <image name="press-here" width="305" height="300"/>
+        <image name="press-here" width="305" height="272"/>
         <image name="record-button" width="160" height="166"/>
     </resources>
 </document>
