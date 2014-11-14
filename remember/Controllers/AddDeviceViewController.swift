@@ -10,13 +10,16 @@ import UIKit
 import CoreLocation
 import CoreData
 
-class AddDeviceViewController: UIViewController {
+class AddDeviceViewController: UIViewController, UITextFieldDelegate {
     var location: CLLocation? = nil
     var beacon: CLBeacon? = nil
     weak var managedObjectContext: NSManagedObjectContext?
     
     @IBOutlet weak var deviceNameTextField: UITextField!
     
+    override func viewDidLoad() {
+        deviceNameTextField.delegate = self
+    }
     
     @IBAction func saveBarButtonItemPressed(sender: UIBarButtonItem) {
         let locationToBeAdded = NSEntityDescription.insertNewObjectForEntityForName("Location", inManagedObjectContext: managedObjectContext!) as Location
@@ -48,5 +51,10 @@ class AddDeviceViewController: UIViewController {
         managedObjectContext!.save(nil)
         
         navigationController?.popToRootViewControllerAnimated(true)
+    }
+    
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
 }

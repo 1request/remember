@@ -537,7 +537,7 @@
             </objects>
             <point key="canvasLocation" x="951" y="132"/>
         </scene>
-        <!--Devices-->
+        <!--Locations-->
         <scene sceneID="v3v-Zd-xEL">
             <objects>
                 <tableViewController id="3mB-0z-fow" customClass="DevicesTableViewController" customModule="remember" customModuleProvider="target" sceneMemberID="viewController">
@@ -667,7 +667,7 @@
                             <outlet property="delegate" destination="3mB-0z-fow" id="XPZ-9N-c1Y"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Devices" id="5PU-ex-48K"/>
+                    <navigationItem key="navigationItem" title="Locations" id="5PU-ex-48K"/>
                     <connections>
                         <segue destination="3QA-C9-hzw" kind="show" identifier="toAddDevice" id="tjr-xe-V7S"/>
                     </connections>
@@ -676,7 +676,7 @@
             </objects>
             <point key="canvasLocation" x="1667" y="-252"/>
         </scene>
-        <!--Set Devices-->
+        <!--Set Location-->
         <scene sceneID="MUP-d4-Ctp">
             <objects>
                 <viewController id="3QA-C9-hzw" customClass="AddDeviceViewController" customModule="remember" customModuleProvider="target" sceneMemberID="viewController">
@@ -688,8 +688,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Device Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rbD-uC-34X">
-                                <rect key="frame" x="16" y="72" width="103" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name of Location" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rbD-uC-34X">
+                                <rect key="frame" x="16" y="72" width="137" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
@@ -709,7 +709,7 @@
                             <constraint firstAttribute="trailing" secondItem="L99-nn-DyE" secondAttribute="trailing" constant="16" id="pQg-er-Kjr"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Set Devices" id="pdk-AI-J4r">
+                    <navigationItem key="navigationItem" title="Set Location" id="pdk-AI-J4r">
                         <barButtonItem key="rightBarButtonItem" title="Save" id="qP6-M1-MUw">
                             <connections>
                                 <action selector="saveBarButtonItemPressed:" destination="3QA-C9-hzw" id="FwV-1a-Ugu"/>
