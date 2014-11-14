@@ -28,7 +28,6 @@ struct GeographicRegionEvent: RegionEvent {
         case .Exit:
             title = kExitedGeoEventTitle
         }
-        title += ": \(region.identifier)"
         properties[kRegionType] = regionType.rawValue
         properties[kEventType] = eventType.rawValue
         properties[kIdentifier] = region.identifier

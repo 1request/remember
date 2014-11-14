@@ -30,8 +30,6 @@ struct BeaconRegionEvent: RegionEvent {
             title = kExitedBeaconEventTitle
         }
         
-        title += ": \(region.identifier)"
-        
         properties[kRegionType] = regionType.rawValue
         properties[kEventType] = eventType.rawValue
         properties[kUUID] = region.proximityUUID.UUIDString
