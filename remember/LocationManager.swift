@@ -118,8 +118,6 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
     func locationManager(manager: CLLocationManager!, didEnterRegion region: CLRegion!) {
         println("did enter region: \(region)")
         if let beaconRegion = region as? CLBeaconRegion {
-            Mixpanel.sharedInstance().track("didEnterRegion: \(beaconRegion.identifier)")
-            
             if beaconRegion.major != nil && beaconRegion.minor != nil {
                 NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: kEnteredRegionNotificationName, object: self, userInfo: [kEnteredRegionNotificationUserInfoRegionKey: beaconRegion as CLRegion]))
                 if let location = currentLocation {
@@ -129,8 +127,6 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
                 }
             }
         } else {
-            Mixpanel.sharedInstance().track("didEnterRegion: \(region.identifier)")
-            
             NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: kEnteredRegionNotificationName, object: self, userInfo: [kEnteredRegionNotificationUserInfoRegionKey: region as CLRegion]))
             if let location = currentLocation {
                 let e = GeographicRegionEvent(eventType: .Enter, region: region as CLCircularRegion, scene: location)
