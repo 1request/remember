@@ -72,6 +72,7 @@ struct GeographicRegionEvent: RegionEvent {
         case .Exit:
             eventTitle = kExitedGeoEventTitle
         }
+        eventTitle += ": \(region.identifier)"
         eventProperties[kRegionType] = regionType.rawValue
         eventProperties[kEventType] = eventType.rawValue
         eventProperties[kIdentifier] = region.identifier
@@ -105,6 +106,8 @@ struct BeaconRegionEvent: RegionEvent {
         case .Exit:
             eventTitle = kExitedBeaconEventTitle
         }
+        
+        eventTitle += ": \(region.identifier)"
         
         eventProperties[kRegionType] = regionType.rawValue
         eventProperties[kEventType] = eventType.rawValue
@@ -146,4 +149,3 @@ struct VisitEvent: MixpanelEvent {
         eventProperties[kDate] = NSDate()
     }
 }
-
