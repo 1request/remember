@@ -23,19 +23,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         Crashlytics.startWithAPIKey("a73df0ceadf9f0995f97da85f3a3ca791c3e0de1")
         
-        Mixpanel.sharedInstanceWithToken("3b27052c32a6e7426f27e17b0a1f2e7e").track("Swift")
+        let mixpanel = Mixpanel.sharedInstanceWithToken("3b27052c32a6e7426f27e17b0a1f2e7e")
+        mixpanel.track("Swift")
+        if UIDevice.currentDevice().model != "iPhone Simulator" {
+            mixpanel.identify(UIDevice.currentDevice().identifierForVendor.UUIDString)
+            mixpanel.people.set(["language": "Swift"])
+        }
         
-        if let navigationController = self.window?.rootViewController as? NavigationController {
+        if let navigationController = window?.rootViewController as? NavigationController {
             if let homeViewController = navigationController.topViewController as? HomeViewController {
-                homeViewController.managedObjectContext = self.managedObjectContext!
+                homeViewController.managedObjectContext = managedObjectContext!
             }
         }
-        self.monitorLocations()
+        monitorLocations()
+        LocationManager.sharedInstance.startUpdatingLocation()
+        
+        if LocationManager.sharedInstance.locationManager.respondsToSelector("startMonitoringVisits") {
+            LocationManager.sharedInstance.locationManager.startMonitoringVisits()
+        }
+        
         return true
     }
     
     func application(application: UIApplication, didReceiveLocalNotification notification: UILocalNotification) {
-        self.clearNotifications()
+        clearNotifications()
         let state = application.applicationState
         if state == UIApplicationState.Active {
             AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
@@ -58,13 +69,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationDidBecomeActive(application: UIApplication) {
-        self.clearNotifications()
+        clearNotifications()
     }
 
     func applicationWillTerminate(application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
         // Saves changes in the application's managed object context before the application terminates.
-        self.saveContext()
+        saveContext()
     }
 
     // MARK: - Core Data stack
@@ -134,9 +145,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 extension AppDelegate {
     func monitorLocations () {
-        LocationManager.sharedInstance.locationManager.monitoredRegions
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleLocationEvent:", name: kEnteredBeaconRegionNotificationName, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleLocationEvent:", name: kExitedBeaconRegionNotificationName, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleLocationEvent:", name: kEnteredRegionNotificationName, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleLocationEvent:", name: kExitedRegionNotificationName, object: nil)
     }
     
     func locationFromNotification(notification: NSNotification) -> Location? {
@@ -152,18 +162,18 @@ extension AppDelegate {
     func  handleLocationEvent(notification: NSNotification) {
         if let location = locationFromNotification(notification) {
             let previousTriggerDate = location.lastTriggerDate.timeIntervalSince1970
-            let currentTime = location.lastTriggerDate.timeIntervalSince1970
-            managedObjectContext?.save(nil)
+            let currentTime = NSDate().timeIntervalSince1970
             let predicate = NSPredicate(format: "isRead == 0")
             let unreadMessages = location.messages.filteredSetUsingPredicate(predicate!)
             if unreadMessages.count > 0 && currentTime - previousTriggerDate > 3600 {
                 var title = ""
                 var message = ""
                 location.lastTriggerDate = NSDate()
-                if notification.name == kEnteredBeaconRegionNotificationName {
+                managedObjectContext?.save(nil)
+                if notification.name == kEnteredRegionNotificationName {
                     title = "New message from \(location.name)"
                     message = "\(location.name) got \(unreadMessages.count) new notification" + (unreadMessages.count > 1 ? "s" : "")
-                } else if notification.name == kExitedBeaconRegionNotificationName {
+                } else if notification.name == kExitedRegionNotificationName {
                     title = "New message from \(location.name)"
                     message = "You got \(unreadMessages.count) new notification" + (unreadMessages.count > 1 ? "s" : "") + " before you leave \(location.name)"
                 }

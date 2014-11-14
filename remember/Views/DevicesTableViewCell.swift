@@ -17,8 +17,8 @@ import UIKit
     lazy var didPressAddButtonBlock: () -> () = {}
     
     @IBAction func addButtonPressed(sender: UIButton) {
-        if self.didPressAddButtonBlock != nil {
-            self.didPressAddButtonBlock()
+        if didPressAddButtonBlock != nil {
+            didPressAddButtonBlock()
         }
     }
 }

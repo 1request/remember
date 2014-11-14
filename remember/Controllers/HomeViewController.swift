@@ -9,6 +9,7 @@
 import UIKit
 import CoreData
 import AVFoundation
+import CoreLocation
 
 class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate {
 
@@ -24,6 +25,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var recordButton: UIButton!
     @IBOutlet weak var pressHereImageView: UIImageView!
+    
     var editingCellRowNumber = -1
 
     weak var managedObjectContext: NSManagedObjectContext!
@@ -195,9 +197,20 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
     func closeEditingCell() {
         let indexPath = NSIndexPath(forRow: editingCellRowNumber, inSection: 0)
-
-        if let previousEditingCell = tableView.cellForRowAtIndexPath(indexPath) as? SwipeableTableViewCell {
+        let cell = tableView.cellForRowAtIndexPath(indexPath)
+        if let previousEditingCell = cell as? SwipeableTableViewCell {
             previousEditingCell.closeCell(animated: true)
+        }
+        if let messageCell = cell as? MessagesTableViewCell {
+            setPlayButton(active: true, ForCell: messageCell)
+        }
+    }
+    
+    func setPlayButton(#active: Bool, ForCell cell: MessagesTableViewCell) {
+        if active {
+            cell.playButton.setBackgroundImage(UIImage(named: "play-active"), forState: UIControlState.Normal)
+        } else {
+            cell.playButton.setBackgroundImage(UIImage(named: "play-inactive"), forState: UIControlState.Normal)
         }
     }
 
@@ -389,6 +402,8 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
 
     func finishRecordingAudio () {
+        Mixpanel.sharedInstance().track("audioRecorded")
+        
         stopRecordingAudio()
         if timeInterval > kMinimumRecordLength {
             let location = managedObjectContext!.objectWithID(selectedLocationObjectID!) as Location
@@ -436,6 +451,8 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     //MARK: - Play Audio
 
     func playAudioAtIndexPath (indexPath: NSIndexPath) {
+        Mixpanel.sharedInstance().track("startPlaying")
+        
         let message = objectsInTable.objectAtIndex(indexPath.row) as Message
         let filePath = kApplicationPath + "/" + message.createdAt.timeIntervalSince1970.format(".0") + ".m4a"
         if NSFileManager.defaultManager().fileExistsAtPath(filePath) {
@@ -523,10 +540,18 @@ extension HomeViewController: SwipeableTableViewCellDelegate {
         if let indexPath = tableView.indexPathForCell(cell) {
             editingCellRowNumber = indexPath.row
         }
+        
+        if let messageCell = cell as? MessagesTableViewCell {
+            setPlayButton(active: false, ForCell: messageCell)
+        }
     }
 
     func swipeableCellDidClose(cell: SwipeableTableViewCell) {
         resetEditMode()
+        
+        if let messageCell = cell as? MessagesTableViewCell {
+            setPlayButton(active: true, ForCell: messageCell)
+        }
     }
 
     func swipeableCell(cell: SwipeableTableViewCell, didSelectButtonAtIndex index: Int) {

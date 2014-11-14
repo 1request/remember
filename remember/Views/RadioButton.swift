@@ -23,22 +23,22 @@ import UIKit
         UIColor.clearColor().setFill()
         CGContextFillRect(UIGraphicsGetCurrentContext(), rect)
         
-        let width = self.frame.size.width - (strokeWidth * 2)
-        let height = self.frame.size.height - (strokeWidth * 2)
+        let width = frame.size.width - (strokeWidth * 2)
+        let height = frame.size.height - (strokeWidth * 2)
         
         // Drawing code
         var outterCirclePath = UIBezierPath(ovalInRect: CGRectMake(strokeWidth, strokeWidth, width, height))
-        var outterCircleColor = UIColor.appGreyColor()
+        var outterCircleColor = UIColor.appGrayColor()
         
         outterCircleColor.setStroke()
         outterCirclePath.lineWidth = 1
         outterCirclePath.stroke()
         
         if _checked {
-            let x = self.frame.size.width / 8
-            let y = self.frame.size.height / 8
-            let width = self.frame.size.width * 3 / 4
-            let height = self.frame.size.height * 3 / 4
+            let x = frame.size.width / 8
+            let y = frame.size.height / 8
+            let width = frame.size.width * 3 / 4
+            let height = frame.size.height * 3 / 4
             
             var innerCirclePath = UIBezierPath(ovalInRect: CGRectMake(x, y, width, height))
             var innerCircleColor = UIColor.appBlueColor()

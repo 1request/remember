@@ -12,8 +12,8 @@ class GPSLocationTableViewCell: UITableViewCell {
     lazy var didPressAddButtonBlock: () -> () = {}
     
     @IBAction func addButtonClicked(sender: UIButton) {
-        if self.didPressAddButtonBlock != nil {
-            self.didPressAddButtonBlock()
+        if didPressAddButtonBlock != nil {
+            didPressAddButtonBlock()
         }
     }
 }

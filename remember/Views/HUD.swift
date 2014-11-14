@@ -46,7 +46,7 @@ class HUD: UIView {
         let radius = bounds.size.width / 4
         let circleRect = CGRectMake(radius, bounds.size.height / 2 - radius, radius * 2, radius * 2)
         let circularPath = UIBezierPath(ovalInRect: circleRect)
-        UIColor.appGreyColor().setFill()
+        UIColor.appGrayColor().setFill()
         circularPath.fill()
         let font = UIFont.boldSystemFontOfSize(16.0)
         let textSize = (text as NSString).sizeWithAttributes([NSFontAttributeName: font])

@@ -34,9 +34,11 @@ class DevicesTableViewController: UITableViewController, UITableViewDataSource, 
     //MARK: - View Life Cycle
     
     override func viewDidLoad() {
-        self.tableView.removeFooterBorder()
+        tableView.removeFooterBorder()
         LocationManager.sharedInstance.startRangingBeaconRegions(BeaconFactory.beaconRegionsToBeRanged())
-        LocationManager.sharedInstance.startUpdatingLocation()
+        if let location = LocationManager.sharedInstance.currentLocation {
+            gpsLocation = location
+        }
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -49,7 +51,6 @@ class DevicesTableViewController: UITableViewController, UITableViewDataSource, 
         super.viewWillDisappear(animated)
         notificationCenter.removeObserver(self, name: kRangedBeaconRegionNotificationName, object: nil)
         notificationCenter.removeObserver(self, name: kGPSLocationUpdateNotificationName, object: nil)
-        LocationManager.sharedInstance.stopUpdatingLocation()
     }
     
     //MARK: - UITableViewDataSource
@@ -89,7 +90,7 @@ class DevicesTableViewController: UITableViewController, UITableViewDataSource, 
             
             if !filteredLocations.isEmpty {
                 cell.addButton.setTitle("Added", forState: UIControlState.Normal)
-                cell.addButton.setTitleColor(UIColor.appGreyColor(), forState: UIControlState.Normal)
+                cell.addButton.setTitleColor(UIColor.appGrayColor(), forState: UIControlState.Normal)
                 cell.addButton.backgroundColor = nil
                 
             }
@@ -111,7 +112,7 @@ class DevicesTableViewController: UITableViewController, UITableViewDataSource, 
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if let addDeviceViewController = segue.destinationViewController as? AddDeviceViewController {
-            addDeviceViewController.managedObjectContext = self.managedObjectContext!
+            addDeviceViewController.managedObjectContext = managedObjectContext!
             if let beacon = sender as? CLBeacon {
                 addDeviceViewController.beacon = beacon
             } else if let location = sender as? CLLocation {
@@ -125,17 +126,17 @@ class DevicesTableViewController: UITableViewController, UITableViewDataSource, 
     func enteredRegion (notification: NSNotification) {
         if let dict = notification.userInfo as? Dictionary<String, [AnyObject]> {
             if let beacons = dict[kRangedBeaconRegionNotificationUserInfoBeaconsKey] {
-                let count = self.rangedBeacons.count
+                let count = rangedBeacons.count
                 for object in beacons {
                     let beacon = object as CLBeacon
                     let predicate = NSPredicate(format: "proximityUUID.UUIDString == %@ AND major == %@ AND minor == %@", beacon.proximityUUID.UUIDString, beacon.major, beacon.minor)
-                    let filteredArray = self.rangedBeacons.filter { predicate!.evaluateWithObject($0) }
+                    let filteredArray = rangedBeacons.filter { predicate!.evaluateWithObject($0) }
                     if filteredArray.isEmpty {
-                        self.rangedBeacons.append(beacon)
+                        rangedBeacons.append(beacon)
                     }
                 }
-                if self.rangedBeacons.count > count {
-                    self.tableView.reloadData()
+                if rangedBeacons.count > count {
+                    tableView.reloadData()
                 }
             }
         }

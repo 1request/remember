@@ -43,7 +43,7 @@ class MessagesTableViewCell: SwipeableTableViewCell {
 
         let unreadSpotViewHeightConstraint = NSLayoutConstraint(item: unreadSpotIcon, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: unreadSpotIcon, attribute: NSLayoutAttribute.Width, multiplier: 1.0, constant: 0.0)
 
-        let unreadSpotViewCenterYConstraint = NSLayoutConstraint(item: unreadSpotIcon, attribute: NSLayoutAttribute.CenterY, relatedBy: NSLayoutRelation.Equal, toItem: self.customContentView, attribute: NSLayoutAttribute.CenterY, multiplier: 1.0, constant: 0.0)
+        let unreadSpotViewCenterYConstraint = NSLayoutConstraint(item: unreadSpotIcon, attribute: NSLayoutAttribute.CenterY, relatedBy: NSLayoutRelation.Equal, toItem: customContentView, attribute: NSLayoutAttribute.CenterY, multiplier: 1.0, constant: 0.0)
 
         let playButtonRatioConstraint = NSLayoutConstraint(item: playButton, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: playButton, attribute: NSLayoutAttribute.Width, multiplier: (32.0/27.0), constant: 0.0)
 
@@ -55,10 +55,12 @@ class MessagesTableViewCell: SwipeableTableViewCell {
 
     func markAsRead() {
         unreadSpotIcon.hidden = true
+        messageLabel.textColor = UIColor.appGrayTextColor()
     }
 
     func markAsUnread() {
         unreadSpotIcon.hidden = false
+        messageLabel.textColor = UIColor.appBlackTextColor()
     }
 
     func startPlaying() {
