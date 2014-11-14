@@ -9,6 +9,11 @@
 import Foundation
 import CoreLocation
 
+enum VisitType: String {
+    case Arrival = "Arrival"
+    case Departure = "Departue"
+}
+
 struct VisitEvent: MixpanelEvent {
     var title: String
     var properties = [String: NSObject]()
@@ -19,11 +24,12 @@ struct VisitEvent: MixpanelEvent {
     init(visit: CLVisit, scene: CLLocation) {
         self.visit = visit
         self.scene = scene
+        title = "Visit"
         switch visit.departureDate.compare(NSDate.distantFuture() as NSDate) {
         case .OrderedSame:
-            title = kVisitArrivalEventTitle
+            properties[kVisitType] = VisitType.Arrival.rawValue
         default:
-            title = kVisitDepartureEventTitle
+            properties[kVisitType] = VisitType.Departure.rawValue
         }
         properties[kArrivalDate] = visit.arrivalDate
         properties[kDepartureDate] = visit.departureDate

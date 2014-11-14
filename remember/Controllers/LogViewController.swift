@@ -35,6 +35,8 @@ class LogViewController: UIViewController {
     
     @IBOutlet weak var visitDateLabel: UILabel!
     
+    @IBOutlet weak var visitTypeLabel: UILabel!
+    
     @IBOutlet weak var currentLocationLabel: UILabel!
     
     override func viewDidLoad() {
@@ -97,6 +99,7 @@ class LogViewController: UIViewController {
             visitTriggerCoordinateLabel.text = coordinate.printCoordinate()
             visitDistanceLabel.text = dict[kDistance] as? String
             visitDateLabel.text = dict[kDate] as? String
+            visitTypeLabel.text = dict[kVisitType] as? String
         }
     }
 }

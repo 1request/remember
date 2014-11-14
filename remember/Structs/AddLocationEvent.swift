@@ -17,14 +17,14 @@ struct AddLocationEvent: MixpanelEvent {
     init(location: Location) {
         self.location = location
         if location.uuid != "" {
-            title += " (iBeacon Region)"
             properties[kUUID] = location.uuid
             properties[kMajor] = location.major
             properties[kMinor] = location.minor
+            properties[kRegionType] = RegionType.Beacon.rawValue
         } else {
-            title += " (Geographic Region)"
             properties[kRegionCenterLatitude] = location.latitude
             properties[kRegionCenterLongitude] = location.longitude
+            properties[kRegionType] = RegionType.Geographic.rawValue
         }
         properties[kIdentifier] = location.identifier
     }
