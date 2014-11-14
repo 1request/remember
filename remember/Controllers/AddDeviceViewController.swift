@@ -22,8 +22,6 @@ class AddDeviceViewController: UIViewController {
         let locationToBeAdded = NSEntityDescription.insertNewObjectForEntityForName("Location", inManagedObjectContext: managedObjectContext!) as Location
         locationToBeAdded.name = deviceNameTextField.text
         
-        Mixpanel.sharedInstance().track("locatedAdded: \(locationToBeAdded.name)")
-        
         if let beaconDetected = beacon {
             locationToBeAdded.uuid = beaconDetected.proximityUUID.UUIDString
             locationToBeAdded.major = beaconDetected.major
@@ -42,6 +40,10 @@ class AddDeviceViewController: UIViewController {
         locationToBeAdded.updatedAt = locationToBeAdded.createdAt
         
         locationToBeAdded.identifier = locationToBeAdded.createIndentifier()
+        
+        let event = AddLocationEvent(location: locationToBeAdded)
+        
+        Mixpanel.sharedInstance().track(event.title, properties: event.properties)
         
         managedObjectContext!.save(nil)
         

@@ -122,16 +122,16 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
                 NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: kEnteredRegionNotificationName, object: self, userInfo: [kEnteredRegionNotificationUserInfoRegionKey: beaconRegion as CLRegion]))
                 if let location = currentLocation {
                     let e = BeaconRegionEvent(event: .Enter, region: beaconRegion, scene: location)
-                    NSUserDefaults.standardUserDefaults().setValue(e.eventProperties, forKey: kEnteredBeaconEventTitle)
-                    Mixpanel.sharedInstance().track(e.eventTitle, properties: e.eventProperties)
+                    NSUserDefaults.standardUserDefaults().setValue(e.properties, forKey: kEnteredBeaconEventTitle)
+                    Mixpanel.sharedInstance().track(e.title, properties: e.properties)
                 }
             }
         } else {
             NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: kEnteredRegionNotificationName, object: self, userInfo: [kEnteredRegionNotificationUserInfoRegionKey: region as CLRegion]))
             if let location = currentLocation {
                 let e = GeographicRegionEvent(eventType: .Enter, region: region as CLCircularRegion, scene: location)
-                NSUserDefaults.standardUserDefaults().setValue(e.eventProperties, forKey: kEnteredGeoEventTitle)
-                Mixpanel.sharedInstance().track(e.eventTitle, properties: e.eventProperties)
+                NSUserDefaults.standardUserDefaults().setValue(e.properties, forKey: kEnteredGeoEventTitle)
+                Mixpanel.sharedInstance().track(e.title, properties: e.properties)
             }
         }
     }
@@ -143,16 +143,16 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
                 NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: kExitedRegionNotificationName, object: self, userInfo: [kExitedRegionNotificationUserInfoRegionKey: beaconRegion]))
                 if let location = currentLocation {
                     let e = BeaconRegionEvent(event: .Exit, region: beaconRegion, scene: location)
-                    NSUserDefaults.standardUserDefaults().setValue(e.eventProperties, forKey: kExitedBeaconEventTitle)
-                    Mixpanel.sharedInstance().track(e.eventTitle, properties: e.eventProperties)
+                    NSUserDefaults.standardUserDefaults().setValue(e.properties, forKey: kExitedBeaconEventTitle)
+                    Mixpanel.sharedInstance().track(e.title, properties: e.properties)
                 }
             }
         } else {
             NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: kExitedRegionNotificationName, object: self, userInfo: [kExitedRegionNotificationUserInfoRegionKey: region as CLRegion]))
             if let location = currentLocation {
                 let e = GeographicRegionEvent(eventType: .Exit, region: region as CLCircularRegion, scene: location)
-                NSUserDefaults.standardUserDefaults().setValue(e.eventProperties, forKey: kExitedGeoEventTitle)
-                Mixpanel.sharedInstance().track(e.eventTitle, properties: e.eventProperties)
+                NSUserDefaults.standardUserDefaults().setValue(e.properties, forKey: kExitedGeoEventTitle)
+                Mixpanel.sharedInstance().track(e.title, properties: e.properties)
             }
         }
     }
@@ -171,8 +171,8 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
         
         if let location = currentLocation {
             let e = VisitEvent(visit: visit, scene: location)
-            NSUserDefaults.standardUserDefaults().setValue(e.eventProperties, forKey: "Visit")
-            Mixpanel.sharedInstance().track(e.eventTitle, properties: e.eventProperties)
+            NSUserDefaults.standardUserDefaults().setValue(e.properties, forKey: "Visit")
+            Mixpanel.sharedInstance().track(e.title, properties: e.properties)
         }
     }
 }

@@ -32,6 +32,7 @@ let kEnteredGeoEventTitle = "Entered Geographic Region"
 let kExitedGeoEventTitle = "Exited Geographic Region"
 let kVisitArrivalEventTitle = "Visit Arrival"
 let kVisitDepartureEventTitle = "Visit Departure"
+let kAddLocationEventTitle = "Added Location"
 
 enum RegionType: String {
     case Geographic = "Geographic"
@@ -44,8 +45,9 @@ enum RegionEventType: String {
 }
 
 protocol MixpanelEvent {
-    var eventTitle: String { get }
-    var eventProperties: [String: NSObject] { get }
+    var title: String { get }
+    var properties: [String: NSObject] { get }
+    var date: NSDate { get }
 }
 
 protocol RegionEvent: MixpanelEvent {
@@ -55,12 +57,13 @@ protocol RegionEvent: MixpanelEvent {
 }
 
 struct GeographicRegionEvent: RegionEvent {
-    var eventTitle: String
+    var title: String
     let regionType = RegionType.Geographic
     var eventType: RegionEventType
     var region: CLCircularRegion
     var scene: CLLocation
-    var eventProperties = [String: NSObject]()
+    var properties = [String: NSObject]()
+    let date = NSDate()
     
     init(eventType: RegionEventType, region: CLCircularRegion, scene: CLLocation) {
         self.eventType = eventType
@@ -68,32 +71,33 @@ struct GeographicRegionEvent: RegionEvent {
         self.scene = scene
         switch eventType {
         case .Enter:
-            eventTitle = kEnteredGeoEventTitle
+            title = kEnteredGeoEventTitle
         case .Exit:
-            eventTitle = kExitedGeoEventTitle
+            title = kExitedGeoEventTitle
         }
-        eventTitle += ": \(region.identifier)"
-        eventProperties[kRegionType] = regionType.rawValue
-        eventProperties[kEventType] = eventType.rawValue
-        eventProperties[kIdentifier] = region.identifier
-        eventProperties[kRegionCenterLongitude] = region.center.longitude
-        eventProperties[kRegionCenterLatitude] = region.center.latitude
-        eventProperties[kSceneLongitude] = scene.coordinate.longitude
-        eventProperties[kSceneLatitude] = scene.coordinate.latitude
-        eventProperties[kSceneDescripton] = scene.description
-        eventProperties[kDate] = NSDate()
+        title += ": \(region.identifier)"
+        properties[kRegionType] = regionType.rawValue
+        properties[kEventType] = eventType.rawValue
+        properties[kIdentifier] = region.identifier
+        properties[kRegionCenterLongitude] = region.center.longitude
+        properties[kRegionCenterLatitude] = region.center.latitude
+        properties[kSceneLongitude] = scene.coordinate.longitude
+        properties[kSceneLatitude] = scene.coordinate.latitude
+        properties[kSceneDescripton] = scene.description
+        properties[kDate] = NSDate()
         let distance = (region.center.distanceFromCoordinate(scene.coordinate) / 1000).format("0.03")
-        eventProperties[kDistance] = "\(distance)km"
+        properties[kDistance] = "\(distance)km"
     }
 }
 
 struct BeaconRegionEvent: RegionEvent {
-    var eventTitle: String
+    var title: String
     let regionType = RegionType.Beacon
     var eventType: RegionEventType
     var region: CLBeaconRegion
     var scene: CLLocation
-    var eventProperties = [String: NSObject]()
+    var properties = [String: NSObject]()
+    let date = NSDate()
     
     init(event: RegionEventType, region: CLBeaconRegion, scene: CLLocation) {
         self.eventType = event
@@ -102,50 +106,73 @@ struct BeaconRegionEvent: RegionEvent {
         
         switch eventType {
         case .Enter:
-            eventTitle = kEnteredBeaconEventTitle
+            title = kEnteredBeaconEventTitle
         case .Exit:
-            eventTitle = kExitedBeaconEventTitle
+            title = kExitedBeaconEventTitle
         }
         
-        eventTitle += ": \(region.identifier)"
+        title += ": \(region.identifier)"
         
-        eventProperties[kRegionType] = regionType.rawValue
-        eventProperties[kEventType] = eventType.rawValue
-        eventProperties[kUUID] = region.proximityUUID.UUIDString
-        eventProperties[kMajor] = region.major
-        eventProperties[kMinor] = region.minor
-        eventProperties[kIdentifier] = region.identifier
-        eventProperties[kSceneLongitude] = scene.coordinate.longitude
-        eventProperties[kSceneLatitude] = scene.coordinate.latitude
-        eventProperties[kSceneDescripton] = scene.description
-        eventProperties[kDate] = NSDate()
+        properties[kRegionType] = regionType.rawValue
+        properties[kEventType] = eventType.rawValue
+        properties[kUUID] = region.proximityUUID.UUIDString
+        properties[kMajor] = region.major
+        properties[kMinor] = region.minor
+        properties[kIdentifier] = region.identifier
+        properties[kSceneLongitude] = scene.coordinate.longitude
+        properties[kSceneLatitude] = scene.coordinate.latitude
+        properties[kSceneDescripton] = scene.description
+        properties[kDate] = NSDate()
     }
 }
 
 struct VisitEvent: MixpanelEvent {
-    var eventTitle: String
-    var eventProperties = [String: NSObject]()
+    var title: String
+    var properties = [String: NSObject]()
     var visit: CLVisit
     var scene: CLLocation
+    let date = NSDate()
     
     init(visit: CLVisit, scene: CLLocation) {
         self.visit = visit
         self.scene = scene
         switch visit.departureDate.compare(NSDate.distantFuture() as NSDate) {
         case .OrderedSame:
-            eventTitle = kVisitArrivalEventTitle
+            title = kVisitArrivalEventTitle
         default:
-            eventTitle = kVisitDepartureEventTitle
+            title = kVisitDepartureEventTitle
         }
-        eventProperties[kArrivalDate] = visit.arrivalDate
-        eventProperties[kDepartureDate] = visit.departureDate
-        eventProperties[kVisitLatitude] = visit.coordinate.latitude
-        eventProperties[kVisitLongitude] = visit.coordinate.longitude
-        eventProperties[kSceneLongitude] = scene.coordinate.longitude
-        eventProperties[kSceneLatitude] = scene.coordinate.latitude
-        eventProperties[kSceneDescripton] = scene.description
+        properties[kArrivalDate] = visit.arrivalDate
+        properties[kDepartureDate] = visit.departureDate
+        properties[kVisitLatitude] = visit.coordinate.latitude
+        properties[kVisitLongitude] = visit.coordinate.longitude
+        properties[kSceneLongitude] = scene.coordinate.longitude
+        properties[kSceneLatitude] = scene.coordinate.latitude
+        properties[kSceneDescripton] = scene.description
         let distance = (visit.coordinate.distanceFromCoordinate(scene.coordinate) / 1000).format("0.03")
-        eventProperties[kDistance] = "\(distance)km"
-        eventProperties[kDate] = NSDate()
+        properties[kDistance] = "\(distance)km"
+        properties[kDate] = date
+    }
+}
+
+struct AddLocationEvent: MixpanelEvent {
+    var title = kAddLocationEventTitle
+    var properties = [String: NSObject]()
+    var location: Location
+    let date = NSDate()
+    
+    init(location: Location) {
+        self.location = location
+        if location.uuid != "" {
+            title += " (iBeacon Region)"
+            properties[kUUID] = location.uuid
+            properties[kMajor] = location.major
+            properties[kMinor] = location.minor
+        } else {
+            title += " (Geographic Region)"
+            properties[kRegionCenterLatitude] = location.latitude
+            properties[kRegionCenterLongitude] = location.longitude
+        }
+        properties[kIdentifier] = location.identifier
     }
 }
