@@ -9,10 +9,10 @@
 import Foundation
 import CoreLocation
 
-let kEnteredBeaconRegionNotificationName = "enteredBeaconNotification"
-let kEnteredBeaconRegionNotificationUserInfoRegionKey = "region"
-let kExitedBeaconRegionNotificationName = "exitedBeaconNotification"
-let kExitedBeaconRegionNotificationUserInfoRegionKey = "region"
+let kEnteredRegionNotificationName = "enteredRegionNotification"
+let kEnteredRegionNotificationUserInfoRegionKey = "region"
+let kExitedRegionNotificationName = "exitedRegionNotification"
+let kExitedRegionNotificationUserInfoRegionKey = "region"
 let kRangedBeaconRegionNotificationName = "rangedBeaconNotification"
 let kRangedBeaconRegionNotificationUserInfoBeaconsKey = "beacons"
 let kGPSLocationUpdateNotificationName = "gpsLocationUpdateNotification"
@@ -121,45 +121,43 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
             Mixpanel.sharedInstance().track("didEnterRegion: \(beaconRegion.identifier)")
             
             if beaconRegion.major != nil && beaconRegion.minor != nil {
-                NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: kEnteredBeaconRegionNotificationName, object: self, userInfo: [kEnteredBeaconRegionNotificationUserInfoRegionKey: beaconRegion as CLRegion]))
+                NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: kEnteredRegionNotificationName, object: self, userInfo: [kEnteredRegionNotificationUserInfoRegionKey: beaconRegion as CLRegion]))
+                if let location = currentLocation {
+                    let e = BeaconRegionEvent(event: .Enter, region: beaconRegion, scene: location)
+                    NSUserDefaults.standardUserDefaults().setValue(e.eventProperties, forKey: kEnteredBeaconEventTitle)
+                    Mixpanel.sharedInstance().track(e.eventTitle, properties: e.eventProperties)
+                }
             }
         } else {
             Mixpanel.sharedInstance().track("didEnterRegion: \(region.identifier)")
             
-            var dict = [kTriggerDate: NSDate(), kRegionName: region.identifier]
-            
-            if let locationAvailable = currentLocation {
-                dict[kTriggerCoordinate] = locationAvailable.coordinate.printCoordinate()
-                let distance = (locationAvailable.coordinate.distanceFromCoordinate((region as CLCircularRegion).center) / 1000).format("0.3")
-                dict[kTriggerDistance] = "\(distance)km"
+            NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: kEnteredRegionNotificationName, object: self, userInfo: [kEnteredRegionNotificationUserInfoRegionKey: region as CLRegion]))
+            if let location = currentLocation {
+                let e = GeographicRegionEvent(eventType: .Enter, region: region as CLCircularRegion, scene: location)
+                NSUserDefaults.standardUserDefaults().setValue(e.eventProperties, forKey: kEnteredGeoEventTitle)
+                Mixpanel.sharedInstance().track(e.eventTitle, properties: e.eventProperties)
             }
-            
-            NSUserDefaults.standardUserDefaults().setValue(dict, forKey: kEntryDetails)
-            NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: kEnteredBeaconRegionNotificationName, object: self, userInfo: [kEnteredBeaconRegionNotificationUserInfoRegionKey: region as CLRegion]))
         }
     }
     
     func locationManager(manager: CLLocationManager!, didExitRegion region: CLRegion!) {
         println("did exit region: \(region)")
         if let beaconRegion = region as? CLBeaconRegion {
-            Mixpanel.sharedInstance().track("didExitRegion: \(beaconRegion.identifier)")
-            
             if beaconRegion.major != nil && beaconRegion.minor != nil {
-                NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: kExitedBeaconRegionNotificationName, object: self, userInfo: [kExitedBeaconRegionNotificationUserInfoRegionKey: beaconRegion]))
+                NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: kExitedRegionNotificationName, object: self, userInfo: [kExitedRegionNotificationUserInfoRegionKey: beaconRegion]))
+                if let location = currentLocation {
+                    let e = BeaconRegionEvent(event: .Exit, region: beaconRegion, scene: location)
+                    NSUserDefaults.standardUserDefaults().setValue(e.eventProperties, forKey: kExitedBeaconEventTitle)
+                    Mixpanel.sharedInstance().track(e.eventTitle, properties: e.eventProperties)
+                }
             }
         } else {
-            Mixpanel.sharedInstance().track("didExitRegion: \(region.identifier)")
-            
-            var dict = [kTriggerDate: NSDate(), kRegionName: region.identifier]
-            
-            if let locationAvailable = currentLocation {
-                dict[kTriggerCoordinate] = locationAvailable.coordinate.printCoordinate()
-                let distance = (locationAvailable.coordinate.distanceFromCoordinate((region as CLCircularRegion).center) / 1000).format("0.3")
-                dict[kTriggerDistance] = "\(distance)km"
+            NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: kExitedRegionNotificationName, object: self, userInfo: [kExitedRegionNotificationUserInfoRegionKey: region as CLRegion]))
+            if let location = currentLocation {
+                let e = GeographicRegionEvent(eventType: .Exit, region: region as CLCircularRegion, scene: location)
+                NSUserDefaults.standardUserDefaults().setValue(e.eventProperties, forKey: kExitedGeoEventTitle)
+                Mixpanel.sharedInstance().track(e.eventTitle, properties: e.eventProperties)
             }
-            
-            NSUserDefaults.standardUserDefaults().setValue(dict, forKey: kExitDetails)
-            NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: kExitedBeaconRegionNotificationName, object: self, userInfo: [kExitedBeaconRegionNotificationUserInfoRegionKey: region as CLRegion]))
         }
     }
     
@@ -170,23 +168,15 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
             currentLocation = location
             println("(\(NSDate().dateStringOfLocalTimeZone())) updated gps coordinate: (\(location.coordinate.printCoordinate())) | distance filter: \(locationManager.distanceFilter) | desired accuracy: \(locationManager.desiredAccuracy)")
         }
-
     }
     
     func locationManager(manager: CLLocationManager!, didVisit visit: CLVisit!) {
-        Mixpanel.sharedInstance().track("didVisit: \(visit)")
-        
         let notification = NSNotification(name: kVisitsNotificationName, object: self, userInfo: [kVisitsNotificationUserInfoVisitKey: visit])
         
-        var dict = [kTriggerDate: NSDate(), kVisitCoordinate: visit.coordinate.printCoordinate()]
-        
-        if let locationAvailable = currentLocation {
-            dict[kTriggerCoordinate] = locationAvailable.coordinate.printCoordinate()
-            let distance = (locationAvailable.coordinate.distanceFromCoordinate(visit.coordinate) / 1000).format("0.3")
-            dict[kTriggerDistance] = "\(distance)km"
+        if let location = currentLocation {
+            let e = VisitEvent(visit: visit, scene: location)
+            NSUserDefaults.standardUserDefaults().setValue(e.eventProperties, forKey: "Visit")
+            Mixpanel.sharedInstance().track(e.eventTitle, properties: e.eventProperties)
         }
-        
-        NSUserDefaults.standardUserDefaults().setValue(dict, forKey: kVisitDetails)
-        NSNotificationCenter.defaultCenter().postNotification(notification)
     }
 }

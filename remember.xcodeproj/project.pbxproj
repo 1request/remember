@@ -12,6 +12,7 @@
 		7C088D9A19E631E2005A51D9 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C088D9919E631E2005A51D9 /* CoreLocation.framework */; };
 		7C088D9C19E63EE9005A51D9 /* BeaconFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C088D9B19E63EE9005A51D9 /* BeaconFactory.swift */; };
 		7C28F48E1A0A0B40006A7CA0 /* EditLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C28F48D1A0A0B40006A7CA0 /* EditLocationViewController.swift */; };
+		7C33639F1A145B6D00FCE201 /* MixpanelEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C33639E1A145B6D00FCE201 /* MixpanelEvents.swift */; };
 		7C4B6F8C1A0C738400B3C6C6 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C4B6F8B1A0C738400B3C6C6 /* Message.swift */; };
 		7C6109B019E793400082AC7B /* DevicesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6109AF19E793400082AC7B /* DevicesTableViewController.swift */; };
 		7C6109B219E793730082AC7B /* DevicesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6109B119E793730082AC7B /* DevicesTableViewCell.swift */; };
@@ -21,7 +22,6 @@
 		7C9BAE2E1A135CD000670D68 /* GPSSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C9BAE2D1A135CD000670D68 /* GPSSettingsViewController.swift */; };
 		7CA8AC721A07202D00566252 /* SwipeableTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA8AC711A07202D00566252 /* SwipeableTableViewCell.swift */; };
 		7CB306E81A13007500BF5EF7 /* LogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB306E71A13007500BF5EF7 /* LogViewController.swift */; };
-		7CB306EC1A13020900BF5EF7 /* UserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB306EB1A13020900BF5EF7 /* UserDefaults.swift */; };
 		7CD2B08619EB819F004D5A29 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CD2B08519EB819F004D5A29 /* AVFoundation.framework */; };
 		7CD2B08819EB81A8004D5A29 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CD2B08719EB81A8004D5A29 /* CoreData.framework */; };
 		7CE2CA5B1A0C68A000369D8B /* GPSLocationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CE2CA5A1A0C68A000369D8B /* GPSLocationTableViewCell.swift */; };
@@ -38,7 +38,6 @@
 		8ABFAA6719E668DB00FCE6EF /* MessagesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABFAA6619E668DB00FCE6EF /* MessagesTableViewCell.swift */; };
 		8ABFAA6919E67CEB00FCE6EF /* UnreadSpotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABFAA6819E67CEB00FCE6EF /* UnreadSpotView.swift */; };
 		8ABFAA6B19E68AB600FCE6EF /* RadioButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABFAA6A19E68AB600FCE6EF /* RadioButton.swift */; };
-		D10D94041A139BA400B3FEC1 /* UserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB306EB1A13020900BF5EF7 /* UserDefaults.swift */; };
 		D10D94051A139BA400B3FEC1 /* LogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB306E71A13007500BF5EF7 /* LogViewController.swift */; };
 		D10D94061A139BA400B3FEC1 /* GPSSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C9BAE2D1A135CD000670D68 /* GPSSettingsViewController.swift */; };
 		D116335019EC9AC100884C60 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D116334F19EC9AC100884C60 /* Crashlytics.framework */; };
@@ -91,6 +90,7 @@
 		7C088D9919E631E2005A51D9 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		7C088D9B19E63EE9005A51D9 /* BeaconFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BeaconFactory.swift; sourceTree = "<group>"; };
 		7C28F48D1A0A0B40006A7CA0 /* EditLocationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EditLocationViewController.swift; path = Controllers/EditLocationViewController.swift; sourceTree = "<group>"; };
+		7C33639E1A145B6D00FCE201 /* MixpanelEvents.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MixpanelEvents.swift; path = Categories/MixpanelEvents.swift; sourceTree = "<group>"; };
 		7C4B6F8B1A0C738400B3C6C6 /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Message.swift; path = Models/Message.swift; sourceTree = "<group>"; };
 		7C516BB51A0A1526005AEF24 /* remember 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "remember 2.xcdatamodel"; sourceTree = "<group>"; };
 		7C6109AF19E793400082AC7B /* DevicesTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DevicesTableViewController.swift; path = Controllers/DevicesTableViewController.swift; sourceTree = "<group>"; };
@@ -102,7 +102,6 @@
 		7C9BAE2D1A135CD000670D68 /* GPSSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GPSSettingsViewController.swift; path = Controllers/GPSSettingsViewController.swift; sourceTree = "<group>"; };
 		7CA8AC711A07202D00566252 /* SwipeableTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwipeableTableViewCell.swift; path = Views/SwipeableTableViewCell.swift; sourceTree = "<group>"; };
 		7CB306E71A13007500BF5EF7 /* LogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LogViewController.swift; path = Controllers/LogViewController.swift; sourceTree = "<group>"; };
-		7CB306EB1A13020900BF5EF7 /* UserDefaults.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UserDefaults.swift; path = Categories/UserDefaults.swift; sourceTree = "<group>"; };
 		7CD2B08519EB819F004D5A29 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		7CD2B08719EB81A8004D5A29 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		7CE2CA5A1A0C68A000369D8B /* GPSLocationTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GPSLocationTableViewCell.swift; path = Views/GPSLocationTableViewCell.swift; sourceTree = "<group>"; };
@@ -294,7 +293,7 @@
 			isa = PBXGroup;
 			children = (
 				7C6109B319E796E00082AC7B /* Extensions.swift */,
-				7CB306EB1A13020900BF5EF7 /* UserDefaults.swift */,
+				7C33639E1A145B6D00FCE201 /* MixpanelEvents.swift */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -550,12 +549,12 @@
 				8A76A0B119E63C590031202A /* NavigationController.swift in Sources */,
 				8ABFAA6919E67CEB00FCE6EF /* UnreadSpotView.swift in Sources */,
 				8A9F0F6619E62C50007FB36B /* AppDelegate.swift in Sources */,
+				7C33639F1A145B6D00FCE201 /* MixpanelEvents.swift in Sources */,
 				8ABFAA6B19E68AB600FCE6EF /* RadioButton.swift in Sources */,
 				7C088D9819E631CA005A51D9 /* LocationManager.swift in Sources */,
 				8A9F0F6919E62C50007FB36B /* remember.xcdatamodeld in Sources */,
 				7CB306E81A13007500BF5EF7 /* LogViewController.swift in Sources */,
 				7C6109B419E796E00082AC7B /* Extensions.swift in Sources */,
-				7CB306EC1A13020900BF5EF7 /* UserDefaults.swift in Sources */,
 				7CA8AC721A07202D00566252 /* SwipeableTableViewCell.swift in Sources */,
 				7C28F48E1A0A0B40006A7CA0 /* EditLocationViewController.swift in Sources */,
 				7CE2CA5B1A0C68A000369D8B /* GPSLocationTableViewCell.swift in Sources */,
@@ -579,7 +578,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D10D94041A139BA400B3FEC1 /* UserDefaults.swift in Sources */,
 				D10D94051A139BA400B3FEC1 /* LogViewController.swift in Sources */,
 				D10D94061A139BA400B3FEC1 /* GPSSettingsViewController.swift in Sources */,
 				D12249391A0D03FE008AC2BD /* Location.swift in Sources */,

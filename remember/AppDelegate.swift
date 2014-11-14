@@ -145,8 +145,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 extension AppDelegate {
     func monitorLocations () {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleLocationEvent:", name: kEnteredBeaconRegionNotificationName, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleLocationEvent:", name: kExitedBeaconRegionNotificationName, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleLocationEvent:", name: kEnteredRegionNotificationName, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleLocationEvent:", name: kExitedRegionNotificationName, object: nil)
     }
     
     func locationFromNotification(notification: NSNotification) -> Location? {
@@ -163,17 +163,17 @@ extension AppDelegate {
         if let location = locationFromNotification(notification) {
             let previousTriggerDate = location.lastTriggerDate.timeIntervalSince1970
             let currentTime = NSDate().timeIntervalSince1970
-            managedObjectContext?.save(nil)
             let predicate = NSPredicate(format: "isRead == 0")
             let unreadMessages = location.messages.filteredSetUsingPredicate(predicate!)
             if unreadMessages.count > 0 && currentTime - previousTriggerDate > 3600 {
                 var title = ""
                 var message = ""
                 location.lastTriggerDate = NSDate()
-                if notification.name == kEnteredBeaconRegionNotificationName {
+                managedObjectContext?.save(nil)
+                if notification.name == kEnteredRegionNotificationName {
                     title = "New message from \(location.name)"
                     message = "\(location.name) got \(unreadMessages.count) new notification" + (unreadMessages.count > 1 ? "s" : "")
-                } else if notification.name == kExitedBeaconRegionNotificationName {
+                } else if notification.name == kExitedRegionNotificationName {
                     title = "New message from \(location.name)"
                     message = "You got \(unreadMessages.count) new notification" + (unreadMessages.count > 1 ? "s" : "") + " before you leave \(location.name)"
                 }

@@ -46,8 +46,8 @@ class LogViewController: UIViewController {
     
     override func viewWillAppear(animated: Bool) {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateCurrentLocation:", name: kGPSLocationUpdateNotificationName, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateEntryDetails", name: kEnteredBeaconRegionNotificationName, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateExitDetails", name: kExitedBeaconRegionNotificationName, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateEntryDetails", name: kEnteredRegionNotificationName, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateExitDetails", name: kExitedRegionNotificationName, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateVisitDetails", name: kVisitsNotificationName, object: nil)
         if let location = LocationManager.sharedInstance.currentLocation {
             currentLocationLabel.text = location.coordinate.printCoordinate()
@@ -59,7 +59,7 @@ class LogViewController: UIViewController {
     }
     
     func updateCurrentLocation(notification: NSNotification) {
-        if let dict = notification.userInfo as? Dictionary<String, CLLocation> {
+        if let dict = notification.userInfo as? [String: CLLocation] {
             if let location = dict[kGPSLocationUpdateNotificationUserInfoLocationKey] {
                 currentLocationLabel.text = location.coordinate.printCoordinate()
             }
@@ -67,29 +67,36 @@ class LogViewController: UIViewController {
     }
     
     func updateEntryDetails() {
-        if let dict = NSUserDefaults.standardUserDefaults().valueForKey(kEntryDetails) as? Dictionary<String, NSObject> {
-            entryDateLabel.text = "\((dict[kTriggerDate] as NSDate).dateStringOfLocalTimeZone())"
-            entryRegionNameLabel.text = dict[kRegionName] as? String
-            entryCoordinateLabel.text = dict[kTriggerCoordinate] as? String
-            entryDistanceLabel.text = dict[kTriggerDistance] as? String
+        if let dict = NSUserDefaults.standardUserDefaults().valueForKey(kEnteredGeoEventTitle) as? [String: NSObject] {
+            entryRegionNameLabel.text = dict[kIdentifier] as? String
+            let coordinate = CLLocationCoordinate2D(latitude: dict[kSceneLatitude] as Double, longitude: dict[kSceneLongitude] as Double)
+            entryCoordinateLabel.text = coordinate.printCoordinate()
+            entryDistanceLabel.text = dict[kDistance] as? String
+            entryDateLabel.text = (dict[kDate] as? NSDate)?.dateStringOfLocalTimeZone()
         }
     }
     
     func updateExitDetails() {
-        if let dict = NSUserDefaults.standardUserDefaults().valueForKey(kExitDetails) as? Dictionary<String, NSObject> {
-            exitDateLabel.text = "\((dict[kTriggerDate] as NSDate).dateStringOfLocalTimeZone())"
-            exitRegionNameLabel.text = dict[kRegionName] as? String
-            exitCoordinateLabel.text = dict[kTriggerCoordinate] as? String
-            exitDistanceLabel.text = dict[kTriggerDistance] as? String
+        if let dict = NSUserDefaults.standardUserDefaults().valueForKey(kExitedGeoEventTitle) as? [String: NSObject] {
+            let type = dict[kRegionType] as String
+            if type == RegionType.Geographic.rawValue {
+                exitRegionNameLabel.text = dict[kIdentifier] as? String
+                let coordinate = CLLocationCoordinate2D(latitude: dict[kSceneLatitude] as Double, longitude: dict[kSceneLongitude] as Double)
+                exitCoordinateLabel.text = coordinate.printCoordinate()
+                exitDistanceLabel.text = dict[kDistance] as? String
+                exitDateLabel.text = (dict[kDate] as? NSDate)?.dateStringOfLocalTimeZone()
+            }
         }
     }
     
     func updateVisitDetails() {
-        if let dict = NSUserDefaults.standardUserDefaults().valueForKey(kVisitDetails) as? Dictionary<String, NSObject> {
-            visitCoordinateLabel.text = dict[kVisitCoordinate] as? String
-            visitTriggerCoordinateLabel.text = dict[kTriggerCoordinate] as? String
-            visitDateLabel.text = "\((dict[kTriggerDate] as NSDate).dateStringOfLocalTimeZone())"
-            visitDistanceLabel.text = dict[kTriggerDistance] as? String
+        if let dict = NSUserDefaults.standardUserDefaults().valueForKey("Visit") as? [String: NSObject] {
+            let visitCoordinate = CLLocationCoordinate2D(latitude: dict[kVisitLatitude] as Double, longitude: dict[kVisitLongitude] as Double)
+            let coordinate = CLLocationCoordinate2D(latitude: dict[kSceneLatitude] as Double, longitude: dict[kSceneLongitude] as Double)
+            visitCoordinateLabel.text = visitCoordinate.printCoordinate()
+            visitTriggerCoordinateLabel.text = coordinate.printCoordinate()
+            visitDistanceLabel.text = dict[kDistance] as? String
+            visitDateLabel.text = dict[kDate] as? String
         }
     }
 }
