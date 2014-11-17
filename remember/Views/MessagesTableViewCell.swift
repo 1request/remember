@@ -65,7 +65,6 @@ class MessagesTableViewCell: SwipeableTableViewCell {
 
     func startPlaying() {
         markAsRead()
-
         setPlayerStatus(PlayerStatus.Playing)
     }
     
