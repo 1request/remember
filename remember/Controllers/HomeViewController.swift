@@ -32,7 +32,6 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     var fetchedResultController: NSFetchedResultsController!
 
     var objectsInTable: NSMutableArray = []
-
     var selectedLocationObjectID: NSManagedObjectID?
 
     var activePlayerIndexPath: NSIndexPath?
@@ -96,7 +95,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         monitorEnterLocationNotification()
         monitorAudioRouteChange()
         setSelectedLocationObjectID()
-        tableView.reloadData()
+        reloadSection()
     }
     
     
@@ -157,6 +156,18 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
             return cell
         }
     }
+    
+    func reloadSection() {
+        let range = NSMakeRange(0, 1)
+        let section = NSIndexSet(indexesInRange: range)
+        tableView.reloadSections(section, withRowAnimation: UITableViewRowAnimation.Automatic)
+    }
+    
+    func selectedLocationIndexPath() -> NSIndexPath {
+        let location = managedObjectContext!.objectWithID(selectedLocationObjectID!) as Location
+        let index = objectsInTable.indexOfObject(location)
+        return NSIndexPath(forRow: index, inSection: 0)
+    }
 
     //MARK: - UITableViewDelegate
 
@@ -169,8 +180,10 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         let cell = tableView.cellForRowAtIndexPath(indexPath)
         if let locationCell = cell as? LocationsTableViewCell {
             let location = objectsInTable[indexPath.row] as Location
+            var rowsToReload = [selectedLocationIndexPath()]
             selectedLocationObjectID = location.objectID
-            tableView.reloadData()
+            rowsToReload.append(selectedLocationIndexPath())
+            tableView.reloadRowsAtIndexPaths(rowsToReload, withRowAnimation: .Automatic)
         } else {
             let messageCell = cell as MessagesTableViewCell
             if messageCell.playing {
@@ -276,7 +289,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
     func controllerDidChangeContent(controller: NSFetchedResultsController) {
         setObjectsInTable()
-        tableView.reloadData()
+        reloadSection()
         updateViewToBePresented()
     }
     //MARK: - Layout
@@ -329,6 +342,10 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
     
     func setSelectedLocationObjectID() {
+        if selectedLocationObjectID != nil {
+            return
+        }
+
         if objectsInTable.count == 0 {
             selectedLocationObjectID = nil
             return
@@ -414,6 +431,8 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
             let location = managedObjectContext!.objectWithID(selectedLocationObjectID!) as Location
             createMessageForLocation(location)
             monitorLocation(location)
+            let indexPath = NSIndexPath(forRow: 0, inSection: 0)
+            tableView.scrollToRowAtIndexPath(indexPath, atScrollPosition: .Top, animated: true)
         }
         else {
             println("Record is too short")
@@ -442,6 +461,8 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         message.isRead = false
         message.createdAt = createTime
         message.updatedAt = createTime
+        
+        location.updatedAt = createTime
 
         if !managedObjectContext!.save(&error) {
             println("error saving audio: \(error?.localizedDescription)")
@@ -520,7 +541,6 @@ extension HomeViewController : AVAudioPlayerDelegate {
             let message = objectsInTable[activePlayerIndexPath!.row] as Message
             let location = message.location
             activePlayerIndexPath = nil
-            tableView.reloadData()
     }
 }
 
