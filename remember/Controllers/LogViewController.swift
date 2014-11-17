@@ -73,8 +73,11 @@ class LogViewController: UIViewController {
             entryRegionNameLabel.text = dict[kIdentifier] as? String
             let coordinate = CLLocationCoordinate2D(latitude: dict[kSceneLatitude] as Double, longitude: dict[kSceneLongitude] as Double)
             entryCoordinateLabel.text = coordinate.printCoordinate()
-            let distance = (dict[kDistance] as Double).format("0.03")
-            entryDistanceLabel.text = "\(distance)km"
+            if let distance = dict[kDistance] as? Double {
+                let distanceText = distance.format("0.03")
+                entryDistanceLabel.text = "\(distanceText)km"
+            }
+            
             entryDateLabel.text = (dict[kDate] as? NSDate)?.dateStringOfLocalTimeZone()
         }
     }
@@ -86,8 +89,10 @@ class LogViewController: UIViewController {
                 exitRegionNameLabel.text = dict[kIdentifier] as? String
                 let coordinate = CLLocationCoordinate2D(latitude: dict[kSceneLatitude] as Double, longitude: dict[kSceneLongitude] as Double)
                 exitCoordinateLabel.text = coordinate.printCoordinate()
-                let distance = (dict[kDistance] as Double).format("0.03")
-                exitDistanceLabel.text = "\(distance)km"
+                if let distance = dict[kDistance] as? Double {
+                    let distanceText = distance.format("0.03")
+                    exitDistanceLabel.text = "\(distanceText)km"
+                }
                 exitDateLabel.text = (dict[kDate] as? NSDate)?.dateStringOfLocalTimeZone()
             }
         }
@@ -99,8 +104,10 @@ class LogViewController: UIViewController {
             let coordinate = CLLocationCoordinate2D(latitude: dict[kSceneLatitude] as Double, longitude: dict[kSceneLongitude] as Double)
             visitCoordinateLabel.text = visitCoordinate.printCoordinate()
             visitTriggerCoordinateLabel.text = coordinate.printCoordinate()
-            let distance = (dict[kDistance] as Double).format("0.03")
-            visitDistanceLabel.text = "\(distance)km"
+            if let distance = dict[kDistance] as? Double {
+                let distanceText = distance.format("0.03")
+                visitDistanceLabel.text = "\(distanceText)km"
+            }
             visitDateLabel.text = (dict[kDate] as? NSDate)?.dateStringOfLocalTimeZone()
             visitTypeLabel.text = dict[kVisitType] as? String
         }
