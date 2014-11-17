@@ -342,6 +342,19 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
     
     func setSelectedLocationObjectID() {
+        
+        if let locationIdentifier = NSUserDefaults.standardUserDefaults().valueForKey("location") as? String {
+            let predicate = NSPredicate(format: "identifier == %@", locationIdentifier)
+            let request = NSFetchRequest(entityName: "Location")
+            request.predicate = predicate
+            if let locations = managedObjectContext.executeFetchRequest(request, error: nil) {
+                let location = locations.first as Location
+                selectedLocationObjectID = location.objectID
+                NSUserDefaults.standardUserDefaults().setValue(nil, forKey: "location")
+                return
+            }
+        }
+        
         if selectedLocationObjectID != nil {
             return
         }
@@ -350,6 +363,9 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
             selectedLocationObjectID = nil
             return
         }
+        
+        
+
         if let location = objectsInTable[0] as? Location {
             selectedLocationObjectID = location.objectID
         }
@@ -624,11 +640,13 @@ extension HomeViewController: UIAlertViewDelegate {
     }
     
     func triggerNotification(notification: NSNotification) {
-        if let dict = notification.userInfo as? Dictionary<String, String> {
-            let title = dict["title"]
-            let message = dict["message"]
+        if let dict = notification.userInfo as? [String: AnyObject] {
+            let title = dict["title"] as String
+            let message = dict["message"] as String
             let alertView = UIAlertView(title: title, message: message, delegate: self, cancelButtonTitle: "OK")
             alertView.show()
+            setSelectedLocationObjectID()
+            reloadSection()
         }
     }
 }

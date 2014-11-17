@@ -170,6 +170,9 @@ extension AppDelegate {
                 var message = ""
                 location.lastTriggerDate = NSDate()
                 managedObjectContext?.save(nil)
+                
+                NSUserDefaults.standardUserDefaults().setValue(location.identifier, forKey: "location")
+                
                 if notification.name == kEnteredRegionNotificationName {
                     title = "New message from \(location.name)"
                     message = "\(location.name) got \(unreadMessages.count) new notification" + (unreadMessages.count > 1 ? "s" : "")
@@ -177,8 +180,11 @@ extension AppDelegate {
                     title = "New message from \(location.name)"
                     message = "You got \(unreadMessages.count) new notification" + (unreadMessages.count > 1 ? "s" : "") + " before you leave \(location.name)"
                 }
+                
+                var userInfo = ["title": title, "message": message]
                 sendLocalNotificationWithMessage(message)
-                NSNotificationCenter.defaultCenter().postNotificationName(kAlertLocationNotificationName, object: self, userInfo: ["title": title, "message": message])
+                
+                NSNotificationCenter.defaultCenter().postNotificationName(kAlertLocationNotificationName, object: self, userInfo: userInfo)
             }
         }
     }
