@@ -149,6 +149,11 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
             } else {
                 cell.markAsUnread()
             }
+            if indexPath.row == editingCellRowNumber {
+                setPlayButton(active: false, ForCell: cell)
+            } else {
+                setPlayButton(active: true, ForCell: cell)
+            }
             return cell
         }
     }
@@ -158,8 +163,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if editingCellRowNumber != -1 {
             // has editing cell, close cell
-            closeEditingCell()
-            return
+            resetEditMode()
         }
 
         let cell = tableView.cellForRowAtIndexPath(indexPath)
@@ -232,6 +236,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     @IBAction func recordButtonTouchedDown(sender: UIButton) {
         if editingCellRowNumber != -1 {
             closeEditingCell()
+            resetEditMode()
         } else {
             hudView = HUD.hudInView(view)
             hudView.text = kSlideUpToCancel
@@ -470,8 +475,9 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
     func stopPlayingAudio () {
         if let indexPath = activePlayerIndexPath {
-            let messageCell = tableView.cellForRowAtIndexPath(indexPath) as MessagesTableViewCell
-            messageCell.finishPlaying()
+            if let messageCell = tableView.cellForRowAtIndexPath(indexPath) as? MessagesTableViewCell {
+                messageCell.finishPlaying()
+            }
         }
         
         player?.stop()
@@ -523,6 +529,7 @@ extension HomeViewController : AVAudioPlayerDelegate {
 extension HomeViewController : UIGestureRecognizerDelegate {
     func tapView (recognizer: UITapGestureRecognizer) {
         closeEditingCell()
+        resetEditMode()
     }
 
     func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
@@ -533,6 +540,7 @@ extension HomeViewController : UIGestureRecognizerDelegate {
     }
 }
 
+//MARK: - SwipeableTableViewCellDelegate
 extension HomeViewController: SwipeableTableViewCellDelegate {
     func swipeableCellDidOpen(cell: SwipeableTableViewCell) {
         closeEditingCell()
