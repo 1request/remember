@@ -38,8 +38,7 @@ struct VisitEvent: MixpanelEvent {
         properties[kSceneLongitude] = scene.coordinate.longitude
         properties[kSceneLatitude] = scene.coordinate.latitude
         properties[kSceneDescripton] = scene.description
-        let distance = (visit.coordinate.distanceFromCoordinate(scene.coordinate) / 1000).format("0.03")
-        properties[kDistance] = "\(distance)km"
+        properties[kDistance] = visit.coordinate.distanceFromCoordinate(scene.coordinate) / 1000
         properties[kDate] = date
     }
 }

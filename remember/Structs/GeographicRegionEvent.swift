@@ -36,8 +36,7 @@ struct GeographicRegionEvent: RegionEvent {
         properties[kSceneLongitude] = scene.coordinate.longitude
         properties[kSceneLatitude] = scene.coordinate.latitude
         properties[kSceneDescripton] = scene.description
-        properties[kDate] = NSDate()
-        let distance = (region.center.distanceFromCoordinate(scene.coordinate) / 1000).format("0.03")
-        properties[kDistance] = "\(distance)km"
+        properties[kDate] = date
+        properties[kDistance] = region.center.distanceFromCoordinate(scene.coordinate) / 1000
     }
 }
