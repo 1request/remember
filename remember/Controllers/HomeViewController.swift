@@ -20,6 +20,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     let kMinimumRecordLength = 1.0
     var kApplicationPath = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true).last! as String
     var hudView = HUD()
+    var alertView: UIAlertView? = nil
     //MARK: - Variables
 
     @IBOutlet weak var tableView: UITableView!
@@ -657,8 +658,9 @@ extension HomeViewController: UIAlertViewDelegate {
         if let dict = notification.userInfo as? [String: AnyObject] {
             let title = dict["title"] as String
             let message = dict["message"] as String
-            let alertView = UIAlertView(title: title, message: message, delegate: self, cancelButtonTitle: "OK")
-            alertView.show()
+            alertView?.dismissWithClickedButtonIndex(0, animated: false)
+            alertView = UIAlertView(title: title, message: message, delegate: self, cancelButtonTitle: "OK")
+            alertView?.show()
             setSelectedLocationObjectID()
             reloadSection()
         }
