@@ -165,7 +165,8 @@ extension AppDelegate {
             let currentTime = NSDate().timeIntervalSince1970
             let predicate = NSPredicate(format: "isRead == 0")
             let unreadMessages = location.messages.filteredSetUsingPredicate(predicate!)
-            if unreadMessages.count > 0 && currentTime - previousTriggerDate > 3600 {
+//            if unreadMessages.count > 0 && currentTime - previousTriggerDate > 3600 {
+            if unreadMessages.count > 0 {
                 var title = ""
                 var message = ""
                 location.lastTriggerDate = NSDate()
@@ -176,9 +177,11 @@ extension AppDelegate {
                 if notification.name == kEnteredRegionNotificationName {
                     title = "New message from \(location.name)"
                     message = "\(location.name) got \(unreadMessages.count) new notification" + (unreadMessages.count > 1 ? "s" : "")
+                    NSUserDefaults.standardUserDefaults().setValue(1, forKey: "Enter")
                 } else if notification.name == kExitedRegionNotificationName {
                     title = "New message from \(location.name)"
                     message = "You got \(unreadMessages.count) new notification" + (unreadMessages.count > 1 ? "s" : "") + " before you leave \(location.name)"
+                    NSUserDefaults.standardUserDefaults().setValue(0, forKey: "Enter")
                 }
                 
                 var userInfo = ["title": title, "message": message]
@@ -194,7 +197,12 @@ extension AppDelegate {
         notification.alertBody = message
         notification.alertAction = "View Details"
         notification.soundName = UILocalNotificationDefaultSoundName
-        notification.applicationIconBadgeNumber = UIApplication.sharedApplication().applicationIconBadgeNumber + 1
+        let request = NSFetchRequest(entityName: "Message")
+        request.predicate = NSPredicate(format: "isRead == 0")
+        let count = managedObjectContext?.countForFetchRequest(request, error: nil)
+        if let cnt = count {
+            notification.applicationIconBadgeNumber = cnt
+        }
         
         if notification.respondsToSelector("regionTriggersOnce") {
             notification.regionTriggersOnce = true
