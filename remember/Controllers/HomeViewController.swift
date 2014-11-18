@@ -96,7 +96,6 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         monitorEnterLocationNotification()
         monitorAudioRouteChange()
         setSelectedLocationObjectID()
-        reloadSection()
     }
     
     
@@ -292,6 +291,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
     func controllerDidChangeContent(controller: NSFetchedResultsController) {
         setObjectsInTable()
+        setSelectedLocationObjectID()
         reloadSection()
         updateViewToBePresented()
     }
@@ -359,16 +359,17 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
             }
         }
         
-        if selectedLocationObjectID != nil {
-            return
+        if let id = selectedLocationObjectID {
+            let location = managedObjectContext.objectWithID(id) as Location
+            if !location.deleted {
+                return
+            }
         }
 
         if objectsInTable.count == 0 {
             selectedLocationObjectID = nil
             return
         }
-        
-        
 
         if let location = objectsInTable[0] as? Location {
             selectedLocationObjectID = location.objectID
