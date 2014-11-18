@@ -202,7 +202,6 @@
 			children = (
 				8A9F0F6719E62C50007FB36B /* remember.xcdatamodeld */,
 				7C84AFAF1A0CB13500D905A0 /* Location.swift */,
-				7C6A35271A1B3695004FD2FD /* CoreDataStack.swift */,
 				7C4B6F8B1A0C738400B3C6C6 /* Message.swift */,
 				7C108D8719E66DBC0013C4A3 /* Factories */,
 			);
@@ -311,6 +310,7 @@
 				8A76A0B419E63FA80031202A /* Views */,
 				8A76A0AF19E63C3D0031202A /* Controllers */,
 				8A9F0F6519E62C50007FB36B /* AppDelegate.swift */,
+				7C6A35271A1B3695004FD2FD /* CoreDataStack.swift */,
 				7C088D9719E631CA005A51D9 /* LocationManager.swift */,
 				8A9F0F6C19E62C50007FB36B /* Main.storyboard */,
 				8A9F0F7119E62C50007FB36B /* LaunchScreen.xib */,

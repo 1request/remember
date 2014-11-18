@@ -104,8 +104,7 @@ extension AppDelegate {
             let currentTime = NSDate().timeIntervalSince1970
             let predicate = NSPredicate(format: "isRead == 0")
             let unreadMessages = location.messages.filteredSetUsingPredicate(predicate!)
-//            if unreadMessages.count > 0 && currentTime - previousTriggerDate > 3600 {
-            if unreadMessages.count > 0 {
+            if unreadMessages.count > 0 && currentTime - previousTriggerDate > 3600 {
                 var title = ""
                 var message = ""
                 location.lastTriggerDate = NSDate()
