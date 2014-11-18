@@ -59,6 +59,10 @@
 		D12E82CF1A165B040016778F /* VisitEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C18BBE91A1601BD001F15CA /* VisitEvent.swift */; };
 		D12E82D01A165B040016778F /* AddLocationEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C18BBEB1A1601DB001F15CA /* AddLocationEvent.swift */; };
 		D12E82D11A165B040016778F /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CD4486B1A15FFC7004F4C19 /* Constants.swift */; };
+		D1A673761A1B6C6D00C05D2C /* DataMigrationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6A351E1A1B0B40004FD2FD /* DataMigrationManager.swift */; };
+		D1A673771A1B6C6D00C05D2C /* ObjCToSwiftMigrationPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6A35251A1B2610004FD2FD /* ObjCToSwiftMigrationPolicy.swift */; };
+		D1A673781A1B6C6D00C05D2C /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6A35271A1B3695004FD2FD /* CoreDataStack.swift */; };
+		D1A673791A1B6C8F00C05D2C /* RememberMappingModel_objc_to_v4.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 7C6A35231A1B2567004FD2FD /* RememberMappingModel_objc_to_v4.xcmappingmodel */; };
 		D1B9DE441A0C2F1100C4243E /* HUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CF32E621A0B21B00056F873 /* HUD.swift */; };
 		D1B9DE451A0C2F1100C4243E /* SwipeableTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA8AC711A07202D00566252 /* SwipeableTableViewCell.swift */; };
 		D1B9DE461A0C2F1100C4243E /* EditLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C28F48D1A0A0B40006A7CA0 /* EditLocationViewController.swift */; };
@@ -645,6 +649,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D1A673791A1B6C8F00C05D2C /* RememberMappingModel_objc_to_v4.xcmappingmodel in Sources */,
+				D1A673761A1B6C6D00C05D2C /* DataMigrationManager.swift in Sources */,
+				D1A673771A1B6C6D00C05D2C /* ObjCToSwiftMigrationPolicy.swift in Sources */,
+				D1A673781A1B6C6D00C05D2C /* CoreDataStack.swift in Sources */,
 				D12E82CC1A165B040016778F /* MixpanelEventProtocols.swift in Sources */,
 				D12E82CD1A165B040016778F /* GeographicRegionEvent.swift in Sources */,
 				D12E82CE1A165B040016778F /* BeaconRegionEvent.swift in Sources */,
