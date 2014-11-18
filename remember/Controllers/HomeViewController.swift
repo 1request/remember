@@ -181,8 +181,10 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         if let locationCell = cell as? LocationsTableViewCell {
             let location = objectsInTable[indexPath.row] as Location
             var rowsToReload = [selectedLocationIndexPath()]
-            selectedLocationObjectID = location.objectID
-            rowsToReload.append(selectedLocationIndexPath())
+            if selectedLocationObjectID != location.objectID {
+                selectedLocationObjectID = location.objectID
+                rowsToReload.append(selectedLocationIndexPath())
+            }
             tableView.reloadRowsAtIndexPaths(rowsToReload, withRowAnimation: .Automatic)
         } else {
             let messageCell = cell as MessagesTableViewCell
