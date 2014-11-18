@@ -556,9 +556,12 @@ extension HomeViewController : AVAudioPlayerDelegate {
     func audioPlayerDidFinishPlaying(player: AVAudioPlayer!,
         successfully flag: Bool) {
             stopPlayingAudio()
-            let message = objectsInTable[activePlayerIndexPath!.row] as Message
-            let location = message.location
-            activePlayerIndexPath = nil
+            if let indexPath = activePlayerIndexPath {
+                if let message = objectsInTable[indexPath.row] as? Message {
+                    let location = message.location
+                    activePlayerIndexPath = nil
+                }
+            }
     }
 }
 
@@ -604,29 +607,38 @@ extension HomeViewController: SwipeableTableViewCellDelegate {
         resetEditMode()
         if let indexPath = tableView.indexPathForCell(cell) {
             if index == 0 {
-                let object = objectsInTable.objectAtIndex(indexPath.row) as NSManagedObject
-                if let location = object as? Location {
-                    LocationManager.sharedInstance.stopMonitoringRegions([location.region()])
-                    if location.uuid != "" {
-                        LocationManager.sharedInstance.stopRangingBeaconRegions([location.beaconRegion()])
-                    }
-                }
-                managedObjectContext!.deleteObject(object)
-                var error: NSError? = nil
-                if !managedObjectContext!.save(&error) {
-                    println("unable to delete object, error: \(error?.localizedDescription)")
-                }
-                if objectsInTable.count == 0 {
-                    selectedLocationObjectID = nil
-                    return
-                }
-                if let location = objectsInTable[0] as? Location {
-                    selectedLocationObjectID = location.objectID
-                }
+                deleteObjectAtIndexPath(indexPath)
             } else {
                 let location = objectsInTable.objectAtIndex(indexPath.row) as Location
                 performSegueWithIdentifier("editLocation", sender: location)
             }
+        }
+    }
+    
+    func deleteObjectAtIndexPath(indexPath: NSIndexPath) {
+        let object = objectsInTable.objectAtIndex(indexPath.row) as NSManagedObject
+        if let location = object as? Location {
+            LocationManager.sharedInstance.stopMonitoringRegions([location.region()])
+            if location.uuid != "" {
+                LocationManager.sharedInstance.stopRangingBeaconRegions([location.beaconRegion()])
+            }
+        } else if let message = object as? Message {
+            if activePlayerIndexPath == indexPath {
+                player?.stop()
+                activePlayerIndexPath = nil
+            }
+        }
+        managedObjectContext!.deleteObject(object)
+        var error: NSError? = nil
+        if !managedObjectContext!.save(&error) {
+            println("unable to delete object, error: \(error?.localizedDescription)")
+        }
+        if objectsInTable.count == 0 {
+            selectedLocationObjectID = nil
+            return
+        }
+        if let location = objectsInTable[0] as? Location {
+            selectedLocationObjectID = location.objectID
         }
     }
 }
