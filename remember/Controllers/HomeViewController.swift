@@ -338,6 +338,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
             var sortByIsRead = NSSortDescriptor(key: "isRead", ascending: true)
             var sortByCreatedAt = NSSortDescriptor(key: "createdAt", ascending: false)
             var sortedMessages = location.messages.sortedArrayUsingDescriptors([sortByIsRead, sortByCreatedAt])
+            
             objectsInTable.addObjectsFromArray(sortedMessages)
         }
         
