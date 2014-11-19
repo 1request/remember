@@ -360,17 +360,17 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         }
         
         if let id = selectedLocationObjectID {
-            let location = managedObjectContext.objectWithID(id) as Location
-            if !location.deleted {
+            let location = managedObjectContext.existingObjectWithID(id, error: nil)
+            if location != nil {
                 return
             }
         }
-
+        
         if objectsInTable.count == 0 {
             selectedLocationObjectID = nil
             return
         }
-
+        
         if let location = objectsInTable[0] as? Location {
             selectedLocationObjectID = location.objectID
         }
