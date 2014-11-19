@@ -360,9 +360,10 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         }
         
         if let id = selectedLocationObjectID {
-            let location = managedObjectContext.existingObjectWithID(id, error: nil)
-            if location != nil {
-                return
+            if let location = managedObjectContext.existingObjectWithID(id, error: nil) {
+                if !location.deleted {
+                    return
+                }
             }
         }
         
@@ -611,6 +612,8 @@ extension HomeViewController: SwipeableTableViewCellDelegate {
         if let indexPath = tableView.indexPathForCell(cell) {
             if index == 0 {
                 deleteObjectAtIndexPath(indexPath)
+                setObjectsInTable()
+                setSelectedLocationObjectID()
             } else {
                 let location = objectsInTable.objectAtIndex(indexPath.row) as Location
                 performSegueWithIdentifier("editLocation", sender: location)
