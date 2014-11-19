@@ -44,7 +44,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if LocationManager.sharedInstance.locationManager.respondsToSelector("startMonitoringVisits") {
             LocationManager.sharedInstance.locationManager.startMonitoringVisits()
         }
-        
         return true
     }
     

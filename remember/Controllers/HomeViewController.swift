@@ -89,6 +89,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         let tapRecognizer = UITapGestureRecognizer(target: self, action: "tapView:")
         tapRecognizer.delegate = self
         view.addGestureRecognizer(tapRecognizer)
+        updateSharedNSUserDefaults()
     }
 
     override func viewDidAppear(animated: Bool) {
@@ -290,10 +291,12 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
 
     func controllerDidChangeContent(controller: NSFetchedResultsController) {
+        fetchedResultController.performFetch(nil)
         setObjectsInTable()
         setSelectedLocationObjectID()
         reloadSection()
         updateViewToBePresented()
+        updateSharedNSUserDefaults()
     }
     //MARK: - Layout
     
@@ -332,16 +335,16 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         
         var fetchedLocations = fetchedResultController.fetchedObjects
         for var i = 0; i < fetchedLocations?.count; i++ {
-            var location: Location = fetchedLocations?[i] as Location
-            objectsInTable.addObject(location)
-
-            var sortByIsRead = NSSortDescriptor(key: "isRead", ascending: true)
-            var sortByCreatedAt = NSSortDescriptor(key: "createdAt", ascending: false)
-            var sortedMessages = location.messages.sortedArrayUsingDescriptors([sortByIsRead, sortByCreatedAt])
-            
-            objectsInTable.addObjectsFromArray(sortedMessages)
+            if let location = fetchedLocations?[i] as? Location {
+                objectsInTable.addObject(location)
+                
+                var sortByIsRead = NSSortDescriptor(key: "isRead", ascending: true)
+                var sortByCreatedAt = NSSortDescriptor(key: "createdAt", ascending: false)
+                var sortedMessages = location.messages.sortedArrayUsingDescriptors([sortByIsRead, sortByCreatedAt])
+                
+                objectsInTable.addObjectsFromArray(sortedMessages)
+            }
         }
-        
         setSelectedLocationObjectID()
     }
     
@@ -450,7 +453,8 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         
         stopRecordingAudio()
         if timeInterval > kMinimumRecordLength {
-            let location = managedObjectContext!.objectWithID(selectedLocationObjectID!) as Location
+            setSelectedLocationObjectID()
+            let location = managedObjectContext.existingObjectWithID(selectedLocationObjectID!, error: nil) as Location
             createMessageForLocation(location)
             monitorLocation(location)
             let indexPath = NSIndexPath(forRow: 0, inSection: 0)
@@ -693,5 +697,18 @@ extension HomeViewController {
             default: ()
             }
         }
+    }
+}
+
+extension HomeViewController {
+    func updateSharedNSUserDefaults() {
+        let request = NSFetchRequest(entityName: "Location")
+        let locations = managedObjectContext.executeFetchRequest(request, error: nil) as [Location]
+        let userDefaults = NSUserDefaults(suiteName: "group.remember")
+        var locationsDict = [String: [String]]()
+        for location in locations {
+            locationsDict[location.name] = map(location.messages) { return $0.name }
+        }
+        userDefaults?.setValue(locationsDict, forKey: "locations")
     }
 }

@@ -49,7 +49,7 @@ class AddDeviceViewController: UIViewController, UITextFieldDelegate {
         Mixpanel.sharedInstance().track(event.title, properties: event.properties)
         
         managedObjectContext!.save(nil)
-        
+                
         navigationController?.popToRootViewControllerAnimated(true)
     }
     

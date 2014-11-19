@@ -12,24 +12,37 @@ import Foundation
 
 class InterfaceController: WKInterfaceController {
 
+    @IBOutlet weak var locationTable: WKInterfaceTable!
+    
     override init(context: AnyObject?) {
-        // Initialize variables here.
         super.init(context: context)
+        loadData()
         
-        // Configure interface objects here.
-        NSLog("%@ init", self)
     }
 
     override func willActivate() {
-        // This method is called when watch view controller is about to be visible to user
         super.willActivate()
-        NSLog("%@ will activate", self)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateExtension", name: NSUserDefaultsDidChangeNotification, object: nil)
     }
 
     override func didDeactivate() {
-        // This method is called when watch view controller is no longer visible
-        NSLog("%@ did deactivate", self)
         super.didDeactivate()
+        NSNotificationCenter.defaultCenter().removeObserver(self)
     }
 
+    func loadData() {
+        let userDefaults = NSUserDefaults(suiteName: "group.remember")
+        let locations = userDefaults?.valueForKey("locations") as [String: [String]]
+        locationTable.setNumberOfRows(locations.count, withRowType: "location")
+        for (locationName, _) in locations {
+            let arr = Array(locations.keys)
+            let index = find(arr, locationName)!
+            let row = locationTable.rowControllerAtIndex(index) as LocationRowController
+            row.nameLabel.setText(locationName)
+        }
+    }
+    
+    func updateExtension() {
+        loadData()
+    }
 }
