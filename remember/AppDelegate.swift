@@ -44,6 +44,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if LocationManager.sharedInstance.locationManager.respondsToSelector("startMonitoringVisits") {
             LocationManager.sharedInstance.locationManager.startMonitoringVisits()
         }
+
+        registerSettingsAndCategories()
         return true
     }
     
@@ -54,6 +56,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
             AudioServicesPlaySystemSound(1007)
         }
+    }
+    
+    func application(application: UIApplication, handleActionWithIdentifier identifier: String?, forRemoteNotification userInfo: [NSObject : AnyObject], completionHandler: () -> Void) {
+        // handle actions for remote notification
+        NSUserDefaults.standardUserDefaults().setValue("remote notification from watch??", forKey: "remote notification")
+        completionHandler()
+    }
+    
+    func application(application: UIApplication, handleActionWithIdentifier identifier: String?, forLocalNotification notification: UILocalNotification, completionHandler: () -> Void) {
+        // handle actions for local notification
+        
+        completionHandler()
     }
 
     func applicationWillResignActive(application: UIApplication) {
@@ -101,7 +115,8 @@ extension AppDelegate {
             let currentTime = NSDate().timeIntervalSince1970
             let predicate = NSPredicate(format: "isRead == 0")
             let unreadMessages = location.messages.filteredSetUsingPredicate(predicate!)
-            if unreadMessages.count > 0 && currentTime - previousTriggerDate > 3600 {
+//            if unreadMessages.count > 0 && currentTime - previousTriggerDate > 3600 {
+            if unreadMessages.count > 0 {
                 var title = ""
                 var message = ""
                 location.lastTriggerDate = NSDate()
@@ -130,7 +145,7 @@ extension AppDelegate {
     func sendLocalNotificationWithMessage (message: String) {
         let notification = UILocalNotification()
         notification.alertBody = message
-        notification.alertAction = "View Details"
+        notification.category = LocationNotificationCategory
         notification.soundName = UILocalNotificationDefaultSoundName
         let request = NSFetchRequest(entityName: "Message")
         request.predicate = NSPredicate(format: "isRead == 0")
@@ -141,17 +156,31 @@ extension AppDelegate {
             notification.regionTriggersOnce = true
         }
         
-        if UIApplication.sharedApplication().respondsToSelector("registerUserNotificationSettings:") {
-            let types = UIUserNotificationType.Badge | UIUserNotificationType.Sound | UIUserNotificationType.Alert
-            let settings = UIUserNotificationSettings(forTypes: types, categories: nil)
-            UIApplication.sharedApplication().registerUserNotificationSettings(settings)
-        }
-        
         UIApplication.sharedApplication().presentLocalNotificationNow(notification)
     }
     
     func clearNotifications () {
         UIApplication.sharedApplication().applicationIconBadgeNumber = 0
         UIApplication.sharedApplication().cancelAllLocalNotifications()
+    }
+    
+    func registerSettingsAndCategories() {
+        let categories = NSMutableSet()
+        let action = UIMutableUserNotificationAction()
+        action.title = "View"
+        action.identifier = LocationNotificationActionIdentifier
+        action.activationMode = UIUserNotificationActivationMode.Foreground
+        action.authenticationRequired = true
+        
+        let category = UIMutableUserNotificationCategory()
+        category.setActions([action], forContext: UIUserNotificationActionContext.Default)
+        category.identifier = LocationNotificationCategory
+        categories.addObject(category)
+        
+        let settings = UIUserNotificationSettings(forTypes: (UIUserNotificationType.Alert | UIUserNotificationType.Badge | UIUserNotificationType.Sound), categories: categories)
+        
+        if UIApplication.sharedApplication().respondsToSelector("registerUserNotificationSettings:") {
+            UIApplication.sharedApplication().registerUserNotificationSettings(settings)
+        }
     }
 }

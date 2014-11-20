@@ -1,14 +1,14 @@
 {
     "aps": {
-        "alert": "Test message content",
-        "title": "Optional title",
-        "category": "myCategory"
+        "alert": "New message from Cyberport",
+        "title": "Cyberport got 3 new notifications",
+        "category": "View"
     },
     
     "WatchKit Simulator Actions": [
         {
-            "title": "First Button",
-            "identifier": "firstButtonAction"
+            "title": "View",
+            "identifier": "view"
         }
     ],
     

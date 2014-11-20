@@ -33,12 +33,34 @@
             </objects>
             <point key="canvasLocation" x="220" y="345"/>
         </scene>
+        <!--Glance Interface Controller-->
+        <scene sceneID="5dq-wE-eo3">
+            <objects>
+                <glanceController id="N2x-qo-RUI">
+                    <items>
+                        <group alignment="left" id="oH1-4u-okj">
+                            <items>
+                                <label alignment="left" text="Hello World" id="1yl-Rn-SnD">
+                                    <fontDescription key="font" name="HelveticaNeue-CondensedBlack" family="Helvetica Neue" pointSize="21"/>
+                                </label>
+                            </items>
+                        </group>
+                        <group alignment="left" id="Rdq-Az-AfU">
+                            <items>
+                                <label width="134" height="106.5" alignment="left" text="3 unread notifications" numberOfLines="0" id="750-Ja-I7x"/>
+                            </items>
+                        </group>
+                    </items>
+                </glanceController>
+            </objects>
+            <point key="canvasLocation" x="468" y="345"/>
+        </scene>
         <!--Static Notification Interface Controller-->
         <scene sceneID="AEw-b0-oYE">
             <objects>
                 <notificationController id="YCC-NB-fut">
                     <items>
-                        <label alignment="left" text="Alert Label" id="IdU-wH-bcW"/>
+                        <label alignment="left" text="Alert Label" numberOfLines="0" id="IdU-wH-bcW"/>
                     </items>
                     <notificationCategory key="notificationCategory" id="JfB-70-Muf"/>
                     <connections>
@@ -52,7 +74,14 @@
         <!--Notification Controller-->
         <scene sceneID="ZPc-GJ-vnh">
             <objects>
-                <controller id="4sK-HA-Art" customClass="NotificationController" customModule="Remember_Watch_App" customModuleProvider="target"/>
+                <controller id="4sK-HA-Art" customClass="NotificationController" customModule="Remember_Watch_App" customModuleProvider="target">
+                    <items>
+                        <label alignment="center" text="Title" textAlignment="center" numberOfLines="0" id="ycI-jR-Oe5"/>
+                    </items>
+                    <connections>
+                        <outlet property="titleLabel" destination="ycI-jR-Oe5" id="gFx-wY-AfN"/>
+                    </connections>
+                </controller>
             </objects>
             <point key="canvasLocation" x="468" y="643"/>
         </scene>

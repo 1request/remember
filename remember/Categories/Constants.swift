@@ -47,3 +47,6 @@ let kGPSLocationUpdateNotificationName = "gpsLocationUpdateNotification"
 let kGPSLocationUpdateNotificationUserInfoLocationKey = "location"
 let kVisitsNotificationName = "visitNotification"
 let kVisitsNotificationUserInfoVisitKey = "visit"
+
+let LocationNotificationCategory = "View"
+let LocationNotificationActionIdentifier = "view"

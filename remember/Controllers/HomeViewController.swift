@@ -709,6 +709,7 @@ extension HomeViewController {
         for location in locations {
             locationsDict[location.name] = map(location.messages) { return $0.name }
         }
-        userDefaults?.setValue(locationsDict, forKey: "locations")
+        userDefaults?.setObject(locationsDict, forKey: "locations")
+        userDefaults?.synchronize()
     }
 }

@@ -17,17 +17,16 @@ class InterfaceController: WKInterfaceController {
     override init(context: AnyObject?) {
         super.init(context: context)
         loadData()
-        
+        let timer = NSTimer(timeInterval: 3, target: self, selector: "loadData", userInfo: nil, repeats: true)
+        timer.fire()
     }
 
     override func willActivate() {
         super.willActivate()
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateExtension", name: NSUserDefaultsDidChangeNotification, object: nil)
     }
 
     override func didDeactivate() {
         super.didDeactivate()
-        NSNotificationCenter.defaultCenter().removeObserver(self)
     }
 
     func loadData() {
