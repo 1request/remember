@@ -17,7 +17,7 @@ class InterfaceController: WKInterfaceController {
     override init(context: AnyObject?) {
         super.init(context: context)
         loadData()
-        let timer = NSTimer(timeInterval: 3, target: self, selector: "loadData", userInfo: nil, repeats: true)
+        let timer = NSTimer.scheduledTimerWithTimeInterval(3, target: self, selector: "loadData", userInfo: nil, repeats: true)
         timer.fire()
     }
 
