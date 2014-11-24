@@ -12,6 +12,7 @@ import CoreData
 class EditLocationViewController: UIViewController {
 
     @IBOutlet weak var editLocationNameTextField: UITextField!
+    @IBOutlet weak var saveButton: UIBarButtonItem!
     
     weak var managedObjectContext: NSManagedObjectContext?
     var location:Location? = nil
@@ -19,6 +20,14 @@ class EditLocationViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         editLocationNameTextField.text = location?.name
+    }
+    
+    @IBAction func locationNameEditingChanged(sender: UITextField) {
+        if editLocationNameTextField.text == "" {
+            saveButton.enabled = false
+        } else {
+            saveButton.enabled = true
+        }
     }
     
     @IBAction func saveButtonClicked(sender: UIBarButtonItem) {
