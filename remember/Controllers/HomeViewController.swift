@@ -149,9 +149,11 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 cell.markAsUnread()
             }
             if indexPath.row == editingCellRowNumber {
-                setPlayButton(active: false, ForCell: cell)
+                cell.setPlayerStatus(cell.status)
+                cell.active = false
             } else {
-                setPlayButton(active: true, ForCell: cell)
+                cell.setPlayerStatus(cell.status)
+                cell.active = true
             }
             return cell
         }
@@ -188,7 +190,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
             tableView.reloadRowsAtIndexPaths(rowsToReload, withRowAnimation: .Automatic)
         } else {
             let messageCell = cell as MessagesTableViewCell
-            if messageCell.playing {
+            if messageCell.status == MessagesTableViewCell.PlayerStatus.Playing {
                 stopPlayingAudio()
             } else {
                 // stop any existing playing record
@@ -221,15 +223,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
             previousEditingCell.closeCell(animated: true)
         }
         if let messageCell = cell as? MessagesTableViewCell {
-            setPlayButton(active: true, ForCell: messageCell)
-        }
-    }
-    
-    func setPlayButton(#active: Bool, ForCell cell: MessagesTableViewCell) {
-        if active {
-            cell.playButton.setBackgroundImage(UIImage(named: "play-active"), forState: UIControlState.Normal)
-        } else {
-            cell.playButton.setBackgroundImage(UIImage(named: "play-inactive"), forState: UIControlState.Normal)
+            messageCell.active = true
         }
     }
 
@@ -607,7 +601,8 @@ extension HomeViewController: SwipeableTableViewCellDelegate {
         }
         
         if let messageCell = cell as? MessagesTableViewCell {
-            setPlayButton(active: false, ForCell: messageCell)
+//            setPlayButton(active: false, ForCell: messageCell)
+            messageCell.active = false
         }
     }
 
@@ -615,7 +610,8 @@ extension HomeViewController: SwipeableTableViewCellDelegate {
         resetEditMode()
         
         if let messageCell = cell as? MessagesTableViewCell {
-            setPlayButton(active: true, ForCell: messageCell)
+//            setPlayButton(active: true, ForCell: messageCell)
+            messageCell.active = true
         }
     }
 
