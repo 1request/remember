@@ -252,9 +252,6 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         if editingCellRowNumber != -1 {
             closeEditingCell()
             resetEditMode()
-        } else {
-            hudView = HUD.hudInView(view)
-            hudView.text = kSlideUpToCancel
         }
         
         recordAudio()
@@ -387,9 +384,24 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
         let session = AVAudioSession.sharedInstance()
         session.setActive(true, error: nil)
-        recorder.record()
-        startDate = NSDate()
-        timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("updateTimer"), userInfo: nil, repeats: true)
+        if session.respondsToSelector("requestRecordPermission:") {
+            session.requestRecordPermission { [unowned self] (granted) -> Void in
+                if granted {
+                    self.hudView = HUD.hudInView(self.view)
+                    self.hudView.text = self.kSlideUpToCancel
+                    self.recorder.record()
+                    self.startDate = NSDate()
+                    self.timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("updateTimer"), userInfo: nil, repeats: true)
+                } else {
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        let controller = UIAlertController(title: "Microphone Access Denied", message: "Remember requires access to your device's microphone.\n\nPlease enable microphone access for Remember in Settings / Privacy / Microphone", preferredStyle: .Alert)
+                        let cancelAction = UIAlertAction(title: "OK", style: .Cancel, handler: nil)
+                        controller.addAction(cancelAction)
+                        self.presentViewController(controller, animated: true, completion: nil)
+                    })
+                }
+            }
+        }
     }
 
     func configureAudioSession () {
