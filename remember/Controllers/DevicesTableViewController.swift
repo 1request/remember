@@ -21,6 +21,8 @@ class DevicesTableViewController: UITableViewController, UITableViewDataSource, 
         }
     }
     
+    @IBOutlet weak var gpsAddButton: UIButton!
+    
     weak var managedObjectContext:NSManagedObjectContext? {
         didSet {
             let request = NSFetchRequest(entityName: "Location")
@@ -36,9 +38,6 @@ class DevicesTableViewController: UITableViewController, UITableViewDataSource, 
     override func viewDidLoad() {
         tableView.removeFooterBorder()
         LocationManager.sharedInstance.startRangingBeaconRegions(BeaconFactory.beaconRegionsToBeRanged())
-        if let location = LocationManager.sharedInstance.currentLocation {
-            gpsLocation = location
-        }
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -60,7 +59,7 @@ class DevicesTableViewController: UITableViewController, UITableViewDataSource, 
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
-            return gpsLocation != nil ? 1 : 0
+            return 1
         } else {
             return rangedBeacons.count
         }
@@ -69,6 +68,13 @@ class DevicesTableViewController: UITableViewController, UITableViewDataSource, 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
             var cell = tableView.dequeueReusableCellWithIdentifier("gpsCell", forIndexPath: indexPath) as GPSLocationTableViewCell
+            if gpsLocation == nil {
+                cell.label.text = "Loading Location"
+                cell.addButton.hidden = true
+            } else {
+                cell.label.text = "Current Location"
+                cell.addButton.hidden = false
+            }
             cell.didPressAddButtonBlock = {
                 [weak self] in
                 if let location = self?.gpsLocation {

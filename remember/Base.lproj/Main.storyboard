@@ -617,6 +617,10 @@
                                         <constraint firstItem="U0l-U1-5qZ" firstAttribute="leading" secondItem="EQv-XC-poF" secondAttribute="trailing" constant="8" id="zqh-th-xAx"/>
                                     </constraints>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="addButton" destination="6nX-lr-qJb" id="VKh-j0-4cN"/>
+                                    <outlet property="label" destination="U0l-U1-5qZ" id="X3n-Ld-KZm"/>
+                                </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="devicesCell" id="75o-Iv-RDZ" customClass="DevicesTableViewCell" customModule="remember" customModuleProvider="target">
                                 <autoresizingMask key="autoresizingMask"/>
