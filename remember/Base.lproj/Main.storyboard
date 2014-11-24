@@ -719,6 +719,9 @@
                                 <rect key="frame" x="16" y="101" width="568" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <action selector="deviceNameTextEditingChanged:" destination="3QA-C9-hzw" eventType="editingChanged" id="ZAW-WO-maf"/>
+                                </connections>
                             </textField>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -731,7 +734,7 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Set Location" id="pdk-AI-J4r">
-                        <barButtonItem key="rightBarButtonItem" title="Save" id="qP6-M1-MUw">
+                        <barButtonItem key="rightBarButtonItem" enabled="NO" title="Save" id="qP6-M1-MUw">
                             <connections>
                                 <action selector="saveBarButtonItemPressed:" destination="3QA-C9-hzw" id="FwV-1a-Ugu"/>
                             </connections>
@@ -739,6 +742,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="deviceNameTextField" destination="L99-nn-DyE" id="ChV-9g-6yM"/>
+                        <outlet property="saveButton" destination="qP6-M1-MUw" id="e52-Mp-DNm"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="D5g-m7-yMs" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -790,6 +794,9 @@
                                 <rect key="frame" x="16" y="101" width="568" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <action selector="locationNameEditingChanged:" destination="1fN-WH-tHk" eventType="editingChanged" id="KWy-yX-rHJ"/>
+                                </connections>
                             </textField>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -810,6 +817,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="editLocationNameTextField" destination="8p8-a3-arm" id="4nD-8t-XOS"/>
+                        <outlet property="saveButton" destination="VVu-78-Stu" id="z5A-78-w6X"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XxO-ma-Gy9" userLabel="First Responder" sceneMemberID="firstResponder"/>

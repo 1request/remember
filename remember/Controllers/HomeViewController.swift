@@ -616,17 +616,28 @@ extension HomeViewController: SwipeableTableViewCellDelegate {
     }
 
     func swipeableCell(cell: SwipeableTableViewCell, didSelectButtonAtIndex index: Int) {
-        resetEditMode()
         if let indexPath = tableView.indexPathForCell(cell) {
             if index == 0 {
                 deleteObjectAtIndexPath(indexPath)
                 setObjectsInTable()
                 setSelectedLocationObjectID()
             } else {
-                let location = objectsInTable.objectAtIndex(indexPath.row) as Location
-                performSegueWithIdentifier("editLocation", sender: location)
+                let object = objectsInTable.objectAtIndex(indexPath.row) as NSManagedObject
+                if let location = object as? Location {
+                    performSegueWithIdentifier("editLocation", sender: location)
+                } else if let message = object as? Message {
+                    let cell = tableView.cellForRowAtIndexPath(indexPath) as MessagesTableViewCell
+                    cell.markAsUnread()
+                    
+                    message.isRead = false
+                    message.updatedAt = NSDate()
+                    managedObjectContext.save(nil)
+                    
+                    closeEditingCell()
+                }
             }
         }
+        resetEditMode()
     }
     
     func deleteObjectAtIndexPath(indexPath: NSIndexPath) {

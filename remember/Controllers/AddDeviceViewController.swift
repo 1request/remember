@@ -16,9 +16,18 @@ class AddDeviceViewController: UIViewController, UITextFieldDelegate {
     weak var managedObjectContext: NSManagedObjectContext?
     
     @IBOutlet weak var deviceNameTextField: UITextField!
+    @IBOutlet weak var saveButton: UIBarButtonItem!
     
     override func viewDidLoad() {
         deviceNameTextField.delegate = self
+    }
+    
+    @IBAction func deviceNameTextEditingChanged(sender: AnyObject) {
+        if deviceNameTextField.text == "" {
+            saveButton.enabled = false
+        } else {
+            saveButton.enabled = true
+        }
     }
     
     @IBAction func saveBarButtonItemPressed(sender: UIBarButtonItem) {
