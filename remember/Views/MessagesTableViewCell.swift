@@ -86,10 +86,26 @@ class MessagesTableViewCell: SwipeableTableViewCell {
 
 extension MessagesTableViewCell: SwipeableTableViewCellDataSource {
     func numberOfButtonsInSwipeableCell(cell: SwipeableTableViewCell) -> Int {
-        return 1
+        if unreadSpotIcon.hidden {
+            return 2
+        } else {
+            return 1
+        }
     }
 
     func swipeableCell(cell: SwipeableTableViewCell, backgroundImageForButtonAtIndex index: Int) -> UIImage? {
-        return UIImage(named: "trash")
+        if index == 0 {
+            return UIImage(named: "trash")
+        } else {
+            return nil
+        }
+    }
+    
+    func swipeableCell(cell: SwipeableTableViewCell, titleForButtonAtIndex index: Int) -> String? {
+        if index == 1 && unreadSpotIcon.hidden {
+            return "Unread"
+        } else {
+            return nil
+        }
     }
 }

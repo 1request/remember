@@ -133,7 +133,9 @@ class SwipeableTableViewCell: UITableViewCell, UIGestureRecognizerDelegate {
             button = customButton
         } else {
             if let title = dataSource?.swipeableCell?(self, titleForButtonAtIndex: index) {
+                let spacing:CGFloat = 5
                 button.setTitle(title, forState: UIControlState.Normal)
+                button.contentEdgeInsets = UIEdgeInsetsMake(spacing, spacing, spacing, spacing)
             } else {
                 button.setTitle("", forState: UIControlState.Normal)
             }
