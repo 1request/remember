@@ -69,7 +69,7 @@ class DevicesTableViewController: UITableViewController, UITableViewDataSource, 
         if indexPath.section == 0 {
             var cell = tableView.dequeueReusableCellWithIdentifier("gpsCell", forIndexPath: indexPath) as GPSLocationTableViewCell
             if gpsLocation == nil {
-                cell.label.text = "Loading Location"
+                cell.label.text = "Loading Location..."
                 cell.addButton.hidden = true
             } else {
                 cell.label.text = "Current Location"
