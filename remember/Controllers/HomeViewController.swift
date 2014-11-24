@@ -336,7 +336,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
             objectsInTable.addObject(location)
 
             var sortByIsRead = NSSortDescriptor(key: "isRead", ascending: true)
-            var sortByCreatedAt = NSSortDescriptor(key: "createdAt", ascending: false)
+            var sortByCreatedAt = NSSortDescriptor(key: "createdAt", ascending: true)
             var sortedMessages = location.messages.sortedArrayUsingDescriptors([sortByIsRead, sortByCreatedAt])
             
             objectsInTable.addObjectsFromArray(sortedMessages)
@@ -566,6 +566,8 @@ extension HomeViewController : AVAudioPlayerDelegate {
                     activePlayerIndexPath = nil
                 }
             }
+            setObjectsInTable()
+            reloadSection()
     }
 }
 
@@ -630,6 +632,8 @@ extension HomeViewController: SwipeableTableViewCellDelegate {
             }
         }
         resetEditMode()
+        setObjectsInTable()
+        reloadSection()
     }
     
     func deleteObjectAtIndexPath(indexPath: NSIndexPath) {
