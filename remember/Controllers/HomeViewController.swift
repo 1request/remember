@@ -12,11 +12,15 @@ import AVFoundation
 import CoreLocation
 
 class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate {
-
+    
     //MARK: - Constants
-
-    let kSlideUpToCancel = "Slide Up To Cancel"
-    let kReleaseToCancel = "Release To Cancel"
+    
+    let SLIDE_UP_TO_CANCEL = NSLocalizedString("SLIDE_UP_TO_CANCEL", comment: "Inform user to slide up to cancel recording")
+    let RELEASE_TO_CANCEL = NSLocalizedString("RELEASE_TO_CANCEL", comment: "Inform user to release finger to cancel recording")
+    let MICROPHONE_ACCESS_DENIED = NSLocalizedString("MICROPHONE_ACCESS_DENIED", comment: "Microphone access is denied by user")
+    let MICROPHONE_ACCESS_ALERT_MSG = NSLocalizedString("MICROPHONE_ACCESS_ALERT_MSG", comment: "Alert message to inform user to reset microphone access")
+    let RECORD_NAME = NSLocalizedString("RECORD_NAME", comment: "default message name")
+    
     let kMinimumRecordLength = 1.0
     var kApplicationPath = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true).last! as String
     var hudView = HUD()
@@ -262,12 +266,12 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
 
     @IBAction func recordButtonTouchedDragEnter(sender: UIButton) {
-        hudView.text = kSlideUpToCancel
+        hudView.text = SLIDE_UP_TO_CANCEL
         hudView.setNeedsDisplay()
     }
 
     @IBAction func recordButtonTouchedDragExit(sender: UIButton) {
-        hudView.text = kReleaseToCancel
+        hudView.text = RELEASE_TO_CANCEL
         hudView.setNeedsDisplay()
     }
 
@@ -382,13 +386,13 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
             session.requestRecordPermission { [unowned self] (granted) -> Void in
                 if granted {
                     self.hudView = HUD.hudInView(self.view)
-                    self.hudView.text = self.kSlideUpToCancel
+                    self.hudView.text = self.SLIDE_UP_TO_CANCEL
                     self.recorder.record()
                     self.startDate = NSDate()
                     self.timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("updateTimer"), userInfo: nil, repeats: true)
                 } else {
                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                        let controller = UIAlertController(title: "Microphone Access Denied", message: "Remember requires access to your device's microphone.\n\nPlease enable microphone access for Remember in Settings / Privacy / Microphone", preferredStyle: .Alert)
+                        let controller = UIAlertController(title: self.MICROPHONE_ACCESS_DENIED, message: self.MICROPHONE_ACCESS_ALERT_MSG, preferredStyle: .Alert)
                         let cancelAction = UIAlertAction(title: "OK", style: .Cancel, handler: nil)
                         controller.addAction(cancelAction)
                         self.presentViewController(controller, animated: true, completion: nil)
@@ -485,7 +489,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         message.location = location
 
         message.location.messageCount = NSNumber(integer: (message.location.messageCount.integerValue + 1))
-        message.name = "Record \(message.location.messageCount)"
+        message.name = String(format: RECORD_NAME, message.location.messageCount)
         message.isRead = false
         message.createdAt = createTime
         message.updatedAt = createTime

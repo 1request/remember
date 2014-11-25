@@ -13,6 +13,11 @@ import CoreData
 
 class DevicesTableViewController: UITableViewController, UITableViewDataSource, UITableViewDelegate {
     
+    let LOADING_LOCATION = NSLocalizedString("LOADING_LOCATION", comment: "gps cell label text when loading location")
+    let CURRENT_LOCATION = NSLocalizedString("CURRENT_LOCATION", comment: "gps cell label text when location is determined")
+    let WITHIN_RANGE = NSLocalizedString("WITHIN_RANGE", comment: "Meter range of beacon")
+    let ADDED = NSLocalizedString("ADDED", comment: "beacon has been added")
+    
     let notificationCenter = NSNotificationCenter.defaultCenter()
     var rangedBeacons = [CLBeacon]()
     var gpsLocation:CLLocation? = nil {
@@ -69,10 +74,10 @@ class DevicesTableViewController: UITableViewController, UITableViewDataSource, 
         if indexPath.section == 0 {
             var cell = tableView.dequeueReusableCellWithIdentifier("gpsCell", forIndexPath: indexPath) as GPSLocationTableViewCell
             if gpsLocation == nil {
-                cell.label.text = "Loading Location..."
+                cell.label.text = LOADING_LOCATION
                 cell.addButton.hidden = true
             } else {
-                cell.label.text = "Current Location"
+                cell.label.text = CURRENT_LOCATION
                 cell.addButton.hidden = false
             }
             cell.didPressAddButtonBlock = {
@@ -95,7 +100,7 @@ class DevicesTableViewController: UITableViewController, UITableViewDataSource, 
             let filteredLocations = locations.filter { predicate!.evaluateWithObject($0) }
             
             if !filteredLocations.isEmpty {
-                cell.addButton.setTitle("Added", forState: UIControlState.Normal)
+                cell.addButton.setTitle(ADDED, forState: UIControlState.Normal)
                 cell.addButton.setTitleColor(UIColor.appGrayColor(), forState: UIControlState.Normal)
                 cell.addButton.backgroundColor = nil
                 
@@ -109,7 +114,7 @@ class DevicesTableViewController: UITableViewController, UITableViewDataSource, 
                 }
             }
             
-            cell.rangeLabel.text = "Within \(formattedRange)m"
+            cell.rangeLabel.text = String(format: WITHIN_RANGE, formattedRange)
             return cell
         }
     }
