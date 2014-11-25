@@ -149,7 +149,6 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
             let notification = NSNotification(name: kGPSLocationUpdateNotificationName, object: self, userInfo: [kGPSLocationUpdateNotificationUserInfoLocationKey: location])
             NSNotificationCenter.defaultCenter().postNotification(notification)
             currentLocation = location
-            println("(\(NSDate().dateStringOfLocalTimeZone())) updated gps coordinate: (\(location.coordinate.printCoordinate())) | distance filter: \(locationManager.distanceFilter) | desired accuracy: \(locationManager.desiredAccuracy)")
         }
     }
     

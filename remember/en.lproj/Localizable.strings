@@ -16,3 +16,4 @@ CURRENT_LOCATION = "Current Location";
 WITHIN_RANGE = "Within %@ m";
 ADDED = "Added";
 RECORD_NAME = "Record %@";
+RECORDING_FEEDBACK = "Recording feedback";
