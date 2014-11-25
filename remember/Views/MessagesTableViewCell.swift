@@ -9,7 +9,9 @@
 import UIKit
 
 class MessagesTableViewCell: SwipeableTableViewCell {
-
+    
+    let UNREAD = NSLocalizedString("UNREAD", comment: "unread button label text")
+    
     let unreadSpotIcon = UnreadSpotView()
     let playButton = UIButton.buttonWithType(UIButtonType.Custom) as UIButton
     let messageLabel = UILabel()
@@ -117,7 +119,7 @@ extension MessagesTableViewCell: SwipeableTableViewCellDataSource {
     
     func swipeableCell(cell: SwipeableTableViewCell, titleForButtonAtIndex index: Int) -> String? {
         if index == 1 && unreadSpotIcon.hidden {
-            return "Unread"
+            return UNREAD
         } else {
             return nil
         }
