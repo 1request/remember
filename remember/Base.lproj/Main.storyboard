@@ -4,6 +4,8 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6213"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
         <!--Home View Controller-->
@@ -26,19 +28,25 @@
                                 </constraints>
                             </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hQp-ZG-RTu">
-                                <rect key="frame" x="0.0" y="399" width="600" height="201"/>
+                                <rect key="frame" x="0.0" y="399" width="600" height="200.5"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Separator" translatesAutoresizingMaskIntoConstraints="NO" id="TEi-dk-lub">
-                                        <rect key="frame" x="0.0" y="0.0" width="600" height="201"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="600" height="200.5"/>
                                     </imageView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lyi-sS-abq">
-                                        <rect key="frame" x="217" y="27" width="166" height="166"/>
+                                        <rect key="frame" x="243.5" y="79" width="113" height="113"/>
                                         <constraints>
+                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="80" id="02L-hn-aPP"/>
                                             <constraint firstAttribute="width" secondItem="lyi-sS-abq" secondAttribute="height" multiplier="1:1" id="Hqx-Iq-AJQ"/>
                                         </constraints>
-                                        <state key="normal" image="record-button">
+                                        <state key="normal" backgroundImage="record-button">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
+                                        <variation key="default">
+                                            <mask key="constraints">
+                                                <exclude reference="02L-hn-aPP"/>
+                                            </mask>
+                                        </variation>
                                         <connections>
                                             <action selector="recordButtonTouchedDown:" destination="BYZ-38-t0r" eventType="touchDown" id="uP1-ZZ-XjY"/>
                                             <action selector="recordButtonTouchedDragEnter:" destination="BYZ-38-t0r" eventType="touchDragEnter" id="es7-5g-F28"/>
@@ -47,20 +55,37 @@
                                             <action selector="recordButtonTouchedUpOutside:" destination="BYZ-38-t0r" eventType="touchUpOutside" id="JdE-b6-KVF"/>
                                         </connections>
                                     </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ore-nX-Dhh">
+                                        <rect key="frame" x="524" y="120.5" width="68" height="30"/>
+                                        <state key="normal" title="Feedback">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="centerX" secondItem="lyi-sS-abq" secondAttribute="centerX" id="0sI-Au-NPh"/>
                                     <constraint firstItem="TEi-dk-lub" firstAttribute="top" secondItem="hQp-ZG-RTu" secondAttribute="top" id="3UW-of-2aq"/>
                                     <constraint firstAttribute="width" secondItem="hQp-ZG-RTu" secondAttribute="height" multiplier="640:214" id="3uI-jx-OaC"/>
+                                    <constraint firstAttribute="bottomMargin" secondItem="ore-nX-Dhh" secondAttribute="bottom" constant="8" id="9Lj-b6-B8O"/>
                                     <constraint firstAttribute="bottom" secondItem="TEi-dk-lub" secondAttribute="bottom" id="ACr-kP-atQ"/>
+                                    <constraint firstItem="TEi-dk-lub" firstAttribute="top" secondItem="lyi-sS-abq" secondAttribute="top" constant="8" id="G1N-3z-xq0"/>
+                                    <constraint firstItem="ore-nX-Dhh" firstAttribute="trailing" secondItem="hQp-ZG-RTu" secondAttribute="trailingMargin" id="Nve-p0-oPr"/>
                                     <constraint firstAttribute="bottom" secondItem="lyi-sS-abq" secondAttribute="bottom" constant="8" id="VwU-Fe-BaI"/>
                                     <constraint firstItem="TEi-dk-lub" firstAttribute="leading" secondItem="hQp-ZG-RTu" secondAttribute="leading" id="dA2-6X-CWD"/>
+                                    <constraint firstItem="lyi-sS-abq" firstAttribute="height" secondItem="hQp-ZG-RTu" secondAttribute="height" multiplier="9:16" id="glQ-9w-bfQ"/>
                                     <constraint firstAttribute="trailing" secondItem="TEi-dk-lub" secondAttribute="trailing" id="gvl-eh-22y"/>
+                                    <constraint firstItem="ore-nX-Dhh" firstAttribute="centerY" secondItem="lyi-sS-abq" secondAttribute="centerY" id="s4c-Eo-WHu"/>
                                 </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="G1N-3z-xq0"/>
+                                        <exclude reference="9Lj-b6-B8O"/>
+                                    </mask>
+                                </variation>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="60" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="Dtd-qO-gU9">
-                                <rect key="frame" x="0.0" y="64" width="600" height="327"/>
+                                <rect key="frame" x="0.0" y="64" width="600" height="327.5"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
                                     <outlet property="dataSource" destination="BYZ-38-t0r" id="TE1-kf-NFp"/>
