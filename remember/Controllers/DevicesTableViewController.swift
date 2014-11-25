@@ -43,6 +43,7 @@ class DevicesTableViewController: UITableViewController, UITableViewDataSource, 
     override func viewDidLoad() {
         tableView.removeFooterBorder()
         LocationManager.sharedInstance.startRangingBeaconRegions(BeaconFactory.beaconRegionsToBeRanged())
+        gpsLocation = LocationManager.sharedInstance.currentLocation
     }
     
     override func viewWillAppear(animated: Bool) {
