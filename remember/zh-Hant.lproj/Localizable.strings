@@ -16,3 +16,4 @@ CURRENT_LOCATION = "現時位置";
 WITHIN_RANGE = "於%@米內";
 ADDED = "已加";
 RECORD_NAME = "錄音%@";
+RECORDING_FEEDBACK = "回饋錄音中";

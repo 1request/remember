@@ -45,7 +45,7 @@ class DataMigrationManager {
         let storeURL = storeURLFromStoreName(objcName)
         let newURL = storeURLFromStoreName(swiftName)
         let destinationURL = storeURLFromStoreName(swiftName).URLByDeletingLastPathComponent
-        let destinationName = storeURLFromStoreName(swiftName).lastPathComponent + "~" + "1"
+        let destinationName = storeURLFromStoreName(swiftName).lastPathComponent! + "~" + "1"
         let destination = destinationURL!.URLByAppendingPathComponent(destinationName)
         
         println("From Model: \(NSManagedObjectModel.objc().versionIdentifiers)")
