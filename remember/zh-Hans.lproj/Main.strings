@@ -1,36 +1,48 @@
 
-/* Class = "IBUINavigationItem"; title = "Locations"; ObjectID = "5PU-ex-48K"; */
+/* Class = "IBUINavigationItem"; title = "位置"; ObjectID = "5PU-ex-48K"; */
 "5PU-ex-48K.title" = "位置";
 
-/* Class = "IBUIButton"; normalTitle = "Add"; ObjectID = "6nX-lr-qJb"; */
+/* Class = "IBUIButton"; normalTitle = "新增"; ObjectID = "6nX-lr-qJb"; */
 "6nX-lr-qJb.normalTitle" = "新增";
 
-/* Class = "IBUILabel"; text = "Location Name"; ObjectID = "IWR-Ao-Er3"; */
+/* Class = "IBUIButton"; normalTitle = "Submit"; ObjectID = "AL1-OC-iro"; */
+"AL1-OC-iro.normalTitle" = "递交";
+
+/* Class = "IBUILabel"; text = "位置名称"; ObjectID = "IWR-Ao-Er3"; */
 "IWR-Ao-Er3.text" = "位置名称";
 
-/* Class = "IBUILabel"; text = "Current Location"; ObjectID = "U0l-U1-5qZ"; */
+/* Class = "IBUITextField"; placeholder = "Name"; ObjectID = "Jez-Im-jFy"; */
+"Jez-Im-jFy.placeholder" = "名称";
+
+/* Class = "IBUINavigationItem"; title = "Feedback"; ObjectID = "RKF-YF-mYQ"; */
+"RKF-YF-mYQ.title" = "反馈";
+
+/* Class = "IBUILabel"; text = "现时位置"; ObjectID = "U0l-U1-5qZ"; */
 "U0l-U1-5qZ.text" = "现时位置";
 
-/* Class = "IBUIBarButtonItem"; title = "Save"; ObjectID = "VVu-78-Stu"; */
+/* Class = "IBUIBarButtonItem"; title = "保存"; ObjectID = "VVu-78-Stu"; */
 "VVu-78-Stu.title" = "保存";
 
-/* Class = "IBUIButton"; normalTitle = "Add"; ObjectID = "WRK-kW-cE1"; */
+/* Class = "IBUIButton"; normalTitle = "新增"; ObjectID = "WRK-kW-cE1"; */
 "WRK-kW-cE1.normalTitle" = "新增";
 
 /* Class = "IBUILabel"; text = "Label"; ObjectID = "ahX-TR-678"; */
 "ahX-TR-678.text" = "Label";
 
-/* Class = "IBUINavigationItem"; title = "Set Location"; ObjectID = "pdk-AI-J4r"; */
+/* Class = "IBUIButton"; normalTitle = "Feedback"; ObjectID = "ore-nX-Dhh"; */
+"ore-nX-Dhh.normalTitle" = "反馈";
+
+/* Class = "IBUINavigationItem"; title = "设定位置"; ObjectID = "pdk-AI-J4r"; */
 "pdk-AI-J4r.title" = "设定位置";
 
-/* Class = "IBUIBarButtonItem"; title = "Save"; ObjectID = "qP6-M1-MUw"; */
+/* Class = "IBUIBarButtonItem"; title = "保存"; ObjectID = "qP6-M1-MUw"; */
 "qP6-M1-MUw.title" = "保存";
 
-/* Class = "IBUILabel"; text = "Name of Location"; ObjectID = "rbD-uC-34X"; */
+/* Class = "IBUILabel"; text = "位置名称"; ObjectID = "rbD-uC-34X"; */
 "rbD-uC-34X.text" = "位置名称";
 
 /* Class = "IBUILabel"; text = "Label"; ObjectID = "rmP-3a-VU0"; */
 "rmP-3a-VU0.text" = "Label";
 
-/* Class = "IBUINavigationItem"; title = "Update Location"; ObjectID = "tsv-uq-Hzh"; */
+/* Class = "IBUINavigationItem"; title = "更新位置"; ObjectID = "tsv-uq-Hzh"; */
 "tsv-uq-Hzh.title" = "更新位置";

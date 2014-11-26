@@ -138,15 +138,15 @@
 		7CA8AC711A07202D00566252 /* SwipeableTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwipeableTableViewCell.swift; path = Views/SwipeableTableViewCell.swift; sourceTree = "<group>"; };
 		7CB6F67F1A2453DE00C2A60E /* FeedbackViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FeedbackViewController.swift; path = Controllers/FeedbackViewController.swift; sourceTree = "<group>"; };
 		7CB6F6831A24666100C2A60E /* AudioRecorder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioRecorder.swift; sourceTree = "<group>"; };
+		7CBB4C2A1A25AD7C00317497 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Main.strings"; sourceTree = "<group>"; };
+		7CBB4C2B1A25AD8A00317497 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Main.strings"; sourceTree = "<group>"; };
 		7CD2B08519EB819F004D5A29 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		7CD2B08719EB81A8004D5A29 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		7CD4486B1A15FFC7004F4C19 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Constants.swift; path = Categories/Constants.swift; sourceTree = "<group>"; };
 		7CE2CA5A1A0C68A000369D8B /* GPSLocationTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GPSLocationTableViewCell.swift; path = Views/GPSLocationTableViewCell.swift; sourceTree = "<group>"; };
 		7CF32E621A0B21B00056F873 /* HUD.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HUD.swift; path = Views/HUD.swift; sourceTree = "<group>"; };
 		7CF32E661A0B72DC0056F873 /* remember 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "remember 3.xcdatamodel"; sourceTree = "<group>"; };
-		7CF91CFF1A232F47007440BD /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Main.strings"; sourceTree = "<group>"; };
 		7CF91D001A232F47007440BD /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
-		7CF91D011A232F54007440BD /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Main.strings"; sourceTree = "<group>"; };
 		7CF91D021A232F54007440BD /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
 		8A76A0B019E63C590031202A /* NavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NavigationController.swift; path = Controllers/NavigationController.swift; sourceTree = "<group>"; };
 		8A76A0B219E63DEC0031202A /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HomeViewController.swift; path = Controllers/HomeViewController.swift; sourceTree = "<group>"; };
@@ -729,8 +729,8 @@
 			isa = PBXVariantGroup;
 			children = (
 				8A9F0F6D19E62C50007FB36B /* Base */,
-				7CF91CFF1A232F47007440BD /* zh-Hans */,
-				7CF91D011A232F54007440BD /* zh-Hant */,
+				7CBB4C2A1A25AD7C00317497 /* zh-Hant */,
+				7CBB4C2B1A25AD8A00317497 /* zh-Hans */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
