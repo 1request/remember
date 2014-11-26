@@ -103,6 +103,12 @@ extension AppDelegate {
     
     func  handleLocationEvent(notification: NSNotification) {
         if let location = locationFromNotification(notification) {
+            if location.uuid != "" {
+                if let currentLocation = LocationManager.sharedInstance.currentLocation {
+                    location.latitude = currentLocation.coordinate.latitude
+                    location.longitude = currentLocation.coordinate.longitude
+                }
+            }
             let previousTriggerDate = location.lastTriggerDate.timeIntervalSince1970
             let currentTime = NSDate().timeIntervalSince1970
             let predicate = NSPredicate(format: "isRead == 0")

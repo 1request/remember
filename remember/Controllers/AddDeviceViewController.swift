@@ -34,12 +34,18 @@ class AddDeviceViewController: UIViewController, UITextFieldDelegate {
         let locationToBeAdded = NSEntityDescription.insertNewObjectForEntityForName("Location", inManagedObjectContext: managedObjectContext!) as Location
         locationToBeAdded.name = deviceNameTextField.text
         
+        
         if let beaconDetected = beacon {
             locationToBeAdded.uuid = beaconDetected.proximityUUID.UUIDString
             locationToBeAdded.major = beaconDetected.major
             locationToBeAdded.minor = beaconDetected.minor
-            locationToBeAdded.longitude = 0
-            locationToBeAdded.latitude = 0
+            if let currentLocation = LocationManager.sharedInstance.currentLocation {
+                locationToBeAdded.longitude = currentLocation.coordinate.longitude
+                locationToBeAdded.latitude = currentLocation.coordinate.latitude
+            } else {
+                locationToBeAdded.longitude = 0
+                locationToBeAdded.latitude = 0
+            }
         } else if let locationDetected = location {
             locationToBeAdded.longitude = locationDetected.coordinate.longitude
             locationToBeAdded.latitude = locationDetected.coordinate.latitude
@@ -52,7 +58,6 @@ class AddDeviceViewController: UIViewController, UITextFieldDelegate {
         locationToBeAdded.updatedAt = locationToBeAdded.createdAt
         
         locationToBeAdded.identifier = locationToBeAdded.createIndentifier()
-        
         let event = AddLocationEvent(location: locationToBeAdded)
         
         Mixpanel.sharedInstance().track(event.title, properties: event.properties)
