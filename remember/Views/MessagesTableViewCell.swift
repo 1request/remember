@@ -13,11 +13,25 @@ class MessagesTableViewCell: SwipeableTableViewCell {
     let unreadSpotIcon = UnreadSpotView()
     let playButton = UIButton.buttonWithType(UIButtonType.Custom) as UIButton
     let messageLabel = UILabel()
-    var playing = false
 
     enum PlayerStatus {
         case Normal, Playing
     }
+    
+    var active: Bool = true {
+        didSet {
+            var imagename = ""
+            let name = active ? "active" : "inactive"
+            if status == PlayerStatus.Normal {
+                imagename = "play"
+            } else {
+                imagename = "pause"
+            }
+            playButton.setBackgroundImage(UIImage(named: imagename + "-" + name), forState: .Normal)
+        }
+    }
+    
+    var status: PlayerStatus = PlayerStatus.Normal
 
     override func commonInit() {
         super.commonInit()
@@ -65,31 +79,47 @@ class MessagesTableViewCell: SwipeableTableViewCell {
 
     func startPlaying() {
         markAsRead()
-        setPlayerStatus(PlayerStatus.Playing)
+        setPlayerStatus(.Playing)
     }
     
     func finishPlaying() {
-        setPlayerStatus(PlayerStatus.Normal)
+        setPlayerStatus(.Normal)
     }
-
+    
     func setPlayerStatus(status: PlayerStatus) {
+        self.status = status
         switch status {
         case PlayerStatus.Playing:
-            playing = true
-            playButton.setBackgroundImage(UIImage(named: "pause"), forState: UIControlState.Normal)
+            playButton.setBackgroundImage(UIImage(named: "pause-active"), forState: .Normal)
+            
         default:
-            playing = false
-            playButton.setBackgroundImage(UIImage(named: "play-active"), forState: UIControlState.Normal)
+            playButton.setBackgroundImage(UIImage(named: "play-active"), forState: .Normal)
         }
     }
 }
 
 extension MessagesTableViewCell: SwipeableTableViewCellDataSource {
     func numberOfButtonsInSwipeableCell(cell: SwipeableTableViewCell) -> Int {
-        return 1
+        if unreadSpotIcon.hidden {
+            return 2
+        } else {
+            return 1
+        }
     }
 
     func swipeableCell(cell: SwipeableTableViewCell, backgroundImageForButtonAtIndex index: Int) -> UIImage? {
-        return UIImage(named: "trash")
+        if index == 0 {
+            return UIImage(named: "trash")
+        } else {
+            return nil
+        }
+    }
+    
+    func swipeableCell(cell: SwipeableTableViewCell, titleForButtonAtIndex index: Int) -> String? {
+        if index == 1 && unreadSpotIcon.hidden {
+            return "Unread"
+        } else {
+            return nil
+        }
     }
 }

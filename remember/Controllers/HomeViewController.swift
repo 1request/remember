@@ -149,9 +149,11 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 cell.markAsUnread()
             }
             if indexPath.row == editingCellRowNumber {
-                setPlayButton(active: false, ForCell: cell)
+                cell.setPlayerStatus(cell.status)
+                cell.active = false
             } else {
-                setPlayButton(active: true, ForCell: cell)
+                cell.setPlayerStatus(cell.status)
+                cell.active = true
             }
             return cell
         }
@@ -188,7 +190,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
             tableView.reloadRowsAtIndexPaths(rowsToReload, withRowAnimation: .Automatic)
         } else {
             let messageCell = cell as MessagesTableViewCell
-            if messageCell.playing {
+            if messageCell.status == MessagesTableViewCell.PlayerStatus.Playing {
                 stopPlayingAudio()
             } else {
                 // stop any existing playing record
@@ -221,15 +223,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
             previousEditingCell.closeCell(animated: true)
         }
         if let messageCell = cell as? MessagesTableViewCell {
-            setPlayButton(active: true, ForCell: messageCell)
-        }
-    }
-    
-    func setPlayButton(#active: Bool, ForCell cell: MessagesTableViewCell) {
-        if active {
-            cell.playButton.setBackgroundImage(UIImage(named: "play-active"), forState: UIControlState.Normal)
-        } else {
-            cell.playButton.setBackgroundImage(UIImage(named: "play-inactive"), forState: UIControlState.Normal)
+            messageCell.active = true
         }
     }
 
@@ -252,9 +246,6 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         if editingCellRowNumber != -1 {
             closeEditingCell()
             resetEditMode()
-        } else {
-            hudView = HUD.hudInView(view)
-            hudView.text = kSlideUpToCancel
         }
         
         recordAudio()
@@ -336,7 +327,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
             objectsInTable.addObject(location)
 
             var sortByIsRead = NSSortDescriptor(key: "isRead", ascending: true)
-            var sortByCreatedAt = NSSortDescriptor(key: "createdAt", ascending: false)
+            var sortByCreatedAt = NSSortDescriptor(key: "createdAt", ascending: true)
             var sortedMessages = location.messages.sortedArrayUsingDescriptors([sortByIsRead, sortByCreatedAt])
             
             objectsInTable.addObjectsFromArray(sortedMessages)
@@ -360,17 +351,18 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         }
         
         if let id = selectedLocationObjectID {
-            let location = managedObjectContext.objectWithID(id) as Location
-            if !location.deleted {
-                return
+            if let location = managedObjectContext.existingObjectWithID(id, error: nil) {
+                if !location.deleted {
+                    return
+                }
             }
         }
-
+        
         if objectsInTable.count == 0 {
             selectedLocationObjectID = nil
             return
         }
-
+        
         if let location = objectsInTable[0] as? Location {
             selectedLocationObjectID = location.objectID
         }
@@ -386,9 +378,24 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
         let session = AVAudioSession.sharedInstance()
         session.setActive(true, error: nil)
-        recorder.record()
-        startDate = NSDate()
-        timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("updateTimer"), userInfo: nil, repeats: true)
+        if session.respondsToSelector("requestRecordPermission:") {
+            session.requestRecordPermission { [unowned self] (granted) -> Void in
+                if granted {
+                    self.hudView = HUD.hudInView(self.view)
+                    self.hudView.text = self.kSlideUpToCancel
+                    self.recorder.record()
+                    self.startDate = NSDate()
+                    self.timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("updateTimer"), userInfo: nil, repeats: true)
+                } else {
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        let controller = UIAlertController(title: "Microphone Access Denied", message: "Remember requires access to your device's microphone.\n\nPlease enable microphone access for Remember in Settings / Privacy / Microphone", preferredStyle: .Alert)
+                        let cancelAction = UIAlertAction(title: "OK", style: .Cancel, handler: nil)
+                        controller.addAction(cancelAction)
+                        self.presentViewController(controller, animated: true, completion: nil)
+                    })
+                }
+            }
+        }
     }
 
     func configureAudioSession () {
@@ -565,6 +572,8 @@ extension HomeViewController : AVAudioPlayerDelegate {
                     activePlayerIndexPath = nil
                 }
             }
+            setObjectsInTable()
+            reloadSection()
     }
 }
 
@@ -594,7 +603,8 @@ extension HomeViewController: SwipeableTableViewCellDelegate {
         }
         
         if let messageCell = cell as? MessagesTableViewCell {
-            setPlayButton(active: false, ForCell: messageCell)
+//            setPlayButton(active: false, ForCell: messageCell)
+            messageCell.active = false
         }
     }
 
@@ -602,20 +612,36 @@ extension HomeViewController: SwipeableTableViewCellDelegate {
         resetEditMode()
         
         if let messageCell = cell as? MessagesTableViewCell {
-            setPlayButton(active: true, ForCell: messageCell)
+//            setPlayButton(active: true, ForCell: messageCell)
+            messageCell.active = true
         }
     }
 
     func swipeableCell(cell: SwipeableTableViewCell, didSelectButtonAtIndex index: Int) {
-        resetEditMode()
         if let indexPath = tableView.indexPathForCell(cell) {
             if index == 0 {
                 deleteObjectAtIndexPath(indexPath)
+                setObjectsInTable()
+                setSelectedLocationObjectID()
             } else {
-                let location = objectsInTable.objectAtIndex(indexPath.row) as Location
-                performSegueWithIdentifier("editLocation", sender: location)
+                let object = objectsInTable.objectAtIndex(indexPath.row) as NSManagedObject
+                if let location = object as? Location {
+                    performSegueWithIdentifier("editLocation", sender: location)
+                } else if let message = object as? Message {
+                    let cell = tableView.cellForRowAtIndexPath(indexPath) as MessagesTableViewCell
+                    cell.markAsUnread()
+                    
+                    message.isRead = false
+                    message.updatedAt = NSDate()
+                    managedObjectContext.save(nil)
+                    
+                    closeEditingCell()
+                }
             }
         }
+        resetEditMode()
+        setObjectsInTable()
+        reloadSection()
     }
     
     func deleteObjectAtIndexPath(indexPath: NSIndexPath) {

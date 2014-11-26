@@ -45,8 +45,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             LocationManager.sharedInstance.locationManager.startMonitoringVisits()
         }
         
-        countLocation()
-        
         return true
     }
     
@@ -156,11 +154,5 @@ extension AppDelegate {
     func clearNotifications () {
         UIApplication.sharedApplication().applicationIconBadgeNumber = 0
         UIApplication.sharedApplication().cancelAllLocalNotifications()
-    }
-    
-    func countLocation() {
-        let request = NSFetchRequest(entityName: "Location")
-        let locations = managedObjectContext.executeFetchRequest(request, error: nil) as [Location]
-        println("\(locations.count)")
     }
 }
