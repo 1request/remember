@@ -283,25 +283,32 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name of Location" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rbD-uC-34X">
-                                <rect key="frame" x="16" y="72" width="137" height="21"/>
+                                <rect key="frame" x="16" y="72" width="136.5" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="L99-nn-DyE">
-                                <rect key="frame" x="16" y="101" width="568" height="30"/>
+                                <rect key="frame" x="16" y="100" width="568" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
                                     <action selector="deviceNameTextEditingChanged:" destination="3QA-C9-hzw" eventType="editingChanged" id="ZAW-WO-maf"/>
                                 </connections>
                             </textField>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="2AN-63-PcB">
+                                <rect key="frame" x="0.0" y="150.5" width="600" height="449.5"/>
+                            </mapView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="2AN-63-PcB" firstAttribute="leading" secondItem="UEN-1l-xC2" secondAttribute="leading" id="2O4-NF-MmL"/>
+                            <constraint firstItem="4RQ-c6-cxq" firstAttribute="top" secondItem="2AN-63-PcB" secondAttribute="bottom" id="33B-fb-7q4"/>
+                            <constraint firstItem="2AN-63-PcB" firstAttribute="top" secondItem="L99-nn-DyE" secondAttribute="bottom" constant="20" id="4xQ-oL-xHG"/>
                             <constraint firstItem="L99-nn-DyE" firstAttribute="top" secondItem="rbD-uC-34X" secondAttribute="bottom" constant="8" id="5qW-7a-XLG"/>
                             <constraint firstItem="rbD-uC-34X" firstAttribute="leading" secondItem="UEN-1l-xC2" secondAttribute="leading" constant="16" id="Mmp-PY-kgk"/>
                             <constraint firstItem="L99-nn-DyE" firstAttribute="leading" secondItem="UEN-1l-xC2" secondAttribute="leading" constant="16" id="gfl-MN-eL8"/>
+                            <constraint firstAttribute="trailing" secondItem="2AN-63-PcB" secondAttribute="trailing" id="hL2-aL-WfQ"/>
                             <constraint firstItem="rbD-uC-34X" firstAttribute="top" secondItem="Oxl-i9-40V" secondAttribute="bottom" constant="8" id="lgu-uR-AhA"/>
                             <constraint firstAttribute="trailing" secondItem="L99-nn-DyE" secondAttribute="trailing" constant="16" id="pQg-er-Kjr"/>
                         </constraints>
@@ -315,6 +322,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="deviceNameTextField" destination="L99-nn-DyE" id="ChV-9g-6yM"/>
+                        <outlet property="mapView" destination="2AN-63-PcB" id="sns-y3-Ogn"/>
                         <outlet property="saveButton" destination="qP6-M1-MUw" id="e52-Mp-DNm"/>
                     </connections>
                 </viewController>
@@ -358,26 +366,33 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Location Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IWR-Ao-Er3">
-                                <rect key="frame" x="16" y="72" width="117" height="21"/>
+                                <rect key="frame" x="16" y="72" width="116.5" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="8p8-a3-arm">
-                                <rect key="frame" x="16" y="101" width="568" height="30"/>
+                                <rect key="frame" x="16" y="100.5" width="568" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
                                     <action selector="locationNameEditingChanged:" destination="1fN-WH-tHk" eventType="editingChanged" id="KWy-yX-rHJ"/>
                                 </connections>
                             </textField>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="65y-5T-RdK">
+                                <rect key="frame" x="0.0" y="150.5" width="600" height="449.5"/>
+                            </mapView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="IWR-Ao-Er3" firstAttribute="top" secondItem="Ffm-35-vfH" secondAttribute="bottom" constant="8" id="8JD-uL-Bsi"/>
                             <constraint firstAttribute="trailing" secondItem="8p8-a3-arm" secondAttribute="trailing" constant="16" id="BeM-m1-zk0"/>
                             <constraint firstItem="IWR-Ao-Er3" firstAttribute="leading" secondItem="hb0-f0-zlz" secondAttribute="leading" constant="16" id="CjJ-Mq-aHs"/>
+                            <constraint firstItem="65y-5T-RdK" firstAttribute="top" secondItem="8p8-a3-arm" secondAttribute="bottom" constant="20" id="EgH-SI-8hu"/>
+                            <constraint firstAttribute="trailing" secondItem="65y-5T-RdK" secondAttribute="trailing" id="FmC-Lr-gfd"/>
+                            <constraint firstItem="65y-5T-RdK" firstAttribute="leading" secondItem="hb0-f0-zlz" secondAttribute="leading" id="I7Q-TF-Rml"/>
                             <constraint firstItem="8p8-a3-arm" firstAttribute="leading" secondItem="hb0-f0-zlz" secondAttribute="leading" constant="16" id="MYM-u6-9nX"/>
+                            <constraint firstItem="J8g-it-tXs" firstAttribute="top" secondItem="65y-5T-RdK" secondAttribute="bottom" id="XPe-Wx-Wsb"/>
                             <constraint firstItem="8p8-a3-arm" firstAttribute="top" secondItem="IWR-Ao-Er3" secondAttribute="bottom" constant="8" id="nWT-cL-crD"/>
                         </constraints>
                     </view>
@@ -390,6 +405,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="editLocationNameTextField" destination="8p8-a3-arm" id="4nD-8t-XOS"/>
+                        <outlet property="mapView" destination="65y-5T-RdK" id="Ghh-Fc-cAK"/>
                         <outlet property="saveButton" destination="VVu-78-Stu" id="z5A-78-w6X"/>
                     </connections>
                 </viewController>
