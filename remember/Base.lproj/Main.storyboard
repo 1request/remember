@@ -459,7 +459,8 @@
                     </view>
                     <navigationItem key="navigationItem" title="Feedback" id="RKF-YF-mYQ"/>
                     <connections>
-                        <outlet property="nameTextField" destination="Jez-Im-jFy" id="TBO-Xs-O6v"/>
+                        <outlet property="nameTextField" destination="Jez-Im-jFy" id="egS-nx-e0v"/>
+                        <outlet property="recordButton" destination="t6Z-OE-zbj" id="1ab-Fe-jnr"/>
                         <outlet property="submitButton" destination="AL1-OC-iro" id="GCx-lK-GVS"/>
                     </connections>
                 </viewController>

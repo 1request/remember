@@ -43,12 +43,20 @@ class FeedbackViewController: UIViewController, UITextFieldDelegate, AudioRecord
     @IBAction func recordButtonTouchedUpInside(sender: UIButton) {
         audioRecorder.finishRecordingAudio()
         hudView.removeFromSuperview()
-        nameTextField.hidden = false
-        submitButton.hidden = false
+        if audioRecorder.validRecord {
+            nameTextField.hidden = false
+            submitButton.hidden = false
+        }
     }
     
     @IBAction func submitButtonPressed(sender: UIButton) {
-        
+        let audioData = NSData(contentsOfURL: audioRecorder.url)!
+        let data = (key: "audio", data: audioData, type: "audio/x-m4a", filename: "feedback.m4a")
+        let id = UIDevice.currentDevice().identifierForVendor.UUIDString
+        let name = nameTextField.text
+        let parameters: [String: String] = ["name": name, "deviceId": id, "deviceType": UIDevice.currentDevice().model]
+        APIManager.postMultipartData(data, parameters: parameters, url: NSURL(string: kFeedbackPOSTURL)!)
+        navigationController?.popViewControllerAnimated(true)
     }
     
     func microphoneAccssDenied(alert: UIAlertController) {

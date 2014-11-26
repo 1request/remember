@@ -47,3 +47,8 @@ let kGPSLocationUpdateNotificationName = "gpsLocationUpdateNotification"
 let kGPSLocationUpdateNotificationUserInfoLocationKey = "location"
 let kVisitsNotificationName = "visitNotification"
 let kVisitsNotificationUserInfoVisitKey = "visit"
+
+//API
+
+let kBoundary = "testboundary"
+let kFeedbackPOSTURL = "http://104.236.50.126:3000/api/feedbacks/send"
