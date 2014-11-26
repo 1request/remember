@@ -9,6 +9,7 @@
 import UIKit
 import CoreLocation
 import CoreData
+import MapKit
 
 class AddDeviceViewController: UIViewController, UITextFieldDelegate {
     var location: CLLocation? = nil
@@ -18,8 +19,30 @@ class AddDeviceViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var deviceNameTextField: UITextField!
     @IBOutlet weak var saveButton: UIBarButtonItem!
     
+    @IBOutlet weak var mapView: MKMapView!
+    
     override func viewDidLoad() {
         deviceNameTextField.delegate = self
+        setMap()
+    }
+    
+    func setMap() {
+        var coordinate = CLLocationCoordinate2D(latitude: 0, longitude: 0)
+        if beacon != nil {
+            if let currentLocation = LocationManager.sharedInstance.currentLocation {
+                coordinate = currentLocation.coordinate
+            }
+        } else {
+            if let locationToBeAdded = location {
+                coordinate = locationToBeAdded.coordinate
+            }
+        }
+        let annotation = MKPointAnnotation()
+        annotation.coordinate = coordinate
+        mapView.addAnnotation(annotation)
+        let span = MKCoordinateSpanMake(0.005, 0.005)
+        let region = MKCoordinateRegionMake(coordinate, span)
+        mapView.setRegion(region, animated: true)
     }
     
     @IBAction func deviceNameTextEditingChanged(sender: AnyObject) {
