@@ -22,6 +22,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let manager = DataMigrationManager()
         return manager.stack.context
     }()
+    
+    override class func initialize() -> Void {
+        iRate.sharedInstance().onlyPromptIfLatestVersion = false
+        iRate.sharedInstance().daysUntilPrompt = 3
+    }
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         Crashlytics.startWithAPIKey("a73df0ceadf9f0995f97da85f3a3ca791c3e0de1")
