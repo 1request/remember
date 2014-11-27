@@ -19,14 +19,13 @@ class AddDeviceViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var deviceNameTextField: UITextField!
     @IBOutlet weak var saveButton: UIBarButtonItem!
     
-    @IBOutlet weak var mapView: MKMapView!
-    
+
+
     override func viewDidLoad() {
         deviceNameTextField.delegate = self
-        setMap()
     }
     
-    func setMap() {
+    func mapAnnotation() -> MKPointAnnotation {
         var coordinate = CLLocationCoordinate2D(latitude: 0, longitude: 0)
         if beacon != nil {
             if let currentLocation = LocationManager.sharedInstance.currentLocation {
@@ -39,10 +38,18 @@ class AddDeviceViewController: UIViewController, UITextFieldDelegate {
         }
         let annotation = MKPointAnnotation()
         annotation.coordinate = coordinate
-        mapView.addAnnotation(annotation)
-        let span = MKCoordinateSpanMake(0.005, 0.005)
-        let region = MKCoordinateRegionMake(coordinate, span)
-        mapView.setRegion(region, animated: true)
+        return annotation
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "embedMapFromAddLocation" {
+            let mapViewController = segue.destinationViewController as MapViewController
+            let annotation = mapAnnotation()
+            let span = MKCoordinateSpanMake(0.005, 0.005)
+            let region = MKCoordinateRegionMake(annotation.coordinate, span)
+            mapViewController.region = region
+            mapViewController.annotations = [annotation]
+        }
     }
     
     @IBAction func deviceNameTextEditingChanged(sender: AnyObject) {

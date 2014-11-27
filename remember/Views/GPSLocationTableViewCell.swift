@@ -8,16 +8,13 @@
 
 import UIKit
 
-class GPSLocationTableViewCell: UITableViewCell {
+class GPSLocationTableViewCell: AddableTableViewCell {
     
-    @IBOutlet weak var label: UILabel!
     @IBOutlet weak var addButton: UIButton!
+    @IBOutlet weak var label: UILabel!
     
-    lazy var didPressAddButtonBlock: () -> () = {}
     
-    @IBAction func addButtonClicked(sender: UIButton) {
-        if didPressAddButtonBlock != nil {
-            didPressAddButtonBlock()
-        }
+    @IBAction func addButtonPressed(sender: UIButton) {
+        performAddAction(sender)
     }
 }
