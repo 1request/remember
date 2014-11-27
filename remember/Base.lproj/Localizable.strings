@@ -14,6 +14,7 @@ UNREAD = "Unread";
 LOADING_LOCATION = "Loading Location...";
 CURRENT_LOCATION = "Current Location";
 WITHIN_RANGE = "Within %@ m";
+ADD = "Add";
 ADDED = "Added";
 RECORD_NAME = "Record %@";
 RECORDING_FEEDBACK = "Recording feedback";

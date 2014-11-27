@@ -19,21 +19,33 @@ class EditLocationViewController: UIViewController {
     weak var managedObjectContext: NSManagedObjectContext?
     var location:Location? = nil
     
+    lazy var annotation: MKPointAnnotation? = {
+        if let currentLocation = self.location {
+            let coordinate = CLLocationCoordinate2D(latitude: CLLocationDegrees(currentLocation.latitude), longitude: CLLocationDegrees(currentLocation.longitude))
+            
+            let annotation = MKPointAnnotation()
+            annotation.coordinate = coordinate
+            return annotation
+        } else {
+            return nil
+        }
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         editLocationNameTextField.text = location?.name
-        setMap()
     }
     
-    func setMap() {
-        if let currentLocation = location {
-            let coordinate = CLLocationCoordinate2D(latitude: CLLocationDegrees(currentLocation.latitude), longitude: CLLocationDegrees(currentLocation.longitude))
+    func mapAnnotation() {
+            }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "embedMapFromEditLocation" {
+            let mapViewController = segue.destinationViewController as MapViewController
             let span = MKCoordinateSpanMake(0.005, 0.005)
-            let region = MKCoordinateRegionMake(coordinate, span)
-            mapView.setRegion(region, animated: true)
-            let annotation = MKPointAnnotation()
-            annotation.coordinate = coordinate
-            mapView.addAnnotation(annotation)
+            let region = MKCoordinateRegionMake(annotation!.coordinate, span)
+            mapViewController.region = region
+            mapViewController.annotations = [annotation!]
         }
     }
     

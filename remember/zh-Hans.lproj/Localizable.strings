@@ -14,6 +14,7 @@ UNREAD = "设为未读";
 LOADING_LOCATION = "搜寻位置中...";
 CURRENT_LOCATION = "现时位置";
 WITHIN_RANGE = "于%@米内";
+ADD = "新增";
 ADDED = "已加";
 RECORD_NAME = "录音%@";
 RECORDING_FEEDBACK = "回馈录音中";

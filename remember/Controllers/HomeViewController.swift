@@ -210,8 +210,8 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
     //MARK: - Navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if let devicesVC = segue.destinationViewController as? DevicesTableViewController {
-            devicesVC.managedObjectContext = managedObjectContext
+        if let locationsVC = segue.destinationViewController as? LocationsViewController {
+            locationsVC.managedObjectContext = managedObjectContext
         }
         if let editLocationVC = segue.destinationViewController as? EditLocationViewController {
             if let location = sender as? Location {
