@@ -70,6 +70,11 @@
 		D12E82CF1A165B040016778F /* VisitEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C18BBE91A1601BD001F15CA /* VisitEvent.swift */; };
 		D12E82D01A165B040016778F /* AddLocationEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C18BBEB1A1601DB001F15CA /* AddLocationEvent.swift */; };
 		D12E82D11A165B040016778F /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CD4486B1A15FFC7004F4C19 /* Constants.swift */; };
+		D14B83551A27576200D12EDF /* AddableTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C0E3A7E1A272DC900235C4C /* AddableTableViewCell.swift */; };
+		D14B83561A27576200D12EDF /* NearbyLocationsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDFE6A01A2739DC00EC4B93 /* NearbyLocationsTableViewCell.swift */; };
+		D14B83571A27576200D12EDF /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C309F851A26F94700B36F2E /* MapViewController.swift */; };
+		D14B83581A27576200D12EDF /* FeedbackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB6F67F1A2453DE00C2A60E /* FeedbackViewController.swift */; };
+		D14B83591A27576200D12EDF /* LocationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C309F871A26FF2400B36F2E /* LocationsViewController.swift */; };
 		D1A673761A1B6C6D00C05D2C /* DataMigrationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6A351E1A1B0B40004FD2FD /* DataMigrationManager.swift */; };
 		D1A673771A1B6C6D00C05D2C /* ObjCToSwiftMigrationPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6A35251A1B2610004FD2FD /* ObjCToSwiftMigrationPolicy.swift */; };
 		D1A673781A1B6C6D00C05D2C /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6A35271A1B3695004FD2FD /* CoreDataStack.swift */; };
@@ -695,6 +700,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D14B83551A27576200D12EDF /* AddableTableViewCell.swift in Sources */,
+				D14B83561A27576200D12EDF /* NearbyLocationsTableViewCell.swift in Sources */,
+				D14B83571A27576200D12EDF /* MapViewController.swift in Sources */,
+				D14B83581A27576200D12EDF /* FeedbackViewController.swift in Sources */,
+				D14B83591A27576200D12EDF /* LocationsViewController.swift in Sources */,
 				D1A673791A1B6C8F00C05D2C /* RememberMappingModel_objc_to_v4.xcmappingmodel in Sources */,
 				D1A673761A1B6C6D00C05D2C /* DataMigrationManager.swift in Sources */,
 				D1A673771A1B6C6D00C05D2C /* ObjCToSwiftMigrationPolicy.swift in Sources */,
