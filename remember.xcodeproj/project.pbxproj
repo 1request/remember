@@ -93,6 +93,8 @@
 		D1EE652C1A0740A600A65EF0 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8A9F0F7119E62C50007FB36B /* LaunchScreen.xib */; };
 		D1EE652D1A0740A600A65EF0 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8A9F0F6F19E62C50007FB36B /* Images.xcassets */; };
 		D1EE65361A07410800A65EF0 /* remember-appstore-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D1EE65351A07410800A65EF0 /* remember-appstore-Info.plist */; };
+		D1F62E891A28971900191D87 /* FeedbackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB6F67F1A2453DE00C2A60E /* FeedbackViewController.swift */; };
+		D1F62E8A1A28971900191D87 /* RecorderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCE375D1A28229800A6BDA6 /* RecorderViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -672,6 +674,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D1F62E891A28971900191D87 /* FeedbackViewController.swift in Sources */,
+				D1F62E8A1A28971900191D87 /* RecorderViewController.swift in Sources */,
 				D1A673791A1B6C8F00C05D2C /* RememberMappingModel_objc_to_v4.xcmappingmodel in Sources */,
 				D1A673761A1B6C6D00C05D2C /* DataMigrationManager.swift in Sources */,
 				D1A673771A1B6C6D00C05D2C /* ObjCToSwiftMigrationPolicy.swift in Sources */,
