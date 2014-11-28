@@ -35,15 +35,20 @@ class FeedbackViewController: UIViewController, UITextFieldDelegate {
     }
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
-        if textField.text == "" {
-            submitButton.enabled = false
-        } else {
-            submitButton.enabled = true
-        }
         textField.resignFirstResponder()
         return true
     }
     
+    @IBAction func nameTextFieldEditingChanged(sender: UITextField) {
+        if submitButton.hidden {
+            submitButton.hidden = false
+        }
+        if sender.text == "" {
+            submitButton.enabled = false
+        } else {
+            submitButton.enabled = true
+        }
+    }
     @IBAction func submitButtonPressed(sender: UIButton) {
         let audioData = NSData(contentsOfURL: audioRecorder.url)!
         let data = (key: "audio", data: audioData, type: "audio/x-m4a", filename: "feedback.m4a")
