@@ -40,13 +40,10 @@ class FeedbackViewController: UIViewController, UITextFieldDelegate {
     }
     
     @IBAction func nameTextFieldEditingChanged(sender: UITextField) {
-        if submitButton.hidden {
-            submitButton.hidden = false
-        }
-        if sender.text == "" {
-            submitButton.enabled = false
-        } else {
+        if countElements(sender.text.trimWhiteSpace()) > 0 {
             submitButton.enabled = true
+        } else {
+            submitButton.enabled = false
         }
     }
     @IBAction func submitButtonPressed(sender: UIButton) {

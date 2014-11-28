@@ -126,3 +126,9 @@ extension NSMutableData {
         appendData(data!)
     }
 }
+
+extension String {
+    func trimWhiteSpace() -> String {
+        return self.stringByTrimmingCharactersInSet(.whitespaceCharacterSet())
+    }
+}

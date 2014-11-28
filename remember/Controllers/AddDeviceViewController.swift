@@ -23,10 +23,10 @@ class AddDeviceViewController: UIViewController, UITextFieldDelegate {
     }
     
     @IBAction func deviceNameTextEditingChanged(sender: AnyObject) {
-        if deviceNameTextField.text == "" {
-            saveButton.enabled = false
-        } else {
+        if countElements(deviceNameTextField.text.trimWhiteSpace()) > 0 {
             saveButton.enabled = true
+        } else {
+            saveButton.enabled = false
         }
     }
     
