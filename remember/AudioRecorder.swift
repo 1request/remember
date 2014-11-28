@@ -10,7 +10,7 @@ import UIKit
 import AVFoundation
 
 @objc protocol AudioRecorderDelegate {
-    func microphoneAccssDenied(alert: UIAlertController)
+    func microphoneAccssDenied()
 }
 
 class AudioRecorder: NSObject, AVAudioRecorderDelegate {
@@ -24,15 +24,17 @@ class AudioRecorder: NSObject, AVAudioRecorderDelegate {
     let session = AVAudioSession.sharedInstance()
     
     weak var delegate: AudioRecorderDelegate?
-    
-    let MICROPHONE_ACCESS_DENIED = NSLocalizedString("MICROPHONE_ACCESS_DENIED", comment: "Microphone access is denied by user")
-    let MICROPHONE_ACCESS_ALERT_MSG = NSLocalizedString("MICROPHONE_ACCESS_ALERT_MSG", comment: "Alert message to inform user to reset microphone access")
 
     override init() {
         url = recorder.url
         super.init()
         configureAudioSession()
         checkMicrophoneAccess()
+        monitorAudioRouteChange()
+    }
+    
+     deinit {
+        unmonitorAudioRouteChange()
     }
     
     var recorder: AVAudioRecorder = {
@@ -68,10 +70,7 @@ class AudioRecorder: NSObject, AVAudioRecorderDelegate {
         if session.respondsToSelector("requestRecordPermission:") {
             session.requestRecordPermission { [unowned self] (granted) -> Void in
                 if !granted {
-                    let controller = UIAlertController(title: self.MICROPHONE_ACCESS_DENIED, message: self.MICROPHONE_ACCESS_ALERT_MSG, preferredStyle: .Alert)
-                    let cancelAction = UIAlertAction(title: "OK", style: .Cancel, handler: nil)
-                    controller.addAction(cancelAction)
-                    self.delegate?.microphoneAccssDenied(controller)
+                    self.delegate?.microphoneAccssDenied()
                     self.micAvailable = false
                 } else {
                     self.micAvailable = true
@@ -149,5 +148,26 @@ class AudioRecorder: NSObject, AVAudioRecorderDelegate {
     func stopRecordingAudio () {
         recorder.stop()
         timer.invalidate()
+    }
+    
+    func monitorAudioRouteChange() {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateAudioRoute:", name: AVAudioSessionRouteChangeNotification, object: nil)
+    }
+    
+    func unmonitorAudioRouteChange() {
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: AVAudioSessionRouteChangeNotification, object: nil)
+    }
+    
+    func updateAudioRoute(notification: NSNotification) {
+        if let dict = notification.userInfo as? [String: AnyObject] {
+            let routeChangeReason = dict[AVAudioSessionRouteChangeReasonKey] as Int
+            switch routeChangeReason {
+            case kAudioSessionRouteChangeReason_NewDeviceAvailable:
+                configureAudioSession()
+            case kAudioSessionRouteChangeReason_OldDeviceUnavailable:
+                configureAudioSession()
+            default: ()
+            }
+        }
     }
 }

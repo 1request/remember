@@ -11,22 +11,20 @@ import CoreData
 import AVFoundation
 import CoreLocation
 
-class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate, AudioRecorderDelegate {
+class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate {
     
     //MARK: - Constants
     
-    let SLIDE_UP_TO_CANCEL = NSLocalizedString("SLIDE_UP_TO_CANCEL", comment: "Inform user to slide up to cancel recording")
-    let RELEASE_TO_CANCEL = NSLocalizedString("RELEASE_TO_CANCEL", comment: "Inform user to release finger to cancel recording")
-    let RECORD_NAME = NSLocalizedString("RECORD_NAME", comment: "default message name")
-    
     var kApplicationPath = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true).last! as String
     var hudView = HUD()
-    var alertView: UIAlertView? = nil
+    
+    var recorderViewController: RecorderViewController? = nil
+
     //MARK: - Variables
 
     @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var recordButton: UIButton!
     @IBOutlet weak var pressHereImageView: UIImageView!
+    var alertView: UIAlertView? = nil
     
     var editingCellRowNumber = -1
 
@@ -37,14 +35,6 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     var selectedLocationObjectID: NSManagedObjectID?
 
     var activePlayerIndexPath: NSIndexPath?
-
-    //MARK: variables for audio recorder
-
-    lazy var recorder:AudioRecorder = {
-        let audioRecorder = AudioRecorder()
-        audioRecorder.delegate = self
-        return audioRecorder
-    }()
 
     var player:AVAudioPlayer?
 
@@ -194,7 +184,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
     func resetEditMode () {
         editingCellRowNumber = -1
-        recordButton.enabled = true
+        recorderViewController?.recordButton.enabled = true
     }
 
     func closeEditingCell() {
@@ -219,62 +209,18 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 editLocationVC.managedObjectContext = managedObjectContext
             }
         }
-    }
-
-    //MARK: - IBActions
-    //MARK: record button actions
-    @IBAction func recordButtonTouchedDown(sender: UIButton) {
-        if editingCellRowNumber != -1 {
-            closeEditingCell()
-            resetEditMode()
-        }
-        
-        if let player = player {
-            if player.playing {
-                player.stop()
-            }
-        }
-        hudView = HUD.hudInView(view)
-        hudView.text = SLIDE_UP_TO_CANCEL
-        recorder.startDate = NSDate()
-        recorder.recordAudio()
-    }
-
-    @IBAction func recordButtonTouchedUpInside(sender: UIButton) {
-        hudView.removeFromSuperview()
-        recorder.finishRecordingAudio()
-        if recorder.validRecord {
-            Mixpanel.sharedInstance().track("audioRecorded")
-            
-            let location = managedObjectContext!.objectWithID(selectedLocationObjectID!) as Location
-            createMessageForLocation(location)
-            monitorLocation(location)
-            let indexPath = NSIndexPath(forRow: 0, inSection: 0)
-            tableView.scrollToRowAtIndexPath(indexPath, atScrollPosition: .Top, animated: true)
+        if let recorderVC = segue.destinationViewController as? RecorderViewController {
+            recorderViewController = recorderVC
+            recorderViewController?.delegate = self
         }
     }
-
-    @IBAction func recordButtonTouchedUpOutside(sender: UIButton) {
-        hudView.removeFromSuperview()
-        recorder.stopRecordingAudio()
-    }
-
-    @IBAction func recordButtonTouchedDragEnter(sender: UIButton) {
-        hudView.text = SLIDE_UP_TO_CANCEL
-        hudView.setNeedsDisplay()
-    }
-
-    @IBAction func recordButtonTouchedDragExit(sender: UIButton) {
-        hudView.text = RELEASE_TO_CANCEL
-        hudView.setNeedsDisplay()
-    }
-
+    
     //MARK: - NSFetchedResultControllerDelegate
 
     func controllerWillChangeContent(controller: NSFetchedResultsController) {
         if tableView.hidden {
             tableView.hidden = false
-            recordButton.hidden = false
+            recorderViewController?.recordButton.hidden = false
         }
     }
 
@@ -289,7 +235,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     func updateViewToBePresented() {
         if fetchedResultController.fetchedObjects?.count == 0 {
             tableView.hidden = true
-            recordButton.hidden = true
+            recorderViewController?.recordButton.hidden = true
             pressHereImageView.hidden = false
         }
         else {
@@ -365,42 +311,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
             selectedLocationObjectID = location.objectID
         }
     }
-
-    //MARK: - AudioRecorderDelegate
     
-    func microphoneAccssDenied(alert: UIAlertController) {
-        presentViewController(alert, animated: true, completion: nil)
-    }
-    
-    func createMessageForLocation (location: Location) {
-        let entityDescription = NSEntityDescription.entityForName("Message", inManagedObjectContext: managedObjectContext!)
-        let message = Message(entity: entityDescription!, insertIntoManagedObjectContext: managedObjectContext!)
-
-        let createTime = NSDate()
-        let filePathString = kApplicationPath + "/" + createTime.timeIntervalSince1970.format(".0") + ".m4a"
-
-        let outputFileURL = NSURL(fileURLWithPath: filePathString)
-
-        var error: NSError?
-        if !NSFileManager.defaultManager().copyItemAtURL(recorder.url, toURL: outputFileURL!, error: &error) {
-            println("error copying item to url: \(error?.localizedDescription)")
-        }
-
-        message.location = location
-
-        message.location.messageCount = NSNumber(integer: (message.location.messageCount.integerValue + 1))
-        message.name = String(format: RECORD_NAME, message.location.messageCount)
-        message.isRead = false
-        message.createdAt = createTime
-        message.updatedAt = createTime
-        
-        location.updatedAt = createTime
-
-        if !managedObjectContext!.save(&error) {
-            println("error saving audio: \(error?.localizedDescription)")
-        }
-    }
-
     //MARK: - Play Audio
 
     func playAudioAtIndexPath (indexPath: NSIndexPath) {
@@ -606,14 +517,90 @@ extension HomeViewController {
     func updateAudioRoute(notification: NSNotification) {
         if let dict = notification.userInfo as? Dictionary<String, AnyObject> {
             let routeChangeReason = dict[AVAudioSessionRouteChangeReasonKey] as Int
-            switch routeChangeReason {
-            case kAudioSessionRouteChangeReason_NewDeviceAvailable:
-                recorder.configureAudioSession()
-            case kAudioSessionRouteChangeReason_OldDeviceUnavailable:
-                recorder.configureAudioSession()
+            if routeChangeReason == kAudioSessionRouteChangeReason_OldDeviceUnavailable {
                 stopPlayingAudio()
-            default: ()
             }
         }
     }
+}
+
+extension HomeViewController: RecorderViewControllerDelegate {
+    
+    func recorderWillStartRecording() {
+        if editingCellRowNumber != -1 {
+            closeEditingCell()
+            resetEditMode()
+        }
+        
+        if let player = player {
+            if player.playing {
+                player.stop()
+            }
+        }
+        
+        hudView = HUD.hudInView(view)
+        hudView.text = SLIDE_UP_TO_CANCEL
+    }
+    
+    func recorderWillFinishRecording() {
+        hudView.removeFromSuperview()
+    }
+    
+    func recorderDidFinishRecording(#valid: Bool) {
+        if valid {
+            Mixpanel.sharedInstance().track("audioRecorded")
+            
+            let location = managedObjectContext!.objectWithID(selectedLocationObjectID!) as Location
+            createMessageForLocation(location)
+            monitorLocation(location)
+            let indexPath = NSIndexPath(forRow: 0, inSection: 0)
+            tableView.scrollToRowAtIndexPath(indexPath, atScrollPosition: .Top, animated: true)
+        }
+    }
+    
+    func recorderWillCancelRecording() {
+        hudView.removeFromSuperview()
+    }
+    
+    func recorderButtonDidDragEnter() {
+        hudView.text = SLIDE_UP_TO_CANCEL
+        hudView.setNeedsDisplay()
+    }
+    
+    func recorderButtonDidDragExit() {
+        hudView.text = RELEASE_TO_CANCEL
+        hudView.setNeedsDisplay()
+    }
+    
+    func createMessageForLocation (location: Location) {
+        let entityDescription = NSEntityDescription.entityForName("Message", inManagedObjectContext: managedObjectContext!)
+        let message = Message(entity: entityDescription!, insertIntoManagedObjectContext: managedObjectContext!)
+        
+        let createTime = NSDate()
+        let filePathString = kApplicationPath + "/" + createTime.timeIntervalSince1970.format(".0") + ".m4a"
+        
+        let outputFileURL = NSURL(fileURLWithPath: filePathString)
+        
+        var error: NSError?
+        if let recorder = recorderViewController?.recorder {
+            if !NSFileManager.defaultManager().copyItemAtURL(recorder.url, toURL: outputFileURL!, error: &error) {
+                println("error copying item to url: \(error?.localizedDescription)")
+            }
+            
+            message.location = location
+            
+            message.location.messageCount = NSNumber(integer: (message.location.messageCount.integerValue + 1))
+            message.name = String(format: RECORD_NAME, message.location.messageCount)
+            message.isRead = false
+            message.createdAt = createTime
+            message.updatedAt = createTime
+            
+            location.updatedAt = createTime
+            
+            if !managedObjectContext!.save(&error) {
+                println("error saving audio: \(error?.localizedDescription)")
+            }
+        }
+    }
+
 }
