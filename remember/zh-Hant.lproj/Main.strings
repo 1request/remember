@@ -46,3 +46,6 @@
 
 /* Class = "IBUINavigationItem"; title = "更新位置"; ObjectID = "tsv-uq-Hzh"; */
 "tsv-uq-Hzh.title" = "更新位置";
+
+/* Class = "IBUILabel"; text = "Please press button below and record your feedback"; ObjectID = "vo7-mc-gGa"; */
+"vo7-mc-gGa.text" = "請按下錄音按鈕，開始記錄回饋";

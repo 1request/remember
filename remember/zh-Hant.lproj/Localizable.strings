@@ -17,3 +17,5 @@ WITHIN_RANGE = "於%@米內";
 ADDED = "已加";
 RECORD_NAME = "錄音%@";
 RECORDING_FEEDBACK = "回饋錄音中";
+SEND_FEEDBACK = "請填寫你的名字然後按下遞交";
+INVALID_FEEDBACK = "錄音時間太短，請重新錄音";
