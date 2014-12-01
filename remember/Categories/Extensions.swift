@@ -119,3 +119,10 @@ extension UITableView {
         tableFooterView = UIView(frame: CGRectZero)
     }
 }
+
+extension NSMutableData {
+    func appendString(string: String) {
+        let data = string.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: true)
+        appendData(data!)
+    }
+}

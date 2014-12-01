@@ -1,0 +1,19 @@
+/* 
+  Localizable.strings
+  remember
+
+  Created by Joseph Cheung on 25/11/14.
+  Copyright (c) 2014 Reque.st. All rights reserved.
+*/
+
+SLIDE_UP_TO_CANCEL = "Slide Up to Cancel";
+RELEASE_TO_CANCEL = "Release to Cancel";
+MICROPHONE_ACCESS_DENIED = "Microphone Access Denied";
+MICROPHONE_ACCESS_ALERT_MSG = "Remember requires access to your device's microphone.\n\nPlease enable microphone access for Remember in Settings / Privacy / Microphone";
+UNREAD = "Unread";
+LOADING_LOCATION = "Loading Location...";
+CURRENT_LOCATION = "Current Location";
+WITHIN_RANGE = "Within %@ m";
+ADDED = "Added";
+RECORD_NAME = "Record %@";
+RECORDING_FEEDBACK = "Recording feedback";
