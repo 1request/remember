@@ -1,0 +1,21 @@
+/* 
+  Localizable.strings
+  remember
+
+  Created by Joseph Cheung on 25/11/14.
+  Copyright (c) 2014 Reque.st. All rights reserved.
+*/
+
+SLIDE_UP_TO_CANCEL = "手指上滑，取消錄音";
+RELEASE_TO_CANCEL = "鬆開手指，取消錄音";
+MICROPHONE_ACCESS_DENIED = "咪高風";
+MICROPHONE_ACCESS_ALERT_MSG = "Remember需要使用您裝置的咪高風.\n\n請於 設定 / 私隱 / 咪高風 開啟咪高風使用權限";
+UNREAD = "設為未讀";
+LOADING_LOCATION = "搜尋位置中...";
+CURRENT_LOCATION = "現時位置";
+WITHIN_RANGE = "於%@米內";
+ADDED = "已加";
+RECORD_NAME = "錄音%@";
+RECORDING_FEEDBACK = "回饋錄音中";
+SEND_FEEDBACK = "請填寫你的名字然後按下遞交";
+INVALID_FEEDBACK = "錄音時間太短，請重新錄音";

@@ -12,20 +12,19 @@ import AVFoundation
 import CoreLocation
 
 class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate {
-
+    
     //MARK: - Constants
-
-    let kSlideUpToCancel = "Slide Up To Cancel"
-    let kReleaseToCancel = "Release To Cancel"
-    let kMinimumRecordLength = 1.0
+    
     var kApplicationPath = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true).last! as String
     var hudView = HUD()
-    var alertView: UIAlertView? = nil
+    
+    var recorderViewController: RecorderViewController? = nil
+
     //MARK: - Variables
 
     @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var recordButton: UIButton!
     @IBOutlet weak var pressHereImageView: UIImageView!
+    var alertView: UIAlertView? = nil
     
     var editingCellRowNumber = -1
 
@@ -36,33 +35,6 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     var selectedLocationObjectID: NSManagedObjectID?
 
     var activePlayerIndexPath: NSIndexPath?
-
-    //MARK: variables for audio recorder
-
-    lazy var recorder: AVAudioRecorder = {
-        [unowned self] in
-        let path = "\(self.kApplicationPath)/memo.m4a"
-        let fileURL = NSURL(fileURLWithPath: path)
-        let settings = [
-            AVFormatIDKey: kAudioFormatMPEG4AAC,
-            AVSampleRateKey: 44100.0,
-            AVNumberOfChannelsKey: 2
-        ]
-        var error: NSError?
-        var recorder = AVAudioRecorder(URL: fileURL, settings: settings, error: &error)
-        if let e = error {
-            println("error initializing recorder: \(e)")
-        }
-        else {
-            recorder.meteringEnabled = true
-            recorder.prepareToRecord()
-        }
-        return recorder
-    }()
-
-    lazy var startDate = NSDate()
-    lazy var timer = NSTimer()
-    lazy var timeInterval = NSTimeInterval()
 
     var player:AVAudioPlayer?
 
@@ -83,7 +55,6 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         tableView.delegate = self
         
         updateViewToBePresented()
-        configureAudioSession()
 
         // detect tap gesture
         let tapRecognizer = UITapGestureRecognizer(target: self, action: "tapView:")
@@ -213,7 +184,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
     func resetEditMode () {
         editingCellRowNumber = -1
-        recordButton.enabled = true
+        recorderViewController?.recordButton.enabled = true
     }
 
     func closeEditingCell() {
@@ -238,45 +209,18 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 editLocationVC.managedObjectContext = managedObjectContext
             }
         }
-    }
-
-    //MARK: - IBActions
-    //MARK: record button actions
-    @IBAction func recordButtonTouchedDown(sender: UIButton) {
-        if editingCellRowNumber != -1 {
-            closeEditingCell()
-            resetEditMode()
+        if let recorderVC = segue.destinationViewController as? RecorderViewController {
+            recorderViewController = recorderVC
+            recorderViewController?.delegate = self
         }
-        
-        recordAudio()
     }
-
-    @IBAction func recordButtonTouchedUpInside(sender: UIButton) {
-        hudView.removeFromSuperview()
-        finishRecordingAudio()
-    }
-
-    @IBAction func recordButtonTouchedUpOutside(sender: UIButton) {
-        hudView.removeFromSuperview()
-        stopRecordingAudio()
-    }
-
-    @IBAction func recordButtonTouchedDragEnter(sender: UIButton) {
-        hudView.text = kSlideUpToCancel
-        hudView.setNeedsDisplay()
-    }
-
-    @IBAction func recordButtonTouchedDragExit(sender: UIButton) {
-        hudView.text = kReleaseToCancel
-        hudView.setNeedsDisplay()
-    }
-
+    
     //MARK: - NSFetchedResultControllerDelegate
 
     func controllerWillChangeContent(controller: NSFetchedResultsController) {
         if tableView.hidden {
             tableView.hidden = false
-            recordButton.hidden = false
+            recorderViewController?.recordButton.hidden = false
         }
     }
 
@@ -291,7 +235,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     func updateViewToBePresented() {
         if fetchedResultController.fetchedObjects?.count == 0 {
             tableView.hidden = true
-            recordButton.hidden = true
+            recorderViewController?.recordButton.hidden = true
             pressHereImageView.hidden = false
         }
         else {
@@ -367,141 +311,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
             selectedLocationObjectID = location.objectID
         }
     }
-
-    //MARK: - record audio
-    func recordAudio () {
-        if let player = player {
-            if player.playing {
-                player.stop()
-            }
-        }
-
-        let session = AVAudioSession.sharedInstance()
-        session.setActive(true, error: nil)
-        if session.respondsToSelector("requestRecordPermission:") {
-            session.requestRecordPermission { [unowned self] (granted) -> Void in
-                if granted {
-                    self.hudView = HUD.hudInView(self.view)
-                    self.hudView.text = self.kSlideUpToCancel
-                    self.recorder.record()
-                    self.startDate = NSDate()
-                    self.timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("updateTimer"), userInfo: nil, repeats: true)
-                } else {
-                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                        let controller = UIAlertController(title: "Microphone Access Denied", message: "Remember requires access to your device's microphone.\n\nPlease enable microphone access for Remember in Settings / Privacy / Microphone", preferredStyle: .Alert)
-                        let cancelAction = UIAlertAction(title: "OK", style: .Cancel, handler: nil)
-                        controller.addAction(cancelAction)
-                        self.presentViewController(controller, animated: true, completion: nil)
-                    })
-                }
-            }
-        }
-    }
-
-    func configureAudioSession () {
-        let session = AVAudioSession.sharedInstance()
-        var error: NSError?
-
-        if !session.setCategory(AVAudioSessionCategoryPlayAndRecord, error: &error) {
-            println("could not set session category")
-            if let e = error {
-                println("set session category error: \(e.localizedDescription)")
-            }
-        }
-
-        if !session.setActive(true, error: &error) {
-            println("could not activate session")
-            if let e = error {
-                println("activate session error: \(e.localizedDescription)")
-            }
-        }
-        
-        if !isHeadsetPluggedIn() {
-            if !session.overrideOutputAudioPort(AVAudioSessionPortOverride.Speaker, error: &error) {
-                println("could not override output audio port to speaker")
-                if let e = error {
-                    println("override output audio port error: \(e.localizedDescription)")
-                }
-            }
-        } else {
-            if !session.overrideOutputAudioPort(AVAudioSessionPortOverride.None, error: &error) {
-                println("could not override output audio port to none")
-                if let e = error {
-                    println("override output audio port error: \(e.localizedDescription)")
-                }
-            }
-        }
-    }
     
-    func isHeadsetPluggedIn() -> Bool {
-        let route = AVAudioSession.sharedInstance().currentRoute
-        if route.outputs != nil {
-            for object in route.outputs {
-                if let desc = object as? AVAudioSessionPortDescription {
-                    if desc.portType == AVAudioSessionPortHeadphones {
-                        return true
-                    }
-                }
-            }
-        }
-        return false
-    }
-
-    func updateTimer () {
-        timeInterval = NSDate().timeIntervalSinceDate(startDate)
-    }
-
-    func finishRecordingAudio () {
-        Mixpanel.sharedInstance().track("audioRecorded")
-        
-        stopRecordingAudio()
-        if timeInterval > kMinimumRecordLength {
-            let location = managedObjectContext!.objectWithID(selectedLocationObjectID!) as Location
-            createMessageForLocation(location)
-            monitorLocation(location)
-            let indexPath = NSIndexPath(forRow: 0, inSection: 0)
-            tableView.scrollToRowAtIndexPath(indexPath, atScrollPosition: .Top, animated: true)
-        }
-        else {
-            println("Record is too short")
-        }
-        timeInterval = 0
-    }
-
-    func createMessageForLocation (location: Location) {
-        let entityDescription = NSEntityDescription.entityForName("Message", inManagedObjectContext: managedObjectContext!)
-        let message = Message(entity: entityDescription!, insertIntoManagedObjectContext: managedObjectContext!)
-
-        let createTime = NSDate()
-        let filePathString = kApplicationPath + "/" + createTime.timeIntervalSince1970.format(".0") + ".m4a"
-
-        let outputFileURL = NSURL(fileURLWithPath: filePathString)
-
-        var error: NSError?
-        if !NSFileManager.defaultManager().copyItemAtURL(recorder.url, toURL: outputFileURL!, error: &error) {
-            println("error copying item to url: \(error?.localizedDescription)")
-        }
-
-        message.location = location
-
-        message.location.messageCount = NSNumber(integer: (message.location.messageCount.integerValue + 1))
-        message.name = "Record \(message.location.messageCount)"
-        message.isRead = false
-        message.createdAt = createTime
-        message.updatedAt = createTime
-        
-        location.updatedAt = createTime
-
-        if !managedObjectContext!.save(&error) {
-            println("error saving audio: \(error?.localizedDescription)")
-        }
-    }
-
-    func stopRecordingAudio () {
-        recorder.stop()
-        timer.invalidate()
-    }
-
     //MARK: - Play Audio
 
     func playAudioAtIndexPath (indexPath: NSIndexPath) {
@@ -707,14 +517,90 @@ extension HomeViewController {
     func updateAudioRoute(notification: NSNotification) {
         if let dict = notification.userInfo as? Dictionary<String, AnyObject> {
             let routeChangeReason = dict[AVAudioSessionRouteChangeReasonKey] as Int
-            switch routeChangeReason {
-            case kAudioSessionRouteChangeReason_NewDeviceAvailable:
-                configureAudioSession()
-            case kAudioSessionRouteChangeReason_OldDeviceUnavailable:
-                configureAudioSession()
+            if routeChangeReason == kAudioSessionRouteChangeReason_OldDeviceUnavailable {
                 stopPlayingAudio()
-            default: ()
             }
         }
     }
+}
+
+extension HomeViewController: RecorderViewControllerDelegate {
+    
+    func recorderWillStartRecording() {
+        if editingCellRowNumber != -1 {
+            closeEditingCell()
+            resetEditMode()
+        }
+        
+        if let player = player {
+            if player.playing {
+                player.stop()
+            }
+        }
+        
+        hudView = HUD.hudInView(view)
+        hudView.text = SLIDE_UP_TO_CANCEL
+    }
+    
+    func recorderWillFinishRecording() {
+        hudView.removeFromSuperview()
+    }
+    
+    func recorderDidFinishRecording(#valid: Bool) {
+        if valid {
+            Mixpanel.sharedInstance().track("audioRecorded")
+            
+            let location = managedObjectContext!.objectWithID(selectedLocationObjectID!) as Location
+            createMessageForLocation(location)
+            monitorLocation(location)
+            let indexPath = NSIndexPath(forRow: 0, inSection: 0)
+            tableView.scrollToRowAtIndexPath(indexPath, atScrollPosition: .Top, animated: true)
+        }
+    }
+    
+    func recorderWillCancelRecording() {
+        hudView.removeFromSuperview()
+    }
+    
+    func recorderButtonDidDragEnter() {
+        hudView.text = SLIDE_UP_TO_CANCEL
+        hudView.setNeedsDisplay()
+    }
+    
+    func recorderButtonDidDragExit() {
+        hudView.text = RELEASE_TO_CANCEL
+        hudView.setNeedsDisplay()
+    }
+    
+    func createMessageForLocation (location: Location) {
+        let entityDescription = NSEntityDescription.entityForName("Message", inManagedObjectContext: managedObjectContext!)
+        let message = Message(entity: entityDescription!, insertIntoManagedObjectContext: managedObjectContext!)
+        
+        let createTime = NSDate()
+        let filePathString = kApplicationPath + "/" + createTime.timeIntervalSince1970.format(".0") + ".m4a"
+        
+        let outputFileURL = NSURL(fileURLWithPath: filePathString)
+        
+        var error: NSError?
+        if let recorder = recorderViewController?.recorder {
+            if !NSFileManager.defaultManager().copyItemAtURL(recorder.url, toURL: outputFileURL!, error: &error) {
+                println("error copying item to url: \(error?.localizedDescription)")
+            }
+            
+            message.location = location
+            
+            message.location.messageCount = NSNumber(integer: (message.location.messageCount.integerValue + 1))
+            message.name = String(format: RECORD_NAME, message.location.messageCount)
+            message.isRead = false
+            message.createdAt = createTime
+            message.updatedAt = createTime
+            
+            location.updatedAt = createTime
+            
+            if !managedObjectContext!.save(&error) {
+                println("error saving audio: \(error?.localizedDescription)")
+            }
+        }
+    }
+
 }

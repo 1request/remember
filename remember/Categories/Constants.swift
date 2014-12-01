@@ -47,3 +47,15 @@ let kGPSLocationUpdateNotificationName = "gpsLocationUpdateNotification"
 let kGPSLocationUpdateNotificationUserInfoLocationKey = "location"
 let kVisitsNotificationName = "visitNotification"
 let kVisitsNotificationUserInfoVisitKey = "visit"
+
+//API
+
+let kBoundary = "testboundary"
+let kFeedbackPOSTURL = "http://app.rememberthere.com/api/feedbacks/send"
+
+//HUD
+let SLIDE_UP_TO_CANCEL = NSLocalizedString("SLIDE_UP_TO_CANCEL", comment: "Inform user to slide up to cancel recording")
+let RELEASE_TO_CANCEL = NSLocalizedString("RELEASE_TO_CANCEL", comment: "Inform user to release finger to cancel recording")
+let RECORD_NAME = NSLocalizedString("RECORD_NAME", comment: "default message name")
+
+
