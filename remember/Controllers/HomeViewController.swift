@@ -29,6 +29,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     @IBOutlet weak var pressHereImageView: UIImageView!
     
     var editingCellRowNumber = -1
+    var openedCellDirection: SwipeableTableViewCell.Direction?
 
     weak var managedObjectContext: NSManagedObjectContext!
     var fetchedResultController: NSFetchedResultsController!
@@ -102,7 +103,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
             swipeableCell.delegate = self
             swipeableCell.updateConstraints()
             if indexPath.row == editingCellRowNumber {
-                swipeableCell.openCell(animated: false)
+                swipeableCell.openCell(animated: false, direction: openedCellDirection!)
             }
         }
         return cell
@@ -194,6 +195,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
     func resetEditMode () {
         editingCellRowNumber = -1
+        openedCellDirection = nil
         recordButton.enabled = true
     }
 
@@ -201,7 +203,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         let indexPath = NSIndexPath(forRow: editingCellRowNumber, inSection: 0)
         let cell = tableView.cellForRowAtIndexPath(indexPath)
         if let previousEditingCell = cell as? SwipeableTableViewCell {
-            previousEditingCell.closeCell(animated: true)
+            previousEditingCell.closeCell(animated: true, direction: openedCellDirection!)
         }
         if let messageCell = cell as? MessagesTableViewCell {
             messageCell.active = true
@@ -494,39 +496,43 @@ extension HomeViewController : UIGestureRecognizerDelegate {
 
 //MARK: - SwipeableTableViewCellDelegate
 extension HomeViewController: SwipeableTableViewCellDelegate {
-    func swipeableCellDidOpen(cell: SwipeableTableViewCell) {
+    func swipeableCellDidOpen(cell: SwipeableTableViewCell, direction: Int) {
+        openedCellDirection = SwipeableTableViewCell.Direction(rawValue: direction)
         closeEditingCell()
-
+        
         if let indexPath = tableView.indexPathForCell(cell) {
             editingCellRowNumber = indexPath.row
         }
         
         if let messageCell = cell as? MessagesTableViewCell {
-//            setPlayButton(active: false, ForCell: messageCell)
             messageCell.active = false
         }
     }
-
-    func swipeableCellDidClose(cell: SwipeableTableViewCell) {
+    
+    func swipeableCellDidClose(cell: SwipeableTableViewCell, direction: Int) {
         resetEditMode()
         
         if let messageCell = cell as? MessagesTableViewCell {
-//            setPlayButton(active: true, ForCell: messageCell)
             messageCell.active = true
         }
     }
-
-    func swipeableCell(cell: SwipeableTableViewCell, didSelectButtonAtIndex index: Int) {
+    
+    func swipeableCell(cell: SwipeableTableViewCell, didSelectButtonAtIndex index: Int, direction: Int) {
         if let indexPath = tableView.indexPathForCell(cell) {
-            if index == 0 {
-                deleteObjectAtIndexPath(indexPath)
-                setObjectsInTable()
-                setSelectedLocationObjectID()
+            let object = objectsInTable.objectAtIndex(indexPath.row) as NSManagedObject
+            
+            if direction == SwipeableTableViewCell.Direction.right.rawValue {
+                if index == 0 {
+                    deleteObjectAtIndexPath(indexPath)
+                    setObjectsInTable()
+                    setSelectedLocationObjectID()
+                } else {
+                    if let location = object as? Location {
+                        performSegueWithIdentifier("editLocation", sender: location)
+                    }
+                }
             } else {
-                let object = objectsInTable.objectAtIndex(indexPath.row) as NSManagedObject
-                if let location = object as? Location {
-                    performSegueWithIdentifier("editLocation", sender: location)
-                } else if let message = object as? Message {
+                if let message = object as? Message {
                     let cell = tableView.cellForRowAtIndexPath(indexPath) as MessagesTableViewCell
                     cell.markAsUnread()
                     
