@@ -56,6 +56,7 @@ class LocationsTableViewCell: SwipeableTableViewCell {
     
     override func setHighlighted(highlighted: Bool, animated: Bool) {
         super.setHighlighted(highlighted, animated: animated)
+        let buttons = leftButtons + rightButtons
         if highlighted {
             customContentView.backgroundColor = UIColor.lightGrayColor()
             if opened {
@@ -74,19 +75,26 @@ class LocationsTableViewCell: SwipeableTableViewCell {
             }
         }
     }
-    
 }
 
 extension LocationsTableViewCell: SwipeableTableViewCellDataSource {
-    func numberOfButtonsInSwipeableCell(cell: SwipeableTableViewCell) -> Int {
+    func numberOfRightButtonsInSwipeableCell(cell: SwipeableTableViewCell) -> Int {
         return 2
     }
-
-    func swipeableCell(cell: SwipeableTableViewCell, backgroundImageForButtonAtIndex index: Int) -> UIImage? {
-        if index == 0 {
-            return UIImage(named: "trash")
+    
+    func numberOfLeftButtonsInSwipeableCell(cell: SwipeableTableViewCell) -> Int {
+        return 0
+    }
+    
+    func swipeableCell(cell: SwipeableTableViewCell, backgroundImageForButtonAtIndex index: Int, atDirection: Int) -> UIImage? {
+        if atDirection == SwipeableTableViewCell.Direction.right.rawValue {
+            if index == 0 {
+                return UIImage(named: "trash")
+            } else {
+                return UIImage(named: "edit")
+            }
         } else {
-            return UIImage(named: "edit")
+            return nil
         }
     }
 }

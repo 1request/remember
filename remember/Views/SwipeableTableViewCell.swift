@@ -10,39 +10,48 @@ import UIKit
 
 //MARK: - SwipeableTableViewCellDataSource
 @objc protocol SwipeableTableViewCellDataSource {
-    func numberOfButtonsInSwipeableCell(cell: SwipeableTableViewCell) -> Int
+    func numberOfRightButtonsInSwipeableCell(cell: SwipeableTableViewCell) -> Int
+    func numberOfLeftButtonsInSwipeableCell(cell: SwipeableTableViewCell) -> Int
     
-    optional func swipeableCell(cell: SwipeableTableViewCell, buttonForIndex index: Int) -> UIButton?
-    optional func swipeableCell(cell: SwipeableTableViewCell, titleForButtonAtIndex index: Int) -> String?
-    optional func swipeableCell(cell: SwipeableTableViewCell, backgroundColorForButtonAtIndex index: Int) -> UIColor?
-    optional func swipeableCell(cell: SwipeableTableViewCell, tintColorForButtonAtIndex index: Int) -> UIColor?
-    optional func swipeableCell(cell: SwipeableTableViewCell, backgroundImageForButtonAtIndex index: Int) -> UIImage?
-    optional func swipeableCell(cell: SwipeableTableViewCell, fontForButtonAtIndex index: Int) -> UIFont?
+    optional func swipeableCell(cell: SwipeableTableViewCell, buttonForIndex index: Int, atDirection direction: Int) -> UIButton?
+
+    optional func swipeableCell(cell: SwipeableTableViewCell, titleForButtonAtIndex index: Int, atDirection: Int) -> String?
+    optional func swipeableCell(cell: SwipeableTableViewCell, backgroundColorForButtonAtIndex index: Int, atDirection: Int) -> UIColor?
+    optional func swipeableCell(cell: SwipeableTableViewCell, tintColorForButtonAtIndex index: Int, atDirection: Int) -> UIColor?
+    optional func swipeableCell(cell: SwipeableTableViewCell, backgroundImageForButtonAtIndex index: Int, atDirection: Int) -> UIImage?
+    optional func swipeableCell(cell: SwipeableTableViewCell, fontForButtonAtIndex index: Int, atDirection: Int) -> UIFont?
 }
 
 //MARK: - SwipeableTableViewCellDelegate
 
 @objc protocol SwipeableTableViewCellDelegate {
-    func swipeableCell(cell: SwipeableTableViewCell, didSelectButtonAtIndex index: Int)
-    func swipeableCellDidOpen(cell: SwipeableTableViewCell)
-    func swipeableCellDidClose(cell: SwipeableTableViewCell)
+    func swipeableCell(cell: SwipeableTableViewCell, didSelectButtonAtIndex index: Int, direction: Int)
+    func swipeableCellDidOpen(cell: SwipeableTableViewCell, direction: Int)
+    func swipeableCellDidClose(cell: SwipeableTableViewCell, direction: Int)
 }
-
 
 //MARK: - SwipeableTableViewCell Class
 
 class SwipeableTableViewCell: UITableViewCell, UIGestureRecognizerDelegate {
     var opened = false
+    var openedDirection: Direction? = nil
     
     var customContentView = UIView()
     weak var delegate: SwipeableTableViewCellDelegate?
     weak var dataSource: SwipeableTableViewCellDataSource?
     
-    var buttons: [UIButton] = []
+    var rightButtons: [UIButton] = []
+    var leftButtons: [UIButton] = []
+    
     private var panStartPoint = CGPointZero
     private var startingRightLayoutConstraintConstant: CGFloat = 0
     private var contentViewRightConstraint: NSLayoutConstraint?
     private var contentViewLeftConstraint: NSLayoutConstraint?
+    
+    enum Direction: Int {
+        case left
+        case right
+    }
     
     //MARK: - Initialization
     
@@ -97,42 +106,86 @@ class SwipeableTableViewCell: UITableViewCell, UIGestureRecognizerDelegate {
         super.prepareForReuse()
         resetConstraintContstantsToZero(false, notifyDelegateDidClose: false)
         
-        for button in buttons {
-            button.removeFromSuperview()
+        removeAllButtonsFromViewAtDirection(Direction.right)
+        removeAllButtonsFromViewAtDirection(Direction.left)
+    }
+    
+    private func removeAllButtonsFromViewAtDirection(direction: Direction) {
+        if direction == Direction.left {
+            for button in leftButtons {
+                button.removeFromSuperview()
+            }
+        } else {
+            for button in leftButtons {
+                button.removeFromSuperview()
+            }
         }
-        
-        buttons.removeAll(keepCapacity: false)
+        rightButtons.removeAll(keepCapacity: false)
+        leftButtons.removeAll(keepCapacity: false)
     }
     
     //MARK: - Button Config
     
-    private func configureButtons() {
-        var previousMinX = CGRectGetWidth(frame)
-        if let numberOfButtons = dataSource?.numberOfButtonsInSwipeableCell(self) {
-            for i in 0..<numberOfButtons {
-                let button = buttonForIndex(i, previousButtonMinX: previousMinX)
-                buttons.append(button)
+    
+    private func addButtons(numberOfButtons: Int, AtDirection direction: Direction) {
+        var previousMinX:CGFloat = 0.0
+        if direction == Direction.right {
+            previousMinX = CGRectGetWidth(frame)
+        }
+        for i in 0..<numberOfButtons {
+            let button = buttonForIndex(i, previousButtonMinX: previousMinX, direction: direction)
+            if direction == Direction.right {
                 previousMinX -= CGRectGetWidth(button.frame)
-                contentView.addSubview(button)
+                rightButtons.append(button)
+            } else {
+                previousMinX += CGRectGetWidth(button.frame)
+                leftButtons.append(button)
             }
-            contentView.bringSubviewToFront(customContentView)
+            
+            contentView.addSubview(button)
+        }
+        contentView.bringSubviewToFront(customContentView)
+    }
+    
+    private func configureButtonsAtDirection(direction: Direction) {
+        if direction == Direction.right {
+            if let numberOfButtons = dataSource?.numberOfRightButtonsInSwipeableCell(self) {
+                addButtons(numberOfButtons, AtDirection: Direction.right)
+            }
+        } else {
+            if let numberOfButtons = dataSource?.numberOfLeftButtonsInSwipeableCell(self) {
+                addButtons(numberOfButtons, AtDirection: Direction.left)
+            }
         }
     }
     
+    private func buttonsAtDirection(direction: Direction) -> [UIButton] {
+        if direction == Direction.left {
+            return leftButtons
+        } else {
+            return rightButtons
+        }
+    }
     
-    private func configureButtonsIfNeeded() {
+    private func configureButtonsIfNeededAtDirection(direction: Direction) {
+        if direction == Direction.right {
+            removeAllButtonsFromViewAtDirection(Direction.left)
+        } else {
+            removeAllButtonsFromViewAtDirection(Direction.right)
+        }
+        let buttons = rightButtons + leftButtons
         if buttons.count == 0 {
-            configureButtons()
+            configureButtonsAtDirection(direction)
         }
     }
     
-    private func buttonForIndex(index: Int, previousButtonMinX previousMinX: CGFloat) -> UIButton {
+    private func buttonFromDataSourceAtIndex(index: Int, atDirection direction: Direction) -> UIButton {
         var button = UIButton()
         
-        if let customButton = dataSource?.swipeableCell?(self, buttonForIndex: index) {
+        if let customButton = dataSource?.swipeableCell?(self, buttonForIndex: index, atDirection: direction.rawValue) {
             button = customButton
         } else {
-            if let title = dataSource?.swipeableCell?(self, titleForButtonAtIndex: index) {
+            if let title = dataSource?.swipeableCell?(self, titleForButtonAtIndex: index, atDirection: direction.rawValue) {
                 let spacing:CGFloat = 5
                 button.setTitle(title, forState: UIControlState.Normal)
                 button.contentEdgeInsets = UIEdgeInsetsMake(spacing, spacing, spacing, spacing)
@@ -140,25 +193,25 @@ class SwipeableTableViewCell: UITableViewCell, UIGestureRecognizerDelegate {
                 button.setTitle("", forState: UIControlState.Normal)
             }
             
-            if let image = dataSource?.swipeableCell?(self, backgroundImageForButtonAtIndex: index) {
+            if let image = dataSource?.swipeableCell?(self, backgroundImageForButtonAtIndex: index, atDirection: direction.rawValue) {
                 button.setBackgroundImage(image, forState: UIControlState.Normal)
                 button.frame.size.width = image.size.width / image.size.height * frame.height
             }
             
-            if let tintColor = dataSource?.swipeableCell?(self, tintColorForButtonAtIndex: index) {
+            if let tintColor = dataSource?.swipeableCell?(self, tintColorForButtonAtIndex: index, atDirection: direction.rawValue) {
                 button.tintColor = tintColor
             } else {
                 button.tintColor = UIColor.whiteColor()
             }
             
-            if let font = dataSource?.swipeableCell?(self, fontForButtonAtIndex: index) {
+            if let font = dataSource?.swipeableCell?(self, fontForButtonAtIndex: index, atDirection: direction.rawValue) {
                 button.titleLabel?.font = font
             }
             
-            if let backgroundColor = dataSource?.swipeableCell?(self, backgroundColorForButtonAtIndex: index) {
+            if let backgroundColor = dataSource?.swipeableCell?(self, backgroundColorForButtonAtIndex: index, atDirection: direction.rawValue) {
                 button.backgroundColor = backgroundColor
             } else {
-                if dataSource?.swipeableCell?(self, backgroundImageForButtonAtIndex: index) == nil {
+                if dataSource?.swipeableCell?(self, backgroundImageForButtonAtIndex: index, atDirection: direction.rawValue) == nil {
                     if index == 0 {
                         button.backgroundColor = UIColor.redColor()
                     } else {
@@ -167,7 +220,7 @@ class SwipeableTableViewCell: UITableViewCell, UIGestureRecognizerDelegate {
                 }
             }
             
-            if (dataSource?.swipeableCell?(self, backgroundImageForButtonAtIndex: index) == nil) {
+            if (dataSource?.swipeableCell?(self, backgroundImageForButtonAtIndex: index, atDirection: direction.rawValue) == nil) {
                 button.sizeToFit()
             }
             
@@ -179,56 +232,98 @@ class SwipeableTableViewCell: UITableViewCell, UIGestureRecognizerDelegate {
                 button.frame = frame
             }
         }
+        return button
+    }
+    
+    private func buttonForIndex(index: Int, previousButtonMinX previousMinX: CGFloat, direction: Direction) -> UIButton {
+        let button = buttonFromDataSourceAtIndex(index, atDirection: direction)
+        var xOrigin: CGFloat = 0
         
-        let xOrigin = previousMinX - CGRectGetWidth(button.frame)
+        if direction == Direction.right {
+            xOrigin = previousMinX - CGRectGetWidth(button.frame)
+            
+        } else {
+            
+        }
         
         button.frame = CGRectMake(xOrigin, 0, CGRectGetWidth(button.frame), CGRectGetHeight(frame))
         
         button.addTarget(self, action: "buttonClicked:", forControlEvents: UIControlEvents.TouchUpInside)
         
-        if xOrigin < 40 {
-            println("***ATTENTION!*** Button at index \(index) is going to leave less than 40 points of space! That's going to be hard to close.")
+        if direction == Direction.right {
+            if xOrigin < 40 {
+                println("***ATTENTION!*** Right button at index \(index) is going to leave less than 40 points of space! That's going to be hard to close.")
+            }
+        } else {
+            let distance = CGRectGetWidth(frame) - xOrigin
+            if  distance < 40 {
+                println("***ATTENTION!*** Left button at index \(index) is going to leave less than 40 points of space! That's going to be hard to close.")
+            }
         }
         
         return button
     }
     
     func buttonClicked(sender: UIButton) {
-        if let index = find(buttons, sender) {
-            delegate?.swipeableCell(self, didSelectButtonAtIndex: index)
+        if let index = find(rightButtons, sender) {
+            delegate?.swipeableCell(self, didSelectButtonAtIndex: index, direction: Direction.right.rawValue)
+            return
+        }
+        if let index = find(leftButtons, sender) {
+            delegate?.swipeableCell(self, didSelectButtonAtIndex: index, direction: Direction.left.rawValue)
+            return
         }
     }
     
     //MARK: - Measurement convenience methods
     
-    private func halfOfFirstButtonWidth() -> CGFloat {
-        let firstButton = buttons[0]
+    private func halfOfFirstButtonWidthAtDirection(direction: Direction) -> CGFloat {
+        var firstButton = UIButton()
+        if direction == Direction.right {
+            firstButton = rightButtons[0]
+        } else {
+            firstButton = leftButtons[0]
+        }
         return CGRectGetWidth(firstButton.frame) / 2
     }
     
-    private func halfOfLastButtonXPosition() -> CGFloat {
-        let lastButton = buttons.last
+    private func halfOfLastButtonXPositionAtDirection(direction: Direction) -> CGFloat {
+        var lastButton: UIButton?
+        if direction == Direction.right {
+            lastButton = rightButtons.last
+        } else {
+            lastButton = leftButtons.last
+        }
+        
         let halfOfLastButton = CGRectGetWidth(lastButton!.frame) / 2
-        return buttonTotalWidth() - halfOfLastButton
+        return buttonTotalWidthAtDirection(direction) - halfOfLastButton
     }
     
-    private func buttonTotalWidth() -> CGFloat {
+    private func buttonTotalWidthAtDirection(direction: Direction) -> CGFloat {
         var buttonWidth: CGFloat = 0
-        for button in buttons {
-            buttonWidth += CGRectGetWidth(button.frame)
+        if direction == Direction.right {
+            for button in rightButtons {
+                buttonWidth += CGRectGetWidth(button.frame)
+            }
+        } else {
+            for button in leftButtons {
+                buttonWidth += CGRectGetWidth(button.frame)
+            }
         }
         return buttonWidth
     }
     
     //MARK: - Constraint Animation
     //MARK: Public
-    func openCell(#animated: Bool) {
-        configureButtonsIfNeeded()
+    func openCell(#animated: Bool, direction: Direction) {
+        configureButtonsIfNeededAtDirection(direction)
+        openedDirection = direction
         setConstraintsToShowAllButtons(animated, notifyDelegateDidOpen: false)
     }
     
-    func closeCell(#animated: Bool) {
-        configureButtonsIfNeeded()
+    func closeCell(#animated: Bool, direction: Direction) {
+        configureButtonsIfNeededAtDirection(direction)
+        openedDirection = direction
         resetConstraintContstantsToZero(animated, notifyDelegateDidClose: false)
     }
     
@@ -236,26 +331,35 @@ class SwipeableTableViewCell: UITableViewCell, UIGestureRecognizerDelegate {
     private func setConstraintsToShowAllButtons(animated: Bool, notifyDelegateDidOpen notifyDelegate: Bool) {
         opened = true
         if notifyDelegate {
-            delegate?.swipeableCellDidOpen(self)
+            delegate?.swipeableCellDidOpen(self, direction: openedDirection!.rawValue)
         }
-        let totalWidth = buttonTotalWidth()
-        if startingRightLayoutConstraintConstant == totalWidth && contentViewRightConstraint?.constant == totalWidth {
-            return
-        }
-        
-        contentViewLeftConstraint?.constant = -totalWidth
-        contentViewRightConstraint?.constant = totalWidth
-        updateConstraintsIfNeeded(animated, completion: { (finished) -> () in
-            if let constant = self.contentViewRightConstraint?.constant {
-                self.startingRightLayoutConstraintConstant = constant
+        if let direction = openedDirection {
+            let totalWidth = buttonTotalWidthAtDirection(direction)
+            
+            if abs(startingRightLayoutConstraintConstant) == totalWidth && abs(contentViewRightConstraint!.constant) == totalWidth {
+                return
             }
-        })
+            
+            if direction == Direction.right {
+                contentViewLeftConstraint?.constant = -totalWidth
+                contentViewRightConstraint?.constant = totalWidth
+            } else {
+                contentViewLeftConstraint?.constant = totalWidth
+                contentViewRightConstraint?.constant = -totalWidth
+            }
+            
+            updateConstraintsIfNeeded(animated, completion: { (finished) -> () in
+                if let constant = self.contentViewRightConstraint?.constant {
+                    self.startingRightLayoutConstraintConstant = constant
+                }
+            })
+        }
     }
     
     private func resetConstraintContstantsToZero(animated: Bool, notifyDelegateDidClose notifyDelegate: Bool) {
         opened = false
         if notifyDelegate {
-            delegate?.swipeableCellDidClose(self)
+            delegate?.swipeableCellDidClose(self, direction: openedDirection!.rawValue)
         }
         if startingRightLayoutConstraintConstant == 0 && contentViewRightConstraint?.constant == 0 {
             return
@@ -299,11 +403,12 @@ class SwipeableTableViewCell: UITableViewCell, UIGestureRecognizerDelegate {
         let movingHorizontally = fabsf(Float(panStartPoint.y)) < fabsf(Float(panStartPoint.x))
         switch recognizer.state {
         case UIGestureRecognizerState.Began:
-            configureButtonsIfNeeded()
             panStartPoint = currentPoint
+            
             if let constant = contentViewRightConstraint?.constant {
                 startingRightLayoutConstraintConstant = constant
             }
+            
         case UIGestureRecognizerState.Changed:
             if movingHorizontally {
                 // Started by moving horizontally
@@ -315,15 +420,37 @@ class SwipeableTableViewCell: UITableViewCell, UIGestureRecognizerDelegate {
                 
                 let adjustment = startingRightLayoutConstraintConstant - deltaX
                 if !panningLeft {
-                    let constant = max(adjustment, 0)
-                    if constant == 0 {
-                        resetConstraintContstantsToZero(true, notifyDelegateDidClose: false)
+                    if startingRightLayoutConstraintConstant == 0 {
+                        // start opening left direction, show left buttons
+                        configureButtonsIfNeededAtDirection(Direction.left)
+                        openedDirection = Direction.left
+                    }
+                    if openedDirection! == Direction.left {
+                        let constant = min(-adjustment, buttonTotalWidthAtDirection(Direction.left))
+                        if constant == buttonTotalWidthAtDirection(Direction.left) {
+                            setConstraintsToShowAllButtons(true, notifyDelegateDidOpen: false)
+                        } else {
+                            contentViewRightConstraint?.constant = -constant
+                        }
                     } else {
-                        contentViewRightConstraint?.constant = constant
+                        let constant = max(adjustment, 0)
+                        
+                        if constant == 0 {
+                            println("opened right, close cell")
+                            resetConstraintContstantsToZero(true, notifyDelegateDidClose: false)
+                        } else {
+                            println("opened right, moving right")
+                            contentViewRightConstraint?.constant = constant
+                        }
                     }
                 } else {
-                    let constant = min(adjustment, buttonTotalWidth())
-                    if constant == buttonTotalWidth() {
+                    if startingRightLayoutConstraintConstant == 0 {
+                        // start opening right direction, show right buttons
+                        configureButtonsIfNeededAtDirection(Direction.right)
+                        openedDirection = Direction.right
+                    }
+                    let constant = min(adjustment, buttonTotalWidthAtDirection(Direction.right))
+                    if constant == buttonTotalWidthAtDirection(Direction.right) {
                         setConstraintsToShowAllButtons(true, notifyDelegateDidOpen: false)
                     } else {
                         contentViewRightConstraint?.constant = constant
@@ -335,24 +462,28 @@ class SwipeableTableViewCell: UITableViewCell, UIGestureRecognizerDelegate {
             }
         case UIGestureRecognizerState.Ended:
             if movingHorizontally {
-                if startingRightLayoutConstraintConstant == 0 {
-                    // opening
-                    let halfWidth = halfOfFirstButtonWidth()
-                    if halfWidth != 0 && contentViewRightConstraint?.constant >= halfWidth {
-                        // Open all the way
-                        setConstraintsToShowAllButtons(true, notifyDelegateDidOpen: true)
-                    } else {
-                        // Re-close
-                        resetConstraintContstantsToZero(true, notifyDelegateDidClose: true)
-                    }
-                } else {
-                    // closing
-                    if contentViewRightConstraint?.constant >= halfOfLastButtonXPosition() {
-                        // Re-open all the way
-                        setConstraintsToShowAllButtons(true, notifyDelegateDidOpen: true)
-                    } else {
-                        // Close
-                        resetConstraintContstantsToZero(true, notifyDelegateDidClose: true)
+                if let direction = openedDirection {
+                    if buttonsAtDirection(direction).count > 0 {
+                        if startingRightLayoutConstraintConstant == 0 {
+                            // opening
+                            let halfWidth = halfOfFirstButtonWidthAtDirection(direction)
+                            if halfWidth != 0 && abs(contentViewRightConstraint!.constant) >= halfWidth {
+                                // Open all the way
+                                setConstraintsToShowAllButtons(true, notifyDelegateDidOpen: true)
+                            } else {
+                                // Re-close
+                                resetConstraintContstantsToZero(true, notifyDelegateDidClose: true)
+                            }
+                        } else {
+                            // closing
+                            if abs(contentViewRightConstraint!.constant) >= halfOfLastButtonXPositionAtDirection(openedDirection!) {
+                                // Re-open all the way
+                                setConstraintsToShowAllButtons(true, notifyDelegateDidOpen: true)
+                            } else {
+                                // Close
+                                resetConstraintContstantsToZero(true, notifyDelegateDidClose: true)
+                            }
+                        }
                     }
                 }
             }

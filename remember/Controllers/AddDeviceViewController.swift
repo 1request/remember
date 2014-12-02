@@ -9,6 +9,7 @@
 import UIKit
 import CoreLocation
 import CoreData
+import MapKit
 
 class AddDeviceViewController: UIViewController, UITextFieldDelegate {
     var location: CLLocation? = nil
@@ -18,8 +19,37 @@ class AddDeviceViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var deviceNameTextField: UITextField!
     @IBOutlet weak var saveButton: UIBarButtonItem!
     
+
+
     override func viewDidLoad() {
         deviceNameTextField.delegate = self
+    }
+    
+    func mapAnnotation() -> MKPointAnnotation {
+        var coordinate = CLLocationCoordinate2D(latitude: 0, longitude: 0)
+        if beacon != nil {
+            if let currentLocation = LocationManager.sharedInstance.currentLocation {
+                coordinate = currentLocation.coordinate
+            }
+        } else {
+            if let locationToBeAdded = location {
+                coordinate = locationToBeAdded.coordinate
+            }
+        }
+        let annotation = MKPointAnnotation()
+        annotation.coordinate = coordinate
+        return annotation
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "embedMapFromAddLocation" {
+            let mapViewController = segue.destinationViewController as MapViewController
+            let annotation = mapAnnotation()
+            let span = MKCoordinateSpanMake(0.005, 0.005)
+            let region = MKCoordinateRegionMake(annotation.coordinate, span)
+            mapViewController.region = region
+            mapViewController.annotations = [annotation]
+        }
     }
     
     @IBAction func deviceNameTextEditingChanged(sender: AnyObject) {
@@ -34,12 +64,18 @@ class AddDeviceViewController: UIViewController, UITextFieldDelegate {
         let locationToBeAdded = NSEntityDescription.insertNewObjectForEntityForName("Location", inManagedObjectContext: managedObjectContext!) as Location
         locationToBeAdded.name = deviceNameTextField.text
         
+        
         if let beaconDetected = beacon {
             locationToBeAdded.uuid = beaconDetected.proximityUUID.UUIDString
             locationToBeAdded.major = beaconDetected.major
             locationToBeAdded.minor = beaconDetected.minor
-            locationToBeAdded.longitude = 0
-            locationToBeAdded.latitude = 0
+            if let currentLocation = LocationManager.sharedInstance.currentLocation {
+                locationToBeAdded.longitude = currentLocation.coordinate.longitude
+                locationToBeAdded.latitude = currentLocation.coordinate.latitude
+            } else {
+                locationToBeAdded.longitude = 0
+                locationToBeAdded.latitude = 0
+            }
         } else if let locationDetected = location {
             locationToBeAdded.longitude = locationDetected.coordinate.longitude
             locationToBeAdded.latitude = locationDetected.coordinate.latitude
@@ -52,7 +88,6 @@ class AddDeviceViewController: UIViewController, UITextFieldDelegate {
         locationToBeAdded.updatedAt = locationToBeAdded.createdAt
         
         locationToBeAdded.identifier = locationToBeAdded.createIndentifier()
-        
         let event = AddLocationEvent(location: locationToBeAdded)
         
         Mixpanel.sharedInstance().track(event.title, properties: event.properties)
