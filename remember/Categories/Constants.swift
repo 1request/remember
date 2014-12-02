@@ -51,4 +51,11 @@ let kVisitsNotificationUserInfoVisitKey = "visit"
 //API
 
 let kBoundary = "testboundary"
-let kFeedbackPOSTURL = "http://104.236.50.126:3000/api/feedbacks/send"
+let kFeedbackPOSTURL = "http://app.rememberthere.com/api/feedbacks/send"
+
+//HUD
+let SLIDE_UP_TO_CANCEL = NSLocalizedString("SLIDE_UP_TO_CANCEL", comment: "Inform user to slide up to cancel recording")
+let RELEASE_TO_CANCEL = NSLocalizedString("RELEASE_TO_CANCEL", comment: "Inform user to release finger to cancel recording")
+let RECORD_NAME = NSLocalizedString("RECORD_NAME", comment: "default message name")
+
+

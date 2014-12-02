@@ -50,10 +50,10 @@ class EditLocationViewController: UIViewController {
     }
     
     @IBAction func locationNameEditingChanged(sender: UITextField) {
-        if editLocationNameTextField.text == "" {
-            saveButton.enabled = false
-        } else {
+        if countElements(sender.text.trimWhiteSpace()) > 0 {
             saveButton.enabled = true
+        } else {
+            saveButton.enabled = false
         }
     }
     
