@@ -1,56 +1,49 @@
 //
-//  AddGroupViewController.swift
+//  AddGroupTableViewController.swift
 //  remember
 //
-//  Created by Joseph Cheung on 10/10/14.
+//  Created by Joseph Cheung on 3/12/14.
 //  Copyright (c) 2014 Reque.st. All rights reserved.
 //
 
 import UIKit
-import CoreLocation
 import CoreData
-import MapKit
+import CoreLocation
 
-class AddGroupViewController: UIViewController, UITextFieldDelegate {
-    var location: CLLocation? = nil
-    var beacon: CLBeacon? = nil
+class AddGroupTableViewController: UITableViewController {
+    
     weak var managedObjectContext: NSManagedObjectContext?
     
+    var location: CLLocation? = nil
+    var beacon: CLBeacon? = nil
+
     @IBOutlet weak var groupNameTextField: UITextField!
+    
+    @IBOutlet weak var ownRadioButton: RadioButton!
+    
+    @IBOutlet weak var sharedRadioButton: RadioButton!
+    
     @IBOutlet weak var saveButton: UIBarButtonItem!
     
     override func viewDidLoad() {
+        super.viewDidLoad()
+        ownRadioButton.checked = true
+        tableView.removeFooterBorder()
         groupNameTextField.delegate = self
+        saveButton.enabled = false
     }
     
-    func mapAnnotation() -> MKPointAnnotation {
-        var coordinate = CLLocationCoordinate2D(latitude: 0, longitude: 0)
-        if beacon != nil {
-            if let currentLocation = LocationManager.sharedInstance.currentLocation {
-                coordinate = currentLocation.coordinate
-            }
-        } else {
-            if let gpsLocation = location {
-                coordinate = gpsLocation.coordinate
-            }
-        }
-        let annotation = MKPointAnnotation()
-        annotation.coordinate = coordinate
-        return annotation
-    }
-    
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.identifier == "embedMapFromAddLocation" {
-            let mapViewController = segue.destinationViewController as MapViewController
-            let annotation = mapAnnotation()
-            let span = MKCoordinateSpanMake(0.005, 0.005)
-            let region = MKCoordinateRegionMake(annotation.coordinate, span)
-            mapViewController.region = region
-            mapViewController.annotations = [annotation]
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        if indexPath.row == 1 {
+            ownRadioButton.checked = true
+            sharedRadioButton.checked = false
+        } else if indexPath.row == 2 {
+            sharedRadioButton.checked = true
+            ownRadioButton.checked = false
         }
     }
-    
-    @IBAction func deviceNameTextEditingChanged(sender: AnyObject) {
+
+    @IBAction func groupNameTextFieldEditingChanged(sender: UITextField) {
         if countElements(groupNameTextField.text.trimWhiteSpace()) > 0 {
             saveButton.enabled = true
         } else {
@@ -58,11 +51,18 @@ class AddGroupViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
-    @IBAction func saveBarButtonItemPressed(sender: UIBarButtonItem) {
+    @IBAction func saveBarButtonItemClicked(sender: UIBarButtonItem) {
         let groupToBeAdded = NSEntityDescription.insertNewObjectForEntityForName("Group", inManagedObjectContext: managedObjectContext!) as Group
         groupToBeAdded.name = groupNameTextField.text
         groupToBeAdded.createdAt = NSDate()
         groupToBeAdded.updatedAt = groupToBeAdded.createdAt
+        
+        if ownRadioButton.checked {
+            groupToBeAdded.type = "personal"
+        } else {
+            groupToBeAdded.type = "shared"
+        }
+        
         var locationToBeAdded: Location?
         if let beaconDetected = beacon {
             let location = Location.findOrCreateBy(["uuid": beaconDetected.proximityUUID.UUIDString, "major": beaconDetected.major, "minor": beaconDetected.minor], context: managedObjectContext!)
@@ -89,6 +89,9 @@ class AddGroupViewController: UIViewController, UITextFieldDelegate {
         navigationController?.popToRootViewControllerAnimated(true)
     }
     
+}
+
+extension AddGroupTableViewController: UITextFieldDelegate {
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true

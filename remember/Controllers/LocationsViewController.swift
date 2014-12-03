@@ -81,8 +81,8 @@ class LocationsViewController: UIViewController {
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.identifier == "toAddDevice" {
-            let addDeviceVC = segue.destinationViewController as AddGroupViewController
+        if segue.identifier == "toAddGroup" {
+            let addDeviceVC = segue.destinationViewController as AddGroupTableViewController
             addDeviceVC.managedObjectContext = managedObjectContext
             if let object = sender as? CLLocation {
                 addDeviceVC.location = object
@@ -100,10 +100,10 @@ extension LocationsViewController: DevicesTableViewControllerDelegate {
     }
     
     func didAddLocation(location: CLLocation) {
-        performSegueWithIdentifier("toAddDevice", sender: location)
+        performSegueWithIdentifier("toAddGroup", sender: location)
     }
     
     func didAddBeacon(beacon: CLBeacon) {
-        performSegueWithIdentifier("toAddDevice", sender: beacon)
+        performSegueWithIdentifier("toAddGroup", sender: beacon)
     }
 }

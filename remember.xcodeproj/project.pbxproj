@@ -19,6 +19,8 @@
 		7C1AA2691A242BF900F37AE5 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7C1AA26C1A242BF900F37AE5 /* Localizable.strings */; };
 		7C1AA26A1A242BF900F37AE5 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7C1AA26C1A242BF900F37AE5 /* Localizable.strings */; };
 		7C28F48E1A0A0B40006A7CA0 /* EditGroupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C28F48D1A0A0B40006A7CA0 /* EditGroupViewController.swift */; };
+		7C2D71C01A2EFD87003224C1 /* AddGroupTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C2D71BF1A2EFD87003224C1 /* AddGroupTableViewController.swift */; };
+		7C2D71C11A2F0087003224C1 /* AddGroupTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C2D71BF1A2EFD87003224C1 /* AddGroupTableViewController.swift */; };
 		7C309F861A26F94700B36F2E /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C309F851A26F94700B36F2E /* MapViewController.swift */; };
 		7C309F881A26FF2400B36F2E /* LocationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C309F871A26FF2400B36F2E /* LocationsViewController.swift */; };
 		7C319B551A2D785B0042BAB8 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C319B541A2D785B0042BAB8 /* Location.swift */; };
@@ -28,7 +30,6 @@
 		7C6109B019E793400082AC7B /* DevicesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6109AF19E793400082AC7B /* DevicesTableViewController.swift */; };
 		7C6109B219E793730082AC7B /* DevicesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6109B119E793730082AC7B /* DevicesTableViewCell.swift */; };
 		7C6109B419E796E00082AC7B /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6109B319E796E00082AC7B /* Extensions.swift */; };
-		7C6109B619E797F30082AC7B /* AddGroupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6109B519E797F30082AC7B /* AddGroupViewController.swift */; };
 		7C6205B61A2480F6006D25AE /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6205B51A2480F6006D25AE /* APIManager.swift */; };
 		7C6205B71A2480F6006D25AE /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6205B51A2480F6006D25AE /* APIManager.swift */; };
 		7C69B1731A160089005494A3 /* GeographicRegionEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C69B1721A160089005494A3 /* GeographicRegionEvent.swift */; };
@@ -101,7 +102,6 @@
 		D1EE651E1A0740A600A65EF0 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6109B319E796E00082AC7B /* Extensions.swift */; };
 		D1EE651F1A0740A600A65EF0 /* DevicesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6109B119E793730082AC7B /* DevicesTableViewCell.swift */; };
 		D1EE65201A0740A600A65EF0 /* BeaconFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C088D9B19E63EE9005A51D9 /* BeaconFactory.swift */; };
-		D1EE65231A0740A600A65EF0 /* AddGroupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6109B519E797F30082AC7B /* AddGroupViewController.swift */; };
 		D1EE65251A0740A600A65EF0 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CD2B08719EB81A8004D5A29 /* CoreData.framework */; };
 		D1EE65261A0740A600A65EF0 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CD2B08519EB819F004D5A29 /* AVFoundation.framework */; };
 		D1EE65271A0740A600A65EF0 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D116334F19EC9AC100884C60 /* Crashlytics.framework */; };
@@ -142,6 +142,7 @@
 		7C1AA2711A2432D400F37AE5 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		7C1AA2721A2432DA00F37AE5 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		7C28F48D1A0A0B40006A7CA0 /* EditGroupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EditGroupViewController.swift; path = Controllers/EditGroupViewController.swift; sourceTree = "<group>"; };
+		7C2D71BF1A2EFD87003224C1 /* AddGroupTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AddGroupTableViewController.swift; path = Controllers/AddGroupTableViewController.swift; sourceTree = "<group>"; };
 		7C309F851A26F94700B36F2E /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MapViewController.swift; path = Controllers/MapViewController.swift; sourceTree = "<group>"; };
 		7C309F871A26FF2400B36F2E /* LocationsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LocationsViewController.swift; path = Controllers/LocationsViewController.swift; sourceTree = "<group>"; };
 		7C319B431A2D69500042BAB8 /* remember 5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "remember 5.xcdatamodel"; sourceTree = "<group>"; };
@@ -153,7 +154,6 @@
 		7C6109AF19E793400082AC7B /* DevicesTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DevicesTableViewController.swift; path = Controllers/DevicesTableViewController.swift; sourceTree = "<group>"; };
 		7C6109B119E793730082AC7B /* DevicesTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DevicesTableViewCell.swift; path = Views/DevicesTableViewCell.swift; sourceTree = "<group>"; };
 		7C6109B319E796E00082AC7B /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Extensions.swift; path = Categories/Extensions.swift; sourceTree = "<group>"; };
-		7C6109B519E797F30082AC7B /* AddGroupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AddGroupViewController.swift; path = Controllers/AddGroupViewController.swift; sourceTree = "<group>"; };
 		7C6205B51A2480F6006D25AE /* APIManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
 		7C69B1721A160089005494A3 /* GeographicRegionEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GeographicRegionEvent.swift; path = Structs/GeographicRegionEvent.swift; sourceTree = "<group>"; };
 		7C6A351E1A1B0B40004FD2FD /* DataMigrationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DataMigrationManager.swift; path = Migrations/DataMigrationManager.swift; sourceTree = "<group>"; };
@@ -305,11 +305,11 @@
 				8A76A0B219E63DEC0031202A /* HomeViewController.swift */,
 				7C6109AF19E793400082AC7B /* DevicesTableViewController.swift */,
 				7C309F851A26F94700B36F2E /* MapViewController.swift */,
-				7C6109B519E797F30082AC7B /* AddGroupViewController.swift */,
 				7C28F48D1A0A0B40006A7CA0 /* EditGroupViewController.swift */,
 				7CB6F67F1A2453DE00C2A60E /* FeedbackViewController.swift */,
 				7CCE375D1A28229800A6BDA6 /* RecorderViewController.swift */,
 				7C309F871A26FF2400B36F2E /* LocationsViewController.swift */,
+				7C2D71BF1A2EFD87003224C1 /* AddGroupTableViewController.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -677,6 +677,7 @@
 				8ABFAA6519E6665700FCE6EF /* GroupsTableViewCell.swift in Sources */,
 				7C6A35281A1B3695004FD2FD /* CoreDataStack.swift in Sources */,
 				7C6A351F1A1B0B40004FD2FD /* DataMigrationManager.swift in Sources */,
+				7C2D71C01A2EFD87003224C1 /* AddGroupTableViewController.swift in Sources */,
 				7C319B571A2D785C0042BAB8 /* Message.swift in Sources */,
 				8A76A0B119E63C590031202A /* NavigationController.swift in Sources */,
 				7C309F881A26FF2400B36F2E /* LocationsViewController.swift in Sources */,
@@ -706,7 +707,6 @@
 				7C6109B219E793730082AC7B /* DevicesTableViewCell.swift in Sources */,
 				7CB6F6801A2453DE00C2A60E /* FeedbackViewController.swift in Sources */,
 				7C088D9C19E63EE9005A51D9 /* BeaconFactory.swift in Sources */,
-				7C6109B619E797F30082AC7B /* AddGroupViewController.swift in Sources */,
 				7CD4486C1A15FFC7004F4C19 /* Constants.swift in Sources */,
 				7CB6F6841A24666100C2A60E /* AudioRecorder.swift in Sources */,
 			);
@@ -753,6 +753,7 @@
 				D1EE65171A0740A600A65EF0 /* GroupsTableViewCell.swift in Sources */,
 				7C78EFEC1A2EC9DD00569844 /* RememberMappingModel_v4_to_v5.xcmappingmodel in Sources */,
 				D1EE65181A0740A600A65EF0 /* NavigationController.swift in Sources */,
+				7C2D71C11A2F0087003224C1 /* AddGroupTableViewController.swift in Sources */,
 				7CD8853F1A2ED7070093E579 /* AddLocationEvent.swift in Sources */,
 				D1EE65191A0740A600A65EF0 /* UnreadSpotView.swift in Sources */,
 				7C86C3E01A25672000702D80 /* AudioRecorder.swift in Sources */,
@@ -764,7 +765,6 @@
 				D1EE651F1A0740A600A65EF0 /* DevicesTableViewCell.swift in Sources */,
 				D1EE65201A0740A600A65EF0 /* BeaconFactory.swift in Sources */,
 				7C6205B71A2480F6006D25AE /* APIManager.swift in Sources */,
-				D1EE65231A0740A600A65EF0 /* AddGroupViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

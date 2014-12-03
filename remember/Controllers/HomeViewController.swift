@@ -117,9 +117,9 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
             let cell = tableView.dequeueReusableCellWithIdentifier("groupCell", forIndexPath: indexPath) as GroupsTableViewCell
             cell.groupNameLabel.text = group.name
             if group.objectID == selectedGroupObjectID {
-                cell.checkRadioButton()
+                cell.radioButton.checked = true
             } else {
-                cell.uncheckedRadioButton()
+                cell.radioButton.checked = false
             }
             return cell
         } else {

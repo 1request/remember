@@ -41,18 +41,6 @@ class GroupsTableViewCell: SwipeableTableViewCell {
         customContentView.addConstraints(horizontalConstraints)
         customContentView.addConstraints([radioButtonHeightConstraint, radioButtonCenterYConstraint])
     }
-
-    func checkRadioButton() {
-        radioButton.setChecked(true)
-    }
-
-    func uncheckedRadioButton() {
-        radioButton.setChecked(false)
-    }
-
-    func isChecked() -> Bool {
-        return radioButton._checked
-    }
     
     override func setHighlighted(highlighted: Bool, animated: Bool) {
         super.setHighlighted(highlighted, animated: animated)
