@@ -2,7 +2,7 @@
 //  AddLocationEvent.swift
 //  remember
 //
-//  Created by Joseph Cheung on 14/11/14.
+//  Created by Joseph Cheung on 3/12/14.
 //  Copyright (c) 2014 Reque.st. All rights reserved.
 //
 

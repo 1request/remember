@@ -82,7 +82,7 @@ class LocationsViewController: UIViewController {
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "toAddDevice" {
-            let addDeviceVC = segue.destinationViewController as AddDeviceViewController
+            let addDeviceVC = segue.destinationViewController as AddGroupViewController
             addDeviceVC.managedObjectContext = managedObjectContext
             if let object = sender as? CLLocation {
                 addDeviceVC.location = object

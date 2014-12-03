@@ -1,5 +1,5 @@
 //
-//  EditLocationViewController.swift
+//  EditGroupViewController.swift
 //  remember
 //
 //  Created by Joseph Cheung on 5/11/14.
@@ -10,18 +10,18 @@ import UIKit
 import CoreData
 import MapKit
 
-class EditLocationViewController: UIViewController {
+class EditGroupViewController: UIViewController {
 
     @IBOutlet weak var mapView: MKMapView!
-    @IBOutlet weak var editLocationNameTextField: UITextField!
+    @IBOutlet weak var editGroupNameTextField: UITextField!
     @IBOutlet weak var saveButton: UIBarButtonItem!
     
     weak var managedObjectContext: NSManagedObjectContext?
-    var location:Location? = nil
+    var group: Group? = nil
     
     lazy var annotation: MKPointAnnotation? = {
-        if let currentLocation = self.location {
-            let coordinate = CLLocationCoordinate2D(latitude: CLLocationDegrees(currentLocation.latitude), longitude: CLLocationDegrees(currentLocation.longitude))
+        if let currentGroup = self.group {
+            let coordinate = CLLocationCoordinate2D(latitude: CLLocationDegrees(currentGroup.location.latitude), longitude: CLLocationDegrees(currentGroup.location.longitude))
             
             let annotation = MKPointAnnotation()
             annotation.coordinate = coordinate
@@ -33,7 +33,7 @@ class EditLocationViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        editLocationNameTextField.text = location?.name
+        editGroupNameTextField.text = group?.name
     }
     
     func mapAnnotation() {
@@ -49,7 +49,7 @@ class EditLocationViewController: UIViewController {
         }
     }
     
-    @IBAction func locationNameEditingChanged(sender: UITextField) {
+    @IBAction func groupNameEditingChanged(sender: UITextField) {
         if countElements(sender.text.trimWhiteSpace()) > 0 {
             saveButton.enabled = true
         } else {
@@ -58,7 +58,7 @@ class EditLocationViewController: UIViewController {
     }
     
     @IBAction func saveButtonClicked(sender: UIBarButtonItem) {
-        location?.name = editLocationNameTextField.text
+        group?.name = editGroupNameTextField.text
         var error: NSError? = nil
         if !managedObjectContext!.save(&error) {
             println("Cannot update location: \(error)")

@@ -12,7 +12,26 @@ import CoreData
 class DataMigrationManager {
     let objcName = "remember_objc"
     let swiftName = "remember"
+    let storeName: String
+    let modelName: String
     var options: NSDictionary?
+    
+    lazy var storeURL : NSURL = {
+        return self.storeURLFromStoreName(self.storeName)
+        }()
+    
+    var storeModel : NSManagedObjectModel? {
+        for model in NSManagedObjectModel
+            .modelVersionsForName(self.modelName) {
+                if self.storeIsCompatibleWith(Model:model) {
+                    println("Store \(self.storeURL) is compatible with model \(model.versionIdentifiers)")
+                    return model
+                }
+        }
+        
+        println("Unable to determine storeModel")
+        return nil
+    }
     
     func isObjCDataExists() -> Bool {
         let storePaths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)
@@ -20,42 +39,73 @@ class DataMigrationManager {
         return NSFileManager.defaultManager().fileExistsAtPath(storePath.stringByAppendingPathComponent(objcName + ".sqlite"))
     }
     
-    init() {
-    }
+    lazy var currentModel: NSManagedObjectModel = {
+        // Let core data tell us which model is the current model
+        let modelURL = NSBundle.mainBundle().URLForResource(
+            self.modelName, withExtension:"momd")
+        let model = NSManagedObjectModel(contentsOfURL: modelURL!)
+        return model!
+        }()
     
     var stack: CoreDataStack {
-        if isObjCDataExists() {
+        if isObjCDataExists() || !storeIsCompatibleWith(Model: currentModel) {
             performMigration()
-        } else {
-            options = [NSMigratePersistentStoresAutomaticallyOption: true,
-                NSInferMappingModelAutomaticallyOption: true]
         }
         
-        return CoreDataStack(modelName: swiftName, storeName: swiftName, options: options)
+        return CoreDataStack(modelName: modelName, storeName: modelName, options: options)
+    }
+    
+    init(storeNamed: String, modelNamed: String) {
+        self.storeName = storeNamed
+        self.modelName = modelNamed
+    }
+    
+    func storeIsCompatibleWith(Model model: NSManagedObjectModel) -> Bool {
+        let storeMetaData = metadataForStoreAtURL(storeURL)
+        return model.isConfiguration(nil, compatibleWithStoreMetadata: storeMetaData)
     }
     
     func performMigration() {
-        let migrationManager = NSMigrationManager(sourceModel: NSManagedObjectModel.objc(), destinationModel: NSManagedObjectModel.version4())
         
         options = [NSMigratePersistentStoresAutomaticallyOption: true,
             NSInferMappingModelAutomaticallyOption: false]
         
-        let mappingModel = NSMappingModel(fromBundles: nil, forSourceModel: NSManagedObjectModel.objc(), destinationModel: NSManagedObjectModel.version4())
+        if isObjCDataExists() {
+            let mappingModel = NSMappingModel(fromBundles: nil, forSourceModel: NSManagedObjectModel.objc(), destinationModel: NSManagedObjectModel.version4())
+            migrateStoreAt(OldURL: storeURLFromStoreName(objcName), fromModel: NSManagedObjectModel.objc(), toNewURL: storeURLFromStoreName(swiftName), toModel: NSManagedObjectModel.version4(), mappingModel: mappingModel)
+            performMigration()
+        } else if let storeModel = storeModel {
+            if storeModel.isVersion4() {
+                let destinationModel = NSManagedObjectModel.version5()
+                let mappingModel = NSMappingModel(fromBundles: nil, forSourceModel: storeModel, destinationModel: destinationModel)
+                migrateStoreAt(OldURL: storeURL, fromModel: storeModel, toNewURL: storeURL, toModel: destinationModel, mappingModel: mappingModel)
+            }
+        }
+    }
+    
+    func migrateStoreAt(OldURL oldStoreURL: NSURL, fromModel from: NSManagedObjectModel, toNewURL newStoreURL: NSURL, toModel to: NSManagedObjectModel, mappingModel: NSMappingModel? = nil) {
+        let migrationManager = NSMigrationManager(sourceModel: from, destinationModel: to)
         
-        let storeURL = storeURLFromStoreName(objcName)
-        let newURL = storeURLFromStoreName(swiftName)
-        let destinationURL = storeURLFromStoreName(swiftName).URLByDeletingLastPathComponent
-        let destinationName = storeURLFromStoreName(swiftName).lastPathComponent + "~" + "1"
+        var migrationMappingModel: NSMappingModel
+        if let mappingModel = mappingModel {
+            migrationMappingModel = mappingModel
+        } else {
+            var error: NSError?
+            migrationMappingModel = NSMappingModel.inferredMappingModelForSourceModel(from, destinationModel: to, error: &error)!
+        }
+        
+        let destinationURL = newStoreURL.URLByDeletingLastPathComponent
+        let destinationName = newStoreURL.lastPathComponent! + "~" + "1"
         let destination = destinationURL!.URLByAppendingPathComponent(destinationName)
         
-        println("From Model: \(NSManagedObjectModel.objc().versionIdentifiers)")
-        println("To Model: \(NSManagedObjectModel.version4().versionIdentifiers)")
-        println("Migrating store \(storeURL) to \(destination)")
+        println("From Model: \(from.versionIdentifiers)")
+        println("To Model: \(to.versionIdentifiers)")
+        println("Migrating store \(newStoreURL) to \(destination)")
         println("Mapping model: \(mappingModel)")
         
         var error: NSError?
         
-        let success = migrationManager.migrateStoreFromURL(storeURL, type: NSSQLiteStoreType, options: nil, withMappingModel: mappingModel, toDestinationURL: destination, destinationType: NSSQLiteStoreType, destinationOptions: nil, error: &error)
+        let success = migrationManager.migrateStoreFromURL(oldStoreURL, type: NSSQLiteStoreType, options: nil, withMappingModel: mappingModel, toDestinationURL: destination, destinationType: NSSQLiteStoreType, destinationOptions: nil, error: &error)
         
         if success {
             println("Migration Completed Successfully")
@@ -64,14 +114,13 @@ class DataMigrationManager {
             let fileManager = NSFileManager.defaultManager()
             
             
-            println("new url: \(newURL)")
-            fileManager.removeItemAtURL(storeURL, error: &error)
+            println("new url: \(newStoreURL)")
+            fileManager.removeItemAtURL(oldStoreURL, error: &error)
             
-            fileManager.moveItemAtURL(destination, toURL: newURL, error:&error)
+            fileManager.moveItemAtURL(destination, toURL: newStoreURL, error:&error)
         } else {
             NSLog("Error migrating \(error)")
         }
-        
     }
     
     func storeURLFromStoreName(name: String) -> NSURL {
@@ -109,6 +158,15 @@ extension NSManagedObjectModel {
         return NSManagedObjectModel(contentsOfURL:modelURL!)!
     }
     
+    
+    class func version5() -> NSManagedObjectModel {
+        return rememberModelNamed("remember 5")
+    }
+    
+    func isVersion5() -> Bool {
+        return self == self.dynamicType.version5()
+    }
+    
     class func version4() -> NSManagedObjectModel {
         return rememberModelNamed("remember 4")
     }
@@ -124,4 +182,11 @@ extension NSManagedObjectModel {
     func isObjc() -> Bool {
         return self == self.dynamicType.objc()
     }
+}
+
+func ==(firstModel: NSManagedObjectModel, otherModel: NSManagedObjectModel) -> Bool {
+    let myEntities = firstModel.entitiesByName as NSDictionary
+    let otherEntities = otherModel.entitiesByName as NSDictionary
+    
+    return myEntities.isEqualToDictionary(otherEntities)
 }

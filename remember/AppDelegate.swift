@@ -19,7 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     lazy var managedObjectContext : NSManagedObjectContext = {
-        let manager = DataMigrationManager()
+        let manager = DataMigrationManager(storeNamed: "remember", modelNamed: "remember")
         return manager.stack.context
     }()
     
@@ -92,7 +92,7 @@ extension AppDelegate {
     }
     
     func locationFromNotification(notification: NSNotification) -> Location? {
-        if let dict = notification.userInfo as? Dictionary<String, CLRegion> {
+        if let dict = notification.userInfo as? [String: CLRegion] {
             let regionObject = dict["region"]!
             if let location = Location.locationFromRegion(regionObject, managedObjectContext: managedObjectContext) {
                 return location
@@ -103,38 +103,33 @@ extension AppDelegate {
     
     func  handleLocationEvent(notification: NSNotification) {
         if let location = locationFromNotification(notification) {
-            if location.uuid != "" {
-                if let currentLocation = LocationManager.sharedInstance.currentLocation {
-                    location.latitude = currentLocation.coordinate.latitude
-                    location.longitude = currentLocation.coordinate.longitude
-                }
-            }
-            let previousTriggerDate = location.lastTriggerDate.timeIntervalSince1970
             let currentTime = NSDate().timeIntervalSince1970
             let predicate = NSPredicate(format: "isRead == 0")
-            let unreadMessages = location.messages.filteredSetUsingPredicate(predicate!)
-            if unreadMessages.count > 0 && currentTime - previousTriggerDate > 3600 {
-                var title = ""
-                var message = ""
-                location.lastTriggerDate = NSDate()
-                managedObjectContext.save(nil)
-                
-                NSUserDefaults.standardUserDefaults().setValue(location.identifier, forKey: "location")
-                
-                if notification.name == kEnteredRegionNotificationName {
-                    title = "New message from \(location.name)"
-                    message = "\(location.name) got \(unreadMessages.count) new notification" + (unreadMessages.count > 1 ? "s" : "")
-                    NSUserDefaults.standardUserDefaults().setValue(1, forKey: "Enter")
-                } else if notification.name == kExitedRegionNotificationName {
-                    title = "New message from \(location.name)"
-                    message = "You got \(unreadMessages.count) new notification" + (unreadMessages.count > 1 ? "s" : "") + " before you leave \(location.name)"
-                    NSUserDefaults.standardUserDefaults().setValue(0, forKey: "Enter")
+            for groupObject in location.groups {
+                let group = groupObject as Group
+                let previousTriggerDate = group.lastTriggerDate.timeIntervalSince1970
+                let unreadMessages = group.messages.filteredSetUsingPredicate(predicate!)
+                if unreadMessages.count > 0 && currentTime - previousTriggerDate > 3600 {
+                    var title = ""
+                    var message = ""
+                    group.lastTriggerDate = NSDate()
+                    managedObjectContext.save(nil)
+                    
+                    if notification.name == kEnteredRegionNotificationName {
+                        title = "New message from \(group.name)"
+                        message = "\(group.name) got \(unreadMessages.count) new notification" + (unreadMessages.count > 1 ? "s" : "")
+                        NSUserDefaults.standardUserDefaults().setValue(1, forKey: "Enter")
+                    } else if notification.name == kExitedRegionNotificationName {
+                        title = "New message from \(group.name)"
+                        message = "You got \(unreadMessages.count) new notification" + (unreadMessages.count > 1 ? "s" : "") + " before you leave \(group.name)"
+                        NSUserDefaults.standardUserDefaults().setValue(0, forKey: "Enter")
+                    }
+                    
+                    var userInfo = ["title": title, "message": message]
+                    sendLocalNotificationWithMessage(message)
+                    
+                    NSNotificationCenter.defaultCenter().postNotificationName(kAlertLocationNotificationName, object: self, userInfo: userInfo)
                 }
-                
-                var userInfo = ["title": title, "message": message]
-                sendLocalNotificationWithMessage(message)
-                
-                NSNotificationCenter.defaultCenter().postNotificationName(kAlertLocationNotificationName, object: self, userInfo: userInfo)
             }
         }
     }

@@ -34,6 +34,7 @@ let kExitedGeoEventTitle = "Exited Geographic Region"
 let kVisitArrivalEventTitle = "Visit Arrival"
 let kVisitDepartureEventTitle = "Visit Departure"
 let kAddLocationEventTitle = "Added Location"
+let kAddGroupEventTitle = "Added Group"
 let kVisitType = "Visit Type"
 
 // NSNotification

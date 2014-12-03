@@ -79,14 +79,14 @@
                     <navigationItem key="navigationItem" id="TfE-9W-SDK">
                         <barButtonItem key="rightBarButtonItem" image="add" id="3Zs-g6-TBH">
                             <connections>
-                                <segue destination="QKQ-nC-9kv" kind="show" identifier="toDevices" id="SWE-az-BDu"/>
+                                <segue destination="QKQ-nC-9kv" kind="show" identifier="toLocations" id="SWE-az-BDu"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="pressHereImageView" destination="eeq-nU-IfG" id="Byf-Y3-znG"/>
                         <outlet property="tableView" destination="Dtd-qO-gU9" id="bLx-Xg-VIw"/>
-                        <segue destination="1fN-WH-tHk" kind="show" identifier="editLocation" id="I2H-A1-na7"/>
+                        <segue destination="1fN-WH-tHk" kind="show" identifier="editGroup" id="I2H-A1-na7"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -300,10 +300,10 @@
             </objects>
             <point key="canvasLocation" x="1647" y="-992"/>
         </scene>
-        <!--Set Location-->
+        <!--Set Group-->
         <scene sceneID="MUP-d4-Ctp">
             <objects>
-                <viewController id="3QA-C9-hzw" customClass="AddDeviceViewController" customModule="remember" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="3QA-C9-hzw" customClass="AddGroupViewController" customModule="remember" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Oxl-i9-40V"/>
                         <viewControllerLayoutGuide type="bottom" id="4RQ-c6-cxq"/>
@@ -312,8 +312,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name of Location" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rbD-uC-34X">
-                                <rect key="frame" x="16" y="72" width="136.5" height="20.5"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Group Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rbD-uC-34X">
+                                <rect key="frame" x="16" y="72" width="98" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
@@ -329,7 +329,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
-                                    <action selector="deviceNameTextEditingChanged:" destination="3QA-C9-hzw" eventType="editingChanged" id="ZAW-WO-maf"/>
+                                    <action selector="deviceNameTextEditingChanged:" destination="3QA-C9-hzw" eventType="editingChanged" id="Z8r-21-867"/>
                                 </connections>
                             </textField>
                         </subviews>
@@ -346,7 +346,7 @@
                             <constraint firstAttribute="trailing" secondItem="L99-nn-DyE" secondAttribute="trailing" constant="16" id="pQg-er-Kjr"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Set Location" id="pdk-AI-J4r">
+                    <navigationItem key="navigationItem" title="Set Group" id="pdk-AI-J4r">
                         <barButtonItem key="rightBarButtonItem" enabled="NO" title="Save" id="qP6-M1-MUw">
                             <connections>
                                 <action selector="saveBarButtonItemPressed:" destination="3QA-C9-hzw" id="FwV-1a-Ugu"/>
@@ -354,7 +354,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="deviceNameTextField" destination="L99-nn-DyE" id="ChV-9g-6yM"/>
+                        <outlet property="groupNameTextField" destination="L99-nn-DyE" id="tYS-eK-9Yf"/>
                         <outlet property="saveButton" destination="qP6-M1-MUw" id="e52-Mp-DNm"/>
                     </connections>
                 </viewController>
@@ -400,7 +400,7 @@
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vM7-Zc-dEq" userLabel="locationContainerView">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                             </containerView>
-                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="K2J-Ss-OaP" userLabel="mapContainerView">
+                            <containerView opaque="NO" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="K2J-Ss-OaP" userLabel="mapContainerView">
                                 <constraints>
                                     <constraint firstAttribute="height" id="oo9-FA-ZOa"/>
                                 </constraints>
@@ -423,11 +423,11 @@
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
+                                <exclude reference="xIM-9W-z7M"/>
                                 <exclude reference="8lF-GD-1kE"/>
                                 <exclude reference="BhK-h6-aMh"/>
                                 <exclude reference="Ysr-xq-cRL"/>
                                 <exclude reference="oOS-e4-eEb"/>
-                                <exclude reference="xIM-9W-z7M"/>
                             </mask>
                         </variation>
                     </view>
@@ -443,10 +443,10 @@
             </objects>
             <point key="canvasLocation" x="1689" y="-170"/>
         </scene>
-        <!--Update Location-->
+        <!--Update Group-->
         <scene sceneID="pwi-T8-5fH">
             <objects>
-                <viewController id="1fN-WH-tHk" customClass="EditLocationViewController" customModule="remember" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="1fN-WH-tHk" customClass="EditGroupViewController" customModule="remember" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Ffm-35-vfH"/>
                         <viewControllerLayoutGuide type="bottom" id="J8g-it-tXs"/>
@@ -455,8 +455,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Location Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IWR-Ao-Er3">
-                                <rect key="frame" x="16" y="72" width="116.5" height="20.5"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Group Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IWR-Ao-Er3">
+                                <rect key="frame" x="16" y="72" width="98" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
@@ -466,7 +466,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
-                                    <action selector="locationNameEditingChanged:" destination="1fN-WH-tHk" eventType="editingChanged" id="KWy-yX-rHJ"/>
+                                    <action selector="groupNameEditingChanged:" destination="1fN-WH-tHk" eventType="editingChanged" id="x7e-UO-pfT"/>
                                 </connections>
                             </textField>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LiJ-ss-xJa">
@@ -489,7 +489,7 @@
                             <constraint firstItem="8p8-a3-arm" firstAttribute="top" secondItem="IWR-Ao-Er3" secondAttribute="bottom" constant="8" id="nWT-cL-crD"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Update Location" id="tsv-uq-Hzh">
+                    <navigationItem key="navigationItem" title="Update Group" id="tsv-uq-Hzh">
                         <barButtonItem key="rightBarButtonItem" title="Save" id="VVu-78-Stu">
                             <connections>
                                 <action selector="saveButtonClicked:" destination="1fN-WH-tHk" id="eXb-Ty-3nC"/>
@@ -497,7 +497,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="editLocationNameTextField" destination="8p8-a3-arm" id="4nD-8t-XOS"/>
+                        <outlet property="editGroupNameTextField" destination="8p8-a3-arm" id="LOU-Wp-hBi"/>
                         <outlet property="saveButton" destination="VVu-78-Stu" id="z5A-78-w6X"/>
                     </connections>
                 </viewController>
@@ -514,11 +514,11 @@
                         <viewControllerLayoutGuide type="bottom" id="Hj9-bV-RAP"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="AWB-Aa-lVE">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="450"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="449.5"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="rR2-st-zXA">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="450"/>
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="449.5"/>
                             </mapView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -685,6 +685,7 @@
         <image name="record-button" width="160" height="166"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="toF-11-ln9"/>
+        <segue reference="Kk1-aG-Cye"/>
+        <segue reference="CWT-rm-YPo"/>
     </inferredMetricsTieBreakers>
 </document>

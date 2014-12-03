@@ -1,5 +1,5 @@
 //
-//  AddDeviceViewController.swift
+//  AddGroupViewController.swift
 //  remember
 //
 //  Created by Joseph Cheung on 10/10/14.
@@ -11,18 +11,16 @@ import CoreLocation
 import CoreData
 import MapKit
 
-class AddDeviceViewController: UIViewController, UITextFieldDelegate {
+class AddGroupViewController: UIViewController, UITextFieldDelegate {
     var location: CLLocation? = nil
     var beacon: CLBeacon? = nil
     weak var managedObjectContext: NSManagedObjectContext?
     
-    @IBOutlet weak var deviceNameTextField: UITextField!
+    @IBOutlet weak var groupNameTextField: UITextField!
     @IBOutlet weak var saveButton: UIBarButtonItem!
     
-
-
     override func viewDidLoad() {
-        deviceNameTextField.delegate = self
+        groupNameTextField.delegate = self
     }
     
     func mapAnnotation() -> MKPointAnnotation {
@@ -32,8 +30,8 @@ class AddDeviceViewController: UIViewController, UITextFieldDelegate {
                 coordinate = currentLocation.coordinate
             }
         } else {
-            if let locationToBeAdded = location {
-                coordinate = locationToBeAdded.coordinate
+            if let gpsLocation = location {
+                coordinate = gpsLocation.coordinate
             }
         }
         let annotation = MKPointAnnotation()
@@ -53,7 +51,7 @@ class AddDeviceViewController: UIViewController, UITextFieldDelegate {
     }
     
     @IBAction func deviceNameTextEditingChanged(sender: AnyObject) {
-        if countElements(deviceNameTextField.text.trimWhiteSpace()) > 0 {
+        if countElements(groupNameTextField.text.trimWhiteSpace()) > 0 {
             saveButton.enabled = true
         } else {
             saveButton.enabled = false
@@ -61,36 +59,30 @@ class AddDeviceViewController: UIViewController, UITextFieldDelegate {
     }
     
     @IBAction func saveBarButtonItemPressed(sender: UIBarButtonItem) {
-        let locationToBeAdded = NSEntityDescription.insertNewObjectForEntityForName("Location", inManagedObjectContext: managedObjectContext!) as Location
-        locationToBeAdded.name = deviceNameTextField.text
-        
-        
+        let groupToBeAdded = NSEntityDescription.insertNewObjectForEntityForName("Group", inManagedObjectContext: managedObjectContext!) as Group
+        groupToBeAdded.name = groupNameTextField.text
+        groupToBeAdded.createdAt = NSDate()
+        groupToBeAdded.updatedAt = groupToBeAdded.createdAt
+        var locationToBeAdded: Location?
         if let beaconDetected = beacon {
-            locationToBeAdded.uuid = beaconDetected.proximityUUID.UUIDString
-            locationToBeAdded.major = beaconDetected.major
-            locationToBeAdded.minor = beaconDetected.minor
-            if let currentLocation = LocationManager.sharedInstance.currentLocation {
-                locationToBeAdded.longitude = currentLocation.coordinate.longitude
-                locationToBeAdded.latitude = currentLocation.coordinate.latitude
-            } else {
-                locationToBeAdded.longitude = 0
-                locationToBeAdded.latitude = 0
-            }
+            let location = Location.findOrCreateBy(["uuid": beaconDetected.proximityUUID.UUIDString, "major": beaconDetected.major, "minor": beaconDetected.minor], context: managedObjectContext!)
+            groupToBeAdded.location = location
         } else if let locationDetected = location {
-            locationToBeAdded.longitude = locationDetected.coordinate.longitude
-            locationToBeAdded.latitude = locationDetected.coordinate.latitude
-            locationToBeAdded.uuid = ""
-            locationToBeAdded.major = 0
-            locationToBeAdded.minor = 0
+            let newLocation = NSEntityDescription.insertNewObjectForEntityForName("Location", inManagedObjectContext: managedObjectContext!) as Location
+            newLocation.longitude = locationDetected.coordinate.longitude
+            newLocation.latitude = locationDetected.coordinate.latitude
+            newLocation.uuid = ""
+            newLocation.major = 0
+            newLocation.minor = 0
+            newLocation.createdAt = NSDate()
+            newLocation.updatedAt = newLocation.createdAt
+            newLocation.identifier = newLocation.createIndentifier()
+            groupToBeAdded.location = newLocation
         }
         
-        locationToBeAdded.createdAt = NSDate()
-        locationToBeAdded.updatedAt = locationToBeAdded.createdAt
+        let groupEvent = AddGroupEvent(group: groupToBeAdded)
         
-        locationToBeAdded.identifier = locationToBeAdded.createIndentifier()
-        let event = AddLocationEvent(location: locationToBeAdded)
-        
-        Mixpanel.sharedInstance().track(event.title, properties: event.properties)
+        Mixpanel.sharedInstance().track(kAddGroupEventTitle, properties: groupEvent.properties)
         
         managedObjectContext!.save(nil)
         
