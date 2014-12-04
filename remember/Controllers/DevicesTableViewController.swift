@@ -10,6 +10,14 @@ import Foundation
 import UIKit
 import CoreLocation
 import CoreData
+import MapKit
+import AddressBookUI
+
+@objc protocol DevicesTableViewControllerDelegate {
+    func didSelectLocationWithCoordinate(coordinate: CLLocationCoordinate2D)
+    func didAddLocation(location: CLLocation)
+    func didAddBeacon(beacon: CLBeacon)
+}
 
 class DevicesTableViewController: UITableViewController, UITableViewDataSource, UITableViewDelegate {
     
@@ -18,10 +26,17 @@ class DevicesTableViewController: UITableViewController, UITableViewDataSource, 
     let WITHIN_RANGE = NSLocalizedString("WITHIN_RANGE", comment: "Meter range of beacon")
     let ADDED = NSLocalizedString("ADDED", comment: "beacon has been added")
     
+    var mapItems:[MKMapItem] = [MKMapItem]() {
+        didSet(oldMapItems) {
+            tableView.reloadSections(NSIndexSet(index: 2), withRowAnimation: .Automatic)
+        }
+    }
+    
     let notificationCenter = NSNotificationCenter.defaultCenter()
     var rangedBeacons = [CLBeacon]()
+    weak var delegate: DevicesTableViewControllerDelegate?
     var gpsLocation:CLLocation? = nil {
-        willSet(newLocation) {
+        didSet(oldLocation) {
             tableView.reloadData()
         }
     }
@@ -43,13 +58,13 @@ class DevicesTableViewController: UITableViewController, UITableViewDataSource, 
     override func viewDidLoad() {
         tableView.removeFooterBorder()
         LocationManager.sharedInstance.startRangingBeaconRegions(BeaconFactory.beaconRegionsToBeRanged())
-        gpsLocation = LocationManager.sharedInstance.currentLocation
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         notificationCenter.addObserver(self, selector: "enteredRegion:", name: kRangedBeaconRegionNotificationName, object: nil)
         notificationCenter.addObserver(self, selector: "updateGPSLocation:", name: kGPSLocationUpdateNotificationName, object: nil)
+        gpsLocation = LocationManager.sharedInstance.currentLocation
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -60,77 +75,97 @@ class DevicesTableViewController: UITableViewController, UITableViewDataSource, 
     
     //MARK: - UITableViewDataSource
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 2
+        return 3
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
+            return rangedBeacons.count
+        } else if section == 1 {
             return 1
         } else {
-            return rangedBeacons.count
+            return mapItems.count
         }
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
-            var cell = tableView.dequeueReusableCellWithIdentifier("gpsCell", forIndexPath: indexPath) as GPSLocationTableViewCell
-            if gpsLocation == nil {
-                cell.label.text = LOADING_LOCATION
-                cell.addButton.hidden = true
-            } else {
-                cell.label.text = CURRENT_LOCATION
-                cell.addButton.hidden = false
-            }
-            cell.didPressAddButtonBlock = {
-                [weak self] in
-                if let location = self?.gpsLocation {
-                    self?.performSegueWithIdentifier("toAddDevice", sender: location)
-                }
-            }
-            return cell
+            return devicesCellAtIndexPath(indexPath)
+        } else if indexPath.section == 1 {
+            return gpsLocationCellAtIndexPath(indexPath)
+            
         } else {
-            var cell = tableView.dequeueReusableCellWithIdentifier("devicesCell", forIndexPath: indexPath) as DevicesTableViewCell
-            let beacon = rangedBeacons[indexPath.row]
-            
-            cell.nameLabel.text = (beacon.proximityUUID.UUIDString as NSString).substringToIndex(8)
-            
-            let formattedRange = beacon.accuracy.format(".2")
-            
-            let predicate = NSPredicate(format: "uuid == %@ AND major == %@ AND minor == %@", beacon.proximityUUID.UUIDString, beacon.major, beacon.minor)
-            
-            let filteredLocations = locations.filter { predicate!.evaluateWithObject($0) }
-            
-            if !filteredLocations.isEmpty {
-                cell.addButton.setTitle(ADDED, forState: UIControlState.Normal)
-                cell.addButton.setTitleColor(UIColor.appGrayColor(), forState: UIControlState.Normal)
-                cell.addButton.backgroundColor = nil
-                
-            }
-            else {
-                cell.didPressAddButtonBlock = {
-                    [weak self, beacon] in
-                    if let weakSelf = self {
-                        weakSelf.performSegueWithIdentifier("toAddDevice", sender: beacon)
-                    }
-                }
-            }
-            
-            cell.rangeLabel.text = String(format: WITHIN_RANGE, formattedRange)
-            return cell
+            return nearbyLocationsCellAtIndexPath(indexPath)
         }
     }
     
-    //MARK: - Navigation
+    func nearbyLocationsCellAtIndexPath(indexPath: NSIndexPath) -> NearbyLocationsTableViewCell {
+        var cell = tableView.dequeueReusableCellWithIdentifier("nearbyPlacesCell", forIndexPath: indexPath) as NearbyLocationsTableViewCell
+        let mapItem = mapItems[indexPath.row]
+        
+        cell.nameLabel.text = mapItem.name
+        let address = ABCreateStringWithAddressDictionary(mapItem.placemark.addressDictionary, false)
+        cell.addressLabel.text = address
+        cell.addressLabel.sizeToFit()
+        cell.didPressAddButtonBlock = {
+            [weak self, mapItem] in
+            let location = CLLocation(latitude: mapItem.placemark.coordinate.latitude, longitude: mapItem.placemark.coordinate.longitude)
+            self?.delegate?.didAddLocation(location)
+        }
+        return cell
+    }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if let addDeviceViewController = segue.destinationViewController as? AddDeviceViewController {
-            addDeviceViewController.managedObjectContext = managedObjectContext!
-            if let beacon = sender as? CLBeacon {
-                addDeviceViewController.beacon = beacon
-            } else if let location = sender as? CLLocation {
-                addDeviceViewController.location = location
+    func gpsLocationCellAtIndexPath(indexPath: NSIndexPath) -> GPSLocationTableViewCell {
+        var cell = tableView.dequeueReusableCellWithIdentifier("gpsCell", forIndexPath: indexPath) as GPSLocationTableViewCell
+        if gpsLocation == nil {
+            cell.label.text = LOADING_LOCATION
+            cell.addButton.hidden = true
+        } else {
+            cell.label.text = CURRENT_LOCATION
+            cell.addButton.hidden = false
+        }
+        cell.didPressAddButtonBlock = {
+            [weak self] in
+            if let location = self?.gpsLocation {
+                self?.delegate?.didAddLocation(location)
             }
         }
+        return cell
+    }
+    
+    func devicesCellAtIndexPath(indexPath: NSIndexPath) -> DevicesTableViewCell {
+        var cell = tableView.dequeueReusableCellWithIdentifier("devicesCell", forIndexPath: indexPath) as DevicesTableViewCell
+        let beacon = rangedBeacons[indexPath.row]
+        
+        cell.nameLabel.text = (beacon.proximityUUID.UUIDString as NSString).substringToIndex(8)
+        
+        let formattedRange = beacon.accuracy.format(".2")
+        
+        let predicate = NSPredicate(format: "uuid == %@ AND major == %@ AND minor == %@", beacon.proximityUUID.UUIDString, beacon.major, beacon.minor)
+        
+        let filteredLocations = locations.filter { predicate!.evaluateWithObject($0) }
+        
+        if !filteredLocations.isEmpty {
+            cell.addButton.setTitle(ADDED, forState: UIControlState.Normal)
+            cell.addButton.setTitleColor(UIColor.appGrayColor(), forState: UIControlState.Normal)
+            cell.addButton.backgroundColor = nil
+            
+        }
+        else {
+            cell.didPressAddButtonBlock = {
+                [weak self, beacon] in
+                if let weakSelf = self {
+                    weakSelf.delegate?.didAddBeacon(beacon)
+                }
+            }
+        }
+        
+        cell.rangeLabel.text = String(format: WITHIN_RANGE, formattedRange)
+        return cell
+    }
+    
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let locationsVC = parentViewController as LocationsViewController
     }
     
     //MARK: - NSNotification
@@ -148,7 +183,7 @@ class DevicesTableViewController: UITableViewController, UITableViewDataSource, 
                     }
                 }
                 if rangedBeacons.count > count {
-                    tableView.reloadData()
+                    tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .Automatic)
                 }
             }
         }

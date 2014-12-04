@@ -26,6 +26,7 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
         if requestAlwaysAuthorization {
             locationManager.requestAlwaysAuthorization()
             locationManager.desiredAccuracy = kCLLocationAccuracyBest
+            locationManager.distanceFilter = 50
         }
         if isLocationAllowed() {
             locationManager.delegate = self

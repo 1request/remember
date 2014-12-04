@@ -101,25 +101,41 @@ class MessagesTableViewCell: SwipeableTableViewCell {
 }
 
 extension MessagesTableViewCell: SwipeableTableViewCellDataSource {
-    func numberOfButtonsInSwipeableCell(cell: SwipeableTableViewCell) -> Int {
+    func numberOfRightButtonsInSwipeableCell(cell: SwipeableTableViewCell) -> Int {
         if unreadSpotIcon.hidden {
-            return 2
+            return 1
         } else {
             return 1
         }
     }
+    
+    func numberOfLeftButtonsInSwipeableCell(cell: SwipeableTableViewCell) -> Int {
+        if unreadSpotIcon.hidden {
+            return 1
+        } else {
+            return 0
+        }
+    }
 
-    func swipeableCell(cell: SwipeableTableViewCell, backgroundImageForButtonAtIndex index: Int) -> UIImage? {
-        if index == 0 {
+    func swipeableCell(cell: SwipeableTableViewCell, backgroundImageForButtonAtIndex index: Int, atDirection: Int) -> UIImage? {
+        if atDirection == SwipeableTableViewCell.Direction.right.rawValue && index == 0 {
             return UIImage(named: "trash")
         } else {
             return nil
         }
     }
     
-    func swipeableCell(cell: SwipeableTableViewCell, titleForButtonAtIndex index: Int) -> String? {
-        if index == 1 && unreadSpotIcon.hidden {
+    func swipeableCell(cell: SwipeableTableViewCell, titleForButtonAtIndex index: Int, atDirection: Int) -> String? {
+        if index == 0 && unreadSpotIcon.hidden && atDirection == SwipeableTableViewCell.Direction.left.rawValue {
             return UNREAD
+        } else {
+            return nil
+        }
+    }
+    
+    func swipeableCell(cell: SwipeableTableViewCell, backgroundColorForButtonAtIndex index: Int, atDirection: Int) -> UIColor? {
+        if index == 0 && unreadSpotIcon.hidden && atDirection == SwipeableTableViewCell.Direction.left.rawValue  {
+            return UIColor.appBlueColor()
         } else {
             return nil
         }

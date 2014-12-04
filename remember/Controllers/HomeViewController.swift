@@ -12,12 +12,12 @@ import AVFoundation
 import CoreLocation
 
 class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate {
-    
+
     //MARK: - Constants
-    
+
     var kApplicationPath = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true).last! as String
     var hudView = HUD()
-    
+
     var recorderViewController: RecorderViewController? = nil
 
     //MARK: - Variables
@@ -25,8 +25,9 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var pressHereImageView: UIImageView!
     var alertView: UIAlertView? = nil
-    
-    var editingCellRowNumber = -1
+
+    var editingObjectID: NSManagedObjectID? = nil
+    var openedCellDirection: SwipeableTableViewCell.Direction?
 
     weak var managedObjectContext: NSManagedObjectContext!
     var fetchedResultController: NSFetchedResultsController!
@@ -53,7 +54,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         tableView.registerClass(MessagesTableViewCell.self, forCellReuseIdentifier: "messageCell")
         tableView.registerClass(LocationsTableViewCell.self, forCellReuseIdentifier: "locationCell")
         tableView.delegate = self
-        
+
         updateViewToBePresented()
 
         // detect tap gesture
@@ -68,8 +69,8 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         monitorAudioRouteChange()
         setSelectedLocationObjectID()
     }
-    
-    
+
+
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
         unmonitorEnterLocationNotification()
@@ -91,11 +92,23 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         if let swipeableCell = cell as? SwipeableTableViewCell {
             swipeableCell.delegate = self
             swipeableCell.updateConstraints()
-            if indexPath.row == editingCellRowNumber {
-                swipeableCell.openCell(animated: false)
+
+            let index = indexOfEditingObject()
+
+            if indexPath.row == index {
+                swipeableCell.openCell(animated: false, direction: openedCellDirection!)
             }
         }
         return cell
+    }
+
+    func indexOfEditingObject() -> Int? {
+        if let objectID = editingObjectID {
+            let objectIDs = map(objectsInTable) { $0.objectID } as NSArray
+            return objectIDs.indexOfObject(objectID)
+        } else {
+            return nil
+        }
     }
 
     func setCellAtIndexPath(indexPath: NSIndexPath) -> UITableViewCell {
@@ -119,7 +132,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
             } else {
                 cell.markAsUnread()
             }
-            if indexPath.row == editingCellRowNumber {
+            if message.objectID == editingObjectID {
                 cell.setPlayerStatus(cell.status)
                 cell.active = false
             } else {
@@ -129,13 +142,13 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
             return cell
         }
     }
-    
+
     func reloadSection() {
         let range = NSMakeRange(0, 1)
         let section = NSIndexSet(indexesInRange: range)
         tableView.reloadSections(section, withRowAnimation: UITableViewRowAnimation.Automatic)
     }
-    
+
     func selectedLocationIndexPath() -> NSIndexPath {
         let location = managedObjectContext!.objectWithID(selectedLocationObjectID!) as Location
         let index = objectsInTable.indexOfObject(location)
@@ -145,7 +158,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     //MARK: - UITableViewDelegate
 
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if editingCellRowNumber != -1 {
+        if editingObjectID != nil {
             // has editing cell, close cell
             resetEditMode()
         }
@@ -177,31 +190,34 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
             }
         }
     }
-    
+
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return 60
     }
 
     func resetEditMode () {
-        editingCellRowNumber = -1
+        editingObjectID = nil
+        openedCellDirection = nil
         recorderViewController?.recordButton.enabled = true
     }
 
     func closeEditingCell() {
-        let indexPath = NSIndexPath(forRow: editingCellRowNumber, inSection: 0)
-        let cell = tableView.cellForRowAtIndexPath(indexPath)
-        if let previousEditingCell = cell as? SwipeableTableViewCell {
-            previousEditingCell.closeCell(animated: true)
-        }
-        if let messageCell = cell as? MessagesTableViewCell {
-            messageCell.active = true
+        if let index = indexOfEditingObject() {
+            let indexPath = NSIndexPath(forRow: index, inSection: 0)
+            let cell = tableView.cellForRowAtIndexPath(indexPath)
+            if let previousEditingCell = cell as? SwipeableTableViewCell {
+                previousEditingCell.closeCell(animated: true, direction: openedCellDirection!)
+            }
+            if let messageCell = cell as? MessagesTableViewCell {
+                messageCell.active = true
+            }
         }
     }
 
     //MARK: - Navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if let devicesVC = segue.destinationViewController as? DevicesTableViewController {
-            devicesVC.managedObjectContext = managedObjectContext
+        if let locationsVC = segue.destinationViewController as? LocationsViewController {
+            locationsVC.managedObjectContext = managedObjectContext
         }
         if let editLocationVC = segue.destinationViewController as? EditLocationViewController {
             if let location = sender as? Location {
@@ -214,7 +230,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
             recorderViewController?.delegate = self
         }
     }
-    
+
     //MARK: - NSFetchedResultControllerDelegate
 
     func controllerWillChangeContent(controller: NSFetchedResultsController) {
@@ -231,7 +247,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         updateViewToBePresented()
     }
     //MARK: - Layout
-    
+
     func updateViewToBePresented() {
         if fetchedResultController.fetchedObjects?.count == 0 {
             tableView.hidden = true
@@ -242,7 +258,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
             pressHereImageView.hidden = true
         }
     }
-    
+
     //MARK: - Core Data
     func getFetchedResultController() -> NSFetchedResultsController {
         let fetchRequest = NSFetchRequest(entityName: "Location")
@@ -264,7 +280,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     func setObjectsInTable() {
         // clear table
         objectsInTable = []
-        
+
         var fetchedLocations = fetchedResultController.fetchedObjects
         for var i = 0; i < fetchedLocations?.count; i++ {
             var location: Location = fetchedLocations?[i] as Location
@@ -273,15 +289,15 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
             var sortByIsRead = NSSortDescriptor(key: "isRead", ascending: true)
             var sortByCreatedAt = NSSortDescriptor(key: "createdAt", ascending: true)
             var sortedMessages = location.messages.sortedArrayUsingDescriptors([sortByIsRead, sortByCreatedAt])
-            
+
             objectsInTable.addObjectsFromArray(sortedMessages)
         }
-        
+
         setSelectedLocationObjectID()
     }
-    
+
     func setSelectedLocationObjectID() {
-        
+
         if let locationIdentifier = NSUserDefaults.standardUserDefaults().valueForKey("location") as? String {
             let predicate = NSPredicate(format: "identifier == %@", locationIdentifier)
             let request = NSFetchRequest(entityName: "Location")
@@ -293,7 +309,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 return
             }
         }
-        
+
         if let id = selectedLocationObjectID {
             if let location = managedObjectContext.existingObjectWithID(id, error: nil) {
                 if !location.deleted {
@@ -301,22 +317,22 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 }
             }
         }
-        
+
         if objectsInTable.count == 0 {
             selectedLocationObjectID = nil
             return
         }
-        
+
         if let location = objectsInTable[0] as? Location {
             selectedLocationObjectID = location.objectID
         }
     }
-    
+
     //MARK: - Play Audio
 
     func playAudioAtIndexPath (indexPath: NSIndexPath) {
         Mixpanel.sharedInstance().track("startPlaying")
-        
+
         let message = objectsInTable.objectAtIndex(indexPath.row) as Message
         let filePath = kApplicationPath + "/" + message.createdAt.timeIntervalSince1970.format(".0") + ".m4a"
         if NSFileManager.defaultManager().fileExistsAtPath(filePath) {
@@ -338,7 +354,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 messageCell.finishPlaying()
             }
         }
-        
+
         player?.stop()
     }
 
@@ -396,7 +412,7 @@ extension HomeViewController : UIGestureRecognizerDelegate {
     }
 
     func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
-        if editingCellRowNumber != -1 {
+        if editingObjectID != nil {
             return true
         }
         return false
@@ -405,46 +421,50 @@ extension HomeViewController : UIGestureRecognizerDelegate {
 
 //MARK: - SwipeableTableViewCellDelegate
 extension HomeViewController: SwipeableTableViewCellDelegate {
-    func swipeableCellDidOpen(cell: SwipeableTableViewCell) {
+    func swipeableCellDidOpen(cell: SwipeableTableViewCell, direction: Int) {
+        openedCellDirection = SwipeableTableViewCell.Direction(rawValue: direction)
         closeEditingCell()
 
         if let indexPath = tableView.indexPathForCell(cell) {
-            editingCellRowNumber = indexPath.row
+            editingObjectID = objectsInTable[indexPath.row].objectID
         }
-        
+
         if let messageCell = cell as? MessagesTableViewCell {
-//            setPlayButton(active: false, ForCell: messageCell)
             messageCell.active = false
         }
     }
 
-    func swipeableCellDidClose(cell: SwipeableTableViewCell) {
+    func swipeableCellDidClose(cell: SwipeableTableViewCell, direction: Int) {
         resetEditMode()
-        
+
         if let messageCell = cell as? MessagesTableViewCell {
-//            setPlayButton(active: true, ForCell: messageCell)
             messageCell.active = true
         }
     }
 
-    func swipeableCell(cell: SwipeableTableViewCell, didSelectButtonAtIndex index: Int) {
+    func swipeableCell(cell: SwipeableTableViewCell, didSelectButtonAtIndex index: Int, direction: Int) {
         if let indexPath = tableView.indexPathForCell(cell) {
-            if index == 0 {
-                deleteObjectAtIndexPath(indexPath)
-                setObjectsInTable()
-                setSelectedLocationObjectID()
+            let object = objectsInTable.objectAtIndex(indexPath.row) as NSManagedObject
+
+            if direction == SwipeableTableViewCell.Direction.right.rawValue {
+                if index == 0 {
+                    deleteObjectAtIndexPath(indexPath)
+                    setObjectsInTable()
+                    setSelectedLocationObjectID()
+                } else {
+                    if let location = object as? Location {
+                        performSegueWithIdentifier("editLocation", sender: location)
+                    }
+                }
             } else {
-                let object = objectsInTable.objectAtIndex(indexPath.row) as NSManagedObject
-                if let location = object as? Location {
-                    performSegueWithIdentifier("editLocation", sender: location)
-                } else if let message = object as? Message {
+                if let message = object as? Message {
                     let cell = tableView.cellForRowAtIndexPath(indexPath) as MessagesTableViewCell
                     cell.markAsUnread()
-                    
+
                     message.isRead = false
                     message.updatedAt = NSDate()
                     managedObjectContext.save(nil)
-                    
+
                     closeEditingCell()
                 }
             }
@@ -453,7 +473,7 @@ extension HomeViewController: SwipeableTableViewCellDelegate {
         setObjectsInTable()
         reloadSection()
     }
-    
+
     func deleteObjectAtIndexPath(indexPath: NSIndexPath) {
         let object = objectsInTable.objectAtIndex(indexPath.row) as NSManagedObject
         if let location = object as? Location {
@@ -487,11 +507,11 @@ extension HomeViewController: UIAlertViewDelegate {
     func monitorEnterLocationNotification() {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "triggerNotification:", name: kAlertLocationNotificationName, object: nil)
     }
-    
+
     func unmonitorEnterLocationNotification() {
         NSNotificationCenter.defaultCenter().removeObserver(self, name: kAlertLocationNotificationName, object: nil)
     }
-    
+
     func triggerNotification(notification: NSNotification) {
         if let dict = notification.userInfo as? [String: AnyObject] {
             let title = dict["title"] as String
@@ -509,11 +529,11 @@ extension HomeViewController {
     func monitorAudioRouteChange() {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateAudioRoute:", name: AVAudioSessionRouteChangeNotification, object: nil)
     }
-    
+
     func unmonitorAudioRouteChange() {
         NSNotificationCenter.defaultCenter().removeObserver(self, name: AVAudioSessionRouteChangeNotification, object: nil)
     }
-    
+
     func updateAudioRoute(notification: NSNotification) {
         if let dict = notification.userInfo as? Dictionary<String, AnyObject> {
             let routeChangeReason = dict[AVAudioSessionRouteChangeReasonKey] as Int
@@ -525,31 +545,31 @@ extension HomeViewController {
 }
 
 extension HomeViewController: RecorderViewControllerDelegate {
-    
+
     func recorderWillStartRecording() {
-        if editingCellRowNumber != -1 {
+        if editingObjectID != nil {
             closeEditingCell()
             resetEditMode()
         }
-        
+
         if let player = player {
             if player.playing {
                 player.stop()
             }
         }
-        
+
         hudView = HUD.hudInView(view)
         hudView.text = SLIDE_UP_TO_CANCEL
     }
-    
+
     func recorderWillFinishRecording() {
         hudView.removeFromSuperview()
     }
-    
+
     func recorderDidFinishRecording(#valid: Bool) {
         if valid {
             Mixpanel.sharedInstance().track("audioRecorded")
-            
+
             let location = managedObjectContext!.objectWithID(selectedLocationObjectID!) as Location
             createMessageForLocation(location)
             monitorLocation(location)
@@ -557,46 +577,46 @@ extension HomeViewController: RecorderViewControllerDelegate {
             tableView.scrollToRowAtIndexPath(indexPath, atScrollPosition: .Top, animated: true)
         }
     }
-    
+
     func recorderWillCancelRecording() {
         hudView.removeFromSuperview()
     }
-    
+
     func recorderButtonDidDragEnter() {
         hudView.text = SLIDE_UP_TO_CANCEL
         hudView.setNeedsDisplay()
     }
-    
+
     func recorderButtonDidDragExit() {
         hudView.text = RELEASE_TO_CANCEL
         hudView.setNeedsDisplay()
     }
-    
+
     func createMessageForLocation (location: Location) {
         let entityDescription = NSEntityDescription.entityForName("Message", inManagedObjectContext: managedObjectContext!)
         let message = Message(entity: entityDescription!, insertIntoManagedObjectContext: managedObjectContext!)
-        
+
         let createTime = NSDate()
         let filePathString = kApplicationPath + "/" + createTime.timeIntervalSince1970.format(".0") + ".m4a"
-        
+
         let outputFileURL = NSURL(fileURLWithPath: filePathString)
-        
+
         var error: NSError?
         if let recorder = recorderViewController?.recorder {
             if !NSFileManager.defaultManager().copyItemAtURL(recorder.url, toURL: outputFileURL!, error: &error) {
                 println("error copying item to url: \(error?.localizedDescription)")
             }
-            
+
             message.location = location
-            
+
             message.location.messageCount = NSNumber(integer: (message.location.messageCount.integerValue + 1))
             message.name = String(format: RECORD_NAME, message.location.messageCount)
             message.isRead = false
             message.createdAt = createTime
             message.updatedAt = createTime
-            
+
             location.updatedAt = createTime
-            
+
             if !managedObjectContext!.save(&error) {
                 println("error saving audio: \(error?.localizedDescription)")
             }
