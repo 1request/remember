@@ -5,8 +5,14 @@
 /* Class = "IBUIButton"; normalTitle = "新增"; ObjectID = "6nX-lr-qJb"; */
 "6nX-lr-qJb.normalTitle" = "新增";
 
+/* Class = "IBUINavigationItem"; title = "设定位置"; ObjectID = "7ND-uN-WDg"; */
+"7ND-uN-WDg.title" = "设定位置";
+
 /* Class = "IBUITextField"; placeholder = "位置名称"; ObjectID = "8p8-a3-arm"; */
 "8p8-a3-arm.placeholder" = "位置名称";
+
+/* Class = "IBUIBarButtonItem"; title = "保存"; ObjectID = "9rk-Hn-gfg"; */
+"9rk-Hn-gfg.title" = "保存";
 
 /* Class = "IBUILabel"; text = "type"; ObjectID = "DBl-Pu-dSN"; */
 "DBl-Pu-dSN.text" = "type";

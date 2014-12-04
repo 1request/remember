@@ -44,6 +44,10 @@
 		7C81E3001A2DB5A900FEF445 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C319B541A2D785B0042BAB8 /* Location.swift */; };
 		7C86C3E01A25672000702D80 /* AudioRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB6F6831A24666100C2A60E /* AudioRecorder.swift */; };
 		7CA8AC721A07202D00566252 /* SwipeableTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA8AC711A07202D00566252 /* SwipeableTableViewCell.swift */; };
+		7CB0A6111A300F5300BA48C1 /* AddLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB0A6101A300F5300BA48C1 /* AddLocationViewController.swift */; };
+		7CB0A6121A300F5300BA48C1 /* AddLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB0A6101A300F5300BA48C1 /* AddLocationViewController.swift */; };
+		7CB0A6141A300F7000BA48C1 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB0A6131A300F7000BA48C1 /* SignUpViewController.swift */; };
+		7CB0A6151A300F7000BA48C1 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB0A6131A300F7000BA48C1 /* SignUpViewController.swift */; };
 		7CB6F6801A2453DE00C2A60E /* FeedbackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB6F67F1A2453DE00C2A60E /* FeedbackViewController.swift */; };
 		7CB6F6841A24666100C2A60E /* AudioRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB6F6831A24666100C2A60E /* AudioRecorder.swift */; };
 		7CCE375E1A28229800A6BDA6 /* RecorderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCE375D1A28229800A6BDA6 /* RecorderViewController.swift */; };
@@ -165,8 +169,10 @@
 		7C78EFEA1A2EC9DD00569844 /* RememberMappingModel_v4_to_v5.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; name = RememberMappingModel_v4_to_v5.xcmappingmodel; path = Migrations/RememberMappingModel_v4_to_v5.xcmappingmodel; sourceTree = "<group>"; };
 		7C84AFAE1A0CB0DB00D905A0 /* remember 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "remember 4.xcdatamodel"; sourceTree = "<group>"; };
 		7CA8AC711A07202D00566252 /* SwipeableTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwipeableTableViewCell.swift; path = Views/SwipeableTableViewCell.swift; sourceTree = "<group>"; };
-		7CB40BAE1A30023B006C66E1 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Main.strings"; sourceTree = "<group>"; };
-		7CB40BAF1A30023E006C66E1 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Main.strings"; sourceTree = "<group>"; };
+		7CB0A6101A300F5300BA48C1 /* AddLocationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AddLocationViewController.swift; path = Controllers/AddLocationViewController.swift; sourceTree = "<group>"; };
+		7CB0A6131A300F7000BA48C1 /* SignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SignUpViewController.swift; path = Controllers/SignUpViewController.swift; sourceTree = "<group>"; };
+		7CB0A6181A301B6200BA48C1 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Main.strings"; sourceTree = "<group>"; };
+		7CB0A6191A301B6E00BA48C1 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Main.strings"; sourceTree = "<group>"; };
 		7CB6F67F1A2453DE00C2A60E /* FeedbackViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FeedbackViewController.swift; path = Controllers/FeedbackViewController.swift; sourceTree = "<group>"; };
 		7CB6F6831A24666100C2A60E /* AudioRecorder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioRecorder.swift; sourceTree = "<group>"; };
 		7CCE375D1A28229800A6BDA6 /* RecorderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RecorderViewController.swift; path = Controllers/RecorderViewController.swift; sourceTree = "<group>"; };
@@ -310,6 +316,8 @@
 				7CCE375D1A28229800A6BDA6 /* RecorderViewController.swift */,
 				7C309F871A26FF2400B36F2E /* LocationsViewController.swift */,
 				7C2D71BF1A2EFD87003224C1 /* AddGroupTableViewController.swift */,
+				7CB0A6101A300F5300BA48C1 /* AddLocationViewController.swift */,
+				7CB0A6131A300F7000BA48C1 /* SignUpViewController.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -690,9 +698,11 @@
 				8ABFAA6B19E68AB600FCE6EF /* RadioButton.swift in Sources */,
 				7C088D9819E631CA005A51D9 /* LocationManager.swift in Sources */,
 				7C6205B61A2480F6006D25AE /* APIManager.swift in Sources */,
+				7CB0A6141A300F7000BA48C1 /* SignUpViewController.swift in Sources */,
 				7C18BBE51A160145001F15CA /* MixpanelEventProtocols.swift in Sources */,
 				8A9F0F6919E62C50007FB36B /* remember.xcdatamodeld in Sources */,
 				7CCE375E1A28229800A6BDA6 /* RecorderViewController.swift in Sources */,
+				7CB0A6111A300F5300BA48C1 /* AddLocationViewController.swift in Sources */,
 				7C0E3A7F1A272DC900235C4C /* AddableTableViewCell.swift in Sources */,
 				7C18BBE81A16018B001F15CA /* BeaconRegionEvent.swift in Sources */,
 				7C18BBEA1A1601BD001F15CA /* VisitEvent.swift in Sources */,
@@ -728,6 +738,7 @@
 				D1F62E8A1A28971900191D87 /* RecorderViewController.swift in Sources */,
 				D14B83551A27576200D12EDF /* AddableTableViewCell.swift in Sources */,
 				D14B83561A27576200D12EDF /* NearbyLocationsTableViewCell.swift in Sources */,
+				7CB0A6151A300F7000BA48C1 /* SignUpViewController.swift in Sources */,
 				D14B83571A27576200D12EDF /* MapViewController.swift in Sources */,
 				D14B83591A27576200D12EDF /* LocationsViewController.swift in Sources */,
 				7C78EFE91A2EC8DC00569844 /* Group.swift in Sources */,
@@ -755,6 +766,7 @@
 				D1EE65181A0740A600A65EF0 /* NavigationController.swift in Sources */,
 				7C2D71C11A2F0087003224C1 /* AddGroupTableViewController.swift in Sources */,
 				7CD8853F1A2ED7070093E579 /* AddLocationEvent.swift in Sources */,
+				7CB0A6121A300F5300BA48C1 /* AddLocationViewController.swift in Sources */,
 				D1EE65191A0740A600A65EF0 /* UnreadSpotView.swift in Sources */,
 				7C86C3E01A25672000702D80 /* AudioRecorder.swift in Sources */,
 				D1EE651A1A0740A600A65EF0 /* AppDelegate.swift in Sources */,
@@ -794,8 +806,8 @@
 			isa = PBXVariantGroup;
 			children = (
 				8A9F0F6D19E62C50007FB36B /* Base */,
-				7CB40BAE1A30023B006C66E1 /* zh-Hans */,
-				7CB40BAF1A30023E006C66E1 /* zh-Hant */,
+				7CB0A6181A301B6200BA48C1 /* zh-Hant */,
+				7CB0A6191A301B6E00BA48C1 /* zh-Hans */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";

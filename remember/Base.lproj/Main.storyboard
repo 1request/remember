@@ -374,7 +374,7 @@
                         <outlet property="locationsContainerView" destination="vM7-Zc-dEq" id="lPK-yb-EN8"/>
                         <outlet property="mapContainerView" destination="K2J-Ss-OaP" id="cGK-eb-eFI"/>
                         <outlet property="mapViewHeightConstraint" destination="oo9-FA-ZOa" id="Dwk-XP-zOY"/>
-                        <segue destination="9f5-6X-25i" kind="show" identifier="toAddGroup" id="N8T-g8-5RG"/>
+                        <segue destination="ceu-J1-qef" kind="show" identifier="toAddGroup" id="SDd-wV-dOH"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Tei-8X-6Hr" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -397,8 +397,8 @@
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="gy2-rs-MpE" id="0o3-fG-3Ia">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Group Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jsF-Ft-QUq">
-                                                    <rect key="frame" x="20" y="8" width="98" height="21"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Location Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jsF-Ft-QUq">
+                                                    <rect key="frame" x="20" y="8" width="117" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -486,11 +486,7 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Set Group" id="MBU-Ma-Vju">
-                        <barButtonItem key="rightBarButtonItem" title="Save" id="DBu-55-Auf">
-                            <connections>
-                                <action selector="saveBarButtonItemClicked:" destination="9f5-6X-25i" id="zZN-BF-CWq"/>
-                            </connections>
-                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="Save" id="DBu-55-Auf"/>
                     </navigationItem>
                     <connections>
                         <outlet property="groupNameTextField" destination="fVb-uV-tgf" id="mhE-jK-kaO"/>
@@ -501,7 +497,25 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="S1N-Js-f9y" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2382" y="-170"/>
+            <point key="canvasLocation" x="2423" y="-820"/>
+        </scene>
+        <!--Sign Up View Controller-->
+        <scene sceneID="gxi-cR-Be8">
+            <objects>
+                <viewController storyboardIdentifier="signUpViewController" id="oIh-7g-5uf" customClass="SignUpViewController" customModule="remember" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="ERb-J8-lrX"/>
+                        <viewControllerLayoutGuide type="bottom" id="SXY-XY-LFh"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="gFQ-5h-LeP">
+                        <rect key="frame" x="0.0" y="0.0" width="337" height="337"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="bDR-bb-Tjd" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3147" y="-170"/>
         </scene>
         <!--Update Group-->
         <scene sceneID="pwi-T8-5fH">
@@ -587,6 +601,76 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XxO-ma-Gy9" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1667" y="520"/>
+        </scene>
+        <!--Set Location-->
+        <scene sceneID="KH6-RZ-tXI">
+            <objects>
+                <viewController id="ceu-J1-qef" customClass="AddLocationViewController" customModule="remember" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="IXM-7V-BCV"/>
+                        <viewControllerLayoutGuide type="bottom" id="fmr-vW-ZwM"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="mrE-hP-d0e">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="R3j-HG-a1J">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="168" id="Ya3-SQ-G8R"/>
+                                </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="Ya3-SQ-G8R"/>
+                                    </mask>
+                                </variation>
+                                <connections>
+                                    <segue destination="9f5-6X-25i" kind="embed" identifier="embedSetGroup" id="jw5-2n-2AX"/>
+                                </connections>
+                            </containerView>
+                            <containerView hidden="YES" opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lbB-gp-6MU">
+                                <rect key="frame" x="132" y="131" width="337" height="337"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="lbB-gp-6MU" secondAttribute="height" multiplier="1:1" id="vM9-b6-RQL"/>
+                                </constraints>
+                                <connections>
+                                    <segue destination="oIh-7g-5uf" kind="embed" identifier="embedSignUp" id="nr4-2A-zBY"/>
+                                </connections>
+                            </containerView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="R3j-HG-a1J" firstAttribute="top" secondItem="IXM-7V-BCV" secondAttribute="bottom" id="IcH-lK-fV4"/>
+                            <constraint firstAttribute="width" secondItem="lbB-gp-6MU" secondAttribute="width" multiplier="16:9" id="KyA-47-U2L"/>
+                            <constraint firstAttribute="centerX" secondItem="lbB-gp-6MU" secondAttribute="centerX" id="U99-m9-iAJ"/>
+                            <constraint firstItem="R3j-HG-a1J" firstAttribute="top" secondItem="mrE-hP-d0e" secondAttribute="top" id="bzd-mF-bdZ"/>
+                            <constraint firstAttribute="centerY" secondItem="lbB-gp-6MU" secondAttribute="centerY" id="fcH-PP-hEV"/>
+                            <constraint firstItem="R3j-HG-a1J" firstAttribute="leading" secondItem="mrE-hP-d0e" secondAttribute="leading" id="j8O-A0-VnI"/>
+                            <constraint firstAttribute="trailing" secondItem="R3j-HG-a1J" secondAttribute="trailing" id="nR0-Jt-qDL"/>
+                            <constraint firstItem="fmr-vW-ZwM" firstAttribute="top" secondItem="R3j-HG-a1J" secondAttribute="bottom" id="wM5-R6-jaT"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="IcH-lK-fV4"/>
+                            </mask>
+                        </variation>
+                    </view>
+                    <navigationItem key="navigationItem" title="Set Location" id="7ND-uN-WDg">
+                        <barButtonItem key="rightBarButtonItem" title="Save" id="9rk-Hn-gfg">
+                            <connections>
+                                <action selector="saveBarButtonItemPressed:" destination="ceu-J1-qef" id="5S1-Rq-vku"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="addGroupContainer" destination="R3j-HG-a1J" id="kez-i3-uVM"/>
+                        <outlet property="saveButton" destination="9rk-Hn-gfg" id="Tnd-P8-Tmi"/>
+                        <outlet property="signUpContainer" destination="lbB-gp-6MU" id="8rt-8p-kRI"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="TkE-rl-JPh" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2423" y="-170"/>
         </scene>
         <!--Map View Controller-->
         <scene sceneID="h35-qL-5GN">

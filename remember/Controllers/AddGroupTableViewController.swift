@@ -10,6 +10,10 @@ import UIKit
 import CoreData
 import CoreLocation
 
+@objc protocol AddGroupTableViewControllerDelegate {
+    func groupNameTextFieldDidChange(textField: UITextField)
+}
+
 class AddGroupTableViewController: UITableViewController {
     
     weak var managedObjectContext: NSManagedObjectContext?
@@ -24,6 +28,8 @@ class AddGroupTableViewController: UITableViewController {
     @IBOutlet weak var sharedRadioButton: RadioButton!
     
     @IBOutlet weak var saveButton: UIBarButtonItem!
+    
+    weak var delegate: AddGroupTableViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,14 +50,10 @@ class AddGroupTableViewController: UITableViewController {
     }
 
     @IBAction func groupNameTextFieldEditingChanged(sender: UITextField) {
-        if countElements(groupNameTextField.text.trimWhiteSpace()) > 0 {
-            saveButton.enabled = true
-        } else {
-            saveButton.enabled = false
-        }
+        delegate?.groupNameTextFieldDidChange(sender)
     }
     
-    @IBAction func saveBarButtonItemClicked(sender: UIBarButtonItem) {
+    func createGroup() {
         let groupToBeAdded = NSEntityDescription.insertNewObjectForEntityForName("Group", inManagedObjectContext: managedObjectContext!) as Group
         groupToBeAdded.name = groupNameTextField.text
         groupToBeAdded.createdAt = NSDate()
