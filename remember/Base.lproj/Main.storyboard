@@ -338,7 +338,7 @@
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vM7-Zc-dEq" userLabel="locationContainerView">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                             </containerView>
-                            <containerView opaque="NO" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="K2J-Ss-OaP" userLabel="mapContainerView">
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="K2J-Ss-OaP" userLabel="mapContainerView">
                                 <constraints>
                                     <constraint firstAttribute="height" id="oo9-FA-ZOa"/>
                                 </constraints>
@@ -768,6 +768,6 @@
         <image name="record-button" width="160" height="166"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Kk1-aG-Cye"/>
+        <segue reference="7a2-jh-hLB"/>
     </inferredMetricsTieBreakers>
 </document>
