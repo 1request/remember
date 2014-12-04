@@ -33,7 +33,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     var fetchedResultController: NSFetchedResultsController!
 
     var objectsInTable: NSMutableArray = []
-    var selectedLocationObjectID: NSManagedObjectID?
+    var selectedGroupObjectID: NSManagedObjectID?
 
     var activePlayerIndexPath: NSIndexPath?
 
@@ -52,7 +52,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         setManagedObjectContext()
 
         tableView.registerClass(MessagesTableViewCell.self, forCellReuseIdentifier: "messageCell")
-        tableView.registerClass(LocationsTableViewCell.self, forCellReuseIdentifier: "locationCell")
+        tableView.registerClass(GroupsTableViewCell.self, forCellReuseIdentifier: "groupCell")
         tableView.delegate = self
 
         updateViewToBePresented()
@@ -67,7 +67,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         super.viewDidAppear(animated)
         monitorEnterLocationNotification()
         monitorAudioRouteChange()
-        setSelectedLocationObjectID()
+        setSelectedGroupObjectID()
     }
 
 
@@ -113,14 +113,13 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
     func setCellAtIndexPath(indexPath: NSIndexPath) -> UITableViewCell {
         let object: AnyObject = objectsInTable.objectAtIndex(indexPath.row)
-        if object is Location {
-            let location = object as Location
-            let cell = tableView.dequeueReusableCellWithIdentifier("locationCell", forIndexPath: indexPath) as LocationsTableViewCell
-            cell.locationNameLabel.text = location.name
-            if location.objectID == selectedLocationObjectID {
-                cell.checkRadioButton()
+        if let group = object as? Group {
+            let cell = tableView.dequeueReusableCellWithIdentifier("groupCell", forIndexPath: indexPath) as GroupsTableViewCell
+            cell.groupNameLabel.text = group.name
+            if group.objectID == selectedGroupObjectID {
+                cell.radioButton.checked = true
             } else {
-                cell.uncheckedRadioButton()
+                cell.radioButton.checked = false
             }
             return cell
         } else {
@@ -149,9 +148,9 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         tableView.reloadSections(section, withRowAnimation: UITableViewRowAnimation.Automatic)
     }
 
-    func selectedLocationIndexPath() -> NSIndexPath {
-        let location = managedObjectContext!.objectWithID(selectedLocationObjectID!) as Location
-        let index = objectsInTable.indexOfObject(location)
+    func selectedGroupIndexPath() -> NSIndexPath {
+        let group = managedObjectContext!.objectWithID(selectedGroupObjectID!) as Group
+        let index = objectsInTable.indexOfObject(group)
         return NSIndexPath(forRow: index, inSection: 0)
     }
 
@@ -164,12 +163,12 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         }
 
         let cell = tableView.cellForRowAtIndexPath(indexPath)
-        if let locationCell = cell as? LocationsTableViewCell {
-            let location = objectsInTable[indexPath.row] as Location
-            var rowsToReload = [selectedLocationIndexPath()]
-            if selectedLocationObjectID != location.objectID {
-                selectedLocationObjectID = location.objectID
-                rowsToReload.append(selectedLocationIndexPath())
+        if let groupCell = cell as? GroupsTableViewCell {
+            let group = objectsInTable[indexPath.row] as Group
+            var rowsToReload = [selectedGroupIndexPath()]
+            if selectedGroupObjectID != group.objectID {
+                selectedGroupObjectID = group.objectID
+                rowsToReload.append(selectedGroupIndexPath())
             }
             tableView.reloadRowsAtIndexPaths(rowsToReload, withRowAnimation: .Automatic)
         } else {
@@ -186,7 +185,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 message.isRead = true
                 message.updatedAt = NSDate()
                 managedObjectContext.save(nil)
-                monitorLocation(message.location)
+                monitorLocationOfGroup(message.group)
             }
         }
     }
@@ -219,10 +218,10 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         if let locationsVC = segue.destinationViewController as? LocationsViewController {
             locationsVC.managedObjectContext = managedObjectContext
         }
-        if let editLocationVC = segue.destinationViewController as? EditLocationViewController {
-            if let location = sender as? Location {
-                editLocationVC.location = location
-                editLocationVC.managedObjectContext = managedObjectContext
+        if let editGroupVC = segue.destinationViewController as? EditGroupViewController {
+            if let group = sender as? Group {
+                editGroupVC.group = group
+                editGroupVC.managedObjectContext = managedObjectContext
             }
         }
         if let recorderVC = segue.destinationViewController as? RecorderViewController {
@@ -242,7 +241,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
     func controllerDidChangeContent(controller: NSFetchedResultsController) {
         setObjectsInTable()
-        setSelectedLocationObjectID()
+        setSelectedGroupObjectID()
         reloadSection()
         updateViewToBePresented()
     }
@@ -261,7 +260,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
     //MARK: - Core Data
     func getFetchedResultController() -> NSFetchedResultsController {
-        let fetchRequest = NSFetchRequest(entityName: "Location")
+        let fetchRequest = NSFetchRequest(entityName: "Group")
         fetchRequest.relationshipKeyPathsForPrefetching = ["messages"]
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "updatedAt", ascending: false)]
 
@@ -281,50 +280,40 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         // clear table
         objectsInTable = []
 
-        var fetchedLocations = fetchedResultController.fetchedObjects
-        for var i = 0; i < fetchedLocations?.count; i++ {
-            var location: Location = fetchedLocations?[i] as Location
-            objectsInTable.addObject(location)
+        var fetchedGroups = fetchedResultController.fetchedObjects as [Group]?
+        if let groups = fetchedGroups {
+            for (index, group) in enumerate(groups) {
+                objectsInTable.addObject(group)
+                
+                var sortByIsRead = NSSortDescriptor(key: "isRead", ascending: true)
+                var sortByCreatedAt = NSSortDescriptor(key: "createdAt", ascending: true)
+                var sortedMessages = group.messages.sortedArrayUsingDescriptors([sortByIsRead, sortByCreatedAt])
+                
+                objectsInTable.addObjectsFromArray(sortedMessages)
+            }
 
-            var sortByIsRead = NSSortDescriptor(key: "isRead", ascending: true)
-            var sortByCreatedAt = NSSortDescriptor(key: "createdAt", ascending: true)
-            var sortedMessages = location.messages.sortedArrayUsingDescriptors([sortByIsRead, sortByCreatedAt])
-
-            objectsInTable.addObjectsFromArray(sortedMessages)
         }
-
-        setSelectedLocationObjectID()
+        
+        setSelectedGroupObjectID()
     }
 
-    func setSelectedLocationObjectID() {
+    func setSelectedGroupObjectID() {
 
-        if let locationIdentifier = NSUserDefaults.standardUserDefaults().valueForKey("location") as? String {
-            let predicate = NSPredicate(format: "identifier == %@", locationIdentifier)
-            let request = NSFetchRequest(entityName: "Location")
-            request.predicate = predicate
-            if let locations = managedObjectContext.executeFetchRequest(request, error: nil) {
-                let location = locations.first as Location
-                selectedLocationObjectID = location.objectID
-                NSUserDefaults.standardUserDefaults().setValue(nil, forKey: "location")
-                return
-            }
-        }
-
-        if let id = selectedLocationObjectID {
-            if let location = managedObjectContext.existingObjectWithID(id, error: nil) {
-                if !location.deleted {
+        if let id = selectedGroupObjectID {
+            if let group = managedObjectContext.existingObjectWithID(id, error: nil) {
+                if !group.deleted {
                     return
                 }
             }
         }
 
         if objectsInTable.count == 0 {
-            selectedLocationObjectID = nil
+            selectedGroupObjectID = nil
             return
         }
 
-        if let location = objectsInTable[0] as? Location {
-            selectedLocationObjectID = location.objectID
+        if let group = objectsInTable[0] as? Group {
+            selectedGroupObjectID = group.objectID
         }
     }
 
@@ -360,12 +349,12 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
     //MARK: - Monitor Location
 
-    func monitorLocation(location: Location) {
+    func monitorLocationOfGroup(group: Group) {
         let predicate = NSPredicate(format: "isRead == 0")
-        let unreadMessages = location.messages.filteredSetUsingPredicate(predicate!)
+        let unreadMessages = group.messages.filteredSetUsingPredicate(predicate!)
         let locationManager = LocationManager.sharedInstance
-        if location.uuid != "" {
-            let beaconRegion = location.beaconRegion()
+        if group.location.uuid != "" {
+            let beaconRegion = group.location.beaconRegion()
             if unreadMessages.count == 0 {
                 locationManager.stopRangingBeaconRegions([beaconRegion])
                 locationManager.stopMonitoringRegions([beaconRegion])
@@ -375,7 +364,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 locationManager.startMonitoringRegions([beaconRegion])
             }
         } else {
-            let circularRegion = location.circularRegion()
+            let circularRegion = group.location.circularRegion()
             if unreadMessages.count == 0 {
                 locationManager.stopMonitoringRegions([circularRegion])
             }
@@ -394,7 +383,6 @@ extension HomeViewController : AVAudioPlayerDelegate {
             stopPlayingAudio()
             if let indexPath = activePlayerIndexPath {
                 if let message = objectsInTable[indexPath.row] as? Message {
-                    let location = message.location
                     activePlayerIndexPath = nil
                 }
             }
@@ -450,10 +438,10 @@ extension HomeViewController: SwipeableTableViewCellDelegate {
                 if index == 0 {
                     deleteObjectAtIndexPath(indexPath)
                     setObjectsInTable()
-                    setSelectedLocationObjectID()
+                    setSelectedGroupObjectID()
                 } else {
-                    if let location = object as? Location {
-                        performSegueWithIdentifier("editLocation", sender: location)
+                    if let group = object as? Group {
+                        performSegueWithIdentifier("editGroup", sender: group)
                     }
                 }
             } else {
@@ -476,10 +464,10 @@ extension HomeViewController: SwipeableTableViewCellDelegate {
 
     func deleteObjectAtIndexPath(indexPath: NSIndexPath) {
         let object = objectsInTable.objectAtIndex(indexPath.row) as NSManagedObject
-        if let location = object as? Location {
-            LocationManager.sharedInstance.stopMonitoringRegions([location.region()])
-            if location.uuid != "" {
-                LocationManager.sharedInstance.stopRangingBeaconRegions([location.beaconRegion()])
+        if let group = object as? Group {
+            LocationManager.sharedInstance.stopMonitoringRegions([group.location.region()])
+            if group.location.uuid != "" {
+                LocationManager.sharedInstance.stopRangingBeaconRegions([group.location.beaconRegion()])
             }
         } else if let message = object as? Message {
             if activePlayerIndexPath == indexPath {
@@ -493,11 +481,11 @@ extension HomeViewController: SwipeableTableViewCellDelegate {
             println("unable to delete object, error: \(error?.localizedDescription)")
         }
         if objectsInTable.count == 0 {
-            selectedLocationObjectID = nil
+            selectedGroupObjectID = nil
             return
         }
-        if let location = objectsInTable[0] as? Location {
-            selectedLocationObjectID = location.objectID
+        if let group = objectsInTable[0] as? Group {
+            selectedGroupObjectID = group.objectID
         }
     }
 }
@@ -519,7 +507,7 @@ extension HomeViewController: UIAlertViewDelegate {
             alertView?.dismissWithClickedButtonIndex(0, animated: false)
             alertView = UIAlertView(title: title, message: message, delegate: self, cancelButtonTitle: "OK")
             alertView?.show()
-            setSelectedLocationObjectID()
+            setSelectedGroupObjectID()
             reloadSection()
         }
     }
@@ -570,9 +558,9 @@ extension HomeViewController: RecorderViewControllerDelegate {
         if valid {
             Mixpanel.sharedInstance().track("audioRecorded")
 
-            let location = managedObjectContext!.objectWithID(selectedLocationObjectID!) as Location
-            createMessageForLocation(location)
-            monitorLocation(location)
+            let group = managedObjectContext!.objectWithID(selectedGroupObjectID!) as Group
+            createMessageForGroup(group)
+            monitorLocationOfGroup(group)
             let indexPath = NSIndexPath(forRow: 0, inSection: 0)
             tableView.scrollToRowAtIndexPath(indexPath, atScrollPosition: .Top, animated: true)
         }
@@ -592,7 +580,7 @@ extension HomeViewController: RecorderViewControllerDelegate {
         hudView.setNeedsDisplay()
     }
 
-    func createMessageForLocation (location: Location) {
+    func createMessageForGroup (group: Group) {
         let entityDescription = NSEntityDescription.entityForName("Message", inManagedObjectContext: managedObjectContext!)
         let message = Message(entity: entityDescription!, insertIntoManagedObjectContext: managedObjectContext!)
 
@@ -607,15 +595,15 @@ extension HomeViewController: RecorderViewControllerDelegate {
                 println("error copying item to url: \(error?.localizedDescription)")
             }
 
-            message.location = location
+            message.group = group
 
-            message.location.messageCount = NSNumber(integer: (message.location.messageCount.integerValue + 1))
-            message.name = String(format: RECORD_NAME, message.location.messageCount)
+            message.group.messagesCount = NSNumber(integer: (message.group.messagesCount.integerValue + 1))
+            message.name = String(format: RECORD_NAME, message.group.messagesCount)
             message.isRead = false
             message.createdAt = createTime
             message.updatedAt = createTime
 
-            location.updatedAt = createTime
+            group.updatedAt = createTime
 
             if !managedObjectContext!.save(&error) {
                 println("error saving audio: \(error?.localizedDescription)")

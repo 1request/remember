@@ -1,5 +1,5 @@
 //
-//  LocationsTableViewCell.swift
+//  GroupsTableViewCell.swift
 //  remember
 //
 //  Created by Kaeli Lo on 9/10/14.
@@ -8,10 +8,10 @@
 
 import UIKit
 
-class LocationsTableViewCell: SwipeableTableViewCell {
+class GroupsTableViewCell: SwipeableTableViewCell {
 
     let radioButton = RadioButton()
-    let locationNameLabel = UILabel()
+    let groupNameLabel = UILabel()
 
     override func commonInit() {
         super.commonInit()
@@ -21,18 +21,18 @@ class LocationsTableViewCell: SwipeableTableViewCell {
 
     private func makeLayout() {
         radioButton.setTranslatesAutoresizingMaskIntoConstraints(false)
-        locationNameLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
-        locationNameLabel.textColor = UIColor.appGreenTextColor()
+        groupNameLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
+        groupNameLabel.textColor = UIColor.appGreenTextColor()
 
         customContentView.addSubview(radioButton)
-        customContentView.addSubview(locationNameLabel)
+        customContentView.addSubview(groupNameLabel)
 
         radioButton.backgroundColor = UIColor.clearColor()
 
-        let viewsDict = ["radioButton": radioButton, "locationNameLabel": locationNameLabel]
-        let metricsDict = ["radioButtonLeftMargin": 20, "radioButtonWidth": 24, "radioButtonRightMargin": 16, "locationNameLabelRightMargin": 16]
+        let viewsDict = ["radioButton": radioButton, "groupNameLabel": groupNameLabel]
+        let metricsDict = ["radioButtonLeftMargin": 20, "radioButtonWidth": 24, "radioButtonRightMargin": 16, "groupNameLabelRightMargin": 16]
 
-        let horizontalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("|-radioButtonLeftMargin-[radioButton(radioButtonWidth)]-radioButtonRightMargin-[locationNameLabel]-locationNameLabelRightMargin-|", options: NSLayoutFormatOptions.AlignAllCenterY, metrics: metricsDict, views: viewsDict)
+        let horizontalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("|-radioButtonLeftMargin-[radioButton(radioButtonWidth)]-radioButtonRightMargin-[groupNameLabel]-groupNameLabelRightMargin-|", options: NSLayoutFormatOptions.AlignAllCenterY, metrics: metricsDict, views: viewsDict)
 
         let radioButtonHeightConstraint = NSLayoutConstraint(item: radioButton, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: radioButton, attribute: NSLayoutAttribute.Width, multiplier: 1.0, constant: 0.0)
 
@@ -40,18 +40,6 @@ class LocationsTableViewCell: SwipeableTableViewCell {
 
         customContentView.addConstraints(horizontalConstraints)
         customContentView.addConstraints([radioButtonHeightConstraint, radioButtonCenterYConstraint])
-    }
-
-    func checkRadioButton() {
-        radioButton.setChecked(true)
-    }
-
-    func uncheckedRadioButton() {
-        radioButton.setChecked(false)
-    }
-
-    func isChecked() -> Bool {
-        return radioButton._checked
     }
     
     override func setHighlighted(highlighted: Bool, animated: Bool) {
@@ -77,7 +65,7 @@ class LocationsTableViewCell: SwipeableTableViewCell {
     }
 }
 
-extension LocationsTableViewCell: SwipeableTableViewCellDataSource {
+extension GroupsTableViewCell: SwipeableTableViewCellDataSource {
     func numberOfRightButtonsInSwipeableCell(cell: SwipeableTableViewCell) -> Int {
         return 2
     }

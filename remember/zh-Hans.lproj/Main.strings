@@ -1,20 +1,29 @@
 
-/* Class = "IBUINavigationItem"; title = "位置"; ObjectID = "5PU-ex-48K"; */
-"5PU-ex-48K.title" = "位置";
+/* Class = "IBUINavigationItem"; title = "Locations"; ObjectID = "5PU-ex-48K"; */
+"5PU-ex-48K.title" = "Locations";
 
 /* Class = "IBUIButton"; normalTitle = "新增"; ObjectID = "6nX-lr-qJb"; */
 "6nX-lr-qJb.normalTitle" = "新增";
 
-/* Class = "IBUIButton"; normalTitle = "递交"; ObjectID = "AL1-OC-iro"; */
-"AL1-OC-iro.normalTitle" = "递交";
+/* Class = "IBUITextField"; placeholder = "位置名称"; ObjectID = "8p8-a3-arm"; */
+"8p8-a3-arm.placeholder" = "位置名称";
+
+/* Class = "IBUILabel"; text = "type"; ObjectID = "DBl-Pu-dSN"; */
+"DBl-Pu-dSN.text" = "type";
+
+/* Class = "IBUIBarButtonItem"; title = "保存"; ObjectID = "DBu-55-Auf"; */
+"DBu-55-Auf.title" = "保存";
 
 /* Class = "IBUILabel"; text = "位置名称"; ObjectID = "IWR-Ao-Er3"; */
 "IWR-Ao-Er3.text" = "位置名称";
 
-/* Class = "IBUITextField"; placeholder = "名称"; ObjectID = "Jez-Im-jFy"; */
-"Jez-Im-jFy.placeholder" = "名称";
+/* Class = "IBUINavigationItem"; title = "设定位置"; ObjectID = "MBU-Ma-Vju"; */
+"MBU-Ma-Vju.title" = "设定位置";
 
-/* Class = "IBUIButton"; normalTitle = "Add"; ObjectID = "PSl-ig-5HI"; */
+/* Class = "IBUILabel"; text = "个人"; ObjectID = "NkJ-qt-JiL"; */
+"NkJ-qt-JiL.text" = "个人";
+
+/* Class = "IBUIButton"; normalTitle = "新增"; ObjectID = "PSl-ig-5HI"; */
 "PSl-ig-5HI.normalTitle" = "新增";
 
 /* Class = "IBUINavigationItem"; title = "反馈"; ObjectID = "RKF-YF-mYQ"; */
@@ -23,13 +32,16 @@
 /* Class = "IBUILabel"; text = "现时位置"; ObjectID = "U0l-U1-5qZ"; */
 "U0l-U1-5qZ.text" = "现时位置";
 
+/* Class = "IBUILabel"; text = "类别:"; ObjectID = "V90-1G-plF"; */
+"V90-1G-plF.text" = "类别:";
+
 /* Class = "IBUIBarButtonItem"; title = "保存"; ObjectID = "VVu-78-Stu"; */
 "VVu-78-Stu.title" = "保存";
 
 /* Class = "IBUIButton"; normalTitle = "新增"; ObjectID = "WRK-kW-cE1"; */
 "WRK-kW-cE1.normalTitle" = "新增";
 
-/* Class = "IBUINavigationItem"; title = "Locations"; ObjectID = "YaY-Kx-AB6"; */
+/* Class = "IBUINavigationItem"; title = "位置"; ObjectID = "YaY-Kx-AB6"; */
 "YaY-Kx-AB6.title" = "位置";
 
 /* Class = "IBUILabel"; text = "Address"; ObjectID = "aSv-l9-5kl"; */
@@ -38,26 +50,29 @@
 /* Class = "IBUILabel"; text = "Label"; ObjectID = "ahX-TR-678"; */
 "ahX-TR-678.text" = "Label";
 
+/* Class = "IBUIButton"; normalTitle = "递交"; ObjectID = "bIV-xS-JZz"; */
+"bIV-xS-JZz.normalTitle" = "递交";
+
 /* Class = "IBUILabel"; text = "Name"; ObjectID = "eqS-OQ-nB9"; */
 "eqS-OQ-nB9.text" = "Name";
 
-/* Class = "IBUIButton"; normalTitle = "反馈"; ObjectID = "ore-nX-Dhh"; */
-"ore-nX-Dhh.normalTitle" = "反馈";
+/* Class = "IBUITextField"; placeholder = "名称"; ObjectID = "fVb-uV-tgf"; */
+"fVb-uV-tgf.placeholder" = "名称";
 
-/* Class = "IBUINavigationItem"; title = "设定位置"; ObjectID = "pdk-AI-J4r"; */
-"pdk-AI-J4r.title" = "设定位置";
+/* Class = "IBUILabel"; text = "位置名称"; ObjectID = "jsF-Ft-QUq"; */
+"jsF-Ft-QUq.text" = "位置名称";
 
-/* Class = "IBUIBarButtonItem"; title = "保存"; ObjectID = "qP6-M1-MUw"; */
-"qP6-M1-MUw.title" = "保存";
-
-/* Class = "IBUILabel"; text = "位置名称"; ObjectID = "rbD-uC-34X"; */
-"rbD-uC-34X.text" = "位置名称";
+/* Class = "IBUIButton"; normalTitle = "反馈"; ObjectID = "nlt-MS-lYG"; */
+"nlt-MS-lYG.normalTitle" = "反馈";
 
 /* Class = "IBUILabel"; text = "Label"; ObjectID = "rmP-3a-VU0"; */
 "rmP-3a-VU0.text" = "Label";
 
+/* Class = "IBUILabel"; text = "私人"; ObjectID = "tbV-dm-y5h"; */
+"tbV-dm-y5h.text" = "私人";
+
 /* Class = "IBUINavigationItem"; title = "更新位置"; ObjectID = "tsv-uq-Hzh"; */
 "tsv-uq-Hzh.title" = "更新位置";
 
-/* Class = "IBUILabel"; text = "Please press button below and record your feedback"; ObjectID = "vo7-mc-gGa"; */
+/* Class = "IBUILabel"; text = "请按下录音按钮，开始记录回馈"; ObjectID = "vo7-mc-gGa"; */
 "vo7-mc-gGa.text" = "请按下录音按钮，开始记录回馈";

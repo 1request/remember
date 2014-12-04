@@ -72,7 +72,7 @@ extension Location {
     }
 
     func createIndentifier() -> String {
-        return "\(name)-" + createdAt.timeIntervalSince1970.format(".0")
+        return createdAt.timeIntervalSince1970.format(".0")
     }
 
     func circularRegion() -> CLCircularRegion {
@@ -110,6 +110,39 @@ extension Location {
             else {
                 return nil
             }
+        }
+    }
+    
+    class func findOrCreateBy(attributes: [String: AnyObject], context: NSManagedObjectContext) -> Location {
+        let str = reduce(attributes, "") {
+            return $0 + "\($1.0) == \($1.1) AND "
+        }
+        
+        let subStringIndex = countElements(str) - 5
+        let pred = str.substringToIndex(advance(str.startIndex, subStringIndex))
+        let predicate = NSPredicate(format: pred)
+        let request = NSFetchRequest(entityName: "Location")
+        request.predicate = predicate
+        var error: NSError?
+        if let results = context.executeFetchRequest(request, error: &error) as? [Location] {
+            return results[0]
+        } else {
+            let newLocation = NSEntityDescription.insertNewObjectForEntityForName("Location", inManagedObjectContext: context) as Location
+            newLocation.uuid = attributes["uuid"] as String
+            newLocation.major = attributes["major"] as NSNumber
+            newLocation.minor = attributes["minor"] as NSNumber
+            newLocation.longitude = attributes["longitude"] as NSNumber
+            newLocation.latitude = attributes["latitude"] as NSNumber
+            newLocation.createdAt = NSDate()
+            newLocation.updatedAt = newLocation.createdAt
+            newLocation.identifier = newLocation.createIndentifier()
+            if !context.save(&error) {
+                println("cannot create new location: \(error)")
+            }
+            
+            let e = AddLocationEvent(location: newLocation)
+            Mixpanel.sharedInstance().track(kAddLocationEventTitle, properties: e.properties)
+            return newLocation
         }
     }
 }

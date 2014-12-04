@@ -8,12 +8,16 @@
 
 import UIKit
 
-@IBDesignable class RadioButton: UIView {
+class RadioButton: UIView {
     
     let strokeWidth: CGFloat = 1
     let buttonSize: CGFloat = 24
 
-    var _checked: Bool = false
+    var checked: Bool = false {
+        didSet {
+            setNeedsDisplay()
+        }
+    }
 
     // Only override drawRect: if you perform custom drawing.
     // An empty implementation adversely affects performance during animation.
@@ -34,7 +38,7 @@ import UIKit
         outterCirclePath.lineWidth = 1
         outterCirclePath.stroke()
         
-        if _checked {
+        if checked {
             let x = frame.size.width / 8
             let y = frame.size.height / 8
             let width = frame.size.width * 3 / 4
@@ -47,11 +51,4 @@ import UIKit
             innerCirclePath.fill()
         }
     }
-    
-    func setChecked(checked: Bool) {
-        _checked = checked
-        
-        setNeedsDisplay()
-    }
-
 }
