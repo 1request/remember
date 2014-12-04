@@ -19,6 +19,8 @@ class EditGroupViewController: UIViewController {
     weak var managedObjectContext: NSManagedObjectContext?
     var group: Group? = nil
     
+    @IBOutlet weak var groupTypeTextLabel: UILabel!
+    
     lazy var annotation: MKPointAnnotation? = {
         if let currentGroup = self.group {
             let coordinate = CLLocationCoordinate2D(latitude: CLLocationDegrees(currentGroup.location.latitude), longitude: CLLocationDegrees(currentGroup.location.longitude))
@@ -34,6 +36,7 @@ class EditGroupViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         editGroupNameTextField.text = group?.name
+        groupTypeTextLabel.text = group?.type
     }
     
     func mapAnnotation() {
