@@ -507,15 +507,190 @@
                         <viewControllerLayoutGuide type="top" id="ERb-J8-lrX"/>
                         <viewControllerLayoutGuide type="bottom" id="SXY-XY-LFh"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="gFQ-5h-LeP">
-                        <rect key="frame" x="0.0" y="0.0" width="337" height="337"/>
+                    <view key="view" clipsSubviews="YES" contentMode="scaleToFill" id="gFQ-5h-LeP">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GV7-Xh-yox" userLabel="formBackground">
+                                <rect key="frame" x="66" y="39" width="467" height="467"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qIg-xw-Gg8">
+                                        <rect key="frame" x="173" y="30" width="120" height="120"/>
+                                        <color key="backgroundColor" red="0.88235294117647056" green="0.89411764705882357" blue="0.92941176470588238" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="qIg-xw-Gg8" secondAttribute="height" multiplier="1:1" id="0Ld-gJ-g2B"/>
+                                            <constraint firstAttribute="height" constant="120" id="VK1-jT-pr3"/>
+                                            <constraint firstAttribute="width" constant="120" id="si9-0E-A0U"/>
+                                        </constraints>
+                                        <state key="normal" image="camera">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="60"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <variation key="default">
+                                            <mask key="constraints">
+                                                <exclude reference="si9-0E-A0U"/>
+                                            </mask>
+                                        </variation>
+                                        <connections>
+                                            <action selector="cameraButtonPressed:" destination="oIh-7g-5uf" eventType="touchUpInside" id="j8f-9G-IOM"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xHl-FS-bNb">
+                                        <rect key="frame" x="117" y="406" width="233.5" height="36"/>
+                                        <color key="backgroundColor" red="0.94117647059999998" green="0.93725490199999995" blue="0.96078431369999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="100" id="Nmo-A5-YbG"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                                        <state key="normal" title="OK">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="8"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <variation key="default">
+                                            <mask key="constraints">
+                                                <exclude reference="Nmo-A5-YbG"/>
+                                            </mask>
+                                        </variation>
+                                        <connections>
+                                            <action selector="confirmButtonPressed:" destination="oIh-7g-5uf" eventType="touchUpInside" id="Wtm-kl-v9v"/>
+                                        </connections>
+                                    </button>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Username" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="9Mh-6y-TEg">
+                                        <rect key="frame" x="39" y="170" width="389" height="30"/>
+                                        <color key="backgroundColor" red="0.94117647059999998" green="0.93725490199999995" blue="0.96078431369999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="9Mh-6y-TEg" firstAttribute="top" secondItem="qIg-xw-Gg8" secondAttribute="bottom" constant="20" id="0U0-Su-q8W"/>
+                                    <constraint firstItem="xHl-FS-bNb" firstAttribute="top" relation="greaterThanOrEqual" secondItem="9Mh-6y-TEg" secondAttribute="bottom" constant="20" id="1AW-xk-DRQ"/>
+                                    <constraint firstItem="qIg-xw-Gg8" firstAttribute="width" secondItem="GV7-Xh-yox" secondAttribute="width" multiplier="7:16" id="3mQ-PH-AGk"/>
+                                    <constraint firstItem="xHl-FS-bNb" firstAttribute="width" secondItem="GV7-Xh-yox" secondAttribute="width" multiplier="1:2" id="Bh9-Oy-K0D"/>
+                                    <constraint firstItem="qIg-xw-Gg8" firstAttribute="top" secondItem="GV7-Xh-yox" secondAttribute="top" constant="30" id="Dc5-HN-ys3"/>
+                                    <constraint firstAttribute="bottom" secondItem="xHl-FS-bNb" secondAttribute="bottom" constant="25" id="DvK-pQ-ta2"/>
+                                    <constraint firstAttribute="centerX" secondItem="9Mh-6y-TEg" secondAttribute="centerX" id="IP4-zj-ykZ"/>
+                                    <constraint firstAttribute="centerX" secondItem="xHl-FS-bNb" secondAttribute="centerX" id="MOa-4n-XJC"/>
+                                    <constraint firstAttribute="width" secondItem="GV7-Xh-yox" secondAttribute="height" multiplier="1:1" id="OhR-kT-n8c"/>
+                                    <constraint firstAttribute="centerX" secondItem="qIg-xw-Gg8" secondAttribute="centerX" id="SAU-z9-KJl"/>
+                                    <constraint firstItem="9Mh-6y-TEg" firstAttribute="top" secondItem="qIg-xw-Gg8" secondAttribute="bottom" constant="20" id="YdH-Ib-SHH"/>
+                                    <constraint firstItem="xHl-FS-bNb" firstAttribute="width" secondItem="9Mh-6y-TEg" secondAttribute="width" multiplier="1:2" id="kiP-7a-Ktb"/>
+                                    <constraint firstItem="xHl-FS-bNb" firstAttribute="width" secondItem="9Mh-6y-TEg" secondAttribute="width" multiplier="2:3" id="mdD-5Z-DnG"/>
+                                    <constraint firstItem="xHl-FS-bNb" firstAttribute="top" secondItem="9Mh-6y-TEg" secondAttribute="bottom" constant="20" id="nv6-Df-54W"/>
+                                    <constraint firstItem="9Mh-6y-TEg" firstAttribute="width" secondItem="GV7-Xh-yox" secondAttribute="width" multiplier="5:6" id="sCP-XK-fnu"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="10"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="0U0-Su-q8W"/>
+                                        <exclude reference="3mQ-PH-AGk"/>
+                                        <exclude reference="kiP-7a-Ktb"/>
+                                        <exclude reference="mdD-5Z-DnG"/>
+                                        <exclude reference="nv6-Df-54W"/>
+                                    </mask>
+                                </variation>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fsv-iT-UiQ" userLabel="buttonBackground">
+                                <rect key="frame" x="489" y="28.5" width="52" height="52"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xpQ-bV-4lN">
+                                        <rect key="frame" x="4" y="4" width="44" height="44"/>
+                                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="44" id="Z66-Qy-4fZ"/>
+                                            <constraint firstAttribute="height" constant="44" id="m0C-iB-jkg"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="26"/>
+                                        <state key="normal">
+                                            <string key="title">✕
+MULTIPLICATION X
+Unicode: U+2715, UTF-8: E2 9C 95</string>
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="22"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
+                                                <integer key="value" value="2"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="layer.borderColor">
+                                                <color key="value" red="0.9803922176361084" green="0.17647059261798859" blue="0.11372549831867218" alpha="1" colorSpace="deviceRGB"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="cancelButtonPressed:" destination="oIh-7g-5uf" eventType="touchUpInside" id="wOG-gA-h0d"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="centerY" secondItem="xpQ-bV-4lN" secondAttribute="centerY" id="E7G-lT-pq4"/>
+                                    <constraint firstAttribute="height" constant="52" id="S9V-go-fbe"/>
+                                    <constraint firstAttribute="width" constant="52" id="X9h-CI-YFT"/>
+                                    <constraint firstAttribute="centerX" secondItem="xpQ-bV-4lN" secondAttribute="centerX" id="bFS-aY-FUR"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="26"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="centerY" secondItem="GV7-Xh-yox" secondAttribute="centerY" multiplier="1.1" id="2m0-ho-OEL"/>
+                            <constraint firstItem="GV7-Xh-yox" firstAttribute="width" secondItem="gFQ-5h-LeP" secondAttribute="width" multiplier="7:9" id="BVs-cf-fy1"/>
+                            <constraint firstAttribute="centerY" secondItem="GV7-Xh-yox" secondAttribute="centerY" multiplier="0.3" id="KVi-Bh-QYV"/>
+                            <constraint firstAttribute="centerX" secondItem="GV7-Xh-yox" secondAttribute="centerX" id="MvA-gW-Ge7"/>
+                            <constraint firstAttribute="trailing" secondItem="GV7-Xh-yox" secondAttribute="trailing" constant="16" id="Rmk-WU-iC6"/>
+                            <constraint firstItem="GV7-Xh-yox" firstAttribute="leading" secondItem="gFQ-5h-LeP" secondAttribute="leading" constant="16" id="Ue8-8o-gNu"/>
+                            <constraint firstAttribute="centerX" secondItem="GV7-Xh-yox" secondAttribute="centerX" id="cgQ-Xs-k7G"/>
+                            <constraint firstItem="GV7-Xh-yox" firstAttribute="top" secondItem="ERb-J8-lrX" secondAttribute="bottom" constant="50" id="ftd-Oo-Swx"/>
+                            <constraint firstItem="fsv-iT-UiQ" firstAttribute="centerY" secondItem="GV7-Xh-yox" secondAttribute="centerY" multiplier="0.2" id="hgh-fc-EAJ"/>
+                            <constraint firstItem="GV7-Xh-yox" firstAttribute="top" secondItem="ERb-J8-lrX" secondAttribute="bottom" constant="20" id="icV-b6-DT7"/>
+                            <constraint firstItem="fsv-iT-UiQ" firstAttribute="centerX" secondItem="GV7-Xh-yox" secondAttribute="centerX" multiplier="1.72" id="kMx-3G-xk8"/>
+                            <constraint firstAttribute="centerY" secondItem="GV7-Xh-yox" secondAttribute="centerY" id="kVC-D6-jot"/>
+                            <constraint firstItem="GV7-Xh-yox" firstAttribute="leading" secondItem="gFQ-5h-LeP" secondAttribute="leading" constant="16" id="lu2-Al-ODv"/>
+                            <constraint firstAttribute="trailing" secondItem="GV7-Xh-yox" secondAttribute="trailing" constant="16" id="pwM-GT-GYj"/>
+                            <constraint firstAttribute="centerY" secondItem="GV7-Xh-yox" secondAttribute="centerY" id="r0R-Bj-E1b"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="KVi-Bh-QYV"/>
+                                <exclude reference="Rmk-WU-iC6"/>
+                                <exclude reference="Ue8-8o-gNu"/>
+                                <exclude reference="cgQ-Xs-k7G"/>
+                                <exclude reference="ftd-Oo-Swx"/>
+                                <exclude reference="icV-b6-DT7"/>
+                                <exclude reference="kVC-D6-jot"/>
+                                <exclude reference="lu2-Al-ODv"/>
+                                <exclude reference="pwM-GT-GYj"/>
+                                <exclude reference="r0R-Bj-E1b"/>
+                            </mask>
+                        </variation>
                     </view>
+                    <connections>
+                        <outlet property="usernameTextField" destination="9Mh-6y-TEg" id="8Xk-0g-aZe"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bDR-bb-Tjd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3147" y="-170"/>
+            <point key="canvasLocation" x="3146.5" y="-170.75"/>
         </scene>
         <!--Update Group-->
         <scene sceneID="pwi-T8-5fH">
@@ -629,7 +804,7 @@
                                 </connections>
                             </containerView>
                             <containerView hidden="YES" opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lbB-gp-6MU">
-                                <rect key="frame" x="132" y="131" width="337" height="337"/>
+                                <rect key="frame" x="0.5" y="124" width="600" height="600"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="lbB-gp-6MU" secondAttribute="height" multiplier="1:1" id="vM9-b6-RQL"/>
                                 </constraints>
@@ -641,7 +816,8 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="R3j-HG-a1J" firstAttribute="top" secondItem="IXM-7V-BCV" secondAttribute="bottom" id="IcH-lK-fV4"/>
-                            <constraint firstAttribute="width" secondItem="lbB-gp-6MU" secondAttribute="width" multiplier="16:9" id="KyA-47-U2L"/>
+                            <constraint firstAttribute="width" secondItem="lbB-gp-6MU" secondAttribute="width" multiplier="1:1" id="KyA-47-U2L"/>
+                            <constraint firstItem="lbB-gp-6MU" firstAttribute="top" secondItem="IXM-7V-BCV" secondAttribute="bottom" constant="60" id="SCt-ju-aQQ"/>
                             <constraint firstAttribute="centerX" secondItem="lbB-gp-6MU" secondAttribute="centerX" id="U99-m9-iAJ"/>
                             <constraint firstItem="R3j-HG-a1J" firstAttribute="top" secondItem="mrE-hP-d0e" secondAttribute="top" id="bzd-mF-bdZ"/>
                             <constraint firstAttribute="centerY" secondItem="lbB-gp-6MU" secondAttribute="centerY" id="fcH-PP-hEV"/>
@@ -652,6 +828,7 @@
                         <variation key="default">
                             <mask key="constraints">
                                 <exclude reference="IcH-lK-fV4"/>
+                                <exclude reference="fcH-PP-hEV"/>
                             </mask>
                         </variation>
                     </view>
@@ -846,6 +1023,7 @@
     <resources>
         <image name="Separator" width="640" height="214"/>
         <image name="add" width="38" height="38"/>
+        <image name="camera" width="65" height="48"/>
         <image name="device" width="90" height="98"/>
         <image name="pin" width="73" height="82"/>
         <image name="press-here" width="305" height="272"/>

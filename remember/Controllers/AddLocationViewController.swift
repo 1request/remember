@@ -9,6 +9,7 @@
 import UIKit
 import CoreLocation
 import CoreData
+import QuartzCore
 
 class AddLocationViewController: UIViewController {
 
@@ -26,10 +27,17 @@ class AddLocationViewController: UIViewController {
     var addGroupTVC: AddGroupTableViewController?
     var signUpVC: SignUpViewController?
     
+    lazy var overlay: UIView = {
+        let view = UIView(frame: self.view.bounds)
+        view.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.4)
+        return view
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         saveButton.enabled = false
         addGroupTVC?.delegate = self
+        signUpVC?.delegate = self
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -45,7 +53,19 @@ class AddLocationViewController: UIViewController {
     
     
     @IBAction func saveBarButtonItemPressed(sender: UIBarButtonItem) {
-        addGroupTVC?.createGroup()
+        if let shareRadioButton = addGroupTVC?.sharedRadioButton {
+            if shareRadioButton.checked {
+                showSignUpForm()
+            } else {
+                addGroupTVC?.createGroup()
+            }
+        }
+    }
+    
+    func showSignUpForm() {
+        signUpContainer.hidden = false
+        signUpContainer.showAnimated()
+        view.insertSubview(overlay, aboveSubview: addGroupContainer)
     }
 }
 
@@ -56,5 +76,16 @@ extension AddLocationViewController: AddGroupTableViewControllerDelegate {
         } else {
             saveButton.enabled = false
         }
+    }
+}
+
+extension AddLocationViewController: SignUpViewControllerDelegate {
+    func cancelButtonClicked() {
+        signUpContainer.dismissAnimated()
+        overlay.removeFromSuperview()
+    }
+    
+    func createdUser() {
+        dismissViewControllerAnimated(true, completion: nil)
     }
 }
