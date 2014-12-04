@@ -166,12 +166,6 @@ class DevicesTableViewController: UITableViewController, UITableViewDataSource, 
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let locationsVC = parentViewController as LocationsViewController
-        if indexPath.section == 0 || indexPath.section == 1 {
-            delegate?.didSelectLocationWithCoordinate(gpsLocation!.coordinate)
-        } else {
-            let mapItem = mapItems[indexPath.row]
-            delegate?.didSelectLocationWithCoordinate(mapItem.placemark.coordinate)
-        }
     }
     
     //MARK: - NSNotification
