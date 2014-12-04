@@ -436,10 +436,8 @@ class SwipeableTableViewCell: UITableViewCell, UIGestureRecognizerDelegate {
                         let constant = max(adjustment, 0)
                         
                         if constant == 0 {
-                            println("opened right, close cell")
                             resetConstraintContstantsToZero(true, notifyDelegateDidClose: false)
                         } else {
-                            println("opened right, moving right")
                             contentViewRightConstraint?.constant = constant
                         }
                     }
@@ -449,11 +447,20 @@ class SwipeableTableViewCell: UITableViewCell, UIGestureRecognizerDelegate {
                         configureButtonsIfNeededAtDirection(Direction.right)
                         openedDirection = Direction.right
                     }
-                    let constant = min(adjustment, buttonTotalWidthAtDirection(Direction.right))
-                    if constant == buttonTotalWidthAtDirection(Direction.right) {
-                        setConstraintsToShowAllButtons(true, notifyDelegateDidOpen: false)
+                    if openedDirection! == Direction.right {
+                        let constant = min(adjustment, buttonTotalWidthAtDirection(Direction.right))
+                        if constant == buttonTotalWidthAtDirection(Direction.right) {
+                            setConstraintsToShowAllButtons(true, notifyDelegateDidOpen: false)
+                        } else {
+                            contentViewRightConstraint?.constant = constant
+                        }
                     } else {
-                        contentViewRightConstraint?.constant = constant
+                        let constant = max(-adjustment, 0)
+                        if constant == 0 {
+                            resetConstraintContstantsToZero(true, notifyDelegateDidClose: false)
+                        } else {
+                            contentViewRightConstraint?.constant = -constant
+                        }
                     }
                 }
                 if let rightConstraint = contentViewRightConstraint {
@@ -461,8 +468,10 @@ class SwipeableTableViewCell: UITableViewCell, UIGestureRecognizerDelegate {
                 }
             }
         case UIGestureRecognizerState.Ended:
+            println("gesture ended")
             if movingHorizontally {
                 if let direction = openedDirection {
+                    println("direction: \(direction)")
                     if buttonsAtDirection(direction).count > 0 {
                         if startingRightLayoutConstraintConstant == 0 {
                             // opening
@@ -478,9 +487,11 @@ class SwipeableTableViewCell: UITableViewCell, UIGestureRecognizerDelegate {
                             // closing
                             if abs(contentViewRightConstraint!.constant) >= halfOfLastButtonXPositionAtDirection(openedDirection!) {
                                 // Re-open all the way
+                                println("re-open cell")
                                 setConstraintsToShowAllButtons(true, notifyDelegateDidOpen: true)
                             } else {
                                 // Close
+                                println("close cell")
                                 resetConstraintContstantsToZero(true, notifyDelegateDidClose: true)
                             }
                         }
