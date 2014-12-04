@@ -1,5 +1,5 @@
 //
-//  DevicesTableViewController.swift
+//  LocationsTableViewController.swift
 //  remember
 //
 //  Created by Joseph Cheung on 9/10/14.
@@ -13,13 +13,13 @@ import CoreData
 import MapKit
 import AddressBookUI
 
-@objc protocol DevicesTableViewControllerDelegate {
+@objc protocol LocationsTableViewControllerDelegate {
     func didSelectLocationWithCoordinate(coordinate: CLLocationCoordinate2D)
     func didAddLocation(location: CLLocation)
     func didAddBeacon(beacon: CLBeacon)
 }
 
-class DevicesTableViewController: UITableViewController, UITableViewDataSource, UITableViewDelegate {
+class LocationsTableViewController: UITableViewController, UITableViewDataSource, UITableViewDelegate {
     
     let LOADING_LOCATION = NSLocalizedString("LOADING_LOCATION", comment: "gps cell label text when loading location")
     let CURRENT_LOCATION = NSLocalizedString("CURRENT_LOCATION", comment: "gps cell label text when location is determined")
@@ -35,7 +35,7 @@ class DevicesTableViewController: UITableViewController, UITableViewDataSource, 
     
     let notificationCenter = NSNotificationCenter.defaultCenter()
     var rangedBeacons = [CLBeacon]()
-    weak var delegate: DevicesTableViewControllerDelegate?
+    weak var delegate: LocationsTableViewControllerDelegate?
     var gpsLocation:CLLocation? = nil {
         didSet(oldLocation) {
             tableView.reloadData()

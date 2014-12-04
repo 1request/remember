@@ -96,7 +96,7 @@
         <!--Locations-->
         <scene sceneID="v3v-Zd-xEL">
             <objects>
-                <tableViewController storyboardIdentifier="devicesTableViewController" id="3mB-0z-fow" customClass="DevicesTableViewController" customModule="remember" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="locationsTableViewController" id="3mB-0z-fow" customClass="LocationsTableViewController" customModule="remember" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="60" sectionHeaderHeight="22" sectionFooterHeight="22" id="tz9-DF-scI">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

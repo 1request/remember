@@ -20,7 +20,7 @@ class LocationsViewController: UIViewController {
     
     @IBOutlet weak var mapContainerView: UIView!
     
-    var devicesTVC: DevicesTableViewController?
+    var locationsTVC: LocationsTableViewController?
     var mapVC: MapViewController?
     
     var selectedCoordinate: CLLocationCoordinate2D? = nil {
@@ -31,8 +31,8 @@ class LocationsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        if devicesTVC == nil {
-            setUpDevicesTVC()
+        if locationsTVC == nil {
+            setUpLocationsTVC()
         }
     }
     
@@ -45,13 +45,13 @@ class LocationsViewController: UIViewController {
         view.addConstraints(verticalConstraints)
     }
     
-    func setUpDevicesTVC() {
-        devicesTVC = self.storyboard?.instantiateViewControllerWithIdentifier("devicesTableViewController") as? DevicesTableViewController
-        addChildViewController(devicesTVC!)
-        locationsContainerView.addSubview(devicesTVC!.view)
-        setContainerViewConstraints(devicesTVC!, view: locationsContainerView)
-        devicesTVC?.didMoveToParentViewController(self)
-        devicesTVC?.delegate = self
+    func setUpLocationsTVC() {
+        locationsTVC = self.storyboard?.instantiateViewControllerWithIdentifier("locationsTableViewController") as? LocationsTableViewController
+        addChildViewController(locationsTVC!)
+        locationsContainerView.addSubview(locationsTVC!.view)
+        setContainerViewConstraints(locationsTVC!, view: locationsContainerView)
+        locationsTVC?.didMoveToParentViewController(self)
+        locationsTVC?.delegate = self
     }
     
     func setUpMapVC() {
@@ -82,19 +82,19 @@ class LocationsViewController: UIViewController {
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "toAddGroup" {
-            let addDeviceVC = segue.destinationViewController as AddGroupTableViewController
-            addDeviceVC.managedObjectContext = managedObjectContext
+            let addGroupVC = segue.destinationViewController as AddGroupTableViewController
+            addGroupVC.managedObjectContext = managedObjectContext
             if let object = sender as? CLLocation {
-                addDeviceVC.location = object
+                addGroupVC.location = object
             }
             if let object = sender as? CLBeacon {
-                addDeviceVC.beacon = object
+                addGroupVC.beacon = object
             }
         }
     }
 }
 
-extension LocationsViewController: DevicesTableViewControllerDelegate {
+extension LocationsViewController: LocationsTableViewControllerDelegate {
     func didSelectLocationWithCoordinate(coordinate: CLLocationCoordinate2D) {
         selectedCoordinate = coordinate
     }
