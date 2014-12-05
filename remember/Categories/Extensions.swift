@@ -113,14 +113,10 @@ extension Location {
         }
     }
     
-    class func findOrCreateBy(attributes: [String: AnyObject], context: NSManagedObjectContext) -> Location {
-        let str = reduce(attributes, "") {
-            return $0 + "\($1.0) == \($1.1) AND "
-        }
+    class func findOrCreateBy(uuid: String, major: NSNumber, minor: NSNumber, context: NSManagedObjectContext) -> Location {
         
-        let subStringIndex = countElements(str) - 5
-        let pred = str.substringToIndex(advance(str.startIndex, subStringIndex))
-        let predicate = NSPredicate(format: pred)
+        let predicate = NSPredicate(format: "uuid == %@ AND major == %@ AND minor == %@", uuid, major, minor)
+        
         let request = NSFetchRequest(entityName: "Location")
         request.predicate = predicate
         var error: NSError?
@@ -128,11 +124,9 @@ extension Location {
             return results[0]
         } else {
             let newLocation = NSEntityDescription.insertNewObjectForEntityForName("Location", inManagedObjectContext: context) as Location
-            newLocation.uuid = attributes["uuid"] as String
-            newLocation.major = attributes["major"] as NSNumber
-            newLocation.minor = attributes["minor"] as NSNumber
-            newLocation.longitude = attributes["longitude"] as NSNumber
-            newLocation.latitude = attributes["latitude"] as NSNumber
+            newLocation.uuid = uuid
+            newLocation.major = major
+            newLocation.minor = minor
             newLocation.createdAt = NSDate()
             newLocation.updatedAt = newLocation.createdAt
             newLocation.identifier = newLocation.createIndentifier()
