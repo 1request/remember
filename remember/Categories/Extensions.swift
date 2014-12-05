@@ -113,6 +113,24 @@ extension Location {
         }
     }
     
+    class func createBy(uuid: String, major: NSNumber, minor: NSNumber, context: NSManagedObjectContext) -> Location {
+        let newLocation = NSEntityDescription.insertNewObjectForEntityForName("Location", inManagedObjectContext: context) as Location
+        newLocation.uuid = uuid
+        newLocation.major = major
+        newLocation.minor = minor
+        newLocation.createdAt = NSDate()
+        newLocation.updatedAt = newLocation.createdAt
+        newLocation.identifier = newLocation.createIndentifier()
+        var error: NSError?
+        if !context.save(&error) {
+            println("cannot create new location: \(error)")
+        }
+        
+        let e = AddLocationEvent(location: newLocation)
+        Mixpanel.sharedInstance().track(kAddLocationEventTitle, properties: e.properties)
+        return newLocation
+    }
+    
     class func findOrCreateBy(uuid: String, major: NSNumber, minor: NSNumber, context: NSManagedObjectContext) -> Location {
         
         let predicate = NSPredicate(format: "uuid == %@ AND major == %@ AND minor == %@", uuid, major, minor)
@@ -120,23 +138,11 @@ extension Location {
         let request = NSFetchRequest(entityName: "Location")
         request.predicate = predicate
         var error: NSError?
-        if let results = context.executeFetchRequest(request, error: &error) as? [Location] {
+        let results = context.executeFetchRequest(request, error: &error) as [Location]
+        if results.count > 0 {
             return results[0]
         } else {
-            let newLocation = NSEntityDescription.insertNewObjectForEntityForName("Location", inManagedObjectContext: context) as Location
-            newLocation.uuid = uuid
-            newLocation.major = major
-            newLocation.minor = minor
-            newLocation.createdAt = NSDate()
-            newLocation.updatedAt = newLocation.createdAt
-            newLocation.identifier = newLocation.createIndentifier()
-            if !context.save(&error) {
-                println("cannot create new location: \(error)")
-            }
-            
-            let e = AddLocationEvent(location: newLocation)
-            Mixpanel.sharedInstance().track(kAddLocationEventTitle, properties: e.properties)
-            return newLocation
+            return createBy(uuid, major: major, minor: minor, context: context)
         }
     }
 }
