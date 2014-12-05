@@ -14,7 +14,7 @@ import CoreLocation
     func groupNameTextFieldDidChange(textField: UITextField)
 }
 
-class AddGroupTableViewController: UITableViewController {
+class AddGroupTableViewController: UITableViewController, UIGestureRecognizerDelegate {
     
     weak var managedObjectContext: NSManagedObjectContext?
     
@@ -37,6 +37,11 @@ class AddGroupTableViewController: UITableViewController {
         tableView.removeFooterBorder()
         groupNameTextField.delegate = self
         saveButton.enabled = false
+        
+        let tapRecognizer = UITapGestureRecognizer(target: self, action: "handleSingleTap:")
+        tapRecognizer.numberOfTapsRequired = 1
+        self.view.addGestureRecognizer(tapRecognizer)
+        tapRecognizer.cancelsTouchesInView = false
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
@@ -97,6 +102,9 @@ class AddGroupTableViewController: UITableViewController {
         navigationController?.popToRootViewControllerAnimated(true)
     }
     
+    func handleSingleTap(recognizer: UITapGestureRecognizer) {
+        view.endEditing(true)
+    }
 }
 
 extension AddGroupTableViewController: UITextFieldDelegate {
