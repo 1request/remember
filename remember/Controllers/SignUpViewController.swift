@@ -19,6 +19,8 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
     
     weak var delegate: SignUpViewControllerDelegate?
     
+    @IBOutlet weak var cameraButton: UIButton!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -28,16 +30,29 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
         usernameTextField.delegate = self
     }
     
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        let proportion = cameraButton.frame.width / 4
+        
+        cameraButton.layer.cornerRadius = cameraButton.frame.size.height / 2
+        
+        cameraButton.layer.masksToBounds = true
+        cameraButton.imageEdgeInsets = UIEdgeInsetsMake(proportion, proportion, proportion, proportion)
+    }
+    
     
     @IBAction func cancelButtonPressed(sender: AnyObject) {
         delegate?.cancelButtonClicked()
+        view.endEditing(true)
     }
     
     @IBAction func cameraButtonPressed(sender: UIButton) {
+        view.endEditing(true)
     }
     
     @IBAction func confirmButtonPressed(sender: UIButton) {
         delegate?.createdUser()
+        view.endEditing(true)
     }
     
     func handleSingleTap(recognizer: UITapGestureRecognizer) {
