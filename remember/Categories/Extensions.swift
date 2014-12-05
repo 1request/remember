@@ -113,6 +113,24 @@ extension Location {
         }
     }
     
+    class func createBy(uuid: String, major: NSNumber, minor: NSNumber, context: NSManagedObjectContext) -> Location {
+        let newLocation = NSEntityDescription.insertNewObjectForEntityForName("Location", inManagedObjectContext: context) as Location
+        newLocation.uuid = uuid
+        newLocation.major = major
+        newLocation.minor = minor
+        newLocation.createdAt = NSDate()
+        newLocation.updatedAt = newLocation.createdAt
+        newLocation.identifier = newLocation.createIndentifier()
+        var error: NSError?
+        if !context.save(&error) {
+            println("cannot create new location: \(error)")
+        }
+        
+        let e = AddLocationEvent(location: newLocation)
+        Mixpanel.sharedInstance().track(kAddLocationEventTitle, properties: e.properties)
+        return newLocation
+    }
+    
     class func findOrCreateBy(uuid: String, major: NSNumber, minor: NSNumber, context: NSManagedObjectContext) -> Location {
         
         let predicate = NSPredicate(format: "uuid == %@ AND major == %@ AND minor == %@", uuid, major, minor)
@@ -120,23 +138,11 @@ extension Location {
         let request = NSFetchRequest(entityName: "Location")
         request.predicate = predicate
         var error: NSError?
-        if let results = context.executeFetchRequest(request, error: &error) as? [Location] {
+        let results = context.executeFetchRequest(request, error: &error) as [Location]
+        if results.count > 0 {
             return results[0]
         } else {
-            let newLocation = NSEntityDescription.insertNewObjectForEntityForName("Location", inManagedObjectContext: context) as Location
-            newLocation.uuid = uuid
-            newLocation.major = major
-            newLocation.minor = minor
-            newLocation.createdAt = NSDate()
-            newLocation.updatedAt = newLocation.createdAt
-            newLocation.identifier = newLocation.createIndentifier()
-            if !context.save(&error) {
-                println("cannot create new location: \(error)")
-            }
-            
-            let e = AddLocationEvent(location: newLocation)
-            Mixpanel.sharedInstance().track(kAddLocationEventTitle, properties: e.properties)
-            return newLocation
+            return createBy(uuid, major: major, minor: minor, context: context)
         }
     }
 }
@@ -157,5 +163,44 @@ extension NSMutableData {
 extension String {
     func trimWhiteSpace() -> String {
         return self.stringByTrimmingCharactersInSet(.whitespaceCharacterSet())
+    }
+}
+
+extension CAGradientLayer {
+    
+    func turquoiseColor() -> CAGradientLayer {
+        let topColor = UIColor(red: (15/255.0), green: (118/255.0), blue: (128/255.0), alpha: 1)
+        let bottomColor = UIColor(red: (84/255.0), green: (187/255.0), blue: (187/255.0), alpha: 1)
+        
+        let gradientColors: [CGColor] = [topColor.CGColor, bottomColor.CGColor]
+        let gradientLocations: [Float] = [0.0, 1.0]
+        
+        let gradientLayer: CAGradientLayer = CAGradientLayer()
+        gradientLayer.colors = gradientColors
+        gradientLayer.locations = gradientLocations
+        
+        return gradientLayer
+    }
+}
+
+extension UIView {
+    func showAnimated() {
+        alpha = 0.0
+        transform = CGAffineTransformMakeScale(1.3, 1.3)
+        
+        UIView.animateWithDuration(0.4) {
+            self.alpha = 1.0
+            self.transform = CGAffineTransformIdentity
+        }
+    }
+    
+    func dismissAnimated() {
+        alpha = 1.0
+        transform = CGAffineTransformIdentity
+        
+        UIView.animateWithDuration(0.4) {
+            self.alpha = 0.0
+            self.transform = CGAffineTransformMakeScale(1.3, 1.3)
+        }
     }
 }

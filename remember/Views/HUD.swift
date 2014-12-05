@@ -55,16 +55,6 @@ class HUD: UIView {
         randomTiles()
     }
     
-    private func showAnimated() {
-        alpha = 0.0
-        transform = CGAffineTransformMakeScale(1.3, 1.3)
-        
-        UIView.animateWithDuration(0.4) {
-            self.alpha = 1.0
-            self.transform = CGAffineTransformIdentity
-        }
-    }
-    
     private func randomTileNumber() -> Int {
         let rand = UInt32(upperBound - lowerBound + 1)
         return lowerBound + Int(arc4random_uniform(rand))
