@@ -94,6 +94,7 @@
 		D1B9DE461A0C2F1100C4243E /* EditGroupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C28F48D1A0A0B40006A7CA0 /* EditGroupViewController.swift */; };
 		D1BD333F1A30AC6D00BF1811 /* LocationToGroupMigrationPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C319B5E1A2D78F90042BAB8 /* LocationToGroupMigrationPolicy.swift */; };
 		D1BD33401A30AC6D00BF1811 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C319B561A2D785C0042BAB8 /* Message.swift */; };
+		D1D935AC1A31D6B300A6BA16 /* RememberMappingModel_v4_to_v5.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 7C4EA9BD1A3173F600CD2011 /* RememberMappingModel_v4_to_v5.xcmappingmodel */; };
 		D1EE65141A0740A600A65EF0 /* LocationsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6109AF19E793400082AC7B /* LocationsTableViewController.swift */; };
 		D1EE65151A0740A600A65EF0 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A76A0B219E63DEC0031202A /* HomeViewController.swift */; };
 		D1EE65161A0740A600A65EF0 /* MessagesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABFAA6619E668DB00FCE6EF /* MessagesTableViewCell.swift */; };
@@ -735,6 +736,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D1D935AC1A31D6B300A6BA16 /* RememberMappingModel_v4_to_v5.xcmappingmodel in Sources */,
 				D1BD333F1A30AC6D00BF1811 /* LocationToGroupMigrationPolicy.swift in Sources */,
 				D1BD33401A30AC6D00BF1811 /* Message.swift in Sources */,
 				D1F62E891A28971900191D87 /* FeedbackViewController.swift in Sources */,
