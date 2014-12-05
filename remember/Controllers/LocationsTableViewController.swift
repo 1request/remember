@@ -25,7 +25,6 @@ class LocationsTableViewController: UITableViewController, UITableViewDataSource
     let CURRENT_LOCATION = NSLocalizedString("CURRENT_LOCATION", comment: "gps cell label text when location is determined")
     let WITHIN_RANGE = NSLocalizedString("WITHIN_RANGE", comment: "Meter range of beacon")
     let ADDED = NSLocalizedString("ADDED", comment: "beacon has been added")
-    let gp = GooglePlaces()
     
     var mapItems:[MKMapItem] = [MKMapItem]() {
         didSet(oldMapItems) {
@@ -39,7 +38,6 @@ class LocationsTableViewController: UITableViewController, UITableViewDataSource
     var gpsLocation:CLLocation? = nil {
         didSet(oldLocation) {
             tableView.reloadData()
-            nearbySearch()
         }
     }
     
@@ -67,7 +65,6 @@ class LocationsTableViewController: UITableViewController, UITableViewDataSource
         notificationCenter.addObserver(self, selector: "enteredRegion:", name: kRangedBeaconRegionNotificationName, object: nil)
         notificationCenter.addObserver(self, selector: "updateGPSLocation:", name: kGPSLocationUpdateNotificationName, object: nil)
         gpsLocation = LocationManager.sharedInstance.currentLocation
-        nearbySearch()
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -88,16 +85,6 @@ class LocationsTableViewController: UITableViewController, UITableViewDataSource
             return 1
         } else {
             return mapItems.count
-        }
-    }
-    
-    func nearbySearch() {
-        if let location = gpsLocation {
-            gp.search(location.coordinate, radius: 200, query: "") { (items, errorDescription) -> Void in
-                if let items = items {
-                    self.mapItems = items
-                }
-            }
         }
     }
     
@@ -179,12 +166,6 @@ class LocationsTableViewController: UITableViewController, UITableViewDataSource
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let locationsVC = parentViewController as LocationsViewController
-        if indexPath.section == 0 || indexPath.section == 1 {
-            delegate?.didSelectLocationWithCoordinate(gpsLocation!.coordinate)
-        } else {
-            let mapItem = mapItems[indexPath.row]
-            delegate?.didSelectLocationWithCoordinate(mapItem.placemark.coordinate)
-        }
     }
     
     //MARK: - NSNotification

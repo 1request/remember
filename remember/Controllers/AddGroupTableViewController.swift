@@ -67,8 +67,14 @@ class AddGroupTableViewController: UITableViewController {
         
         var locationToBeAdded: Location?
         if let beaconDetected = beacon {
-            let location = Location.findOrCreateBy(["uuid": beaconDetected.proximityUUID.UUIDString, "major": beaconDetected.major, "minor": beaconDetected.minor], context: managedObjectContext!)
-            groupToBeAdded.location = location
+            let beacon = Location.findOrCreateBy(beaconDetected.proximityUUID.UUIDString, major: beaconDetected.major, minor: beaconDetected.minor, context: managedObjectContext!)
+            
+            if let currentLocation = LocationManager.sharedInstance.currentLocation {
+                beacon.longitude = currentLocation.coordinate.longitude
+                beacon.latitude = currentLocation.coordinate.latitude
+            }
+            
+            groupToBeAdded.location = beacon
         } else if let locationDetected = location {
             let newLocation = NSEntityDescription.insertNewObjectForEntityForName("Location", inManagedObjectContext: managedObjectContext!) as Location
             newLocation.longitude = locationDetected.coordinate.longitude

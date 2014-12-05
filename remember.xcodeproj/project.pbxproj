@@ -27,6 +27,11 @@
 		7C319B571A2D785C0042BAB8 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C319B561A2D785C0042BAB8 /* Message.swift */; };
 		7C319B5F1A2D78F90042BAB8 /* LocationToGroupMigrationPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C319B5E1A2D78F90042BAB8 /* LocationToGroupMigrationPolicy.swift */; };
 		7C3475EB1A2EC0B300559E0E /* AddLocationEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C3475EA1A2EC0B300559E0E /* AddLocationEvent.swift */; };
+		7C4EA9B81A3169F800CD2011 /* MessageMigrationPolicy_v4_to_v5.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C4EA9B71A3169F700CD2011 /* MessageMigrationPolicy_v4_to_v5.swift */; };
+		7C4EA9B91A3169F800CD2011 /* MessageMigrationPolicy_v4_to_v5.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C4EA9B71A3169F700CD2011 /* MessageMigrationPolicy_v4_to_v5.swift */; };
+		7C4EA9BB1A316A0900CD2011 /* LocationMigrationPolicy_v4_to_v5.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C4EA9BA1A316A0900CD2011 /* LocationMigrationPolicy_v4_to_v5.swift */; };
+		7C4EA9BC1A316A0900CD2011 /* LocationMigrationPolicy_v4_to_v5.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C4EA9BA1A316A0900CD2011 /* LocationMigrationPolicy_v4_to_v5.swift */; };
+		7C4EA9BE1A3173F600CD2011 /* RememberMappingModel_v4_to_v5.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 7C4EA9BD1A3173F600CD2011 /* RememberMappingModel_v4_to_v5.xcmappingmodel */; };
 		7C6109B019E793400082AC7B /* LocationsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6109AF19E793400082AC7B /* LocationsTableViewController.swift */; };
 		7C6109B219E793730082AC7B /* DevicesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6109B119E793730082AC7B /* DevicesTableViewCell.swift */; };
 		7C6109B419E796E00082AC7B /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6109B319E796E00082AC7B /* Extensions.swift */; };
@@ -39,8 +44,6 @@
 		7C6A35281A1B3695004FD2FD /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6A35271A1B3695004FD2FD /* CoreDataStack.swift */; };
 		7C78EFE81A2EC8DC00569844 /* Group.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C78EFE71A2EC8DC00569844 /* Group.swift */; };
 		7C78EFE91A2EC8DC00569844 /* Group.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C78EFE71A2EC8DC00569844 /* Group.swift */; };
-		7C78EFEB1A2EC9DD00569844 /* RememberMappingModel_v4_to_v5.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 7C78EFEA1A2EC9DD00569844 /* RememberMappingModel_v4_to_v5.xcmappingmodel */; };
-		7C78EFEC1A2EC9DD00569844 /* RememberMappingModel_v4_to_v5.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 7C78EFEA1A2EC9DD00569844 /* RememberMappingModel_v4_to_v5.xcmappingmodel */; };
 		7C81E3001A2DB5A900FEF445 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C319B541A2D785B0042BAB8 /* Location.swift */; };
 		7C86C3E01A25672000702D80 /* AudioRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB6F6831A24666100C2A60E /* AudioRecorder.swift */; };
 		7C9FB4E01A30336C00A4B907 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C9FB4DF1A30336C00A4B907 /* QuartzCore.framework */; };
@@ -94,6 +97,8 @@
 		D1B9DE441A0C2F1100C4243E /* HUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CF32E621A0B21B00056F873 /* HUD.swift */; };
 		D1B9DE451A0C2F1100C4243E /* SwipeableTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA8AC711A07202D00566252 /* SwipeableTableViewCell.swift */; };
 		D1B9DE461A0C2F1100C4243E /* EditGroupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C28F48D1A0A0B40006A7CA0 /* EditGroupViewController.swift */; };
+		D1BD333F1A30AC6D00BF1811 /* LocationToGroupMigrationPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C319B5E1A2D78F90042BAB8 /* LocationToGroupMigrationPolicy.swift */; };
+		D1BD33401A30AC6D00BF1811 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C319B561A2D785C0042BAB8 /* Message.swift */; };
 		D1EE65141A0740A600A65EF0 /* LocationsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6109AF19E793400082AC7B /* LocationsTableViewController.swift */; };
 		D1EE65151A0740A600A65EF0 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A76A0B219E63DEC0031202A /* HomeViewController.swift */; };
 		D1EE65161A0740A600A65EF0 /* MessagesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABFAA6619E668DB00FCE6EF /* MessagesTableViewCell.swift */; };
@@ -155,6 +160,9 @@
 		7C319B561A2D785C0042BAB8 /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Message.swift; path = Models/Message.swift; sourceTree = "<group>"; };
 		7C319B5E1A2D78F90042BAB8 /* LocationToGroupMigrationPolicy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LocationToGroupMigrationPolicy.swift; path = Migrations/LocationToGroupMigrationPolicy.swift; sourceTree = "<group>"; };
 		7C3475EA1A2EC0B300559E0E /* AddLocationEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AddLocationEvent.swift; path = Structs/AddLocationEvent.swift; sourceTree = "<group>"; };
+		7C4EA9B71A3169F700CD2011 /* MessageMigrationPolicy_v4_to_v5.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MessageMigrationPolicy_v4_to_v5.swift; path = Migrations/MessageMigrationPolicy_v4_to_v5.swift; sourceTree = "<group>"; };
+		7C4EA9BA1A316A0900CD2011 /* LocationMigrationPolicy_v4_to_v5.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LocationMigrationPolicy_v4_to_v5.swift; path = Migrations/LocationMigrationPolicy_v4_to_v5.swift; sourceTree = "<group>"; };
+		7C4EA9BD1A3173F600CD2011 /* RememberMappingModel_v4_to_v5.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; name = RememberMappingModel_v4_to_v5.xcmappingmodel; path = Migrations/RememberMappingModel_v4_to_v5.xcmappingmodel; sourceTree = "<group>"; };
 		7C516BB51A0A1526005AEF24 /* remember 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "remember 2.xcdatamodel"; sourceTree = "<group>"; };
 		7C6109AF19E793400082AC7B /* LocationsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LocationsTableViewController.swift; path = Controllers/LocationsTableViewController.swift; sourceTree = "<group>"; };
 		7C6109B119E793730082AC7B /* DevicesTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DevicesTableViewCell.swift; path = Views/DevicesTableViewCell.swift; sourceTree = "<group>"; };
@@ -167,7 +175,6 @@
 		7C6A35251A1B2610004FD2FD /* ObjCToSwiftMigrationPolicy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ObjCToSwiftMigrationPolicy.swift; path = Migrations/ObjCToSwiftMigrationPolicy.swift; sourceTree = "<group>"; };
 		7C6A35271A1B3695004FD2FD /* CoreDataStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CoreDataStack.swift; path = Models/CoreDataStack.swift; sourceTree = "<group>"; };
 		7C78EFE71A2EC8DC00569844 /* Group.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Group.swift; path = Models/Group.swift; sourceTree = "<group>"; };
-		7C78EFEA1A2EC9DD00569844 /* RememberMappingModel_v4_to_v5.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; name = RememberMappingModel_v4_to_v5.xcmappingmodel; path = Migrations/RememberMappingModel_v4_to_v5.xcmappingmodel; sourceTree = "<group>"; };
 		7C84AFAE1A0CB0DB00D905A0 /* remember 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "remember 4.xcdatamodel"; sourceTree = "<group>"; };
 		7C9FB4DF1A30336C00A4B907 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		7CA8AC711A07202D00566252 /* SwipeableTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwipeableTableViewCell.swift; path = Views/SwipeableTableViewCell.swift; sourceTree = "<group>"; };
@@ -301,8 +308,10 @@
 			children = (
 				7C6A35231A1B2567004FD2FD /* RememberMappingModel_objc_to_v4.xcmappingmodel */,
 				7C6A35251A1B2610004FD2FD /* ObjCToSwiftMigrationPolicy.swift */,
-				7C78EFEA1A2EC9DD00569844 /* RememberMappingModel_v4_to_v5.xcmappingmodel */,
 				7C319B5E1A2D78F90042BAB8 /* LocationToGroupMigrationPolicy.swift */,
+				7C4EA9BD1A3173F600CD2011 /* RememberMappingModel_v4_to_v5.xcmappingmodel */,
+				7C4EA9B71A3169F700CD2011 /* MessageMigrationPolicy_v4_to_v5.swift */,
+				7C4EA9BA1A316A0900CD2011 /* LocationMigrationPolicy_v4_to_v5.swift */,
 				7C6A351E1A1B0B40004FD2FD /* DataMigrationManager.swift */,
 			);
 			name = Migrations;
@@ -681,7 +690,9 @@
 				7C6109B019E793400082AC7B /* LocationsTableViewController.swift in Sources */,
 				8A76A0B319E63DEC0031202A /* HomeViewController.swift in Sources */,
 				7C69B1731A160089005494A3 /* GeographicRegionEvent.swift in Sources */,
+				7C4EA9BB1A316A0900CD2011 /* LocationMigrationPolicy_v4_to_v5.swift in Sources */,
 				7C319B5F1A2D78F90042BAB8 /* LocationToGroupMigrationPolicy.swift in Sources */,
+				7C4EA9B81A3169F800CD2011 /* MessageMigrationPolicy_v4_to_v5.swift in Sources */,
 				7C78EFE81A2EC8DC00569844 /* Group.swift in Sources */,
 				8ABFAA6719E668DB00FCE6EF /* MessagesTableViewCell.swift in Sources */,
 				7CF32E631A0B21B00056F873 /* HUD.swift in Sources */,
@@ -714,8 +725,8 @@
 				7CDFE6A11A2739DC00EC4B93 /* NearbyLocationsTableViewCell.swift in Sources */,
 				7C6109B419E796E00082AC7B /* Extensions.swift in Sources */,
 				7CA8AC721A07202D00566252 /* SwipeableTableViewCell.swift in Sources */,
-				7C78EFEB1A2EC9DD00569844 /* RememberMappingModel_v4_to_v5.xcmappingmodel in Sources */,
 				7C6A35261A1B2610004FD2FD /* ObjCToSwiftMigrationPolicy.swift in Sources */,
+				7C4EA9BE1A3173F600CD2011 /* RememberMappingModel_v4_to_v5.xcmappingmodel in Sources */,
 				7C28F48E1A0A0B40006A7CA0 /* EditGroupViewController.swift in Sources */,
 				7CE2CA5B1A0C68A000369D8B /* GPSLocationTableViewCell.swift in Sources */,
 				7C6109B219E793730082AC7B /* DevicesTableViewCell.swift in Sources */,
@@ -738,6 +749,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D1BD333F1A30AC6D00BF1811 /* LocationToGroupMigrationPolicy.swift in Sources */,
+				D1BD33401A30AC6D00BF1811 /* Message.swift in Sources */,
 				D1F62E891A28971900191D87 /* FeedbackViewController.swift in Sources */,
 				D1F62E8A1A28971900191D87 /* RecorderViewController.swift in Sources */,
 				D14B83551A27576200D12EDF /* AddableTableViewCell.swift in Sources */,
@@ -761,12 +774,12 @@
 				7C81E3001A2DB5A900FEF445 /* Location.swift in Sources */,
 				D1B9DE441A0C2F1100C4243E /* HUD.swift in Sources */,
 				D1B9DE451A0C2F1100C4243E /* SwipeableTableViewCell.swift in Sources */,
+				7C4EA9BC1A316A0900CD2011 /* LocationMigrationPolicy_v4_to_v5.swift in Sources */,
 				D1B9DE461A0C2F1100C4243E /* EditGroupViewController.swift in Sources */,
 				D1EE65141A0740A600A65EF0 /* LocationsTableViewController.swift in Sources */,
 				D1EE65151A0740A600A65EF0 /* HomeViewController.swift in Sources */,
 				D1EE65161A0740A600A65EF0 /* MessagesTableViewCell.swift in Sources */,
 				D1EE65171A0740A600A65EF0 /* GroupsTableViewCell.swift in Sources */,
-				7C78EFEC1A2EC9DD00569844 /* RememberMappingModel_v4_to_v5.xcmappingmodel in Sources */,
 				D1EE65181A0740A600A65EF0 /* NavigationController.swift in Sources */,
 				7C2D71C11A2F0087003224C1 /* AddGroupTableViewController.swift in Sources */,
 				7CD8853F1A2ED7070093E579 /* AddLocationEvent.swift in Sources */,
@@ -777,6 +790,7 @@
 				D1EE651B1A0740A600A65EF0 /* RadioButton.swift in Sources */,
 				D1EE651C1A0740A600A65EF0 /* LocationManager.swift in Sources */,
 				D1EE651D1A0740A600A65EF0 /* remember.xcdatamodeld in Sources */,
+				7C4EA9B91A3169F800CD2011 /* MessageMigrationPolicy_v4_to_v5.swift in Sources */,
 				D1EE651E1A0740A600A65EF0 /* Extensions.swift in Sources */,
 				D1EE651F1A0740A600A65EF0 /* DevicesTableViewCell.swift in Sources */,
 				D1EE65201A0740A600A65EF0 /* BeaconFactory.swift in Sources */,
