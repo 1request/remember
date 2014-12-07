@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MobileCoreServices
 
 @objc protocol SignUpViewControllerDelegate {
     func cancelButtonClicked()
@@ -14,8 +15,11 @@ import UIKit
 }
 
 class SignUpViewController: UIViewController, UITextFieldDelegate {
+    @IBOutlet weak var formView: UIView!
 
     @IBOutlet weak var usernameTextField: UITextField!
+    
+    @IBOutlet weak var userImageView: UIImageView!
     
     weak var delegate: SignUpViewControllerDelegate?
     
@@ -33,11 +37,11 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         let proportion = cameraButton.frame.width / 4
-        
         cameraButton.layer.cornerRadius = cameraButton.frame.size.height / 2
-        
         cameraButton.layer.masksToBounds = true
         cameraButton.imageEdgeInsets = UIEdgeInsetsMake(proportion, proportion, proportion, proportion)
+        userImageView.layer.cornerRadius = userImageView.frame.size.height / 2
+        userImageView.layer.masksToBounds = true
     }
     
     
@@ -48,6 +52,17 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
     
     @IBAction func cameraButtonPressed(sender: UIButton) {
         view.endEditing(true)
+        
+        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera) {
+            let imagePickerController = UIImagePickerController()
+            imagePickerController.delegate = self
+            imagePickerController.mediaTypes = [kUTTypeImage]
+            imagePickerController.allowsEditing = true
+            imagePickerController.sourceType = UIImagePickerControllerSourceType.Camera
+            presentViewController(imagePickerController, animated: true, completion: nil)
+        } else {
+            NSLog("No camera")
+        }
     }
     
     @IBAction func confirmButtonPressed(sender: UIButton) {
@@ -62,5 +77,24 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
+    }
+}
+
+extension SignUpViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    func imagePickerControllerDidCancel(picker: UIImagePickerController) {
+        picker.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [NSObject : AnyObject]) {
+        var image = info[UIImagePickerControllerEditedImage] as? UIImage
+        if image == nil {
+            image = info[UIImagePickerControllerOriginalImage] as? UIImage
+        }
+        
+        userImageView.image = image
+        
+        userImageView.hidden = false
+        
+        picker.dismissViewControllerAnimated(true, completion: nil)
     }
 }

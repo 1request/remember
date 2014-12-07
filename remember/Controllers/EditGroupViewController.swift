@@ -23,7 +23,7 @@ class EditGroupViewController: UIViewController {
     
     lazy var annotation: MKPointAnnotation? = {
         if let currentGroup = self.group {
-            let coordinate = CLLocationCoordinate2D(latitude: CLLocationDegrees(currentGroup.location.latitude), longitude: CLLocationDegrees(currentGroup.location.longitude))
+            let coordinate = CLLocationCoordinate2D(latitude: CLLocationDegrees(currentGroup.location.latitude), longitude: CLLocationDegrees(currentGroup.location.longitude))         
             
             let annotation = MKPointAnnotation()
             annotation.coordinate = coordinate
