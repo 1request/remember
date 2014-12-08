@@ -55,7 +55,11 @@ class AddLocationViewController: UIViewController {
     @IBAction func saveBarButtonItemPressed(sender: UIBarButtonItem) {
         if let shareRadioButton = addGroupTVC?.sharedRadioButton {
             if shareRadioButton.checked {
-                showSignUpForm()
+                if NSUserDefaults.standardUserDefaults().valueForKey("userId") == nil {
+                    showSignUpForm()
+                } else {
+                    addGroupTVC?.createGroup()
+                }
             } else {
                 addGroupTVC?.createGroup()
             }
@@ -86,6 +90,7 @@ extension AddLocationViewController: SignUpViewControllerDelegate {
     }
     
     func createdUser() {
-        dismissViewControllerAnimated(true, completion: nil)
+        addGroupTVC?.createGroup()
+        navigationController?.popToRootViewControllerAnimated(true)
     }
 }

@@ -21,9 +21,17 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
     
     @IBOutlet weak var userImageView: UIImageView!
     
+    @IBOutlet weak var cameraButton: UIButton!
+    
+    @IBOutlet weak var confirmButton: UIButton!
+    
     weak var delegate: SignUpViewControllerDelegate?
     
-    @IBOutlet weak var cameraButton: UIButton!
+    var userImage: UIImage? = nil {
+        didSet {
+            checkUserData()
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,6 +58,10 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
         view.endEditing(true)
     }
     
+    @IBAction func usernameTextFieldEditingChanged(sender: UITextField) {
+        checkUserData()
+    }
+    
     @IBAction func cameraButtonPressed(sender: UIButton) {
         view.endEditing(true)
         
@@ -66,8 +78,22 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
     }
     
     @IBAction func confirmButtonPressed(sender: UIButton) {
-        delegate?.createdUser()
+        
+        if let image = userImageView.image {
+            let user = User(nickname: usernameTextField.text, image: userImageView.image!)
+            user.createAccount()
+            delegate?.createdUser()
+        }
+        
         view.endEditing(true)
+    }
+    
+    func checkUserData() {
+        if usernameTextField.text != "" && userImage != nil {
+            confirmButton.enabled = true
+        } else {
+            confirmButton.enabled = false
+        }
     }
     
     func handleSingleTap(recognizer: UITapGestureRecognizer) {
@@ -91,8 +117,9 @@ extension SignUpViewController: UIImagePickerControllerDelegate, UINavigationCon
             image = info[UIImagePickerControllerOriginalImage] as? UIImage
         }
         
-        userImageView.image = image
+        userImage = image
         
+        userImageView.image = userImage
         userImageView.hidden = false
         
         picker.dismissViewControllerAnimated(true, completion: nil)
