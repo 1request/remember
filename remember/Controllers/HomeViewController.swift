@@ -61,6 +61,12 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         let tapRecognizer = UITapGestureRecognizer(target: self, action: "tapView:")
         tapRecognizer.delegate = self
         view.addGestureRecognizer(tapRecognizer)
+        
+        NSNotificationCenter.defaultCenter().addObserverForName(UIApplicationWillResignActiveNotification, object: nil, queue: nil) { (notification) -> Void in
+            self.hudView.removeFromSuperview()
+            self.recorderViewController?.recorder.stopRecordingAudio()
+            self.handleRecordedAudio()
+        }
     }
 
     override func viewDidAppear(animated: Bool) {
@@ -559,11 +565,7 @@ extension HomeViewController: RecorderViewControllerDelegate {
         if valid {
             Mixpanel.sharedInstance().track("audioRecorded")
 
-            let group = managedObjectContext!.objectWithID(selectedGroupObjectID!) as Group
-            createMessageForGroup(group)
-            monitorLocationOfGroup(group)
-            let indexPath = NSIndexPath(forRow: 0, inSection: 0)
-            tableView.scrollToRowAtIndexPath(indexPath, atScrollPosition: .Top, animated: true)
+            handleRecordedAudio()
         }
     }
 
@@ -579,6 +581,14 @@ extension HomeViewController: RecorderViewControllerDelegate {
     func recorderButtonDidDragExit() {
         hudView.text = RELEASE_TO_CANCEL
         hudView.setNeedsDisplay()
+    }
+    
+    func handleRecordedAudio() {
+        let group = managedObjectContext!.objectWithID(selectedGroupObjectID!) as Group
+        createMessageForGroup(group)
+        monitorLocationOfGroup(group)
+        let indexPath = NSIndexPath(forRow: 0, inSection: 0)
+        tableView.scrollToRowAtIndexPath(indexPath, atScrollPosition: .Top, animated: true)
     }
 
     func createMessageForGroup (group: Group) {
