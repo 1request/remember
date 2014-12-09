@@ -11,6 +11,9 @@
 /* Class = "IBUITextField"; placeholder = "位置名称"; ObjectID = "8p8-a3-arm"; */
 "8p8-a3-arm.placeholder" = "位置名称";
 
+/* Class = "IBUITextField"; placeholder = "Username"; ObjectID = "9Mh-6y-TEg"; */
+"9Mh-6y-TEg.placeholder" = "Username";
+
 /* Class = "IBUIBarButtonItem"; title = "保存"; ObjectID = "9rk-Hn-gfg"; */
 "9rk-Hn-gfg.title" = "保存";
 
@@ -29,8 +32,8 @@
 /* Class = "IBUILabel"; text = "个人"; ObjectID = "NkJ-qt-JiL"; */
 "NkJ-qt-JiL.text" = "个人";
 
-/* Class = "IBUIButton"; normalTitle = "新增"; ObjectID = "PSl-ig-5HI"; */
-"PSl-ig-5HI.normalTitle" = "新增";
+/* Class = "IBUIButton"; normalTitle = "加入"; ObjectID = "PSl-ig-5HI"; */
+"PSl-ig-5HI.normalTitle" = "加入";
 
 /* Class = "IBUINavigationItem"; title = "反馈"; ObjectID = "RKF-YF-mYQ"; */
 "RKF-YF-mYQ.title" = "反馈";
@@ -50,8 +53,8 @@
 /* Class = "IBUINavigationItem"; title = "位置"; ObjectID = "YaY-Kx-AB6"; */
 "YaY-Kx-AB6.title" = "位置";
 
-/* Class = "IBUILabel"; text = "Address"; ObjectID = "aSv-l9-5kl"; */
-"aSv-l9-5kl.text" = "Address";
+/* Class = "IBUILabel"; text = "Range"; ObjectID = "aSv-l9-5kl"; */
+"aSv-l9-5kl.text" = "Range";
 
 /* Class = "IBUILabel"; text = "Label"; ObjectID = "ahX-TR-678"; */
 "ahX-TR-678.text" = "Label";
@@ -82,3 +85,9 @@
 
 /* Class = "IBUILabel"; text = "请按下录音按钮，开始记录回馈"; ObjectID = "vo7-mc-gGa"; */
 "vo7-mc-gGa.text" = "请按下录音按钮，开始记录回馈";
+
+/* Class = "IBUIButton"; normalTitle = "OK"; ObjectID = "xHl-FS-bNb"; */
+"xHl-FS-bNb.normalTitle" = "OK";
+
+/* Class = "IBUIButton"; normalTitle = "✕\nMULTIPLICATION X\nUnicode: U+2715, UTF-8: E2 9C 95"; ObjectID = "xpQ-bV-4lN"; */
+"xpQ-bV-4lN.normalTitle" = "✕\nMULTIPLICATION X\nUnicode: U+2715, UTF-8: E2 9C 95";

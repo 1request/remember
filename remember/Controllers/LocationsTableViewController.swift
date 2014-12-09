@@ -25,6 +25,7 @@ class LocationsTableViewController: UITableViewController, UITableViewDataSource
     let CURRENT_LOCATION = NSLocalizedString("CURRENT_LOCATION", comment: "gps cell label text when location is determined")
     let WITHIN_RANGE = NSLocalizedString("WITHIN_RANGE", comment: "Meter range of beacon")
     let ADDED = NSLocalizedString("ADDED", comment: "beacon has been added")
+    let SENT = NSLocalizedString("SENT", comment: "application for joining gorup has been sent")
     
     let notificationCenter = NSNotificationCenter.defaultCenter()
     var rangedBeacons = [CLBeacon]()
@@ -108,11 +109,18 @@ class LocationsTableViewController: UITableViewController, UITableViewDataSource
         let coordinate = CLLocation(latitude: latitude, longitude: longitude)
         let formattedRange = coordinate.distanceFromLocation(gpsLocation).format(".2")
         let range = String(format: WITHIN_RANGE, formattedRange)
+        
         cell.nameLabel.text = group.name
         cell.addressLabel.text = range
         cell.addressLabel.sizeToFit()
         cell.didPressAddButtonBlock = {
-            println("join group")
+            [weak self] in
+            if let weakself = self {
+                cell.addButton.setTitle(weakself.SENT, forState: .Normal)
+                cell.addButton.enabled = false
+                cell.addButton.backgroundColor = UIColor.appGrayColor()
+                weakself.joinGroup(group)
+            }
         }
         
         cell.setNeedsDisplay()
@@ -186,6 +194,14 @@ class LocationsTableViewController: UITableViewController, UITableViewDataSource
             if let location = dict[kGPSLocationUpdateNotificationUserInfoLocationKey] {
                 gpsLocation = location
             }
+        }
+    }
+    
+    func joinGroup(group: Group) {
+        let url = NSURL(string: kMembershipsURL)
+        let json: JSON = ["group_id": group.serverId, "user_id": NSUserDefaults.standardUserDefaults().valueForKey("userId") as Int]
+        APIManager.postJSON(json, toURL: url!) { (response, error, jsonObject) -> Void in
+            println("response:\(response)")
         }
     }
 }
