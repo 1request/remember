@@ -246,11 +246,11 @@ extension Group {
         let session = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration())
         let task = session.dataTaskWithRequest(request, completionHandler: { (data, response, error) -> Void in
             let json = JSON(data: data)
-            let currentUser = NSUserDefaults.standardUserDefaults().valueForKey("userId") as Int
+            let currentUser = NSUserDefaults.standardUserDefaults().valueForKey("userId") as? Int
             var groups = [Group]()
             var locations = [Location]()
             for (index: String, subJson: JSON) in json {
-                if currentUser != subJson["creator_id"].number {
+                if currentUser == nil || currentUser != subJson["creator_id"].number {
                     let groupEntity = NSEntityDescription.entityForName("Group", inManagedObjectContext: context)
                     let group = NSManagedObject(entity: groupEntity!, insertIntoManagedObjectContext: nil) as Group
                     let locationEntity = NSEntityDescription.entityForName("Location", inManagedObjectContext: context)

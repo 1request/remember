@@ -26,6 +26,7 @@ class LocationsTableViewController: UITableViewController, UITableViewDataSource
     let WITHIN_RANGE = NSLocalizedString("WITHIN_RANGE", comment: "Meter range of beacon")
     let ADDED = NSLocalizedString("ADDED", comment: "beacon has been added")
     let SENT = NSLocalizedString("SENT", comment: "application for joining gorup has been sent")
+    let currentUser = NSUserDefaults.standardUserDefaults().valueForKey("userId") as? Int
     
     let notificationCenter = NSNotificationCenter.defaultCenter()
     var rangedBeacons = [CLBeacon]()
@@ -119,7 +120,9 @@ class LocationsTableViewController: UITableViewController, UITableViewDataSource
                 cell.addButton.setTitle(weakself.SENT, forState: .Normal)
                 cell.addButton.enabled = false
                 cell.addButton.backgroundColor = UIColor.appGrayColor()
-                weakself.joinGroup(group)
+                if weakself.currentUser != nil {
+                    weakself.joinGroup(group)
+                }
             }
         }
         

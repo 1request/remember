@@ -65,7 +65,9 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         NSNotificationCenter.defaultCenter().addObserverForName(UIApplicationWillResignActiveNotification, object: nil, queue: nil) { (notification) -> Void in
             self.hudView.removeFromSuperview()
             self.recorderViewController?.recorder.stopRecordingAudio()
-            self.handleRecordedAudio()
+            if self.selectedGroupObjectID != nil {
+                self.handleRecordedAudio()
+            }
         }
     }
 
@@ -584,11 +586,13 @@ extension HomeViewController: RecorderViewControllerDelegate {
     }
     
     func handleRecordedAudio() {
-        let group = managedObjectContext!.objectWithID(selectedGroupObjectID!) as Group
-        createMessageForGroup(group)
-        monitorLocationOfGroup(group)
-        let indexPath = NSIndexPath(forRow: 0, inSection: 0)
-        tableView.scrollToRowAtIndexPath(indexPath, atScrollPosition: .Top, animated: true)
+        if let objectId = selectedGroupObjectID {
+            let group = managedObjectContext!.objectWithID(objectId) as Group
+            createMessageForGroup(group)
+            monitorLocationOfGroup(group)
+            let indexPath = NSIndexPath(forRow: 0, inSection: 0)
+            tableView.scrollToRowAtIndexPath(indexPath, atScrollPosition: .Top, animated: true)
+        }
     }
 
     func createMessageForGroup (group: Group) {
