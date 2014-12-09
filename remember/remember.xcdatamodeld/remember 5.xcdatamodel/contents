@@ -24,7 +24,7 @@
         <attribute name="uuid" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="groups" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Group" inverseName="location" inverseEntity="Group" syncable="YES"/>
     </entity>
-    <entity name="Message" representedClassName="I" syncable="YES">
+    <entity name="Message" representedClassName="remember.Message" syncable="YES">
         <attribute name="createdAt" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="isRead" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
@@ -35,6 +35,6 @@
     <elements>
         <element name="Group" positionX="-9" positionY="293" width="128" height="193"/>
         <element name="Location" positionX="-18" positionY="18" width="128" height="193"/>
-        <element name="Message" positionX="223" positionY="180" width="128" height="133"/>
+        <element name="Message" positionX="223" positionY="180" width="128" height="135"/>
     </elements>
 </model>
