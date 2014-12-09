@@ -51,6 +51,7 @@ class LocationsViewController: UIViewController {
         locationsContainerView.addSubview(locationsTVC!.view)
         setContainerViewConstraints(locationsTVC!, view: locationsContainerView)
         locationsTVC?.didMoveToParentViewController(self)
+        locationsTVC?.managedObjectContext = managedObjectContext
         locationsTVC?.delegate = self
     }
     
