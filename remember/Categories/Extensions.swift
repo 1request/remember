@@ -204,3 +204,38 @@ extension UIView {
         }
     }
 }
+
+extension UIImage {
+    func saveImageAsPNGWithName(name: String) {
+        let paths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)
+        let documentsDirectory = paths[0] as String
+        let pathComponent = name + ".png"
+        let path = documentsDirectory.stringByAppendingPathComponent(pathComponent)
+        let data = UIImagePNGRepresentation(self)
+        data.writeToFile(path, atomically: true)
+    }
+    
+    class func loadPNGImageWithName(name: String) -> UIImage? {
+        let paths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)
+        let documentsDirectory = paths[0] as String
+        let pathComponent = name + ".png"
+        let path = documentsDirectory.stringByAppendingPathComponent(pathComponent)
+        return UIImage(contentsOfFile: path)
+    }
+}
+
+extension Group {
+    func createPrivateGroupInServer() {
+        if let userId = NSUserDefaults.standardUserDefaults().valueForKey("userId") as? Int {
+            let json: JSON = ["name": name, "creator_id": userId, "latitude": location.latitude, "longitude": location.longitude, "uuid": location.uuid, "major": location.major, "minor": location.minor]
+            APIManager.postJSON(json, toURL: NSURL(string: kGroupPOSTURL)!, callback: { [weak self] (response, error, jsonObject) -> Void in
+                if let id = jsonObject["id"].number {
+                    self?.serverId = id
+                    if let context = self?.managedObjectContext {
+                        context.save(nil)
+                    }
+                }
+            })
+        }
+    }
+}

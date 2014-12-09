@@ -82,13 +82,13 @@ class LocationsViewController: UIViewController {
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "toAddGroup" {
-            let addGroupVC = segue.destinationViewController as AddGroupTableViewController
-            addGroupVC.managedObjectContext = managedObjectContext
+            let addLocationVC = segue.destinationViewController as AddLocationViewController
+            addLocationVC.managedObjectContext = managedObjectContext
             if let object = sender as? CLLocation {
-                addGroupVC.location = object
+                addLocationVC.location = object
             }
             if let object = sender as? CLBeacon {
-                addGroupVC.beacon = object
+                addLocationVC.beacon = object
             }
         }
     }

@@ -10,7 +10,7 @@ import UIKit
 
 class APIManager: NSObject {
 
-    class func postMultipartData(data: (key: String, data: NSData, type: String, filename: String), parameters: [String: NSObject], url:NSURL) {
+    class func postMultipartData(data: (key: String, data: NSData, type: String, filename: String), parameters: [String: NSObject], url:NSURL, callback: ((response: NSURLResponse, error: NSError?, jsonObject: JSON) -> Void)?) {
         let request = NSMutableURLRequest(URL: url)
         request.cachePolicy = NSURLRequestCachePolicy.ReloadIgnoringLocalCacheData
         request.HTTPShouldHandleCookies = false
@@ -44,27 +44,35 @@ class APIManager: NSObject {
         let postLength = "\(body.length)"
         request.setValue(postLength, forHTTPHeaderField: "Content-Length")
         
-        postRequest(request) { (success, response, error) -> Void in
-            println("response: \(response)")
+        postRequest(request) { (response, error, jsonObject) -> Void in
+            if let cb = callback {
+                cb(response: response, error: error, jsonObject: jsonObject)
+            }
         }
     }
     
-    class func postRequest(request: NSURLRequest, callback: (success: Bool, response: NSURLResponse, error: NSError?) -> Void) {
-        let session = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration())
-        let task = session.dataTaskWithRequest(request, completionHandler: { (data, response, error) -> Void in
-            let returnObject: AnyObject? = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: nil)
-            var success = false
-            if let parsedObject = returnObject as? [String: String] {
-                if (parsedObject["OK"] != nil) {
-                    success = true
-                } else {
-                    println("cannot post to server")
-                    println("response: \(parsedObject)")
-                    success = false
+    class func postJSON(json: JSON, toURL url: NSURL, callback: ((response: NSURLResponse, error: NSError?, jsonObject: JSON) -> Void)?) {
+        if let data = json.rawData() {
+            let length = "\(data.length)"
+            let request = NSMutableURLRequest(URL: url)
+            request.HTTPMethod = "POST"
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.setValue(length, forHTTPHeaderField: "Content-Length")
+            request.HTTPBody = data
+            postRequest(request) { (response, error, jsonObject) -> Void in
+                if let cb = callback {
+                    cb(response: response, error: error, jsonObject: jsonObject)
                 }
             }
+        }
+    }
+    
+    class func postRequest(request: NSURLRequest, callback: (response: NSURLResponse, error: NSError?, jsonObject: JSON) -> Void) {
+        let session = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration())
+        let task = session.dataTaskWithRequest(request, completionHandler: { (data, response, error) -> Void in
+            let json = JSON(data: data)
             session.invalidateAndCancel()
-            callback(success: success, response: response, error: error)
+            callback(response: response, error: error, jsonObject: json)
         })
         task.resume()
     }

@@ -11,6 +11,7 @@
 		7C088D9819E631CA005A51D9 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C088D9719E631CA005A51D9 /* LocationManager.swift */; };
 		7C088D9A19E631E2005A51D9 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C088D9919E631E2005A51D9 /* CoreLocation.framework */; };
 		7C088D9C19E63EE9005A51D9 /* BeaconFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C088D9B19E63EE9005A51D9 /* BeaconFactory.swift */; };
+		7C0B54C01A3545CD006B041A /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C0B54BF1A3545CD006B041A /* User.swift */; };
 		7C0E3A7F1A272DC900235C4C /* AddableTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C0E3A7E1A272DC900235C4C /* AddableTableViewCell.swift */; };
 		7C18BBE51A160145001F15CA /* MixpanelEventProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C18BBE41A160145001F15CA /* MixpanelEventProtocols.swift */; };
 		7C18BBE81A16018B001F15CA /* BeaconRegionEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C18BBE71A16018B001F15CA /* BeaconRegionEvent.swift */; };
@@ -23,8 +24,6 @@
 		7C2D71C11A2F0087003224C1 /* AddGroupTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C2D71BF1A2EFD87003224C1 /* AddGroupTableViewController.swift */; };
 		7C309F861A26F94700B36F2E /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C309F851A26F94700B36F2E /* MapViewController.swift */; };
 		7C309F881A26FF2400B36F2E /* LocationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C309F871A26FF2400B36F2E /* LocationsViewController.swift */; };
-		7C319B551A2D785B0042BAB8 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C319B541A2D785B0042BAB8 /* Location.swift */; };
-		7C319B571A2D785C0042BAB8 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C319B561A2D785C0042BAB8 /* Message.swift */; };
 		7C319B5F1A2D78F90042BAB8 /* LocationToGroupMigrationPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C319B5E1A2D78F90042BAB8 /* LocationToGroupMigrationPolicy.swift */; };
 		7C3475EB1A2EC0B300559E0E /* AddLocationEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C3475EA1A2EC0B300559E0E /* AddLocationEvent.swift */; };
 		7C4EA9B81A3169F800CD2011 /* MessageMigrationPolicy_v4_to_v5.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C4EA9B71A3169F700CD2011 /* MessageMigrationPolicy_v4_to_v5.swift */; };
@@ -32,6 +31,9 @@
 		7C4EA9BB1A316A0900CD2011 /* LocationMigrationPolicy_v4_to_v5.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C4EA9BA1A316A0900CD2011 /* LocationMigrationPolicy_v4_to_v5.swift */; };
 		7C4EA9BC1A316A0900CD2011 /* LocationMigrationPolicy_v4_to_v5.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C4EA9BA1A316A0900CD2011 /* LocationMigrationPolicy_v4_to_v5.swift */; };
 		7C4EA9BE1A3173F600CD2011 /* RememberMappingModel_v4_to_v5.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 7C4EA9BD1A3173F600CD2011 /* RememberMappingModel_v4_to_v5.xcmappingmodel */; };
+		7C51BE291A3699D8001894BF /* Group.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C51BE281A3699D8001894BF /* Group.swift */; };
+		7C51BE2B1A3699D9001894BF /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C51BE2A1A3699D9001894BF /* Location.swift */; };
+		7C51BE2D1A3699D9001894BF /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C51BE2C1A3699D9001894BF /* Message.swift */; };
 		7C6109B019E793400082AC7B /* LocationsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6109AF19E793400082AC7B /* LocationsTableViewController.swift */; };
 		7C6109B219E793730082AC7B /* DevicesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6109B119E793730082AC7B /* DevicesTableViewCell.swift */; };
 		7C6109B419E796E00082AC7B /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6109B319E796E00082AC7B /* Extensions.swift */; };
@@ -42,11 +44,15 @@
 		7C6A35241A1B2567004FD2FD /* RememberMappingModel_objc_to_v4.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 7C6A35231A1B2567004FD2FD /* RememberMappingModel_objc_to_v4.xcmappingmodel */; };
 		7C6A35261A1B2610004FD2FD /* ObjCToSwiftMigrationPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6A35251A1B2610004FD2FD /* ObjCToSwiftMigrationPolicy.swift */; };
 		7C6A35281A1B3695004FD2FD /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6A35271A1B3695004FD2FD /* CoreDataStack.swift */; };
-		7C78EFE81A2EC8DC00569844 /* Group.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C78EFE71A2EC8DC00569844 /* Group.swift */; };
-		7C78EFE91A2EC8DC00569844 /* Group.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C78EFE71A2EC8DC00569844 /* Group.swift */; };
-		7C81E3001A2DB5A900FEF445 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C319B541A2D785B0042BAB8 /* Location.swift */; };
+		7C6C8A261A358B670068B56C /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6C8A251A358B670068B56C /* SwiftyJSON.swift */; };
+		7C8357DF1A35767300580BC0 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C0B54BF1A3545CD006B041A /* User.swift */; };
 		7C86C3E01A25672000702D80 /* AudioRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB6F6831A24666100C2A60E /* AudioRecorder.swift */; };
+		7C9FB4E01A30336C00A4B907 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C9FB4DF1A30336C00A4B907 /* QuartzCore.framework */; };
 		7CA8AC721A07202D00566252 /* SwipeableTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA8AC711A07202D00566252 /* SwipeableTableViewCell.swift */; };
+		7CB0A6111A300F5300BA48C1 /* AddLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB0A6101A300F5300BA48C1 /* AddLocationViewController.swift */; };
+		7CB0A6121A300F5300BA48C1 /* AddLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB0A6101A300F5300BA48C1 /* AddLocationViewController.swift */; };
+		7CB0A6141A300F7000BA48C1 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB0A6131A300F7000BA48C1 /* SignUpViewController.swift */; };
+		7CB0A6151A300F7000BA48C1 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB0A6131A300F7000BA48C1 /* SignUpViewController.swift */; };
 		7CB6F6801A2453DE00C2A60E /* FeedbackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB6F67F1A2453DE00C2A60E /* FeedbackViewController.swift */; };
 		7CB6F6841A24666100C2A60E /* AudioRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB6F6831A24666100C2A60E /* AudioRecorder.swift */; };
 		7CCE375E1A28229800A6BDA6 /* RecorderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCE375D1A28229800A6BDA6 /* RecorderViewController.swift */; };
@@ -93,7 +99,6 @@
 		D1B9DE451A0C2F1100C4243E /* SwipeableTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA8AC711A07202D00566252 /* SwipeableTableViewCell.swift */; };
 		D1B9DE461A0C2F1100C4243E /* EditGroupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C28F48D1A0A0B40006A7CA0 /* EditGroupViewController.swift */; };
 		D1BD333F1A30AC6D00BF1811 /* LocationToGroupMigrationPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C319B5E1A2D78F90042BAB8 /* LocationToGroupMigrationPolicy.swift */; };
-		D1BD33401A30AC6D00BF1811 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C319B561A2D785C0042BAB8 /* Message.swift */; };
 		D1D935AC1A31D6B300A6BA16 /* RememberMappingModel_v4_to_v5.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 7C4EA9BD1A3173F600CD2011 /* RememberMappingModel_v4_to_v5.xcmappingmodel */; };
 		D1EE65141A0740A600A65EF0 /* LocationsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6109AF19E793400082AC7B /* LocationsTableViewController.swift */; };
 		D1EE65151A0740A600A65EF0 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A76A0B219E63DEC0031202A /* HomeViewController.swift */; };
@@ -138,6 +143,7 @@
 		7C088D9719E631CA005A51D9 /* LocationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		7C088D9919E631E2005A51D9 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		7C088D9B19E63EE9005A51D9 /* BeaconFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BeaconFactory.swift; sourceTree = "<group>"; };
+		7C0B54BF1A3545CD006B041A /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = User.swift; path = Models/User.swift; sourceTree = "<group>"; };
 		7C0E3A7E1A272DC900235C4C /* AddableTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AddableTableViewCell.swift; path = Views/AddableTableViewCell.swift; sourceTree = "<group>"; };
 		7C18BBE41A160145001F15CA /* MixpanelEventProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MixpanelEventProtocols.swift; path = Protocols/MixpanelEventProtocols.swift; sourceTree = "<group>"; };
 		7C18BBE71A16018B001F15CA /* BeaconRegionEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BeaconRegionEvent.swift; path = Structs/BeaconRegionEvent.swift; sourceTree = "<group>"; };
@@ -152,14 +158,15 @@
 		7C309F851A26F94700B36F2E /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MapViewController.swift; path = Controllers/MapViewController.swift; sourceTree = "<group>"; };
 		7C309F871A26FF2400B36F2E /* LocationsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LocationsViewController.swift; path = Controllers/LocationsViewController.swift; sourceTree = "<group>"; };
 		7C319B431A2D69500042BAB8 /* remember 5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "remember 5.xcdatamodel"; sourceTree = "<group>"; };
-		7C319B541A2D785B0042BAB8 /* Location.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Location.swift; path = Models/Location.swift; sourceTree = "<group>"; };
-		7C319B561A2D785C0042BAB8 /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Message.swift; path = Models/Message.swift; sourceTree = "<group>"; };
 		7C319B5E1A2D78F90042BAB8 /* LocationToGroupMigrationPolicy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LocationToGroupMigrationPolicy.swift; path = Migrations/LocationToGroupMigrationPolicy.swift; sourceTree = "<group>"; };
 		7C3475EA1A2EC0B300559E0E /* AddLocationEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AddLocationEvent.swift; path = Structs/AddLocationEvent.swift; sourceTree = "<group>"; };
 		7C4EA9B71A3169F700CD2011 /* MessageMigrationPolicy_v4_to_v5.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MessageMigrationPolicy_v4_to_v5.swift; path = Migrations/MessageMigrationPolicy_v4_to_v5.swift; sourceTree = "<group>"; };
 		7C4EA9BA1A316A0900CD2011 /* LocationMigrationPolicy_v4_to_v5.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LocationMigrationPolicy_v4_to_v5.swift; path = Migrations/LocationMigrationPolicy_v4_to_v5.swift; sourceTree = "<group>"; };
 		7C4EA9BD1A3173F600CD2011 /* RememberMappingModel_v4_to_v5.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; name = RememberMappingModel_v4_to_v5.xcmappingmodel; path = Migrations/RememberMappingModel_v4_to_v5.xcmappingmodel; sourceTree = "<group>"; };
 		7C516BB51A0A1526005AEF24 /* remember 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "remember 2.xcdatamodel"; sourceTree = "<group>"; };
+		7C51BE281A3699D8001894BF /* Group.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Group.swift; path = Models/Group.swift; sourceTree = "<group>"; };
+		7C51BE2A1A3699D9001894BF /* Location.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Location.swift; path = Models/Location.swift; sourceTree = "<group>"; };
+		7C51BE2C1A3699D9001894BF /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Message.swift; path = Models/Message.swift; sourceTree = "<group>"; };
 		7C6109AF19E793400082AC7B /* LocationsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LocationsTableViewController.swift; path = Controllers/LocationsTableViewController.swift; sourceTree = "<group>"; };
 		7C6109B119E793730082AC7B /* DevicesTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DevicesTableViewCell.swift; path = Views/DevicesTableViewCell.swift; sourceTree = "<group>"; };
 		7C6109B319E796E00082AC7B /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Extensions.swift; path = Categories/Extensions.swift; sourceTree = "<group>"; };
@@ -170,11 +177,15 @@
 		7C6A35231A1B2567004FD2FD /* RememberMappingModel_objc_to_v4.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; name = RememberMappingModel_objc_to_v4.xcmappingmodel; path = Migrations/RememberMappingModel_objc_to_v4.xcmappingmodel; sourceTree = "<group>"; };
 		7C6A35251A1B2610004FD2FD /* ObjCToSwiftMigrationPolicy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ObjCToSwiftMigrationPolicy.swift; path = Migrations/ObjCToSwiftMigrationPolicy.swift; sourceTree = "<group>"; };
 		7C6A35271A1B3695004FD2FD /* CoreDataStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CoreDataStack.swift; path = Models/CoreDataStack.swift; sourceTree = "<group>"; };
-		7C78EFE71A2EC8DC00569844 /* Group.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Group.swift; path = Models/Group.swift; sourceTree = "<group>"; };
+		7C6C8A241A358B670068B56C /* SwiftyJSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SwiftyJSON.h; path = SwiftyJSON/Source/SwiftyJSON.h; sourceTree = SOURCE_ROOT; };
+		7C6C8A251A358B670068B56C /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftyJSON.swift; path = SwiftyJSON/Source/SwiftyJSON.swift; sourceTree = SOURCE_ROOT; };
 		7C84AFAE1A0CB0DB00D905A0 /* remember 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "remember 4.xcdatamodel"; sourceTree = "<group>"; };
+		7C9FB4DF1A30336C00A4B907 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		7CA8AC711A07202D00566252 /* SwipeableTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwipeableTableViewCell.swift; path = Views/SwipeableTableViewCell.swift; sourceTree = "<group>"; };
-		7CB40BAE1A30023B006C66E1 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Main.strings"; sourceTree = "<group>"; };
-		7CB40BAF1A30023E006C66E1 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Main.strings"; sourceTree = "<group>"; };
+		7CB0A6101A300F5300BA48C1 /* AddLocationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AddLocationViewController.swift; path = Controllers/AddLocationViewController.swift; sourceTree = "<group>"; };
+		7CB0A6131A300F7000BA48C1 /* SignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SignUpViewController.swift; path = Controllers/SignUpViewController.swift; sourceTree = "<group>"; };
+		7CB0A6181A301B6200BA48C1 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Main.strings"; sourceTree = "<group>"; };
+		7CB0A6191A301B6E00BA48C1 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Main.strings"; sourceTree = "<group>"; };
 		7CB6F67F1A2453DE00C2A60E /* FeedbackViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FeedbackViewController.swift; path = Controllers/FeedbackViewController.swift; sourceTree = "<group>"; };
 		7CB6F6831A24666100C2A60E /* AudioRecorder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioRecorder.swift; sourceTree = "<group>"; };
 		7CCE375D1A28229800A6BDA6 /* RecorderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RecorderViewController.swift; path = Controllers/RecorderViewController.swift; sourceTree = "<group>"; };
@@ -216,6 +227,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7C9FB4E01A30336C00A4B907 /* QuartzCore.framework in Frameworks */,
 				7CD2B08819EB81A8004D5A29 /* CoreData.framework in Frameworks */,
 				7CD2B08619EB819F004D5A29 /* AVFoundation.framework in Frameworks */,
 				D116335019EC9AC100884C60 /* Crashlytics.framework in Frameworks */,
@@ -249,6 +261,7 @@
 		67DAFC6B37B33186C3400580 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				7C9FB4DF1A30336C00A4B907 /* QuartzCore.framework */,
 				1F3E69F282AB4432CF11BFC7 /* libPods.a */,
 			);
 			name = Frameworks;
@@ -258,9 +271,9 @@
 			isa = PBXGroup;
 			children = (
 				8A9F0F6719E62C50007FB36B /* remember.xcdatamodeld */,
-				7C78EFE71A2EC8DC00569844 /* Group.swift */,
-				7C319B561A2D785C0042BAB8 /* Message.swift */,
-				7C319B541A2D785B0042BAB8 /* Location.swift */,
+				7C51BE2C1A3699D9001894BF /* Message.swift */,
+				7C51BE2A1A3699D9001894BF /* Location.swift */,
+				7C51BE281A3699D8001894BF /* Group.swift */,
 				7C108D8719E66DBC0013C4A3 /* Factories */,
 			);
 			name = Models;
@@ -308,6 +321,15 @@
 			name = Migrations;
 			sourceTree = "<group>";
 		};
+		7C6C8A271A358B770068B56C /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				7C6C8A241A358B670068B56C /* SwiftyJSON.h */,
+				7C6C8A251A358B670068B56C /* SwiftyJSON.swift */,
+			);
+			name = Source;
+			sourceTree = "<group>";
+		};
 		8A76A0AF19E63C3D0031202A /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -320,6 +342,8 @@
 				7CCE375D1A28229800A6BDA6 /* RecorderViewController.swift */,
 				7C309F871A26FF2400B36F2E /* LocationsViewController.swift */,
 				7C2D71BF1A2EFD87003224C1 /* AddGroupTableViewController.swift */,
+				7CB0A6101A300F5300BA48C1 /* AddLocationViewController.swift */,
+				7CB0A6131A300F7000BA48C1 /* SignUpViewController.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -348,6 +372,7 @@
 				7CD2B08519EB819F004D5A29 /* AVFoundation.framework */,
 				D116334F19EC9AC100884C60 /* Crashlytics.framework */,
 				7C088D9919E631E2005A51D9 /* CoreLocation.framework */,
+				7C6C8A271A358B770068B56C /* Source */,
 				8A9F0F6219E62C50007FB36B /* remember */,
 				8A9F0F7B19E62C50007FB36B /* rememberTests */,
 				8A9F0F6119E62C50007FB36B /* Products */,
@@ -378,6 +403,7 @@
 				8A76A0AF19E63C3D0031202A /* Controllers */,
 				8A9F0F6519E62C50007FB36B /* AppDelegate.swift */,
 				7CB6F6831A24666100C2A60E /* AudioRecorder.swift */,
+				7C0B54BF1A3545CD006B041A /* User.swift */,
 				7C6A35271A1B3695004FD2FD /* CoreDataStack.swift */,
 				7C6205B51A2480F6006D25AE /* APIManager.swift */,
 				7C088D9719E631CA005A51D9 /* LocationManager.swift */,
@@ -682,7 +708,6 @@
 				7C4EA9BB1A316A0900CD2011 /* LocationMigrationPolicy_v4_to_v5.swift in Sources */,
 				7C319B5F1A2D78F90042BAB8 /* LocationToGroupMigrationPolicy.swift in Sources */,
 				7C4EA9B81A3169F800CD2011 /* MessageMigrationPolicy_v4_to_v5.swift in Sources */,
-				7C78EFE81A2EC8DC00569844 /* Group.swift in Sources */,
 				8ABFAA6719E668DB00FCE6EF /* MessagesTableViewCell.swift in Sources */,
 				7CF32E631A0B21B00056F873 /* HUD.swift in Sources */,
 				7CCFFE9A1A25CEF500A346E4 /* GooglePlaces.swift in Sources */,
@@ -690,24 +715,29 @@
 				7C6A35281A1B3695004FD2FD /* CoreDataStack.swift in Sources */,
 				7C6A351F1A1B0B40004FD2FD /* DataMigrationManager.swift in Sources */,
 				7C2D71C01A2EFD87003224C1 /* AddGroupTableViewController.swift in Sources */,
-				7C319B571A2D785C0042BAB8 /* Message.swift in Sources */,
 				8A76A0B119E63C590031202A /* NavigationController.swift in Sources */,
+				7C51BE291A3699D8001894BF /* Group.swift in Sources */,
 				7C309F881A26FF2400B36F2E /* LocationsViewController.swift in Sources */,
 				8ABFAA6919E67CEB00FCE6EF /* UnreadSpotView.swift in Sources */,
 				7C18BBEC1A1601DB001F15CA /* AddGroupEvent.swift in Sources */,
 				7C309F861A26F94700B36F2E /* MapViewController.swift in Sources */,
-				7C319B551A2D785B0042BAB8 /* Location.swift in Sources */,
+				7C0B54C01A3545CD006B041A /* User.swift in Sources */,
 				7C3475EB1A2EC0B300559E0E /* AddLocationEvent.swift in Sources */,
 				8A9F0F6619E62C50007FB36B /* AppDelegate.swift in Sources */,
 				8ABFAA6B19E68AB600FCE6EF /* RadioButton.swift in Sources */,
 				7C088D9819E631CA005A51D9 /* LocationManager.swift in Sources */,
+				7C6C8A261A358B670068B56C /* SwiftyJSON.swift in Sources */,
 				7C6205B61A2480F6006D25AE /* APIManager.swift in Sources */,
+				7CB0A6141A300F7000BA48C1 /* SignUpViewController.swift in Sources */,
+				7C51BE2D1A3699D9001894BF /* Message.swift in Sources */,
 				7C18BBE51A160145001F15CA /* MixpanelEventProtocols.swift in Sources */,
 				8A9F0F6919E62C50007FB36B /* remember.xcdatamodeld in Sources */,
 				7CCE375E1A28229800A6BDA6 /* RecorderViewController.swift in Sources */,
+				7CB0A6111A300F5300BA48C1 /* AddLocationViewController.swift in Sources */,
 				7C0E3A7F1A272DC900235C4C /* AddableTableViewCell.swift in Sources */,
 				7C18BBE81A16018B001F15CA /* BeaconRegionEvent.swift in Sources */,
 				7C18BBEA1A1601BD001F15CA /* VisitEvent.swift in Sources */,
+				7C51BE2B1A3699D9001894BF /* Location.swift in Sources */,
 				7C6A35241A1B2567004FD2FD /* RememberMappingModel_objc_to_v4.xcmappingmodel in Sources */,
 				7CDFE6A11A2739DC00EC4B93 /* NearbyLocationsTableViewCell.swift in Sources */,
 				7C6109B419E796E00082AC7B /* Extensions.swift in Sources */,
@@ -738,14 +768,13 @@
 			files = (
 				D1D935AC1A31D6B300A6BA16 /* RememberMappingModel_v4_to_v5.xcmappingmodel in Sources */,
 				D1BD333F1A30AC6D00BF1811 /* LocationToGroupMigrationPolicy.swift in Sources */,
-				D1BD33401A30AC6D00BF1811 /* Message.swift in Sources */,
 				D1F62E891A28971900191D87 /* FeedbackViewController.swift in Sources */,
 				D1F62E8A1A28971900191D87 /* RecorderViewController.swift in Sources */,
 				D14B83551A27576200D12EDF /* AddableTableViewCell.swift in Sources */,
 				D14B83561A27576200D12EDF /* NearbyLocationsTableViewCell.swift in Sources */,
+				7CB0A6151A300F7000BA48C1 /* SignUpViewController.swift in Sources */,
 				D14B83571A27576200D12EDF /* MapViewController.swift in Sources */,
 				D14B83591A27576200D12EDF /* LocationsViewController.swift in Sources */,
-				7C78EFE91A2EC8DC00569844 /* Group.swift in Sources */,
 				D1A673791A1B6C8F00C05D2C /* RememberMappingModel_objc_to_v4.xcmappingmodel in Sources */,
 				D1A673761A1B6C6D00C05D2C /* DataMigrationManager.swift in Sources */,
 				D1A673771A1B6C6D00C05D2C /* ObjCToSwiftMigrationPolicy.swift in Sources */,
@@ -755,10 +784,10 @@
 				D12E82CD1A165B040016778F /* GeographicRegionEvent.swift in Sources */,
 				D12E82CE1A165B040016778F /* BeaconRegionEvent.swift in Sources */,
 				D12E82CF1A165B040016778F /* VisitEvent.swift in Sources */,
+				7C8357DF1A35767300580BC0 /* User.swift in Sources */,
 				D12E82D01A165B040016778F /* AddGroupEvent.swift in Sources */,
 				D12E82D11A165B040016778F /* Constants.swift in Sources */,
 				D122493B1A0D03FE008AC2BD /* GPSLocationTableViewCell.swift in Sources */,
-				7C81E3001A2DB5A900FEF445 /* Location.swift in Sources */,
 				D1B9DE441A0C2F1100C4243E /* HUD.swift in Sources */,
 				D1B9DE451A0C2F1100C4243E /* SwipeableTableViewCell.swift in Sources */,
 				7C4EA9BC1A316A0900CD2011 /* LocationMigrationPolicy_v4_to_v5.swift in Sources */,
@@ -770,6 +799,7 @@
 				D1EE65181A0740A600A65EF0 /* NavigationController.swift in Sources */,
 				7C2D71C11A2F0087003224C1 /* AddGroupTableViewController.swift in Sources */,
 				7CD8853F1A2ED7070093E579 /* AddLocationEvent.swift in Sources */,
+				7CB0A6121A300F5300BA48C1 /* AddLocationViewController.swift in Sources */,
 				D1EE65191A0740A600A65EF0 /* UnreadSpotView.swift in Sources */,
 				7C86C3E01A25672000702D80 /* AudioRecorder.swift in Sources */,
 				D1EE651A1A0740A600A65EF0 /* AppDelegate.swift in Sources */,
@@ -810,8 +840,8 @@
 			isa = PBXVariantGroup;
 			children = (
 				8A9F0F6D19E62C50007FB36B /* Base */,
-				7CB40BAE1A30023B006C66E1 /* zh-Hans */,
-				7CB40BAF1A30023E006C66E1 /* zh-Hant */,
+				7CB0A6181A301B6200BA48C1 /* zh-Hant */,
+				7CB0A6191A301B6E00BA48C1 /* zh-Hans */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";

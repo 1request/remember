@@ -10,7 +10,11 @@ import UIKit
 import CoreData
 import CoreLocation
 
-class AddGroupTableViewController: UITableViewController {
+@objc protocol AddGroupTableViewControllerDelegate {
+    func groupNameTextFieldDidChange(textField: UITextField)
+}
+
+class AddGroupTableViewController: UITableViewController, UIGestureRecognizerDelegate {
     
     weak var managedObjectContext: NSManagedObjectContext?
     
@@ -25,12 +29,21 @@ class AddGroupTableViewController: UITableViewController {
     
     @IBOutlet weak var saveButton: UIBarButtonItem!
     
+    weak var delegate: AddGroupTableViewControllerDelegate?
+
+    var group: Group?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         ownRadioButton.checked = true
         tableView.removeFooterBorder()
         groupNameTextField.delegate = self
         saveButton.enabled = false
+        
+        let tapRecognizer = UITapGestureRecognizer(target: self, action: "handleSingleTap:")
+        tapRecognizer.numberOfTapsRequired = 1
+        self.view.addGestureRecognizer(tapRecognizer)
+        tapRecognizer.cancelsTouchesInView = false
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
@@ -44,14 +57,10 @@ class AddGroupTableViewController: UITableViewController {
     }
 
     @IBAction func groupNameTextFieldEditingChanged(sender: UITextField) {
-        if countElements(groupNameTextField.text.trimWhiteSpace()) > 0 {
-            saveButton.enabled = true
-        } else {
-            saveButton.enabled = false
-        }
+        delegate?.groupNameTextFieldDidChange(sender)
     }
     
-    @IBAction func saveBarButtonItemClicked(sender: UIBarButtonItem) {
+    func createGroup() {
         let groupToBeAdded = NSEntityDescription.insertNewObjectForEntityForName("Group", inManagedObjectContext: managedObjectContext!) as Group
         groupToBeAdded.name = groupNameTextField.text
         groupToBeAdded.createdAt = NSDate()
@@ -92,9 +101,12 @@ class AddGroupTableViewController: UITableViewController {
         
         managedObjectContext!.save(nil)
         
-        navigationController?.popToRootViewControllerAnimated(true)
+        group = groupToBeAdded
     }
     
+    func handleSingleTap(recognizer: UITapGestureRecognizer) {
+        view.endEditing(true)
+    }
 }
 
 extension AddGroupTableViewController: UITextFieldDelegate {
