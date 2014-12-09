@@ -28,7 +28,7 @@ class User: NSObject {
         
         image.saveImageAsPNGWithName("user")
         
-        APIManager.postMultipartData(dataDetails, parameters: parameters, url: NSURL(string: kUserPOSTURL)!) { (response, error, jsonObject) -> Void in
+        APIManager.postMultipartData(dataDetails, parameters: parameters, url: NSURL(string: kUsersURL)!) { (response, error, jsonObject) -> Void in
             if let id = jsonObject["id"].number {
                 NSUserDefaults.standardUserDefaults().setValue(id, forKey: "userId")
                 let id = NSUserDefaults.standardUserDefaults().valueForKey("userId") as Int

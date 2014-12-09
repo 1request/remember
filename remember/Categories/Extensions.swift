@@ -228,7 +228,7 @@ extension Group {
     func createPrivateGroupInServer() {
         if let userId = NSUserDefaults.standardUserDefaults().valueForKey("userId") as? Int {
             let json: JSON = ["name": name, "creator_id": userId, "latitude": location.latitude, "longitude": location.longitude, "uuid": location.uuid, "major": location.major, "minor": location.minor]
-            APIManager.postJSON(json, toURL: NSURL(string: kGroupPOSTURL)!, callback: { [weak self] (response, error, jsonObject) -> Void in
+            APIManager.postJSON(json, toURL: NSURL(string: kGroupsURL)!, callback: { [weak self] (response, error, jsonObject) -> Void in
                 if let id = jsonObject["id"].number {
                     self?.serverId = id
                     if let context = self?.managedObjectContext {
@@ -237,5 +237,38 @@ extension Group {
                 }
             })
         }
+    }
+    
+    class func fetchGroupsFromServerInContext(context: NSManagedObjectContext, callback: (groups: [Group], locations: [Location]) -> Void) {
+        let request = NSMutableURLRequest(URL: NSURL(string: kGroupsURL)!)
+        request.HTTPMethod = "GET"
+        
+        let session = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration())
+        let task = session.dataTaskWithRequest(request, completionHandler: { (data, response, error) -> Void in
+            let json = JSON(data: data)
+            let currentUser = NSUserDefaults.standardUserDefaults().valueForKey("userId") as Int
+            var groups = [Group]()
+            var locations = [Location]()
+            for (index: String, subJson: JSON) in json {
+                if currentUser != subJson["creator_id"].number {
+                    let groupEntity = NSEntityDescription.entityForName("Group", inManagedObjectContext: context)
+                    let group = NSManagedObject(entity: groupEntity!, insertIntoManagedObjectContext: nil) as Group
+                    let locationEntity = NSEntityDescription.entityForName("Location", inManagedObjectContext: context)
+                    let location = NSManagedObject(entity: locationEntity!, insertIntoManagedObjectContext: nil) as Location
+                    let name = subJson["name"].stringValue
+                    let id = subJson["id"].intValue
+                    let longitude = subJson["location"]["longitude"].floatValue
+                    let latitude = subJson["location"]["latitude"].floatValue
+                    location.longitude = longitude
+                    location.latitude = latitude
+                    group.name = name
+                    group.serverId = id
+                    groups.append(group)
+                    locations.append(location)
+                }
+            }
+            callback(groups: groups, locations: locations)
+        })
+        task.resume()
     }
 }
