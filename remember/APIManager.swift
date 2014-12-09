@@ -51,6 +51,22 @@ class APIManager: NSObject {
         }
     }
     
+    class func postJSON(json: JSON, toURL url: NSURL, callback: ((response: NSURLResponse, error: NSError?, jsonObject: JSON) -> Void)?) {
+        if let data = json.rawData() {
+            let length = "\(data.length)"
+            let request = NSMutableURLRequest(URL: url)
+            request.HTTPMethod = "POST"
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.setValue(length, forHTTPHeaderField: "Content-Length")
+            request.HTTPBody = data
+            postRequest(request) { (response, error, jsonObject) -> Void in
+                if let cb = callback {
+                    cb(response: response, error: error, jsonObject: jsonObject)
+                }
+            }
+        }
+    }
+    
     class func postRequest(request: NSURLRequest, callback: (response: NSURLResponse, error: NSError?, jsonObject: JSON) -> Void) {
         let session = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration())
         let task = session.dataTaskWithRequest(request, completionHandler: { (data, response, error) -> Void in

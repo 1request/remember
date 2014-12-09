@@ -30,6 +30,8 @@ class AddGroupTableViewController: UITableViewController, UIGestureRecognizerDel
     @IBOutlet weak var saveButton: UIBarButtonItem!
     
     weak var delegate: AddGroupTableViewControllerDelegate?
+
+    var group: Group?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -99,7 +101,7 @@ class AddGroupTableViewController: UITableViewController, UIGestureRecognizerDel
         
         managedObjectContext!.save(nil)
         
-        navigationController?.popToRootViewControllerAnimated(true)
+        group = groupToBeAdded
     }
     
     func handleSingleTap(recognizer: UITapGestureRecognizer) {

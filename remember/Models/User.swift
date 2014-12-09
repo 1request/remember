@@ -17,7 +17,7 @@ class User: NSObject {
         self.image = image
     }
     
-    func createAccount() {
+    func createAccount(callback: (() -> Void)?) {
         let data = UIImagePNGRepresentation(image)
         let dataDetails = (key: "user[profile_picture]", data: data!, type: "image/png", filename: "\(UIDevice.currentDevice().identifierForVendor.UUIDString).png")
         let parameters = [
@@ -33,6 +33,9 @@ class User: NSObject {
                 NSUserDefaults.standardUserDefaults().setValue(id, forKey: "userId")
                 let id = NSUserDefaults.standardUserDefaults().valueForKey("userId") as Int
                 println("saved server user id: \(id)")
+                if let cb = callback {
+                    cb()
+                }
             }
         }
         
