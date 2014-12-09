@@ -44,6 +44,7 @@ class AddGroupTableViewController: UITableViewController, UIGestureRecognizerDel
         tapRecognizer.numberOfTapsRequired = 1
         self.view.addGestureRecognizer(tapRecognizer)
         tapRecognizer.cancelsTouchesInView = false
+        groupNameTextField.becomeFirstResponder()
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
