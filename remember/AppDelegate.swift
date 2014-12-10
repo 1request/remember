@@ -32,11 +32,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Crashlytics.startWithAPIKey("a73df0ceadf9f0995f97da85f3a3ca791c3e0de1")
         
         let mixpanel = Mixpanel.sharedInstanceWithToken("3b27052c32a6e7426f27e17b0a1f2e7e")
-        mixpanel.track("Swift")
         if UIDevice.currentDevice().model != "iPhone Simulator" {
+            mixpanel.track("Swift")
             mixpanel.identify(UIDevice.currentDevice().identifierForVendor.UUIDString)
-            mixpanel.people.set(["language": "Swift"])
+        } else {
+            mixpanel.track("iPhone Simulator")
+            mixpanel.identify("iPhone Simulator")
         }
+        mixpanel.people.set(["language": "Swift"])
         
         if let navigationController = window?.rootViewController as? NavigationController {
             if let homeViewController = navigationController.topViewController as? HomeViewController {
