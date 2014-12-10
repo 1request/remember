@@ -39,7 +39,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             mixpanel.track("iPhone Simulator")
             mixpanel.identify("iPhone Simulator")
         }
-        mixpanel.people.set(["language": "Swift"])
+        mixpanel.people.set(["language": "Swift", "name": UIDevice.currentDevice().name])
         
         if let navigationController = window?.rootViewController as? NavigationController {
             if let homeViewController = navigationController.topViewController as? HomeViewController {
@@ -64,6 +64,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
         let token = deviceToken.description.stringByReplacingOccurrencesOfString(" ", withString: "").stringByTrimmingCharactersInSet(NSCharacterSet(charactersInString: "<>"))
         NSUserDefaults.standardUserDefaults().setValue(token, forKey: "token")
+        Mixpanel.sharedInstance().people.addPushDeviceToken(deviceToken)
     }
     
     func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {
