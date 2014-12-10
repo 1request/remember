@@ -38,6 +38,8 @@ let kAddGroupEventTitle = "Added Group"
 let kVisitType = "Visit Type"
 
 // NSNotification
+let kAlertLocationNotificationName = "kAlertLocationNotification"
+let kApproveMemberNotificationName = "kApproveMemberNotification"
 let kEnteredRegionNotificationName = "enteredRegionNotification"
 let kEnteredRegionNotificationUserInfoRegionKey = "region"
 let kExitedRegionNotificationName = "exitedRegionNotification"

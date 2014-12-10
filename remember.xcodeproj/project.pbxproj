@@ -19,6 +19,11 @@
 		7C18BBEC1A1601DB001F15CA /* AddGroupEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C18BBEB1A1601DB001F15CA /* AddGroupEvent.swift */; };
 		7C1AA2691A242BF900F37AE5 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7C1AA26C1A242BF900F37AE5 /* Localizable.strings */; };
 		7C1AA26A1A242BF900F37AE5 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7C1AA26C1A242BF900F37AE5 /* Localizable.strings */; };
+		7C1EEF8B1A38276C000759BB /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C51BE2A1A3699D9001894BF /* Location.swift */; };
+		7C1EEF8C1A382770000759BB /* Group.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C51BE281A3699D8001894BF /* Group.swift */; };
+		7C1EEF8D1A382773000759BB /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C51BE2C1A3699D9001894BF /* Message.swift */; };
+		7C1EEF8F1A383237000759BB /* Membership.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1EEF8E1A383237000759BB /* Membership.swift */; };
+		7C1EEF901A383484000759BB /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6C8A251A358B670068B56C /* SwiftyJSON.swift */; };
 		7C28F48E1A0A0B40006A7CA0 /* EditGroupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C28F48D1A0A0B40006A7CA0 /* EditGroupViewController.swift */; };
 		7C2D71C01A2EFD87003224C1 /* AddGroupTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C2D71BF1A2EFD87003224C1 /* AddGroupTableViewController.swift */; };
 		7C2D71C11A2F0087003224C1 /* AddGroupTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C2D71BF1A2EFD87003224C1 /* AddGroupTableViewController.swift */; };
@@ -153,6 +158,7 @@
 		7C1AA2701A24317300F37AE5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		7C1AA2711A2432D400F37AE5 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		7C1AA2721A2432DA00F37AE5 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		7C1EEF8E1A383237000759BB /* Membership.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Membership.swift; path = Models/Membership.swift; sourceTree = "<group>"; };
 		7C28F48D1A0A0B40006A7CA0 /* EditGroupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EditGroupViewController.swift; path = Controllers/EditGroupViewController.swift; sourceTree = "<group>"; };
 		7C2D71BF1A2EFD87003224C1 /* AddGroupTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AddGroupTableViewController.swift; path = Controllers/AddGroupTableViewController.swift; sourceTree = "<group>"; };
 		7C309F851A26F94700B36F2E /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MapViewController.swift; path = Controllers/MapViewController.swift; sourceTree = "<group>"; };
@@ -274,6 +280,8 @@
 				7C51BE2C1A3699D9001894BF /* Message.swift */,
 				7C51BE2A1A3699D9001894BF /* Location.swift */,
 				7C51BE281A3699D8001894BF /* Group.swift */,
+				7C0B54BF1A3545CD006B041A /* User.swift */,
+				7C1EEF8E1A383237000759BB /* Membership.swift */,
 				7C108D8719E66DBC0013C4A3 /* Factories */,
 			);
 			name = Models;
@@ -403,7 +411,6 @@
 				8A76A0AF19E63C3D0031202A /* Controllers */,
 				8A9F0F6519E62C50007FB36B /* AppDelegate.swift */,
 				7CB6F6831A24666100C2A60E /* AudioRecorder.swift */,
-				7C0B54BF1A3545CD006B041A /* User.swift */,
 				7C6A35271A1B3695004FD2FD /* CoreDataStack.swift */,
 				7C6205B51A2480F6006D25AE /* APIManager.swift */,
 				7C088D9719E631CA005A51D9 /* LocationManager.swift */,
@@ -745,6 +752,7 @@
 				7C6A35261A1B2610004FD2FD /* ObjCToSwiftMigrationPolicy.swift in Sources */,
 				7C4EA9BE1A3173F600CD2011 /* RememberMappingModel_v4_to_v5.xcmappingmodel in Sources */,
 				7C28F48E1A0A0B40006A7CA0 /* EditGroupViewController.swift in Sources */,
+				7C1EEF8F1A383237000759BB /* Membership.swift in Sources */,
 				7CE2CA5B1A0C68A000369D8B /* GPSLocationTableViewCell.swift in Sources */,
 				7C6109B219E793730082AC7B /* DevicesTableViewCell.swift in Sources */,
 				7CB6F6801A2453DE00C2A60E /* FeedbackViewController.swift in Sources */,
@@ -780,6 +788,8 @@
 				D1A673771A1B6C6D00C05D2C /* ObjCToSwiftMigrationPolicy.swift in Sources */,
 				D1A673781A1B6C6D00C05D2C /* CoreDataStack.swift in Sources */,
 				7CCFFE9B1A25CEF500A346E4 /* GooglePlaces.swift in Sources */,
+				7C1EEF8C1A382770000759BB /* Group.swift in Sources */,
+				7C1EEF8B1A38276C000759BB /* Location.swift in Sources */,
 				D12E82CC1A165B040016778F /* MixpanelEventProtocols.swift in Sources */,
 				D12E82CD1A165B040016778F /* GeographicRegionEvent.swift in Sources */,
 				D12E82CE1A165B040016778F /* BeaconRegionEvent.swift in Sources */,
@@ -790,6 +800,7 @@
 				D122493B1A0D03FE008AC2BD /* GPSLocationTableViewCell.swift in Sources */,
 				D1B9DE441A0C2F1100C4243E /* HUD.swift in Sources */,
 				D1B9DE451A0C2F1100C4243E /* SwipeableTableViewCell.swift in Sources */,
+				7C1EEF901A383484000759BB /* SwiftyJSON.swift in Sources */,
 				7C4EA9BC1A316A0900CD2011 /* LocationMigrationPolicy_v4_to_v5.swift in Sources */,
 				D1B9DE461A0C2F1100C4243E /* EditGroupViewController.swift in Sources */,
 				D1EE65141A0740A600A65EF0 /* LocationsTableViewController.swift in Sources */,
@@ -809,6 +820,7 @@
 				7C4EA9B91A3169F800CD2011 /* MessageMigrationPolicy_v4_to_v5.swift in Sources */,
 				D1EE651E1A0740A600A65EF0 /* Extensions.swift in Sources */,
 				D1EE651F1A0740A600A65EF0 /* DevicesTableViewCell.swift in Sources */,
+				7C1EEF8D1A382773000759BB /* Message.swift in Sources */,
 				D1EE65201A0740A600A65EF0 /* BeaconFactory.swift in Sources */,
 				7C6205B71A2480F6006D25AE /* APIManager.swift in Sources */,
 			);

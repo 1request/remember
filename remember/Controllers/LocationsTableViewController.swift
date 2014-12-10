@@ -203,8 +203,8 @@ class LocationsTableViewController: UITableViewController, UITableViewDataSource
     func joinGroup(group: Group) {
         let url = NSURL(string: kMembershipsURL)
         let json: JSON = ["group_id": group.serverId, "user_id": NSUserDefaults.standardUserDefaults().valueForKey("userId") as Int]
-        APIManager.postJSON(json, toURL: url!) { (response, error, jsonObject) -> Void in
-            println("response:\(response)")
+        APIManager.sendJSON(json, toURL: url!, method: HTTPMethodType.POST) { (response, error, jsonObject) -> Void in
+            println("response: \(response)")
         }
     }
 }

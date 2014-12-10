@@ -21,3 +21,6 @@ RECORDING_FEEDBACK = "Recording feedback";
 SEND_FEEDBACK = "Please fill in your name below and click submit";
 INVALID_FEEDBACK = "Record is too short. Please record a longer one";
 SENT = "Sent";
+NEW_MEMBER = "New Member";
+APPROVE = "Approve";
+REJECT = "Reject";

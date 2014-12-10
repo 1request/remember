@@ -228,7 +228,7 @@ extension Group {
     func createPrivateGroupInServer() {
         if let userId = NSUserDefaults.standardUserDefaults().valueForKey("userId") as? Int {
             let json: JSON = ["name": name, "creator_id": userId, "latitude": location.latitude, "longitude": location.longitude, "uuid": location.uuid, "major": location.major, "minor": location.minor]
-            APIManager.postJSON(json, toURL: NSURL(string: kGroupsURL)!, callback: { [weak self] (response, error, jsonObject) -> Void in
+            APIManager.sendJSON(json, toURL: NSURL(string: kGroupsURL)!, method: .POST, callback: { [weak self] (response, error, jsonObject) -> Void in
                 if let id = jsonObject["id"].number {
                     self?.serverId = id
                     if let context = self?.managedObjectContext {

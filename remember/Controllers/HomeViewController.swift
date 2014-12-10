@@ -14,7 +14,9 @@ import CoreLocation
 class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate {
 
     //MARK: - Constants
-
+    let APPROVE = NSLocalizedString("APPROVE", comment: "alert action for approving new member")
+    let REJECT = NSLocalizedString("REJECT", comment: "alert action for rejecting new member")
+    
     var kApplicationPath = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true).last! as String
     var hudView = HUD()
 
@@ -73,7 +75,9 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
+        checkNewMember()
         monitorEnterLocationNotification()
+        monitorApproveMemberNotification()
         monitorAudioRouteChange()
         setSelectedGroupObjectID()
     }
@@ -82,6 +86,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
         unmonitorEnterLocationNotification()
+        unmonitorApproveMemberNotification()
         unmonitorAudioRouteChange()
         resetEditMode()
     }
@@ -519,6 +524,46 @@ extension HomeViewController: UIAlertViewDelegate {
             setSelectedGroupObjectID()
             reloadSection()
         }
+    }
+}
+
+// Observe Approve Member Notification
+extension HomeViewController: UIAlertViewDelegate {
+    func monitorApproveMemberNotification() {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "checkNewMember", name: kApproveMemberNotificationName, object: nil)
+    }
+    
+    func unmonitorApproveMemberNotification() {
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: kApproveMemberNotificationName, object: nil)
+    }
+    
+    func checkNewMember() {
+        if let dict = NSUserDefaults.standardUserDefaults().valueForKey("approveMember") as? [NSObject: AnyObject] {
+            let title = dict["title"] as String
+            let message = dict["message"] as String
+            let membershipId = dict["membershipId"] as Int
+            let controller = UIAlertController(title: title, message: message, preferredStyle: .Alert)
+            let approveAction = UIAlertAction(title: APPROVE, style: .Default, handler: { (action) -> Void in
+                self.approveMembership(membershipId)
+            })
+            let rejectAction = UIAlertAction(title: REJECT, style: .Destructive, handler: { (action) -> Void in
+                self.rejectMembership(membershipId)
+            })
+            controller.addAction(approveAction)
+            controller.addAction(rejectAction)
+            presentViewController(controller, animated: true, completion: nil)
+            NSUserDefaults.standardUserDefaults().setValue(nil, forKey: "approveMember")
+        }
+    }
+    
+    func approveMembership(membershipId: Int) {
+        let membership = Membership(id: membershipId)
+        membership.approve()
+    }
+    
+    func rejectMembership(membershipId: Int) {
+        let membership = Membership(id: membershipId)
+        membership.reject()
     }
 }
 
