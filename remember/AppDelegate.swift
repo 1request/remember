@@ -50,7 +50,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             LocationManager.sharedInstance.locationManager.startMonitoringVisits()
         }
         
+        let type = UIUserNotificationType.Badge | UIUserNotificationType.Alert | UIUserNotificationType.Sound
+        let setting = UIUserNotificationSettings(forTypes: type, categories: nil)
+        UIApplication.sharedApplication().registerUserNotificationSettings(setting)
+        UIApplication.sharedApplication().registerForRemoteNotifications()
+        
         return true
+    }
+    
+    func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
+        let token = deviceToken.description.stringByReplacingOccurrencesOfString(" ", withString: "").stringByTrimmingCharactersInSet(NSCharacterSet(charactersInString: "<>"))
+        NSUserDefaults.standardUserDefaults().setValue(token, forKey: "token")
+    }
+    
+    func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {
+        println("register remote notificatino error: \(error)")
     }
     
     func application(application: UIApplication, didReceiveLocalNotification notification: UILocalNotification) {
