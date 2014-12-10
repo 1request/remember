@@ -17,6 +17,18 @@ class User: NSObject {
         self.image = image
     }
     
+    class func currentUserId() -> Int? {
+        return NSUserDefaults.standardUserDefaults().valueForKey("userId") as? Int
+    }
+    
+    class func isRegistered() -> Bool {
+        if currentUserId() != nil {
+            return true
+        } else {
+            return false
+        }
+    }
+    
     func createAccount(callback: (() -> Void)?) {
         let data = UIImagePNGRepresentation(image)
         let dataDetails = (key: "user[profile_picture]", data: data!, type: "image/png", filename: "\(UIDevice.currentDevice().identifierForVendor.UUIDString).png")
@@ -31,7 +43,6 @@ class User: NSObject {
         APIManager.postMultipartData(dataDetails, parameters: parameters, url: NSURL(string: kUsersURL)!) { (response, error, jsonObject) -> Void in
             if let id = jsonObject["id"].number {
                 NSUserDefaults.standardUserDefaults().setValue(id, forKey: "userId")
-                let id = NSUserDefaults.standardUserDefaults().valueForKey("userId") as Int
                 println("saved server user id: \(id)")
                 if let cb = callback {
                     cb()
