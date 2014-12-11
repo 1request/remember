@@ -193,7 +193,7 @@ extension AppDelegate {
     
     func approveMemeberWithUserInfo(userInfo: [NSObject: AnyObject]) {
         let message = userInfo["aps"] as [NSObject: AnyObject]
-        if let approveMemberDetails = message["approve_member"] as? [NSObject: AnyObject] {
+        if let approveMemberDetails = userInfo["approve_member"] as? [NSObject: AnyObject] {
             var dict = [NSObject: AnyObject]()
             dict["message"] = message["alert"]
             dict["title"] = NEW_MEMBER

@@ -35,7 +35,8 @@ class User: NSObject {
         let parameters = [
             "user[device_id]": UIDevice.currentDevice().identifierForVendor.UUIDString,
             "user[device_type]": "iOS",
-            "user[nickname]": nickname
+            "user[nickname]": nickname,
+            "user[device_token]": NSUserDefaults.standardUserDefaults().valueForKey("token") as String
         ]
         
         image.saveImageAsPNGWithName("user")
