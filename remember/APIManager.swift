@@ -8,6 +8,13 @@
 
 import UIKit
 
+enum HTTPMethodType: String {
+    case GET = "GET"
+    case POST = "POST"
+    case PATCH = "PATCH"
+    case DELETE = "DELETE"
+}
+
 class APIManager: NSObject {
 
     class func postMultipartData(data: (key: String, data: NSData, type: String, filename: String), parameters: [String: NSObject], url:NSURL, callback: ((response: NSURLResponse, error: NSError?, jsonObject: JSON) -> Void)?) {
@@ -51,18 +58,22 @@ class APIManager: NSObject {
         }
     }
     
-    class func postJSON(json: JSON, toURL url: NSURL, callback: ((response: NSURLResponse, error: NSError?, jsonObject: JSON) -> Void)?) {
-        if let data = json.rawData() {
-            let length = "\(data.length)"
-            let request = NSMutableURLRequest(URL: url)
-            request.HTTPMethod = "POST"
-            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-            request.setValue(length, forHTTPHeaderField: "Content-Length")
-            request.HTTPBody = data
-            postRequest(request) { (response, error, jsonObject) -> Void in
-                if let cb = callback {
-                    cb(response: response, error: error, jsonObject: jsonObject)
-                }
+    
+    
+    class func sendJSON(json: JSON, toURL url: NSURL, method: HTTPMethodType, callback: ((response: NSURLResponse, error: NSError?, jsonObject: JSON) -> Void)?) {
+        let request = NSMutableURLRequest(URL: url)
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.HTTPMethod = method.rawValue
+        if method != HTTPMethodType.DELETE {
+            if let data = json.rawData() {
+                let length = "\(data.length)"
+                request.setValue(length, forHTTPHeaderField: "Content-Length")
+                request.HTTPBody = data
+            }
+        }
+        postRequest(request) { (response, error, jsonObject) -> Void in
+            if let cb = callback {
+                cb(response: response, error: error, jsonObject: jsonObject)
             }
         }
     }

@@ -56,7 +56,7 @@ class AddLocationViewController: UIViewController {
         addGroupTVC?.createGroup()
         if let shareRadioButton = addGroupTVC?.sharedRadioButton {
             if shareRadioButton.checked {
-                if NSUserDefaults.standardUserDefaults().valueForKey("userId") == nil {
+                if !User.isRegistered() {
                     showSignUpForm()
                 } else {
                     addGroupTVC?.group?.createPrivateGroupInServer()

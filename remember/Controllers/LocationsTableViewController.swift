@@ -26,7 +26,6 @@ class LocationsTableViewController: UITableViewController, UITableViewDataSource
     let WITHIN_RANGE = NSLocalizedString("WITHIN_RANGE", comment: "Meter range of beacon")
     let ADDED = NSLocalizedString("ADDED", comment: "beacon has been added")
     let SENT = NSLocalizedString("SENT", comment: "application for joining gorup has been sent")
-    let currentUser = NSUserDefaults.standardUserDefaults().valueForKey("userId") as? Int
     
     let notificationCenter = NSNotificationCenter.defaultCenter()
     var rangedBeacons = [CLBeacon]()
@@ -120,8 +119,10 @@ class LocationsTableViewController: UITableViewController, UITableViewDataSource
                 cell.addButton.setTitle(weakself.SENT, forState: .Normal)
                 cell.addButton.enabled = false
                 cell.addButton.backgroundColor = UIColor.appGrayColor()
-                if weakself.currentUser != nil {
-                    weakself.joinGroup(group)
+                if User.isRegistered() {
+                    group.join()
+                } else {
+                    println("register user")
                 }
             }
         }
@@ -197,14 +198,6 @@ class LocationsTableViewController: UITableViewController, UITableViewDataSource
             if let location = dict[kGPSLocationUpdateNotificationUserInfoLocationKey] {
                 gpsLocation = location
             }
-        }
-    }
-    
-    func joinGroup(group: Group) {
-        let url = NSURL(string: kMembershipsURL)
-        let json: JSON = ["group_id": group.serverId, "user_id": NSUserDefaults.standardUserDefaults().valueForKey("userId") as Int]
-        APIManager.postJSON(json, toURL: url!) { (response, error, jsonObject) -> Void in
-            println("response:\(response)")
         }
     }
 }

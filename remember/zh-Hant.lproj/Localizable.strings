@@ -21,3 +21,6 @@ RECORDING_FEEDBACK = "回饋錄音中";
 SEND_FEEDBACK = "請填寫你的名字然後按下遞交";
 INVALID_FEEDBACK = "錄音時間太短，請重新錄音";
 SENT = "已申請";
+NEW_MEMBER = "新成員";
+APPROVE = "批准";
+REJECT = "拒絕";

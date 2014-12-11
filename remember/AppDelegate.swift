@@ -12,12 +12,12 @@ import Crashlytics
 import CoreLocation
 import AVFoundation
 
-let kAlertLocationNotificationName = "kAlertLocationNotification"
-
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    let NEW_MEMBER = NSLocalizedString("NEW_MEMBER", comment: "alert title for approving / rejecting new member")
+    
     lazy var managedObjectContext : NSManagedObjectContext = {
         let manager = DataMigrationManager(storeNamed: "remember", modelNamed: "remember")
         return manager.stack.context
@@ -39,7 +39,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             mixpanel.track("iPhone Simulator")
             mixpanel.identify("iPhone Simulator")
         }
-        mixpanel.people.set(["language": "Swift"])
+        mixpanel.people.set(["language": "Swift", "name": UIDevice.currentDevice().name])
         
         if let navigationController = window?.rootViewController as? NavigationController {
             if let homeViewController = navigationController.topViewController as? HomeViewController {
@@ -53,7 +53,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             LocationManager.sharedInstance.locationManager.startMonitoringVisits()
         }
         
+        let type = UIUserNotificationType.Badge | UIUserNotificationType.Alert | UIUserNotificationType.Sound
+        let setting = UIUserNotificationSettings(forTypes: type, categories: nil)
+        UIApplication.sharedApplication().registerUserNotificationSettings(setting)
+        UIApplication.sharedApplication().registerForRemoteNotifications()
+        
+        if let options = launchOptions {
+            if options[UIApplicationLaunchOptionsRemoteNotificationKey] != nil {
+                self.application(application, didReceiveRemoteNotification: options[UIApplicationLaunchOptionsRemoteNotificationKey] as [NSObject: AnyObject])
+            }
+        }
+        
         return true
+    }
+    
+    func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
+        let token = deviceToken.description.stringByReplacingOccurrencesOfString(" ", withString: "").stringByTrimmingCharactersInSet(NSCharacterSet(charactersInString: "<>"))
+        NSUserDefaults.standardUserDefaults().setValue(token, forKey: "token")
+        Mixpanel.sharedInstance().people.addPushDeviceToken(deviceToken)
+    }
+    
+    func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {
+        println("register remote notification error: \(error)")
     }
     
     func application(application: UIApplication, didReceiveLocalNotification notification: UILocalNotification) {
@@ -63,6 +84,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
             AudioServicesPlaySystemSound(1007)
         }
+    }
+    
+    func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
+        
+        approveMemeberWithUserInfo(userInfo)
     }
 
     func applicationWillResignActive(application: UIApplication) {
@@ -163,5 +189,17 @@ extension AppDelegate {
     func clearNotifications () {
         UIApplication.sharedApplication().applicationIconBadgeNumber = 0
         UIApplication.sharedApplication().cancelAllLocalNotifications()
+    }
+    
+    func approveMemeberWithUserInfo(userInfo: [NSObject: AnyObject]) {
+        let message = userInfo["aps"] as [NSObject: AnyObject]
+        if let approveMemberDetails = userInfo["approve_member"] as? [NSObject: AnyObject] {
+            var dict = [NSObject: AnyObject]()
+            dict["message"] = message["alert"]
+            dict["title"] = NEW_MEMBER
+            dict["membershipId"] = approveMemberDetails["membership_id"] as Int
+            NSUserDefaults.standardUserDefaults().setValue(dict, forKey: "approveMember")
+            NSNotificationCenter.defaultCenter().postNotificationName(kApproveMemberNotificationName, object: self, userInfo: dict)
+        }
     }
 }

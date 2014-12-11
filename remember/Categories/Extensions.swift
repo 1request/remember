@@ -228,7 +228,7 @@ extension Group {
     func createPrivateGroupInServer() {
         if let userId = NSUserDefaults.standardUserDefaults().valueForKey("userId") as? Int {
             let json: JSON = ["name": name, "creator_id": userId, "latitude": location.latitude, "longitude": location.longitude, "uuid": location.uuid, "major": location.major, "minor": location.minor]
-            APIManager.postJSON(json, toURL: NSURL(string: kGroupsURL)!, callback: { [weak self] (response, error, jsonObject) -> Void in
+            APIManager.sendJSON(json, toURL: NSURL(string: kGroupsURL)!, method: .POST, callback: { [weak self] (response, error, jsonObject) -> Void in
                 if let id = jsonObject["id"].number {
                     self?.serverId = id
                     if let context = self?.managedObjectContext {
@@ -239,6 +239,14 @@ extension Group {
         }
     }
     
+    func join() {
+        let url = NSURL(string: kMembershipsURL)
+        let json: JSON = ["group_id": serverId, "user_id": User.currentUserId()!]
+        APIManager.sendJSON(json, toURL: url!, method: HTTPMethodType.POST) { (response, error, jsonObject) -> Void in
+            println("response: \(response)")
+        }
+    }
+    
     class func fetchGroupsFromServerInContext(context: NSManagedObjectContext, callback: (groups: [Group], locations: [Location]) -> Void) {
         let request = NSMutableURLRequest(URL: NSURL(string: kGroupsURL)!)
         request.HTTPMethod = "GET"
@@ -246,11 +254,10 @@ extension Group {
         let session = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration())
         let task = session.dataTaskWithRequest(request, completionHandler: { (data, response, error) -> Void in
             let json = JSON(data: data)
-            let currentUser = NSUserDefaults.standardUserDefaults().valueForKey("userId") as? Int
             var groups = [Group]()
             var locations = [Location]()
             for (index: String, subJson: JSON) in json {
-                if currentUser == nil || currentUser != subJson["creator_id"].number {
+                if User.isRegistered() || User.currentUserId() != subJson["creator_id"].number {
                     let groupEntity = NSEntityDescription.entityForName("Group", inManagedObjectContext: context)
                     let group = NSManagedObject(entity: groupEntity!, insertIntoManagedObjectContext: nil) as Group
                     let locationEntity = NSEntityDescription.entityForName("Location", inManagedObjectContext: context)
