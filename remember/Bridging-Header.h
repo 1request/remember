@@ -8,6 +8,7 @@
 
 #import <Mixpanel/Mixpanel.h>
 #import "iRate.h"
+#import <SDWebImage/UIImageView+WebCache.h>
 
 #ifndef remember_Bridging_Header_h
 #define remember_Bridging_Header_h

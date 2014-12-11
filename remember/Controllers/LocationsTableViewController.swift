@@ -25,7 +25,6 @@ class LocationsTableViewController: UITableViewController, UITableViewDataSource
     let CURRENT_LOCATION = NSLocalizedString("CURRENT_LOCATION", comment: "gps cell label text when location is determined")
     let WITHIN_RANGE = NSLocalizedString("WITHIN_RANGE", comment: "Meter range of beacon")
     let ADDED = NSLocalizedString("ADDED", comment: "beacon has been added")
-    let SENT = NSLocalizedString("SENT", comment: "application for joining gorup has been sent")
     
     let notificationCenter = NSNotificationCenter.defaultCenter()
     var rangedBeacons = [CLBeacon]()
@@ -40,8 +39,7 @@ class LocationsTableViewController: UITableViewController, UITableViewDataSource
     
     weak var managedObjectContext:NSManagedObjectContext?
     
-    var groups = [Group]()
-    var groupLocations = [Location]()
+    var fetchedGroups = [[String: AnyObject]]()
     var locations = [Location]()
     
     //MARK: - View Life Cycle
@@ -58,10 +56,19 @@ class LocationsTableViewController: UITableViewController, UITableViewDataSource
         notificationCenter.addObserver(self, selector: "updateGPSLocation:", name: kGPSLocationUpdateNotificationName, object: nil)
         gpsLocation = LocationManager.sharedInstance.currentLocation
         
-        Group.fetchGroupsFromServerInContext(managedObjectContext!) { [weak self] (groups, locations) -> Void in
+//        Group.fetchGroupsFromServerInContext(managedObjectContext!) { [weak self] (groups, locations, statuses) -> Void in
+//            if let weakself = self {
+//                weakself.groups = groups
+//                weakself.groupLocations = locations
+//                weakself.groupStatuses = statuses
+//                dispatch_async(dispatch_get_main_queue()) {
+//                    weakself.tableView.reloadSections(NSIndexSet(index: 2), withRowAnimation: .Automatic)
+//                }
+//            }
+//        }
+        Group.fetchGroupsFromServer { [weak self](groups) -> Void in
             if let weakself = self {
-                weakself.groups = groups
-                weakself.groupLocations = locations
+                weakself.fetchedGroups = groups
                 dispatch_async(dispatch_get_main_queue()) {
                     weakself.tableView.reloadSections(NSIndexSet(index: 2), withRowAnimation: .Automatic)
                 }
@@ -86,7 +93,7 @@ class LocationsTableViewController: UITableViewController, UITableViewDataSource
         } else if section == 1 {
             return 1
         } else {
-            return groups.count
+            return fetchedGroups.count
         }
     }
     
@@ -102,32 +109,36 @@ class LocationsTableViewController: UITableViewController, UITableViewDataSource
     
     func nearbyLocationsCellAtIndexPath(indexPath: NSIndexPath) -> NearbyLocationsTableViewCell {
         var cell = tableView.dequeueReusableCellWithIdentifier("nearbyPlacesCell", forIndexPath: indexPath) as NearbyLocationsTableViewCell
-        let group = groups[indexPath.row]
-        let location = groupLocations[indexPath.row]
-        let longitude = location.longitude.doubleValue
-        let latitude = location.latitude.doubleValue
+        let group = fetchedGroups[indexPath.row]
+        let longitude = group["longitude"] as Double
+        let latitude = group["latitude"] as Double
         let coordinate = CLLocation(latitude: latitude, longitude: longitude)
         let formattedRange = coordinate.distanceFromLocation(gpsLocation).format(".2")
         let range = String(format: WITHIN_RANGE, formattedRange)
-        
-        cell.nameLabel.text = group.name
+        cell.nameLabel.text = group["name"] as? String
         cell.addressLabel.text = range
         cell.addressLabel.sizeToFit()
+        let url = NSURL(string: group["url"] as String)!
+        let placeholderImage = UIImage(named: "device")!
+        
+        cell.creatorImageView.sd_setImageWithURL(url, placeholderImage: placeholderImage, options: SDWebImageOptions.CacheMemoryOnly)
+        
+        if group["status"] as String == "applying" {
+            cell.setAsApplied()
+        }
+        
         cell.didPressAddButtonBlock = {
             [weak self] in
             if let weakself = self {
-                cell.addButton.setTitle(weakself.SENT, forState: .Normal)
-                cell.addButton.enabled = false
-                cell.addButton.backgroundColor = UIColor.appGrayColor()
+                cell.setAsApplied()
                 if User.isRegistered() {
-                    group.join()
+                    Group.join(group["id"] as Int)
                 } else {
                     println("register user")
                 }
             }
         }
         
-        cell.setNeedsDisplay()
         return cell
     }
     
