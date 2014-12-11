@@ -265,14 +265,18 @@ extension Group {
             let json = JSON(data: data)
             var groups = [[String: AnyObject]]()
             for (index: String, subJson: JSON) in json {
-                if User.isRegistered() || User.currentUserId() != subJson["creator_id"].number || subJson["status"].stringValue != "accepted" {
-                    var dict = [String: AnyObject]()
-                    dict["name"] = subJson["name"].stringValue
-                    dict["id"] = subJson["id"].intValue
-                    dict["status"] = subJson["status"].stringValue
-                    dict["longitude"] = subJson["location"]["longitude"].doubleValue
-                    dict["latitude"] = subJson["location"]["latitude"].doubleValue
-                    dict["url"] = subJson["creator_profile_url"].stringValue
+                var dict = [String: AnyObject]()
+                dict["name"] = subJson["name"].stringValue
+                dict["id"] = subJson["id"].intValue
+                dict["status"] = subJson["status"].stringValue
+                dict["longitude"] = subJson["location"]["longitude"].doubleValue
+                dict["latitude"] = subJson["location"]["latitude"].doubleValue
+                dict["url"] = subJson["creator_profile_url"].stringValue
+                if User.isRegistered() {
+                    if User.currentUserId() != subJson["creator_id"].number && subJson["status"].stringValue != "accepted" {
+                        groups.append(dict)
+                    }
+                } else {
                     groups.append(dict)
                 }
             }
