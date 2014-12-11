@@ -239,11 +239,15 @@ extension Group {
         }
     }
     
-    class func join(groupId: Int) {
+    class func join(groupId: Int, callback: (() -> Void)?) {
         let url = NSURL(string: kMembershipsURL)
         let json: JSON = ["group_id": groupId, "user_id": User.currentUserId()!]
         APIManager.sendJSON(json, toURL: url!, method: HTTPMethodType.POST) { (response, error, jsonObject) -> Void in
-            println("response: \(response)")
+            if let cb = callback {
+                dispatch_async(dispatch_get_main_queue()) {
+                    cb()
+                }
+            }
         }
     }
     

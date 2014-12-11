@@ -91,8 +91,8 @@ extension AddLocationViewController: SignUpViewControllerDelegate {
         overlay.removeFromSuperview()
     }
     
-    func confirmButtonClicked() {
-        signUpVC?.group = addGroupTVC?.group
+    func didCreateUser() {
+        signUpVC?.group?.createPrivateGroupInServer()
         navigationController?.popToRootViewControllerAnimated(true)
     }
 }

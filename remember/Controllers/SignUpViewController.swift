@@ -11,7 +11,7 @@ import MobileCoreServices
 
 @objc protocol SignUpViewControllerDelegate {
     func cancelButtonClicked()
-    func confirmButtonClicked()
+    func didCreateUser()
 }
 
 class SignUpViewController: UIViewController, UITextFieldDelegate {
@@ -23,11 +23,17 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
     
     @IBOutlet weak var cameraButton: UIButton!
     
+    @IBOutlet weak var formBackgroundView: UIView!
+    
     @IBOutlet weak var confirmButton: UIButton!
     
     weak var delegate: SignUpViewControllerDelegate?
     
     var group: Group?
+    
+    @IBOutlet weak var creatingAccountLabel: UILabel!
+    
+    @IBOutlet weak var activityView: UIActivityIndicatorView!
     
     var userImage: UIImage? = nil {
         didSet {
@@ -81,12 +87,24 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
     
     @IBAction func confirmButtonPressed(sender: UIButton) {
         
-        delegate?.confirmButtonClicked()
+        activityView.hidden = false
+        creatingAccountLabel.hidden = false
+        activityView.startAnimating()
+        cameraButton.hidden = true
+        userImageView.hidden = true
+        usernameTextField.hidden = true
+        confirmButton.hidden = true
         
         if let image = userImageView.image {
             let user = User(nickname: usernameTextField.text, image: userImageView.image!)
-            if let group = group {
-                user.createAccount() {group.createPrivateGroupInServer()}
+            user.createAccount() { [weak self] in
+                if let weakself = self {
+                    dispatch_async(dispatch_get_main_queue(), { [weak self]() -> Void in
+                        if let wSelf = self {
+                            wSelf.delegate?.didCreateUser()
+                        }
+                    })
+                }
             }
         }
         

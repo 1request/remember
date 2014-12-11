@@ -14,9 +14,9 @@ import MapKit
 import AddressBookUI
 
 @objc protocol LocationsTableViewControllerDelegate {
-    func didSelectLocationWithCoordinate(coordinate: CLLocationCoordinate2D)
     func didAddLocation(location: CLLocation)
     func didAddBeacon(beacon: CLBeacon)
+    func newUserDidChooseGroupWithId(id: Int)
 }
 
 class LocationsTableViewController: UITableViewController, UITableViewDataSource, UITableViewDelegate {
@@ -55,17 +55,10 @@ class LocationsTableViewController: UITableViewController, UITableViewDataSource
         notificationCenter.addObserver(self, selector: "enteredRegion:", name: kRangedBeaconRegionNotificationName, object: nil)
         notificationCenter.addObserver(self, selector: "updateGPSLocation:", name: kGPSLocationUpdateNotificationName, object: nil)
         gpsLocation = LocationManager.sharedInstance.currentLocation
-        
-//        Group.fetchGroupsFromServerInContext(managedObjectContext!) { [weak self] (groups, locations, statuses) -> Void in
-//            if let weakself = self {
-//                weakself.groups = groups
-//                weakself.groupLocations = locations
-//                weakself.groupStatuses = statuses
-//                dispatch_async(dispatch_get_main_queue()) {
-//                    weakself.tableView.reloadSections(NSIndexSet(index: 2), withRowAnimation: .Automatic)
-//                }
-//            }
-//        }
+        fetchGroups()
+    }
+    
+    func fetchGroups() {
         Group.fetchGroupsFromServer { [weak self](groups) -> Void in
             if let weakself = self {
                 weakself.fetchedGroups = groups
@@ -130,11 +123,11 @@ class LocationsTableViewController: UITableViewController, UITableViewDataSource
         cell.didPressAddButtonBlock = {
             [weak self] in
             if let weakself = self {
-                cell.setAsApplied()
                 if User.isRegistered() {
-                    Group.join(group["id"] as Int)
+                    cell.setAsApplied()
+                    Group.join(group["id"] as Int, nil)
                 } else {
-                    println("register user")
+                    weakself.delegate?.newUserDidChooseGroupWithId(group["id"] as Int)
                 }
             }
         }

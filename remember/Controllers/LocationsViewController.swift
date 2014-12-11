@@ -16,69 +16,21 @@ class LocationsViewController: UIViewController {
     
     @IBOutlet weak var locationsContainerView: UIView!
     
-    @IBOutlet weak var mapViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var signUpContainerView: UIView!
     
-    @IBOutlet weak var mapContainerView: UIView!
-    
+    var selectedGroupId: Int?
     var locationsTVC: LocationsTableViewController?
-    var mapVC: MapViewController?
-    
-    var selectedCoordinate: CLLocationCoordinate2D? = nil {
-        didSet(oldCoordinate) {
-            showMap()
-        }
-    }
+    var signUpVC: SignUpViewController?
+    lazy var overlay: UIView = {
+        let view = UIView(frame: self.view.bounds)
+        view.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.4)
+        return view
+        }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        if locationsTVC == nil {
-            setUpLocationsTVC()
-        }
-    }
-    
-    func setContainerViewConstraints(containerViewController: UIViewController, view: UIView) {
-        containerViewController.view.setTranslatesAutoresizingMaskIntoConstraints(false)
-        let viewsDict = ["controllerView": containerViewController.view]
-        let horizontalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("H:|[controllerView]|", options: .DirectionLeadingToTrailing, metrics: nil, views: viewsDict)
-        let verticalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("V:|[controllerView]|", options: .DirectionLeadingToTrailing, metrics: nil, views: viewsDict)
-        view.addConstraints(horizontalConstraints)
-        view.addConstraints(verticalConstraints)
-    }
-    
-    func setUpLocationsTVC() {
-        locationsTVC = self.storyboard?.instantiateViewControllerWithIdentifier("locationsTableViewController") as? LocationsTableViewController
-        addChildViewController(locationsTVC!)
-        locationsContainerView.addSubview(locationsTVC!.view)
-        setContainerViewConstraints(locationsTVC!, view: locationsContainerView)
-        locationsTVC?.didMoveToParentViewController(self)
-        locationsTVC?.managedObjectContext = managedObjectContext
         locationsTVC?.delegate = self
-    }
-    
-    func setUpMapVC() {
-        mapVC = self.storyboard?.instantiateViewControllerWithIdentifier("mapViewController") as? MapViewController
-        addChildViewController(mapVC!)
-        mapContainerView.addSubview(mapVC!.view)
-        setContainerViewConstraints(mapVC!, view: mapContainerView)
-        mapVC?.didMoveToParentViewController(self)
-    }
-    
-    func showMap() {
-        if mapVC == nil {
-            setUpMapVC()
-        }
-        if mapViewHeightConstraint.constant == 0 {
-            mapViewHeightConstraint.constant = view.bounds.size.width / 2
-            updateViewConstraints()
-            view.setNeedsLayout()
-        }
-        let annotation = MKPointAnnotation()
-        annotation.coordinate = selectedCoordinate!
-        let span = MKCoordinateSpanMake(0.005, 0.005)
-        let region = MKCoordinateRegionMake(annotation.coordinate, span)
-        mapVC?.annotations = [annotation]
-        mapVC?.region = region
-        mapVC?.setMap()
+        signUpVC?.delegate = self
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -91,14 +43,22 @@ class LocationsViewController: UIViewController {
             if let object = sender as? CLBeacon {
                 addLocationVC.beacon = object
             }
+        } else if segue.identifier == "embedLocationsTable" {
+            locationsTVC = segue.destinationViewController as? LocationsTableViewController
+            locationsTVC?.managedObjectContext = managedObjectContext
+        } else if segue.identifier == "embedSignUpInLocations" {
+            signUpVC = segue.destinationViewController as? SignUpViewController
         }
+    }
+    
+    func showSignUpForm() {
+        signUpContainerView.hidden = false
+        signUpContainerView.showAnimated()
+        view.insertSubview(overlay, aboveSubview: locationsContainerView)
     }
 }
 
 extension LocationsViewController: LocationsTableViewControllerDelegate {
-    func didSelectLocationWithCoordinate(coordinate: CLLocationCoordinate2D) {
-        selectedCoordinate = coordinate
-    }
     
     func didAddLocation(location: CLLocation) {
         performSegueWithIdentifier("toAddGroup", sender: location)
@@ -106,5 +66,29 @@ extension LocationsViewController: LocationsTableViewControllerDelegate {
     
     func didAddBeacon(beacon: CLBeacon) {
         performSegueWithIdentifier("toAddGroup", sender: beacon)
+    }
+    
+    func newUserDidChooseGroupWithId(id: Int) {
+        selectedGroupId = id
+        showSignUpForm()
+    }
+}
+
+extension LocationsViewController: SignUpViewControllerDelegate {
+    func cancelButtonClicked() {
+        signUpContainerView.hidden = true
+        overlay.removeFromSuperview()
+    }
+    
+    func didCreateUser() {
+        if let id = selectedGroupId {
+            Group.join(id) { [weak self] in
+                if let weakself = self {
+                    weakself.locationsTVC?.fetchGroups()
+                    weakself.signUpContainerView.hidden = true
+                    weakself.overlay.removeFromSuperview()
+                }
+            }
+        }
     }
 }
