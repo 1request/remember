@@ -3,4 +3,4 @@ platform :ios, '7.0'
 
 pod 'Mixpanel'
 pod 'iRate'
-
+pod 'SDWebImage'

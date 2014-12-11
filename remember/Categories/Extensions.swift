@@ -268,7 +268,7 @@ extension Group {
                     dict["status"] = subJson["status"].stringValue
                     dict["longitude"] = subJson["location"]["longitude"].doubleValue
                     dict["latitude"] = subJson["location"]["latitude"].doubleValue
-                    println("dict: \(dict)")
+                    dict["url"] = subJson["creator_profile_url"].stringValue
                     groups.append(dict)
                 }
             }
