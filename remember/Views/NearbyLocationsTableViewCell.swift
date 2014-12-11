@@ -9,6 +9,7 @@
 import UIKit
 
 class NearbyLocationsTableViewCell: AddableTableViewCell {
+    let SENT = NSLocalizedString("SENT", comment: "application for joining gorup has been sent")
     
     @IBOutlet weak var nameLabel: UILabel!
     
@@ -19,5 +20,10 @@ class NearbyLocationsTableViewCell: AddableTableViewCell {
     @IBAction func addButtonPressed(sender: UIButton) {
         performAddAction(sender)
     }
-
+    
+    func setAsApplied() {
+        addButton.setTitle(SENT, forState: .Normal)
+        addButton.enabled = false
+        addButton.backgroundColor = UIColor.appGrayColor()
+    }
 }
