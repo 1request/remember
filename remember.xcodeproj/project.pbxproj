@@ -96,6 +96,7 @@
 		D14B83561A27576200D12EDF /* NearbyLocationsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDFE6A01A2739DC00EC4B93 /* NearbyLocationsTableViewCell.swift */; };
 		D14B83571A27576200D12EDF /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C309F851A26F94700B36F2E /* MapViewController.swift */; };
 		D14B83591A27576200D12EDF /* LocationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C309F871A26FF2400B36F2E /* LocationsViewController.swift */; };
+		D18E4E6B1A39718700ECB34F /* Membership.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1EEF8E1A383237000759BB /* Membership.swift */; };
 		D1A673761A1B6C6D00C05D2C /* DataMigrationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6A351E1A1B0B40004FD2FD /* DataMigrationManager.swift */; };
 		D1A673771A1B6C6D00C05D2C /* ObjCToSwiftMigrationPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6A35251A1B2610004FD2FD /* ObjCToSwiftMigrationPolicy.swift */; };
 		D1A673781A1B6C6D00C05D2C /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6A35271A1B3695004FD2FD /* CoreDataStack.swift */; };
@@ -774,6 +775,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D18E4E6B1A39718700ECB34F /* Membership.swift in Sources */,
 				D1D935AC1A31D6B300A6BA16 /* RememberMappingModel_v4_to_v5.xcmappingmodel in Sources */,
 				D1BD333F1A30AC6D00BF1811 /* LocationToGroupMigrationPolicy.swift in Sources */,
 				D1F62E891A28971900191D87 /* FeedbackViewController.swift in Sources */,
