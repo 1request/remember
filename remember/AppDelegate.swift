@@ -14,20 +14,20 @@ import AVFoundation
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
+    
     var window: UIWindow?
     let NEW_MEMBER = NSLocalizedString("NEW_MEMBER", comment: "alert title for approving / rejecting new member")
     
     lazy var managedObjectContext : NSManagedObjectContext = {
         let manager = DataMigrationManager(storeNamed: "remember", modelNamed: "remember")
         return manager.stack.context
-    }()
+        }()
     
     override class func initialize() -> Void {
         iRate.sharedInstance().onlyPromptIfLatestVersion = false
         iRate.sharedInstance().daysUntilPrompt = 3
     }
-
+    
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         Crashlytics.startWithAPIKey("a73df0ceadf9f0995f97da85f3a3ca791c3e0de1")
         
@@ -53,10 +53,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             LocationManager.sharedInstance.locationManager.startMonitoringVisits()
         }
         
-        let type = UIUserNotificationType.Badge | UIUserNotificationType.Alert | UIUserNotificationType.Sound
-        let setting = UIUserNotificationSettings(forTypes: type, categories: nil)
-        UIApplication.sharedApplication().registerUserNotificationSettings(setting)
-        UIApplication.sharedApplication().registerForRemoteNotifications()
+        registerNotification()
         
         if let options = launchOptions {
             if options[UIApplicationLaunchOptionsRemoteNotificationKey] != nil {
@@ -90,25 +87,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         approveMemeberWithUserInfo(userInfo)
     }
-
+    
     func applicationWillResignActive(application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
     }
-
+    
     func applicationDidEnterBackground(application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
     }
-
+    
     func applicationWillEnterForeground(application: UIApplication) {
         // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
     }
-
+    
     func applicationDidBecomeActive(application: UIApplication) {
         clearNotifications()
     }
-
+    
     func applicationWillTerminate(application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
         // Saves changes in the application's managed object context before the application terminates.
@@ -162,7 +159,17 @@ extension AppDelegate {
             }
         }
     }
-    
+    func registerNotification() {
+        let application = UIApplication.sharedApplication()
+        let types = (UIUserNotificationType.Badge | UIUserNotificationType.Sound | UIUserNotificationType.Alert)
+        if application.respondsToSelector("registerUserNotificationSettings:") {
+            let settings = UIUserNotificationSettings(forTypes: types, categories: nil)
+            application.registerUserNotificationSettings(settings)
+        }
+        if application.respondsToSelector("registerForRemoteNotificationTypes") {
+            application.registerForRemoteNotificationTypes(.Badge | .Sound | .Alert)
+        }
+    }
     func sendLocalNotificationWithMessage (message: String) {
         let notification = UILocalNotification()
         notification.alertBody = message
@@ -175,12 +182,6 @@ extension AppDelegate {
         
         if notification.respondsToSelector("regionTriggersOnce") {
             notification.regionTriggersOnce = true
-        }
-        
-        if UIApplication.sharedApplication().respondsToSelector("registerUserNotificationSettings:") {
-            let types = UIUserNotificationType.Badge | UIUserNotificationType.Sound | UIUserNotificationType.Alert
-            let settings = UIUserNotificationSettings(forTypes: types, categories: nil)
-            UIApplication.sharedApplication().registerUserNotificationSettings(settings)
         }
         
         UIApplication.sharedApplication().presentLocalNotificationNow(notification)
