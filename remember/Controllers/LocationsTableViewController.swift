@@ -132,6 +132,8 @@ class LocationsTableViewController: UITableViewController, UITableViewDataSource
             }
         }
         
+        cell.setNeedsDisplay()
+        
         return cell
     }
     

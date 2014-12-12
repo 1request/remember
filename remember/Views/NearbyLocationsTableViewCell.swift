@@ -9,7 +9,8 @@
 import UIKit
 
 class NearbyLocationsTableViewCell: AddableTableViewCell {
-    let SENT = NSLocalizedString("SENT", comment: "application for joining gorup has been sent")
+    let SENT = NSLocalizedString("SENT", comment: "application for joining group has been sent")
+    let JOIN = NSLocalizedString("JOIN", comment: "join group")
     
     @IBOutlet weak var nameLabel: UILabel!
     
@@ -27,6 +28,13 @@ class NearbyLocationsTableViewCell: AddableTableViewCell {
         addButton.setTitle(SENT, forState: .Normal)
         addButton.enabled = false
         addButton.backgroundColor = UIColor.appGrayColor()
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        addButton.setTitle(JOIN, forState: .Normal)
+        addButton.enabled = true
+        addButton.backgroundColor = UIColor.appGreenTextColor()
     }
     
     override func drawRect(rect: CGRect) {
