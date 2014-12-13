@@ -70,6 +70,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Mixpanel.sharedInstance().people.addPushDeviceToken(deviceToken)
     }
     
+    func application(application: UIApplication, didRegisterUserNotificationSettings notificationSettings: UIUserNotificationSettings) {
+        application.registerForRemoteNotifications()
+    }
+    
     func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {
         println("register remote notification error: \(error)")
     }
@@ -159,9 +163,11 @@ extension AppDelegate {
             }
         }
     }
+    
     func registerNotification() {
         let application = UIApplication.sharedApplication()
         let types = (UIUserNotificationType.Badge | UIUserNotificationType.Sound | UIUserNotificationType.Alert)
+        let remoteTypes = (UIRemoteNotificationType.Badge | UIRemoteNotificationType.Sound | UIRemoteNotificationType.Alert)
         if application.respondsToSelector("registerUserNotificationSettings:") {
             let settings = UIUserNotificationSettings(forTypes: types, categories: nil)
             application.registerUserNotificationSettings(settings)
@@ -170,6 +176,7 @@ extension AppDelegate {
             application.registerForRemoteNotificationTypes(.Badge | .Sound | .Alert)
         }
     }
+    
     func sendLocalNotificationWithMessage (message: String) {
         let notification = UILocalNotification()
         notification.alertBody = message

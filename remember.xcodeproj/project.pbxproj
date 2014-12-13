@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		51A3564E4A85797F50A8E658 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F3E69F282AB4432CF11BFC7 /* libPods.a */; };
+		7C0603931A3BFB9800FB7A0D /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C0603921A3BFB9800FB7A0D /* SignUpView.swift */; };
+		7C0603941A3BFB9800FB7A0D /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C0603921A3BFB9800FB7A0D /* SignUpView.swift */; };
 		7C088D9819E631CA005A51D9 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C088D9719E631CA005A51D9 /* LocationManager.swift */; };
 		7C088D9A19E631E2005A51D9 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C088D9919E631E2005A51D9 /* CoreLocation.framework */; };
 		7C088D9C19E63EE9005A51D9 /* BeaconFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C088D9B19E63EE9005A51D9 /* BeaconFactory.swift */; };
@@ -52,6 +54,8 @@
 		7C6C8A261A358B670068B56C /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6C8A251A358B670068B56C /* SwiftyJSON.swift */; };
 		7C8357DF1A35767300580BC0 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C0B54BF1A3545CD006B041A /* User.swift */; };
 		7C86C3E01A25672000702D80 /* AudioRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB6F6831A24666100C2A60E /* AudioRecorder.swift */; };
+		7C8EDC521A3B3B00000EF661 /* PopUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C8EDC511A3B3B00000EF661 /* PopUpView.swift */; };
+		7C8EDC531A3B3B00000EF661 /* PopUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C8EDC511A3B3B00000EF661 /* PopUpView.swift */; };
 		7C9FB4E01A30336C00A4B907 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C9FB4DF1A30336C00A4B907 /* QuartzCore.framework */; };
 		7CA8AC721A07202D00566252 /* SwipeableTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA8AC711A07202D00566252 /* SwipeableTableViewCell.swift */; };
 		7CB0A6111A300F5300BA48C1 /* AddLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB0A6101A300F5300BA48C1 /* AddLocationViewController.swift */; };
@@ -146,6 +150,7 @@
 		1F3E69F282AB4432CF11BFC7 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		755D3CD87A5D01880371D58E /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		7A3F8885AEDF5801A23F6995 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		7C0603921A3BFB9800FB7A0D /* SignUpView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SignUpView.swift; path = Views/SignUpView.swift; sourceTree = "<group>"; };
 		7C088D9719E631CA005A51D9 /* LocationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		7C088D9919E631E2005A51D9 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		7C088D9B19E63EE9005A51D9 /* BeaconFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BeaconFactory.swift; sourceTree = "<group>"; };
@@ -189,6 +194,7 @@
 		7C6C8A241A358B670068B56C /* SwiftyJSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SwiftyJSON.h; path = SwiftyJSON/Source/SwiftyJSON.h; sourceTree = SOURCE_ROOT; };
 		7C6C8A251A358B670068B56C /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftyJSON.swift; path = SwiftyJSON/Source/SwiftyJSON.swift; sourceTree = SOURCE_ROOT; };
 		7C84AFAE1A0CB0DB00D905A0 /* remember 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "remember 4.xcdatamodel"; sourceTree = "<group>"; };
+		7C8EDC511A3B3B00000EF661 /* PopUpView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PopUpView.swift; path = Views/PopUpView.swift; sourceTree = "<group>"; };
 		7C9FB4DF1A30336C00A4B907 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		7CA8AC711A07202D00566252 /* SwipeableTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwipeableTableViewCell.swift; path = Views/SwipeableTableViewCell.swift; sourceTree = "<group>"; };
 		7CB0A6101A300F5300BA48C1 /* AddLocationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AddLocationViewController.swift; path = Controllers/AddLocationViewController.swift; sourceTree = "<group>"; };
@@ -361,6 +367,8 @@
 			isa = PBXGroup;
 			children = (
 				8ABFAA6419E6665700FCE6EF /* GroupsTableViewCell.swift */,
+				7C8EDC511A3B3B00000EF661 /* PopUpView.swift */,
+				7C0603921A3BFB9800FB7A0D /* SignUpView.swift */,
 				7CF32E621A0B21B00056F873 /* HUD.swift */,
 				8ABFAA6619E668DB00FCE6EF /* MessagesTableViewCell.swift */,
 				7CA8AC711A07202D00566252 /* SwipeableTableViewCell.swift */,
@@ -718,6 +726,7 @@
 				7C4EA9B81A3169F800CD2011 /* MessageMigrationPolicy_v4_to_v5.swift in Sources */,
 				8ABFAA6719E668DB00FCE6EF /* MessagesTableViewCell.swift in Sources */,
 				7CF32E631A0B21B00056F873 /* HUD.swift in Sources */,
+				7C0603931A3BFB9800FB7A0D /* SignUpView.swift in Sources */,
 				7CCFFE9A1A25CEF500A346E4 /* GooglePlaces.swift in Sources */,
 				8ABFAA6519E6665700FCE6EF /* GroupsTableViewCell.swift in Sources */,
 				7C6A35281A1B3695004FD2FD /* CoreDataStack.swift in Sources */,
@@ -728,6 +737,7 @@
 				7C309F881A26FF2400B36F2E /* LocationsViewController.swift in Sources */,
 				8ABFAA6919E67CEB00FCE6EF /* UnreadSpotView.swift in Sources */,
 				7C18BBEC1A1601DB001F15CA /* AddGroupEvent.swift in Sources */,
+				7C8EDC521A3B3B00000EF661 /* PopUpView.swift in Sources */,
 				7C309F861A26F94700B36F2E /* MapViewController.swift in Sources */,
 				7C0B54C01A3545CD006B041A /* User.swift in Sources */,
 				7C3475EB1A2EC0B300559E0E /* AddLocationEvent.swift in Sources */,
@@ -783,6 +793,7 @@
 				D14B83551A27576200D12EDF /* AddableTableViewCell.swift in Sources */,
 				D14B83561A27576200D12EDF /* NearbyLocationsTableViewCell.swift in Sources */,
 				7CB0A6151A300F7000BA48C1 /* SignUpViewController.swift in Sources */,
+				7C0603941A3BFB9800FB7A0D /* SignUpView.swift in Sources */,
 				D14B83571A27576200D12EDF /* MapViewController.swift in Sources */,
 				D14B83591A27576200D12EDF /* LocationsViewController.swift in Sources */,
 				D1A673791A1B6C8F00C05D2C /* RememberMappingModel_objc_to_v4.xcmappingmodel in Sources */,
@@ -793,6 +804,7 @@
 				7C1EEF8C1A382770000759BB /* Group.swift in Sources */,
 				7C1EEF8B1A38276C000759BB /* Location.swift in Sources */,
 				D12E82CC1A165B040016778F /* MixpanelEventProtocols.swift in Sources */,
+				7C8EDC531A3B3B00000EF661 /* PopUpView.swift in Sources */,
 				D12E82CD1A165B040016778F /* GeographicRegionEvent.swift in Sources */,
 				D12E82CE1A165B040016778F /* BeaconRegionEvent.swift in Sources */,
 				D12E82CF1A165B040016778F /* VisitEvent.swift in Sources */,

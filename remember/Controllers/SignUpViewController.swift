@@ -14,22 +14,11 @@ import MobileCoreServices
     func didCreateUser()
 }
 
-class SignUpViewController: UIViewController, UITextFieldDelegate {
-    @IBOutlet weak var formView: UIView!
+class SignUpViewController: UIViewController {
 
-    @IBOutlet weak var usernameTextField: UITextField!
-    
-    @IBOutlet weak var userImageView: UIImageView!
-    
-    @IBOutlet weak var cameraButton: UIButton!
-    
-    @IBOutlet weak var formBackgroundView: UIView!
-    
-    @IBOutlet weak var confirmButton: UIButton!
+    @IBOutlet weak var signUpView: SignUpView!
     
     weak var delegate: SignUpViewControllerDelegate?
-    
-    var group: Group?
     
     @IBOutlet weak var creatingAccountLabel: UILabel!
     
@@ -38,28 +27,14 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
     var userImage: UIImage? = nil {
         didSet {
             checkUserData()
+            signUpView.cameraButtonImage = userImage
         }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        let tapRecognizer = UITapGestureRecognizer(target: self, action: "handleSingleTap:")
-        tapRecognizer.numberOfTapsRequired = 1
-        view.addGestureRecognizer(tapRecognizer)
-        usernameTextField.delegate = self
+        signUpView.delegate = self
     }
-    
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
-        let proportion = cameraButton.frame.width / 4
-        cameraButton.layer.cornerRadius = cameraButton.frame.size.height / 2
-        cameraButton.layer.masksToBounds = true
-        cameraButton.imageEdgeInsets = UIEdgeInsetsMake(proportion, proportion, proportion, proportion)
-        userImageView.layer.cornerRadius = userImageView.frame.size.height / 2
-        userImageView.layer.masksToBounds = true
-    }
-    
     
     @IBAction func cancelButtonPressed(sender: AnyObject) {
         delegate?.cancelButtonClicked()
@@ -67,55 +42,19 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
     }
     
     @IBAction func usernameTextFieldEditingChanged(sender: UITextField) {
-        checkUserData()
+//        checkUserData()
     }
     
     @IBAction func cameraButtonPressed(sender: UIButton) {
         view.endEditing(true)
         
-        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera) {
-            let imagePickerController = UIImagePickerController()
-            imagePickerController.delegate = self
-            imagePickerController.mediaTypes = [kUTTypeImage]
-            imagePickerController.allowsEditing = true
-            imagePickerController.sourceType = UIImagePickerControllerSourceType.Camera
-            presentViewController(imagePickerController, animated: true, completion: nil)
-        } else {
-            NSLog("No camera")
-        }
-    }
-    
-    @IBAction func confirmButtonPressed(sender: UIButton) {
-        
-        activityView.hidden = false
-        creatingAccountLabel.hidden = false
-        activityView.startAnimating()
-        cameraButton.hidden = true
-        userImageView.hidden = true
-        usernameTextField.hidden = true
-        confirmButton.hidden = true
-        
-        if let image = userImageView.image {
-            let user = User(nickname: usernameTextField.text, image: userImageView.image!)
-            user.createAccount() { [weak self] in
-                if let weakself = self {
-                    dispatch_async(dispatch_get_main_queue(), { [weak self]() -> Void in
-                        if let wSelf = self {
-                            wSelf.delegate?.didCreateUser()
-                        }
-                    })
-                }
             }
-        }
-        
-        view.endEditing(true)
-    }
     
     func checkUserData() {
-        if usernameTextField.text != "" && userImage != nil {
-            confirmButton.enabled = true
+        if signUpView.usernameTextField.text != "" && userImage != nil {
+            signUpView.confirmButton.enabled = true
         } else {
-            confirmButton.enabled = false
+            signUpView.confirmButton.enabled = false
         }
     }
     
@@ -142,9 +81,46 @@ extension SignUpViewController: UIImagePickerControllerDelegate, UINavigationCon
         
         userImage = image
         
-        userImageView.image = userImage
-        userImageView.hidden = false
-        
         picker.dismissViewControllerAnimated(true, completion: nil)
+    }
+}
+
+extension SignUpViewController: SignUpViewDelegate {
+    func cameraButtonPressed() {
+        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera) {
+            let imagePickerController = UIImagePickerController()
+            imagePickerController.delegate = self
+            imagePickerController.mediaTypes = [kUTTypeImage]
+            imagePickerController.allowsEditing = true
+            imagePickerController.sourceType = UIImagePickerControllerSourceType.Camera
+            presentViewController(imagePickerController, animated: true, completion: nil)
+        } else {
+            NSLog("No camera")
+        }
+    }
+    
+    func closeButtonPressed() {
+        delegate?.cancelButtonClicked()
+    }
+    
+    func usernameTextFieldEditingChanged() {
+        checkUserData()
+    }
+    
+    func confirmButtonPressed() {
+        signUpView.showCreatingAccount()
+        
+        if let image = userImage {
+            let user = User(nickname: signUpView.usernameTextField.text, image: image)
+            user.createAccount() { [weak self] in
+                if let weakself = self {
+                    dispatch_async(dispatch_get_main_queue(), { [weak self]() -> Void in
+                        if let wSelf = self {
+                            wSelf.delegate?.didCreateUser()
+                        }
+                    })
+                }
+            }
+        }
     }
 }

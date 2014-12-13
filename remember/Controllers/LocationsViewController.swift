@@ -21,11 +21,6 @@ class LocationsViewController: UIViewController {
     var selectedGroupId: Int?
     var locationsTVC: LocationsTableViewController?
     var signUpVC: SignUpViewController?
-    lazy var overlay: UIView = {
-        let view = UIView(frame: self.view.bounds)
-        view.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.4)
-        return view
-        }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -54,7 +49,6 @@ class LocationsViewController: UIViewController {
     func showSignUpForm() {
         signUpContainerView.hidden = false
         signUpContainerView.showAnimated()
-        view.insertSubview(overlay, aboveSubview: locationsContainerView)
     }
 }
 
@@ -77,7 +71,6 @@ extension LocationsViewController: LocationsTableViewControllerDelegate {
 extension LocationsViewController: SignUpViewControllerDelegate {
     func cancelButtonClicked() {
         signUpContainerView.hidden = true
-        overlay.removeFromSuperview()
     }
     
     func didCreateUser() {
@@ -86,7 +79,6 @@ extension LocationsViewController: SignUpViewControllerDelegate {
                 if let weakself = self {
                     weakself.locationsTVC?.fetchGroups()
                     weakself.signUpContainerView.hidden = true
-                    weakself.overlay.removeFromSuperview()
                 }
             }
         }
