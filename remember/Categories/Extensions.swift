@@ -31,6 +31,10 @@ extension UIColor {
     class func appBlackTextColor() -> UIColor {
         return UIColor(red: 51/255, green: 51/255, blue: 51/255, alpha: 1)
     }
+    
+    class func appDarkGrayColor() -> UIColor {
+        return UIColor(red: 224/255.0, green: 227/255.0, blue: 236/255.0, alpha: 1)
+    }
 }
 
 extension Double {
@@ -225,7 +229,7 @@ extension UIImage {
 }
 
 extension Group {
-    func createPrivateGroupInServer() {
+    func createPrivateGroupInServer(callback: (() -> Void)?) {
         if let userId = NSUserDefaults.standardUserDefaults().valueForKey("userId") as? Int {
             let json: JSON = ["name": name, "creator_id": userId, "latitude": location.latitude, "longitude": location.longitude, "uuid": location.uuid, "major": location.major, "minor": location.minor]
             APIManager.sendJSON(json, toURL: NSURL(string: kGroupsURL)!, method: .POST, callback: { [weak self] (response, error, jsonObject) -> Void in
@@ -233,6 +237,11 @@ extension Group {
                     self?.serverId = id
                     if let context = self?.managedObjectContext {
                         context.save(nil)
+                    }
+                    if let cb = callback {
+                        dispatch_async(dispatch_get_main_queue()) {
+                            cb()
+                        }
                     }
                 }
             })

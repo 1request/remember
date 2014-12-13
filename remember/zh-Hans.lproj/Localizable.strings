@@ -25,3 +25,6 @@ JOIN = "加入";
 NEW_MEMBER = "新成员";
 APPROVE = "批准";
 REJECT = "拒绝";
+NAME = "名称";
+OK = "确认";
+CREATING_ACCOUNT = "创建账号中";

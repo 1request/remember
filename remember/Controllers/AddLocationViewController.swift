@@ -27,12 +27,6 @@ class AddLocationViewController: UIViewController {
     var addGroupTVC: AddGroupTableViewController?
     var signUpVC: SignUpViewController?
     
-    lazy var overlay: UIView = {
-        let view = UIView(frame: self.view.bounds)
-        view.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.4)
-        return view
-    }()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         saveButton.enabled = false
@@ -59,8 +53,11 @@ class AddLocationViewController: UIViewController {
                 if !User.isRegistered() {
                     showSignUpForm()
                 } else {
-                    addGroupTVC?.group?.createPrivateGroupInServer()
-                    navigationController?.popToRootViewControllerAnimated(true)
+                    addGroupTVC?.group?.createPrivateGroupInServer() { [weak self] in
+                        if let weakself = self {
+                            weakself.navigationController?.popToRootViewControllerAnimated(true)
+                        }
+                    }
                 }
             } else {
                 navigationController?.popToRootViewControllerAnimated(true)
@@ -71,7 +68,6 @@ class AddLocationViewController: UIViewController {
     func showSignUpForm() {
         signUpContainer.hidden = false
         signUpContainer.showAnimated()
-        view.insertSubview(overlay, aboveSubview: addGroupContainer)
     }
 }
 
@@ -88,11 +84,13 @@ extension AddLocationViewController: AddGroupTableViewControllerDelegate {
 extension AddLocationViewController: SignUpViewControllerDelegate {
     func cancelButtonClicked() {
         signUpContainer.dismissAnimated()
-        overlay.removeFromSuperview()
     }
     
     func didCreateUser() {
-        signUpVC?.group?.createPrivateGroupInServer()
-        navigationController?.popToRootViewControllerAnimated(true)
+        addGroupTVC?.group?.createPrivateGroupInServer() { [weak self] in
+            if let weakself = self {
+                weakself.navigationController?.popToRootViewControllerAnimated(true)
+            }
+        }
     }
 }
