@@ -58,6 +58,7 @@ let kFeedbackPOSTURL = "http://app.rememberthere.com/api/feedbacks/send"
 let kUsersURL = "http://app.rememberthere.com/users"
 let kGroupsURL = "http://app.rememberthere.com/groups"
 let kMembershipsURL = "http://app.rememberthere.com/memberships"
+let kAudiosURL = "http://app.rememberthere.com/audios"
 
 //HUD
 let SLIDE_UP_TO_CANCEL = NSLocalizedString("SLIDE_UP_TO_CANCEL", comment: "Inform user to slide up to cancel recording")

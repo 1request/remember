@@ -673,6 +673,19 @@ extension HomeViewController: RecorderViewControllerDelegate {
             if !managedObjectContext!.save(&error) {
                 println("error saving audio: \(error?.localizedDescription)")
             }
+            
+            if group.type != "personal" {
+                if let userId = User.currentUserId() {
+                    sendMessageToServer(group.serverId.integerValue, userId: userId, url: outputFileURL!)
+                }
+            }
         }
+    }
+    
+    func sendMessageToServer(groupId: Int, userId: Int, url: NSURL) {
+        let audioData = NSData(contentsOfURL: url)!
+        let data = (key: "audio[audioclip]", data: audioData, type: "audio/x-m4a", filename: "audio.m4a")
+        let parameters = ["audio[group_id]": groupId, "audio[user_id]": userId]
+        APIManager.postMultipartData(data, parameters: parameters, url: NSURL(string: kAudiosURL)!, nil)
     }
 }
