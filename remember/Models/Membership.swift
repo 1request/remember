@@ -18,14 +18,13 @@ class Membership: NSObject {
     
     func approve() {
         let json: JSON = ["status": "accepted"]
-        APIManager.sendJSON(json, toURL: url, method: HTTPMethodType.PATCH) { (response, error, jsonObject) -> Void in
+        APIManager.sendRequest(toURL: url, method: .PATCH, json: json) { (response, error, jsonObject) -> Void in
             println("response: \(response)")
         }
     }
     
     func reject() {
-        let json: JSON = nil
-        APIManager.sendJSON(json, toURL: url, method: HTTPMethodType.DELETE) { (response, error, jsonObject) -> Void in
+        APIManager.sendRequest(toURL: url, method: .DELETE, json: nil) { (response, error, jsonObject) -> Void in
             println("response: \(response)")
         }
     }

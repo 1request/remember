@@ -60,16 +60,14 @@ class APIManager: NSObject {
     
     
     
-    class func sendJSON(json: JSON, toURL url: NSURL, method: HTTPMethodType, callback: ((response: NSURLResponse, error: NSError?, jsonObject: JSON) -> Void)?) {
+    class func sendRequest(toURL url: NSURL, method: HTTPMethodType, json: JSON?, callback: ((response: NSURLResponse, error: NSError?, jsonObject: JSON) -> Void)?) {
         let request = NSMutableURLRequest(URL: url)
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.HTTPMethod = method.rawValue
-        if method != HTTPMethodType.DELETE {
-            if let data = json.rawData() {
-                let length = "\(data.length)"
-                request.setValue(length, forHTTPHeaderField: "Content-Length")
-                request.HTTPBody = data
-            }
+        if let data = json?.rawData() {
+            let length = "\(data.length)"
+            request.setValue(length, forHTTPHeaderField: "Content-Length")
+            request.HTTPBody = data
         }
         postRequest(request) { (response, error, jsonObject) -> Void in
             if let cb = callback {
