@@ -44,7 +44,11 @@ extension Group {
     class func fetchGroupsFromServer(callback: (groups: [[String: AnyObject]]) -> Void) {
         var url = NSURL(string: kGroupsURL)!
         if let currentUserId = User.currentUserId() {
-            url = NSURL(string: kGroupsURL + "?user_id=\(currentUserId)")!
+            if let coordinate = LocationManager.sharedInstance.currentLocation?.coordinate {
+                let latitude = coordinate.latitude
+                let longitude = coordinate.longitude
+                url = NSURL(string: kGroupsURL + "?user_id=\(currentUserId)&lat=\(latitude)&lng=\(longitude)")!
+            }
         }
         
         APIManager.sendRequest(toURL: url, method: .GET, json: nil) { (response, error, jsonObject) -> Void in

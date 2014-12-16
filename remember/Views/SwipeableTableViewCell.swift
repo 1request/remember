@@ -468,7 +468,6 @@ class SwipeableTableViewCell: UITableViewCell, UIGestureRecognizerDelegate {
                 }
             }
         case UIGestureRecognizerState.Ended:
-            println("gesture ended")
             if movingHorizontally {
                 if let direction = openedDirection {
                     println("direction: \(direction)")
