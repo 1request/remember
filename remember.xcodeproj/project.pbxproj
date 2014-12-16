@@ -33,6 +33,8 @@
 		7C309F881A26FF2400B36F2E /* LocationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C309F871A26FF2400B36F2E /* LocationsViewController.swift */; };
 		7C319B5F1A2D78F90042BAB8 /* LocationToGroupMigrationPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C319B5E1A2D78F90042BAB8 /* LocationToGroupMigrationPolicy.swift */; };
 		7C3475EB1A2EC0B300559E0E /* AddLocationEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C3475EA1A2EC0B300559E0E /* AddLocationEvent.swift */; };
+		7C3B46551A3FDE59009DC0D1 /* Group+API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C3B46541A3FDE59009DC0D1 /* Group+API.swift */; };
+		7C3B46561A3FDE59009DC0D1 /* Group+API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C3B46541A3FDE59009DC0D1 /* Group+API.swift */; };
 		7C4EA9B81A3169F800CD2011 /* MessageMigrationPolicy_v4_to_v5.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C4EA9B71A3169F700CD2011 /* MessageMigrationPolicy_v4_to_v5.swift */; };
 		7C4EA9B91A3169F800CD2011 /* MessageMigrationPolicy_v4_to_v5.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C4EA9B71A3169F700CD2011 /* MessageMigrationPolicy_v4_to_v5.swift */; };
 		7C4EA9BB1A316A0900CD2011 /* LocationMigrationPolicy_v4_to_v5.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C4EA9BA1A316A0900CD2011 /* LocationMigrationPolicy_v4_to_v5.swift */; };
@@ -172,6 +174,7 @@
 		7C319B431A2D69500042BAB8 /* remember 5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "remember 5.xcdatamodel"; sourceTree = "<group>"; };
 		7C319B5E1A2D78F90042BAB8 /* LocationToGroupMigrationPolicy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LocationToGroupMigrationPolicy.swift; path = Migrations/LocationToGroupMigrationPolicy.swift; sourceTree = "<group>"; };
 		7C3475EA1A2EC0B300559E0E /* AddLocationEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AddLocationEvent.swift; path = Structs/AddLocationEvent.swift; sourceTree = "<group>"; };
+		7C3B46541A3FDE59009DC0D1 /* Group+API.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Group+API.swift"; path = "Categories/Group+API.swift"; sourceTree = "<group>"; };
 		7C4EA9B71A3169F700CD2011 /* MessageMigrationPolicy_v4_to_v5.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MessageMigrationPolicy_v4_to_v5.swift; path = Migrations/MessageMigrationPolicy_v4_to_v5.swift; sourceTree = "<group>"; };
 		7C4EA9BA1A316A0900CD2011 /* LocationMigrationPolicy_v4_to_v5.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LocationMigrationPolicy_v4_to_v5.swift; path = Migrations/LocationMigrationPolicy_v4_to_v5.swift; sourceTree = "<group>"; };
 		7C4EA9BD1A3173F600CD2011 /* RememberMappingModel_v4_to_v5.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; name = RememberMappingModel_v4_to_v5.xcmappingmodel; path = Migrations/RememberMappingModel_v4_to_v5.xcmappingmodel; sourceTree = "<group>"; };
@@ -465,6 +468,7 @@
 			isa = PBXGroup;
 			children = (
 				7C6109B319E796E00082AC7B /* Extensions.swift */,
+				7C3B46541A3FDE59009DC0D1 /* Group+API.swift */,
 				7CD4486B1A15FFC7004F4C19 /* Constants.swift */,
 			);
 			name = Categories;
@@ -723,6 +727,7 @@
 				7C69B1731A160089005494A3 /* GeographicRegionEvent.swift in Sources */,
 				7C4EA9BB1A316A0900CD2011 /* LocationMigrationPolicy_v4_to_v5.swift in Sources */,
 				7C319B5F1A2D78F90042BAB8 /* LocationToGroupMigrationPolicy.swift in Sources */,
+				7C3B46551A3FDE59009DC0D1 /* Group+API.swift in Sources */,
 				7C4EA9B81A3169F800CD2011 /* MessageMigrationPolicy_v4_to_v5.swift in Sources */,
 				8ABFAA6719E668DB00FCE6EF /* MessagesTableViewCell.swift in Sources */,
 				7CF32E631A0B21B00056F873 /* HUD.swift in Sources */,
@@ -790,6 +795,7 @@
 				D1BD333F1A30AC6D00BF1811 /* LocationToGroupMigrationPolicy.swift in Sources */,
 				D1F62E891A28971900191D87 /* FeedbackViewController.swift in Sources */,
 				D1F62E8A1A28971900191D87 /* RecorderViewController.swift in Sources */,
+				7C3B46561A3FDE59009DC0D1 /* Group+API.swift in Sources */,
 				D14B83551A27576200D12EDF /* AddableTableViewCell.swift in Sources */,
 				D14B83561A27576200D12EDF /* NearbyLocationsTableViewCell.swift in Sources */,
 				7CB0A6151A300F7000BA48C1 /* SignUpViewController.swift in Sources */,

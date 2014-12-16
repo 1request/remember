@@ -70,7 +70,7 @@ class AddGroupTableViewController: UITableViewController, UIGestureRecognizerDel
         if ownRadioButton.checked {
             groupToBeAdded.type = "personal"
         } else {
-            groupToBeAdded.type = "shared"
+            groupToBeAdded.type = "private"
         }
         
         var locationToBeAdded: Location?
@@ -92,7 +92,7 @@ class AddGroupTableViewController: UITableViewController, UIGestureRecognizerDel
             newLocation.minor = 0
             newLocation.createdAt = NSDate()
             newLocation.updatedAt = newLocation.createdAt
-            newLocation.identifier = newLocation.createIndentifier()
+            newLocation.createIndentifier()
             groupToBeAdded.location = newLocation
         }
         
