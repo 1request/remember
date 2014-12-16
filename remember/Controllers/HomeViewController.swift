@@ -67,8 +67,11 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         NSNotificationCenter.defaultCenter().addObserverForName(UIApplicationWillResignActiveNotification, object: nil, queue: nil) { (notification) -> Void in
             self.hudView.removeFromSuperview()
             self.recorderViewController?.recorder.stopRecordingAudio()
-            if self.selectedGroupObjectID != nil {
-                self.handleRecordedAudio()
+            
+            if let url = self.recorderViewController?.recorder.url {
+                if NSFileManager.defaultManager().fileExistsAtPath(url.path!) {
+                    self.handleRecordedAudio()
+                }
             }
         }
     }
@@ -653,6 +656,8 @@ extension HomeViewController: RecorderViewControllerDelegate {
         if let recorder = recorderViewController?.recorder {
             if !NSFileManager.defaultManager().copyItemAtURL(recorder.url, toURL: outputFileURL!, error: &error) {
                 println("error copying item to url: \(error?.localizedDescription)")
+            } else {
+                NSFileManager.defaultManager().removeItemAtURL(recorder.url, error: nil)
             }
 
             message.group = group
@@ -670,5 +675,4 @@ extension HomeViewController: RecorderViewControllerDelegate {
             }
         }
     }
-
 }
