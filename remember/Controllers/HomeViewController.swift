@@ -75,7 +75,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
             }
         }
     }
-
+    
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         checkNewMember()
@@ -83,6 +83,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         monitorApproveMemberNotification()
         monitorAudioRouteChange()
         setSelectedGroupObjectID()
+        Group.updateAcceptedGroupsInContext(managedObjectContext)
     }
 
 
@@ -132,7 +133,6 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         if let group = object as? Group {
             let cell = tableView.dequeueReusableCellWithIdentifier("groupCell", forIndexPath: indexPath) as GroupsTableViewCell
             cell.groupNameLabel.text = group.name
-            println("group server id: \(group.serverId)")
             if group.objectID == selectedGroupObjectID {
                 cell.radioButton.checked = true
             } else {

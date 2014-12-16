@@ -75,8 +75,8 @@ extension Location {
         return region
     }
 
-    func createIndentifier() -> String {
-        return createdAt.timeIntervalSince1970.format(".0")
+    func createIndentifier() {
+        identifier = createdAt.timeIntervalSince1970.format(".0")
     }
 
     func circularRegion() -> CLCircularRegion {
@@ -124,7 +124,7 @@ extension Location {
         newLocation.minor = minor
         newLocation.createdAt = NSDate()
         newLocation.updatedAt = newLocation.createdAt
-        newLocation.identifier = newLocation.createIndentifier()
+        newLocation.createIndentifier()
         var error: NSError?
         if !context.save(&error) {
             println("cannot create new location: \(error)")
@@ -225,66 +225,5 @@ extension UIImage {
         let pathComponent = name + ".png"
         let path = documentsDirectory.stringByAppendingPathComponent(pathComponent)
         return UIImage(contentsOfFile: path)
-    }
-}
-
-extension Group {
-    func createPrivateGroupInServer(callback: (() -> Void)?) {
-        if let userId = NSUserDefaults.standardUserDefaults().valueForKey("userId") as? Int {
-            let json: JSON = ["name": name, "creator_id": userId, "latitude": location.latitude, "longitude": location.longitude, "uuid": location.uuid, "major": location.major, "minor": location.minor]
-            APIManager.sendRequest(toURL: NSURL(string: kGroupsURL)!, method: .POST, json: json) { [weak self] (response, error, jsonObject) -> Void in
-                if let id = jsonObject["id"].number {
-                    self?.serverId = id
-                    if let context = self?.managedObjectContext {
-                        context.save(nil)
-                    }
-                    if let cb = callback {
-                        dispatch_async(dispatch_get_main_queue()) {
-                            cb()
-                        }
-                    }
-                }
-            }
-        }
-    }
-    
-    class func join(groupId: Int, callback: (() -> Void)?) {
-        let url = NSURL(string: kMembershipsURL)!
-        let json: JSON = ["group_id": groupId, "user_id": User.currentUserId()!]
-        APIManager.sendRequest(toURL: url, method: .POST, json: json) { (response, error, jsonObject) -> Void in
-            if let cb = callback {
-                dispatch_async(dispatch_get_main_queue()) {
-                    cb()
-                }
-            }
-        }
-    }
-    
-    class func fetchGroupsFromServer(callback: (groups: [[String: AnyObject]]) -> Void) {
-        var url = NSURL(string: kGroupsURL)!
-        if let currentUserId = User.currentUserId() {
-            url = NSURL(string: kGroupsURL + "?user_id=\(currentUserId)")!
-        }
-        
-        APIManager.sendRequest(toURL: url, method: .GET, json: nil) { (response, error, jsonObject) -> Void in
-            var groups = [[String: AnyObject]]()
-            for (index: String, subJson: JSON) in jsonObject {
-                var dict = [String: AnyObject]()
-                dict["name"] = subJson["name"].stringValue
-                dict["id"] = subJson["id"].intValue
-                dict["status"] = subJson["status"].stringValue
-                dict["longitude"] = subJson["location"]["longitude"].doubleValue
-                dict["latitude"] = subJson["location"]["latitude"].doubleValue
-                dict["url"] = subJson["creator_profile_url"].stringValue
-                if User.isRegistered() {
-                    if User.currentUserId() != subJson["creator_id"].number && subJson["status"].stringValue != "accepted" {
-                        groups.append(dict)
-                    }
-                } else {
-                    groups.append(dict)
-                }
-            }
-            callback(groups: groups)
-        }
     }
 }
