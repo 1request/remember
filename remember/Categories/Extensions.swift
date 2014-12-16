@@ -232,7 +232,7 @@ extension Group {
     func createPrivateGroupInServer(callback: (() -> Void)?) {
         if let userId = NSUserDefaults.standardUserDefaults().valueForKey("userId") as? Int {
             let json: JSON = ["name": name, "creator_id": userId, "latitude": location.latitude, "longitude": location.longitude, "uuid": location.uuid, "major": location.major, "minor": location.minor]
-            APIManager.sendJSON(json, toURL: NSURL(string: kGroupsURL)!, method: .POST, callback: { [weak self] (response, error, jsonObject) -> Void in
+            APIManager.sendRequest(toURL: NSURL(string: kGroupsURL)!, method: .POST, json: json) { [weak self] (response, error, jsonObject) -> Void in
                 if let id = jsonObject["id"].number {
                     self?.serverId = id
                     if let context = self?.managedObjectContext {
@@ -244,14 +244,14 @@ extension Group {
                         }
                     }
                 }
-            })
+            }
         }
     }
     
     class func join(groupId: Int, callback: (() -> Void)?) {
-        let url = NSURL(string: kMembershipsURL)
+        let url = NSURL(string: kMembershipsURL)!
         let json: JSON = ["group_id": groupId, "user_id": User.currentUserId()!]
-        APIManager.sendJSON(json, toURL: url!, method: HTTPMethodType.POST) { (response, error, jsonObject) -> Void in
+        APIManager.sendRequest(toURL: url, method: .POST, json: json) { (response, error, jsonObject) -> Void in
             if let cb = callback {
                 dispatch_async(dispatch_get_main_queue()) {
                     cb()
@@ -266,14 +266,9 @@ extension Group {
             url = NSURL(string: kGroupsURL + "?user_id=\(currentUserId)")!
         }
         
-        let request = NSMutableURLRequest(URL: url)
-        request.HTTPMethod = "GET"
-        
-        let session = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration())
-        let task = session.dataTaskWithRequest(request, completionHandler: { (data, response, error) -> Void in
-            let json = JSON(data: data)
+        APIManager.sendRequest(toURL: url, method: .GET, json: nil) { (response, error, jsonObject) -> Void in
             var groups = [[String: AnyObject]]()
-            for (index: String, subJson: JSON) in json {
+            for (index: String, subJson: JSON) in jsonObject {
                 var dict = [String: AnyObject]()
                 dict["name"] = subJson["name"].stringValue
                 dict["id"] = subJson["id"].intValue
@@ -290,7 +285,6 @@ extension Group {
                 }
             }
             callback(groups: groups)
-        })
-        task.resume()
+        }
     }
 }
