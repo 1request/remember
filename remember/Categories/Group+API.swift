@@ -73,60 +73,77 @@ extension Group {
         }
     }
     
-    class func updateAcceptedGroupsInContext(context: NSManagedObjectContext) {
+    class func updateAcceptedGroupsInContext(context: NSManagedObjectContext, completionHandler:((UIBackgroundFetchResult) -> Void)?) {
         
         if let currentUserId = User.currentUserId() {
             let url = NSURL(string: kGroupsURL + "?user_id=\(currentUserId)&status=accepted")!
             
             APIManager.sendRequest(toURL: url, method: .GET, json: nil) { (response, error, jsonObject) -> Void in
-                let ids = map(jsonObject) { (index, json) -> Int in
-                    return json["id"].intValue
-                }
-                
-                let request = NSFetchRequest(entityName: "Group")
-                request.propertiesToFetch = ["serverId"]
-                let predicate = NSPredicate(format: "serverId != 0")
-                request.predicate = predicate
-                request.resultType = NSFetchRequestResultType.DictionaryResultType
-                
-                let fetchResult = context.executeFetchRequest(request, error: nil)
-                
-                var localGroupIds = [Int]()
-                if let serverIds = fetchResult {
-                    localGroupIds = serverIds.map() {(dict) -> Int in
-                        return dict["serverId"] as Int
+                if error != nil {
+                    if let handler = completionHandler {
+                        handler(.Failed)
                     }
-                }
-                
-                let missingGroups = ids.filter() { (id) -> Bool in
-                    return !contains(localGroupIds, id)
-                }
-                
-                let groupsToBeAdded = filter(jsonObject, { (index, json) -> Bool in
-                    return contains(missingGroups, json["id"].intValue)
-                })
-                
-                for (index, json) in groupsToBeAdded {
-                    let group = NSEntityDescription.insertNewObjectForEntityForName("Group", inManagedObjectContext: context) as Group
-                    group.serverId = json["id"].intValue
-                    group.name = json["name"].stringValue
-                    group.createdAt = NSDate()
-                    group.updatedAt = group.createdAt
-                    group.type = "private"
-                    if json["location"]["uuid"].stringValue != "" {
-                        let location = Location.findOrCreateBy(json["location"]["uuid"].stringValue, major: json["location"]["major"].intValue, minor: json["location"]["minor"].intValue, context: context)
-                        group.location = location
-                    } else {
-                        let location = NSEntityDescription.insertNewObjectForEntityForName("Location", inManagedObjectContext: context) as Location
-                        location.latitude = json["location"]["latitude"].floatValue
-                        location.longitude = json["location"]["longitude"].floatValue
-                        location.uuid = ""
-                        location.createIndentifier()
-                        location.createdAt = NSDate()
-                        location.updatedAt = location.createdAt
-                        group.location = location
+                } else {
+                    let ids = map(jsonObject) { (index, json) -> Int in
+                        return json["id"].intValue
                     }
-                    context.save(nil)
+                    
+                    let request = NSFetchRequest(entityName: "Group")
+                    request.propertiesToFetch = ["serverId"]
+                    let predicate = NSPredicate(format: "serverId != 0")
+                    request.predicate = predicate
+                    request.resultType = NSFetchRequestResultType.DictionaryResultType
+                    
+                    let fetchResult = context.executeFetchRequest(request, error: nil)
+                    
+                    var localGroupIds = [Int]()
+                    if let serverIds = fetchResult {
+                        localGroupIds = serverIds.map() {(dict) -> Int in
+                            return dict["serverId"] as Int
+                        }
+                    }
+                    
+                    let missingGroups = ids.filter() { (id) -> Bool in
+                        return !contains(localGroupIds, id)
+                    }
+                    
+                    if missingGroups.count == 0 {
+                        if let handler = completionHandler {
+                            handler(.NoData)
+                        }
+                        return
+                    }
+                    
+                    let groupsToBeAdded = filter(jsonObject, { (index, json) -> Bool in
+                        return contains(missingGroups, json["id"].intValue)
+                    })
+                    
+                    for (index, json) in groupsToBeAdded {
+                        let group = NSEntityDescription.insertNewObjectForEntityForName("Group", inManagedObjectContext: context) as Group
+                        group.serverId = json["id"].intValue
+                        group.name = json["name"].stringValue
+                        group.createdAt = NSDate()
+                        group.updatedAt = group.createdAt
+                        group.type = "private"
+                        if json["location"]["uuid"].stringValue != "" {
+                            let location = Location.findOrCreateBy(json["location"]["uuid"].stringValue, major: json["location"]["major"].intValue, minor: json["location"]["minor"].intValue, context: context)
+                            group.location = location
+                        } else {
+                            let location = NSEntityDescription.insertNewObjectForEntityForName("Location", inManagedObjectContext: context) as Location
+                            location.latitude = json["location"]["latitude"].floatValue
+                            location.longitude = json["location"]["longitude"].floatValue
+                            location.uuid = ""
+                            location.createIndentifier()
+                            location.createdAt = NSDate()
+                            location.updatedAt = location.createdAt
+                            group.location = location
+                        }
+                        context.save(nil)
+                    }
+                    
+                    if let handler = completionHandler {
+                        handler(.NewData)
+                    }
                 }
             }
         }

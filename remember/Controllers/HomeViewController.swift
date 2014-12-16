@@ -83,7 +83,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         monitorApproveMemberNotification()
         monitorAudioRouteChange()
         setSelectedGroupObjectID()
-        Group.updateAcceptedGroupsInContext(managedObjectContext)
+        Group.updateAcceptedGroupsInContext(managedObjectContext, nil)
     }
 
 

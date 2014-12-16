@@ -61,6 +61,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
         
+        application.setMinimumBackgroundFetchInterval(UIApplicationBackgroundFetchIntervalMinimum)
+        
         return true
     }
     
@@ -90,6 +92,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
         
         approveMemeberWithUserInfo(userInfo)
+    }
+    
+    func application(application: UIApplication, performFetchWithCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
+        Group.updateAcceptedGroupsInContext(managedObjectContext, completionHandler: completionHandler)
     }
     
     func applicationWillResignActive(application: UIApplication) {
