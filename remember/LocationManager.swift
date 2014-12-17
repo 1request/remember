@@ -76,6 +76,13 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
         }
     }
     
+    func stopMonitoringExistingRegions() {
+        for region in locationManager.monitoredRegions {
+            let r = region as CLRegion
+            locationManager.stopMonitoringForRegion(r)
+        }
+    }
+    
     func isLocationAllowed () -> Bool {
         if CLLocationManager.locationServicesEnabled() == false {
             return false

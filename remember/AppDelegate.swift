@@ -123,6 +123,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 }
 extension AppDelegate {
     func monitorLocations () {
+        LocationManager.sharedInstance.stopMonitoringExistingRegions()
+        Location.monitorAllLocationsInContext(managedObjectContext)
+
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleLocationEvent:", name: kEnteredRegionNotificationName, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleLocationEvent:", name: kExitedRegionNotificationName, object: nil)
     }
