@@ -79,6 +79,12 @@ class DataMigrationManager {
                 let destinationModel = NSManagedObjectModel.version5()
                 let mappingModel = NSMappingModel(fromBundles: nil, forSourceModel: storeModel, destinationModel: destinationModel)
                 migrateStoreAt(OldURL: storeURL, fromModel: storeModel, toNewURL: storeURL, toModel: destinationModel, mappingModel: mappingModel)
+                performMigration()
+            } else if storeModel.isVersion5() {
+                options = [NSMigratePersistentStoresAutomaticallyOption: true,
+                    NSInferMappingModelAutomaticallyOption: true]
+                let destinationModel = NSManagedObjectModel.version6()
+                migrateStoreAt(OldURL: storeURL, fromModel: storeModel, toNewURL: storeURL, toModel: destinationModel, mappingModel: nil)
             }
         }
     }
@@ -105,14 +111,13 @@ class DataMigrationManager {
         
         var error: NSError?
         
-        let success = migrationManager.migrateStoreFromURL(oldStoreURL, type: NSSQLiteStoreType, options: nil, withMappingModel: mappingModel, toDestinationURL: destination, destinationType: NSSQLiteStoreType, destinationOptions: nil, error: &error)
+        let success = migrationManager.migrateStoreFromURL(oldStoreURL, type: NSSQLiteStoreType, options: nil, withMappingModel: migrationMappingModel, toDestinationURL: destination, destinationType: NSSQLiteStoreType, destinationOptions: nil, error: &error)
         
         if success {
             println("Migration Completed Successfully")
             
             var error : NSError?
             let fileManager = NSFileManager.defaultManager()
-            
             
             println("new url: \(newStoreURL)")
             fileManager.removeItemAtURL(oldStoreURL, error: &error)
@@ -158,6 +163,13 @@ extension NSManagedObjectModel {
         return NSManagedObjectModel(contentsOfURL:modelURL!)!
     }
     
+    class func version6() -> NSManagedObjectModel {
+        return rememberModelNamed("remember 6")
+    }
+    
+    func isVersion6() -> Bool {
+        return self == self.dynamicType.version6()
+    }
     
     class func version5() -> NSManagedObjectModel {
         return rememberModelNamed("remember 5")

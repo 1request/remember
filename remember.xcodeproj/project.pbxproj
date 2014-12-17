@@ -210,6 +210,7 @@
 		7CD2B08519EB819F004D5A29 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		7CD2B08719EB81A8004D5A29 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		7CD4486B1A15FFC7004F4C19 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Constants.swift; path = Categories/Constants.swift; sourceTree = "<group>"; };
+		7CD9A1AB1A41350100FD6CB8 /* remember 6.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "remember 6.xcdatamodel"; sourceTree = "<group>"; };
 		7CDFE6A01A2739DC00EC4B93 /* NearbyLocationsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NearbyLocationsTableViewCell.swift; path = Views/NearbyLocationsTableViewCell.swift; sourceTree = "<group>"; };
 		7CE2CA5A1A0C68A000369D8B /* GPSLocationTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GPSLocationTableViewCell.swift; path = Views/GPSLocationTableViewCell.swift; sourceTree = "<group>"; };
 		7CF32E621A0B21B00056F873 /* HUD.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HUD.swift; path = Views/HUD.swift; sourceTree = "<group>"; };
@@ -1135,6 +1136,7 @@
 		8A9F0F6719E62C50007FB36B /* remember.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				7CD9A1AB1A41350100FD6CB8 /* remember 6.xcdatamodel */,
 				7C319B431A2D69500042BAB8 /* remember 5.xcdatamodel */,
 				7C6A35201A1B1E47004FD2FD /* remember-objc.xcdatamodel */,
 				7CF32E661A0B72DC0056F873 /* remember 3.xcdatamodel */,
@@ -1142,7 +1144,7 @@
 				7C516BB51A0A1526005AEF24 /* remember 2.xcdatamodel */,
 				8A9F0F6819E62C50007FB36B /* remember.xcdatamodel */,
 			);
-			currentVersion = 7C319B431A2D69500042BAB8 /* remember 5.xcdatamodel */;
+			currentVersion = 7CD9A1AB1A41350100FD6CB8 /* remember 6.xcdatamodel */;
 			path = remember.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
