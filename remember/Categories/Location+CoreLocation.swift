@@ -107,7 +107,12 @@ extension Location {
                 }
             }
             
+            let beaconRegions = regions.filter() { (region) -> Bool in
+                return region.isKindOfClass(CLBeaconRegion)
+            }
+            
             LocationManager.sharedInstance.startMonitoringRegions(regions)
+            LocationManager.sharedInstance.startRangingBeaconRegions(beaconRegions as [CLBeaconRegion])
         }
     }
 }

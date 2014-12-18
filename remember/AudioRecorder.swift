@@ -23,6 +23,9 @@ class AudioRecorder: NSObject, AVAudioRecorderDelegate {
     var micAvailable = false
     var validRecord = false
     let session = AVAudioSession.sharedInstance()
+    lazy var recording: Bool = {
+        return self.recorder.recording
+    }()
     
     weak var delegate: AudioRecorderDelegate?
 
@@ -56,6 +59,7 @@ class AudioRecorder: NSObject, AVAudioRecorderDelegate {
             recorder.meteringEnabled = true
             recorder.prepareToRecord()
         }
+        
         return recorder
     }()
     

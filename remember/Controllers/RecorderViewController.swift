@@ -46,27 +46,11 @@ class RecorderViewController: UIViewController, AudioRecorderDelegate {
     }
     
     @IBAction func recordButtonTouchedUpInside(sender: UIButton) {
-        if let recorderWillFinishRecording = delegate?.recorderWillFinishRecording {
-            recorderWillFinishRecording()
-        }
-        
-        recorder.finishRecordingAudio()
-        
-        if let recorderDidFinishRecording = delegate?.recorderDidFinishRecording {
-            recorderDidFinishRecording(valid: recorder.validRecord)
-        }
+        finishRecording()
     }
     
     @IBAction func recordButtonTouchedUpOutside(sender: UIButton) {
-        if let recorderWillCancelRecording = delegate?.recorderWillCancelRecording {
-            recorderWillCancelRecording()
-        }
-        
-        recorder.stopRecordingAudio()
-        
-        if let recorderDidCancelRecording = delegate?.recorderDidCancelRecording {
-            recorderDidCancelRecording()
-        }
+        stopRecording()
     }
     
     @IBAction func recordButtonTouchedDragEnter(sender: UIButton) {
@@ -78,6 +62,30 @@ class RecorderViewController: UIViewController, AudioRecorderDelegate {
     @IBAction func recordButtonTouchedDragExit(sender: UIButton) {
         if let recordButtonDidDragExit = delegate?.recorderButtonDidDragExit {
             recordButtonDidDragExit()
+        }
+    }
+    
+    func stopRecording() {
+        if let recorderWillCancelRecording = delegate?.recorderWillCancelRecording {
+            recorderWillCancelRecording()
+        }
+        
+        recorder.stopRecordingAudio()
+        
+        if let recorderDidCancelRecording = delegate?.recorderDidCancelRecording {
+            recorderDidCancelRecording()
+        }
+    }
+    
+    func finishRecording() {
+        if let recorderWillFinishRecording = delegate?.recorderWillFinishRecording {
+            recorderWillFinishRecording()
+        }
+        
+        recorder.finishRecordingAudio()
+        
+        if let recorderDidFinishRecording = delegate?.recorderDidFinishRecording {
+            recorderDidFinishRecording(valid: recorder.validRecord)
         }
     }
     

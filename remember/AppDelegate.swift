@@ -146,29 +146,33 @@ extension AppDelegate {
             let predicate = NSPredicate(format: "isRead == 0")
             for groupObject in location.groups {
                 let group = groupObject as Group
-                let previousTriggerDate = group.lastTriggerDate.timeIntervalSince1970
-                let unreadMessages = group.messages.filteredSetUsingPredicate(predicate!)
-                if unreadMessages.count > 0 && currentTime - previousTriggerDate > 3600 {
-                    var title = ""
-                    var message = ""
-                    group.lastTriggerDate = NSDate()
-                    managedObjectContext.save(nil)
-                    
-                    if notification.name == kEnteredRegionNotificationName {
-                        title = "New message from \(group.name)"
-                        message = "\(group.name) got \(unreadMessages.count) new notification" + (unreadMessages.count > 1 ? "s" : "")
-                        NSUserDefaults.standardUserDefaults().setValue(1, forKey: "Enter")
-                    } else if notification.name == kExitedRegionNotificationName {
-                        title = "New message from \(group.name)"
-                        message = "You got \(unreadMessages.count) new notification" + (unreadMessages.count > 1 ? "s" : "") + " before you leave \(group.name)"
-                        NSUserDefaults.standardUserDefaults().setValue(0, forKey: "Enter")
-                    }
-                    
-                    var userInfo = ["title": title, "message": message]
-                    sendLocalNotificationWithMessage(message)
-                    
-                    NSNotificationCenter.defaultCenter().postNotificationName(kAlertLocationNotificationName, object: self, userInfo: userInfo)
-                }
+                group.fetchMessages({ [weak self] () -> Void in
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        let previousTriggerDate = group.lastTriggerDate.timeIntervalSince1970
+                        let unreadMessages = group.messages.filteredSetUsingPredicate(predicate!)
+                        if unreadMessages.count > 0 && currentTime - previousTriggerDate > 3600 {
+                            var title = ""
+                            var message = ""
+                            group.lastTriggerDate = NSDate()
+                            group.managedObjectContext?.save(nil)
+                            
+                            if notification.name == kEnteredRegionNotificationName {
+                                title = "New message from \(group.name)"
+                                message = "\(group.name) got \(unreadMessages.count) new notification" + (unreadMessages.count > 1 ? "s" : "")
+                                NSUserDefaults.standardUserDefaults().setValue(1, forKey: "Enter")
+                            } else if notification.name == kExitedRegionNotificationName {
+                                title = "New message from \(group.name)"
+                                message = "You got \(unreadMessages.count) new notification" + (unreadMessages.count > 1 ? "s" : "") + " before you leave \(group.name)"
+                                NSUserDefaults.standardUserDefaults().setValue(0, forKey: "Enter")
+                            }
+                            
+                            var userInfo = ["title": title, "message": message]
+                            self?.sendLocalNotificationWithMessage(message)
+                            
+                            NSNotificationCenter.defaultCenter().postNotificationName(kAlertLocationNotificationName, object: self, userInfo: userInfo)
+                        }
+                    })
+                })
             }
         }
     }

@@ -17,7 +17,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     let APPROVE = NSLocalizedString("APPROVE", comment: "alert action for approving new member")
     let REJECT = NSLocalizedString("REJECT", comment: "alert action for rejecting new member")
     
-    var kApplicationPath = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true).last! as String
+    
     var hudView = HUD()
 
     var recorderViewController: RecorderViewController? = nil
@@ -65,11 +65,10 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         view.addGestureRecognizer(tapRecognizer)
         
         NSNotificationCenter.defaultCenter().addObserverForName(UIApplicationWillResignActiveNotification, object: nil, queue: nil) { (notification) -> Void in
-            self.hudView.removeFromSuperview()
-            self.recorderViewController?.recorder.stopRecordingAudio()
-            
-            if let url = self.recorderViewController?.recorder.url {
-                if NSFileManager.defaultManager().fileExistsAtPath(url.path!) {
+            if let recorderVC = self.recorderViewController {
+                if recorderVC.recorder.recording {
+                    self.hudView.removeFromSuperview()
+                    Mixpanel.sharedInstance().track("audioRecorded")
                     self.handleRecordedAudio()
                 }
             }
@@ -133,6 +132,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         if let group = object as? Group {
             let cell = tableView.dequeueReusableCellWithIdentifier("groupCell", forIndexPath: indexPath) as GroupsTableViewCell
             cell.groupNameLabel.text = group.name
+            
             if group.objectID == selectedGroupObjectID {
                 cell.radioButton.checked = true
             } else {
@@ -202,7 +202,6 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 message.isRead = true
                 message.updatedAt = NSDate()
                 managedObjectContext.save(nil)
-                monitorLocationOfGroup(message.group)
             }
         }
     }
@@ -365,31 +364,6 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
 
     //MARK: - Monitor Location
-
-    func monitorLocationOfGroup(group: Group) {
-        let predicate = NSPredicate(format: "isRead == 0")
-        let unreadMessages = group.messages.filteredSetUsingPredicate(predicate!)
-        let locationManager = LocationManager.sharedInstance
-        if group.location.uuid != "" {
-            let beaconRegion = group.location.beaconRegion()
-            if unreadMessages.count == 0 {
-                locationManager.stopRangingBeaconRegions([beaconRegion])
-                locationManager.stopMonitoringRegions([beaconRegion])
-            }
-            else {
-                locationManager.startRangingBeaconRegions([beaconRegion])
-                locationManager.startMonitoringRegions([beaconRegion])
-            }
-        } else {
-            let circularRegion = group.location.circularRegion()
-            if unreadMessages.count == 0 {
-                locationManager.stopMonitoringRegions([circularRegion])
-            }
-            else {
-                locationManager.startMonitoringRegions([circularRegion])
-            }
-        }
-    }
 }
 
 //MARK: - AVAudioPlayerDelegate
@@ -637,7 +611,6 @@ extension HomeViewController: RecorderViewControllerDelegate {
         if let objectId = selectedGroupObjectID {
             let group = managedObjectContext!.objectWithID(objectId) as Group
             createMessageForGroup(group)
-            monitorLocationOfGroup(group)
             let indexPath = NSIndexPath(forRow: 0, inSection: 0)
             tableView.scrollToRowAtIndexPath(indexPath, atScrollPosition: .Top, animated: true)
         }
@@ -656,8 +629,6 @@ extension HomeViewController: RecorderViewControllerDelegate {
         if let recorder = recorderViewController?.recorder {
             if !NSFileManager.defaultManager().copyItemAtURL(recorder.url, toURL: outputFileURL!, error: &error) {
                 println("error copying item to url: \(error?.localizedDescription)")
-            } else {
-                NSFileManager.defaultManager().removeItemAtURL(recorder.url, error: nil)
             }
 
             message.group = group

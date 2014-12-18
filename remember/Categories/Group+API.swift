@@ -10,25 +10,6 @@ import Foundation
 import CoreData
 
 extension Group {
-    func createPrivateGroupInServer(callback: (() -> Void)?) {
-        if let userId = NSUserDefaults.standardUserDefaults().valueForKey("userId") as? Int {
-            let json: JSON = ["name": name, "creator_id": userId, "latitude": location.latitude, "longitude": location.longitude, "uuid": location.uuid, "major": location.major, "minor": location.minor]
-            APIManager.sendRequest(toURL: NSURL(string: kGroupsURL)!, method: .POST, json: json) { [weak self] (response, error, jsonObject) -> Void in
-                if let id = jsonObject["id"].number {
-                    self?.serverId = id
-                    if let context = self?.managedObjectContext {
-                        context.save(nil)
-                    }
-                    if let cb = callback {
-                        dispatch_async(dispatch_get_main_queue()) {
-                            cb()
-                        }
-                    }
-                }
-            }
-        }
-    }
-    
     class func join(groupId: Int, callback: (() -> Void)?) {
         let url = NSURL(string: kMembershipsURL)!
         let json: JSON = ["group_id": groupId, "user_id": User.currentUserId()!]
@@ -143,6 +124,87 @@ extension Group {
                     
                     if let handler = completionHandler {
                         handler(.NewData)
+                    }
+                }
+            }
+        }
+    }
+    
+    func createPrivateGroupInServer(callback: (() -> Void)?) {
+        if let userId = NSUserDefaults.standardUserDefaults().valueForKey("userId") as? Int {
+            let json: JSON = ["name": name, "creator_id": userId, "latitude": location.latitude, "longitude": location.longitude, "uuid": location.uuid, "major": location.major, "minor": location.minor]
+            APIManager.sendRequest(toURL: NSURL(string: kGroupsURL)!, method: .POST, json: json) { [weak self] (response, error, jsonObject) -> Void in
+                if let id = jsonObject["id"].number {
+                    self?.serverId = id
+                    if let context = self?.managedObjectContext {
+                        context.save(nil)
+                    }
+                    if let cb = callback {
+                        dispatch_async(dispatch_get_main_queue()) {
+                            cb()
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    func fetchMessages(callback: ()-> Void) {
+        if serverId != 0 {
+            if let userId = User.currentUserId() {
+                let url = NSURL(string: kAudiosURL + "?group_id=\(serverId)")!
+                APIManager.sendRequest(toURL: url, method: .GET, json: nil) { [weak self](response, error, jsonObject) -> Void in
+                    let otherUsersMessages = filter(jsonObject) { (index, json) -> Bool in
+                        json["user_id"].intValue != userId
+                    }
+                    
+                    let request = NSFetchRequest(entityName: "Message")
+                    request.resultType = .DictionaryResultType
+                    request.propertiesToFetch = ["serverId"]
+                    let predicate = NSPredicate(format: "serverId != 0")
+                    request.predicate = predicate
+                    
+                    var localMessageIds = [Int]()
+                    
+                    if let weakself = self {
+                        if let fetchResult = weakself.managedObjectContext?.executeFetchRequest(request, error: nil) {
+                            localMessageIds = fetchResult.map({ (result) -> Int in
+                                let dict = result as [NSObject: AnyObject]
+                                return dict["serverId"] as Int
+                            })
+                        }
+                        let missingMessages = otherUsersMessages.filter() { (index, json) -> Bool in
+                            return !contains(localMessageIds, json["id"].intValue)
+                        }
+
+                        for (index, messageJson) in missingMessages {
+                            let message = NSEntityDescription.insertNewObjectForEntityForName("Message", inManagedObjectContext: weakself.managedObjectContext!) as Message
+                            message.userId = messageJson["user_id"].intValue
+                            message.serverId = messageJson["id"].intValue
+                            let formatter = ISO8601DateFormatter()
+                            let date = formatter.dateFromString(messageJson["created_at"].stringValue)
+                            message.createdAt = date
+                            message.updatedAt = date
+                            message.isRead = false
+                            weakself.messagesCount = NSNumber(integer: (weakself.messagesCount.integerValue + 1))
+                            message.name = String(format: RECORD_NAME, weakself.messagesCount)
+                            let url = NSURL(string: messageJson["audioclip_url"].stringValue)!
+                            
+                            let sessionConfig = NSURLSessionConfiguration.defaultSessionConfiguration()
+                            let session = NSURLSession(configuration: sessionConfig)
+                            let task = session.downloadTaskWithURL(url, completionHandler: { (location, response, error) -> Void in
+                                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                                    if let data = NSData(contentsOfURL: location) {
+                                        let filePathString = kApplicationPath + "/" + message.createdAt.timeIntervalSince1970.format(".0") + ".m4a"
+                                        data.writeToFile(filePathString, atomically: true)
+                                    }
+                                })
+                            })
+                            task.resume()
+                            message.group = weakself
+                            weakself.managedObjectContext?.save(nil)
+                        }
+                        callback()
                     }
                 }
             }
