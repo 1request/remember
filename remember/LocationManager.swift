@@ -66,13 +66,19 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
         }
         for region in regions {
             locationManager.startMonitoringForRegion(region)
-            locationManager.requestStateForRegion(region)
         }
     }
     
     func stopMonitoringRegions (regions: [CLRegion]) {
         for region in regions {
             locationManager.stopMonitoringForRegion(region)
+        }
+    }
+    
+    func stopMonitoringExistingRegions() {
+        for region in locationManager.monitoredRegions {
+            let r = region as CLRegion
+            locationManager.stopMonitoringForRegion(r)
         }
     }
     
@@ -87,17 +93,6 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
     }
     
     //MARK: - CLLocationManagerDelegate
-    
-    func locationManager(manager: CLLocationManager!, didDetermineState state: CLRegionState, forRegion region: CLRegion!) {
-        switch state {
-        case .Inside:
-            println("determined sate: inside region:\(region)")
-        case .Outside:
-            println("determined sate: outside region:\(region)")
-        case .Unknown:
-            println("determined sate: unknown region:\(region)")
-        }
-    }
     
     func locationManager(manager: CLLocationManager!, didRangeBeacons beacons: [AnyObject]!, inRegion region: CLBeaconRegion!) {
         if !beacons.isEmpty {

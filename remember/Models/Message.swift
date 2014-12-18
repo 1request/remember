@@ -15,6 +15,7 @@ class Message: NSManagedObject {
     @NSManaged var isRead: NSNumber
     @NSManaged var name: String
     @NSManaged var serverId: NSNumber
+    @NSManaged var userId: NSNumber
     @NSManaged var updatedAt: NSDate
     @NSManaged var group: Group
 
