@@ -53,4 +53,29 @@ class User: NSObject {
         
         Mixpanel.sharedInstance().track("createUserAccount")
     }
+    
+    class func downloadProfileImageForUserId(id: Int) {
+        let url = NSURL(string: kUsersURL + "/\(id)")!
+        let path = kApplicationPath.stringByAppendingPathComponent("user-\(id).png")
+        println("path: \(path)")
+        if !NSFileManager.defaultManager().fileExistsAtPath(path) {
+            APIManager.sendRequest(toURL: url, method: HTTPMethodType.GET, json: nil, callback: { (response, error, jsonObject) -> Void in
+                let imageUrl = NSURL(string: jsonObject["profile_picture_url"].stringValue)!
+                println("image url: \(imageUrl)")
+                let sessionConfig = NSURLSessionConfiguration.defaultSessionConfiguration()
+                let session = NSURLSession(configuration: sessionConfig)
+                let task = session.downloadTaskWithURL(imageUrl, completionHandler: { (location, response, error) -> Void in
+                    if error != nil {
+                        println("error: \(error)")
+                    }
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        if let data = NSData(contentsOfURL: location) {
+                            data.writeToFile(path, atomically: true)
+                        }
+                    })
+                })
+                task.resume()
+            })
+        }
+    }
 }

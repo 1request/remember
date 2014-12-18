@@ -39,7 +39,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
     var activePlayerIndexPath: NSIndexPath?
 
-    var player:AVAudioPlayer?
+    var player: AVAudioPlayer?
 
     //MARK: - UIView Lifecycle
     override func viewDidLoad() {
@@ -84,7 +84,6 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         setSelectedGroupObjectID()
         Group.updateAcceptedGroupsInContext(managedObjectContext, nil)
     }
-
 
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
@@ -143,6 +142,9 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
             let message = object as Message
             let cell = tableView.dequeueReusableCellWithIdentifier("messageCell", forIndexPath: indexPath) as MessagesTableViewCell
             cell.messageLabel.text = message.name
+            if message.userId != 0 {
+                cell.profileImage = UIImage.loadPNGImageWithName("user-\(message.userId).png")
+            }
             if message.isRead.boolValue {
                 cell.markAsRead()
             } else {

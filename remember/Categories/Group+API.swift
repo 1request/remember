@@ -24,11 +24,14 @@ extension Group {
     
     class func fetchGroupsFromServer(callback: (groups: [[String: AnyObject]]) -> Void) {
         var url = NSURL(string: kGroupsURL)!
-        if let currentUserId = User.currentUserId() {
-            if let coordinate = LocationManager.sharedInstance.currentLocation?.coordinate {
-                let latitude = coordinate.latitude
-                let longitude = coordinate.longitude
+        
+        if let coordinate = LocationManager.sharedInstance.currentLocation?.coordinate {
+            let latitude = coordinate.latitude
+            let longitude = coordinate.longitude
+            if let currentUserId = User.currentUserId() {
                 url = NSURL(string: kGroupsURL + "?user_id=\(currentUserId)&lat=\(latitude)&lng=\(longitude)")!
+            } else {
+                url = NSURL(string: kGroupsURL + "?lat=\(latitude)&lng=\(longitude)")!
             }
         }
         
@@ -109,6 +112,8 @@ extension Group {
                         if json["location"]["uuid"].stringValue != "" {
                             let location = Location.findOrCreateBy(json["location"]["uuid"].stringValue, major: json["location"]["major"].intValue, minor: json["location"]["minor"].intValue, context: context)
                             group.location = location
+                            LocationManager.sharedInstance.startMonitoringRegions([location.beaconRegion()])
+                            LocationManager.sharedInstance.startRangingBeaconRegions([location.beaconRegion()])
                         } else {
                             let location = NSEntityDescription.insertNewObjectForEntityForName("Location", inManagedObjectContext: context) as Location
                             location.latitude = json["location"]["latitude"].floatValue
@@ -180,6 +185,7 @@ extension Group {
                         for (index, messageJson) in missingMessages {
                             let message = NSEntityDescription.insertNewObjectForEntityForName("Message", inManagedObjectContext: weakself.managedObjectContext!) as Message
                             message.userId = messageJson["user_id"].intValue
+                            User.downloadProfileImageForUserId(Int(message.userId))
                             message.serverId = messageJson["id"].intValue
                             let formatter = ISO8601DateFormatter()
                             let date = formatter.dateFromString(messageJson["created_at"].stringValue)
@@ -189,7 +195,7 @@ extension Group {
                             weakself.messagesCount = NSNumber(integer: (weakself.messagesCount.integerValue + 1))
                             message.name = String(format: RECORD_NAME, weakself.messagesCount)
                             let url = NSURL(string: messageJson["audioclip_url"].stringValue)!
-                            
+
                             let sessionConfig = NSURLSessionConfiguration.defaultSessionConfiguration()
                             let session = NSURLSession(configuration: sessionConfig)
                             let task = session.downloadTaskWithURL(url, completionHandler: { (location, response, error) -> Void in
