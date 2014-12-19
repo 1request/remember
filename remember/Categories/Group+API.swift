@@ -111,6 +111,8 @@ extension Group {
                         group.type = "private"
                         if json["location"]["uuid"].stringValue != "" {
                             let location = Location.findOrCreateBy(json["location"]["uuid"].stringValue, major: json["location"]["major"].intValue, minor: json["location"]["minor"].intValue, context: context)
+                            location.latitude = json["location"]["latitude"].floatValue
+                            location.longitude = json["location"]["longitude"].floatValue
                             group.location = location
                             LocationManager.sharedInstance.startMonitoringRegions([location.beaconRegion()])
                             LocationManager.sharedInstance.startRangingBeaconRegions([location.beaconRegion()])
