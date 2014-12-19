@@ -32,12 +32,15 @@ class User: NSObject {
     func createAccount(callback: (() -> Void)?) {
         let data = UIImagePNGRepresentation(image)
         let dataDetails = (key: "user[profile_picture]", data: data!, type: "image/png", filename: "\(UIDevice.currentDevice().identifierForVendor.UUIDString).png")
-        let parameters = [
+        var parameters = [
             "user[device_id]": UIDevice.currentDevice().identifierForVendor.UUIDString,
             "user[device_type]": "iOS",
-            "user[nickname]": nickname,
-            "user[device_token]": NSUserDefaults.standardUserDefaults().valueForKey("token") as String
+            "user[nickname]": nickname
         ]
+        
+        #if !DEBUG
+            parameters["user[device_token]"] = NSUserDefaults.standardUserDefaults().valueForKey("token") as? String
+        #endif
         
         image.saveImageAsPNGWithName("user")
         

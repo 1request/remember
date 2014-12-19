@@ -52,13 +52,20 @@ let kVisitsNotificationName = "visitNotification"
 let kVisitsNotificationUserInfoVisitKey = "visit"
 
 //API
+#if DEBUG
+    let kUsersURL = "http://dev.rememberthere.com:3000/users"
+    let kGroupsURL = "http://dev.rememberthere.com:3000/groups"
+    let kMembershipsURL = "http://dev.rememberthere.com:3000/memberships"
+    let kAudiosURL = "http://dev.rememberthere.com:3000/audios"
+#else
+    let kUsersURL = "http://app.rememberthere.com/users"
+    let kGroupsURL = "http://app.rememberthere.com/groups"
+    let kMembershipsURL = "http://app.rememberthere.com/memberships"
+    let kAudiosURL = "http://app.rememberthere.com/audios"
+#endif
 
-let kBoundary = "testboundary"
 let kFeedbackPOSTURL = "http://app.rememberthere.com/api/feedbacks/send"
-let kUsersURL = "http://app.rememberthere.com/users"
-let kGroupsURL = "http://app.rememberthere.com/groups"
-let kMembershipsURL = "http://app.rememberthere.com/memberships"
-let kAudiosURL = "http://app.rememberthere.com/audios"
+let kBoundary = "testboundary"
 
 //HUD
 let SLIDE_UP_TO_CANCEL = NSLocalizedString("SLIDE_UP_TO_CANCEL", comment: "Inform user to slide up to cancel recording")

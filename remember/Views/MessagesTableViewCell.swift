@@ -18,7 +18,7 @@ class MessagesTableViewCell: SwipeableTableViewCell {
     let profileImageView = UIImageView()
     var profileImage: UIImage? {
         didSet {
-            makeLayout()
+            layoutIfNeeded()
         }
     }
 
@@ -44,6 +44,7 @@ class MessagesTableViewCell: SwipeableTableViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         profileImage = nil
+        profileImageView.hidden = true
     }
     
     override func commonInit() {
@@ -76,31 +77,30 @@ class MessagesTableViewCell: SwipeableTableViewCell {
         unreadSpotIcon.backgroundColor = UIColor.clearColor()
         
         customContentView.addConstraints([unreadSpotViewHeightConstraint, unreadSpotViewCenterYConstraint, playButtonRatioConstraint])
+    
+        customContentView.addSubview(profileImageView)
+        profileImageView.contentMode = .ScaleAspectFill
+        profileImageView.clipsToBounds = true
         
-        var horizontalConstraints = [AnyObject]()
-        if let image = profileImage {
-            customContentView.addSubview(profileImageView)
-            profileImageView.image = image
-            profileImageView.contentMode = .ScaleAspectFill
-            profileImageView.clipsToBounds = true
-            profileImageView.hidden = false
-
-            let profileImageCenterYConstraint = NSLayoutConstraint(item: profileImageView, attribute: .CenterY, relatedBy: .Equal, toItem: customContentView, attribute: .CenterY, multiplier: 1, constant: 0)
-            let profileImageHeightConstraint = NSLayoutConstraint(item: profileImageView, attribute: .Height, relatedBy: .Equal, toItem: profileImageView, attribute: .Width, multiplier: 1, constant: 0)
-            customContentView.addConstraints([profileImageCenterYConstraint, profileImageHeightConstraint])
-            
-            horizontalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("|-profileImageViewLeftMargin-[profileImageView(profileImageViewWidth)]-profileImageViewRightMargin-[messageLabel]-[playButton(buttonWidth)]-buttonRightMargin-|", options: NSLayoutFormatOptions.AlignAllCenterY, metrics: metricsDict, views: viewsDict)
-        } else {
-            profileImageView.hidden = true
-            horizontalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("|-unreadSpotIconLeftMargin-[unreadSpotIcon(unreadSpotIconWidth)]-unreadSpotIconRightMargin-[messageLabel]-[playButton(buttonWidth)]-buttonRightMargin-|", options: NSLayoutFormatOptions.AlignAllCenterY, metrics: metricsDict, views: viewsDict)
-        }
+        let profileImageCenterYConstraint = NSLayoutConstraint(item: profileImageView, attribute: .CenterY, relatedBy: .Equal, toItem: customContentView, attribute: .CenterY, multiplier: 1, constant: 0)
+        let profileImageHeightConstraint = NSLayoutConstraint(item: profileImageView, attribute: .Height, relatedBy: .Equal, toItem: profileImageView, attribute: .Width, multiplier: 1, constant: 0)
+        customContentView.addConstraints([profileImageCenterYConstraint, profileImageHeightConstraint])
         
-        customContentView.addConstraints(horizontalConstraints)
+        let imageHorizontalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("|-profileImageViewLeftMargin-[profileImageView(profileImageViewWidth)]-profileImageViewRightMargin-[messageLabel]-[playButton(buttonWidth)]-buttonRightMargin-|", options: NSLayoutFormatOptions.AlignAllCenterY, metrics: metricsDict, views: viewsDict)
+        let spotHorizontalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("|-unreadSpotIconLeftMargin-[unreadSpotIcon(unreadSpotIconWidth)]-unreadSpotIconRightMargin-[messageLabel]-[playButton(buttonWidth)]-buttonRightMargin-|", options: NSLayoutFormatOptions.AlignAllCenterY, metrics: metricsDict, views: viewsDict)
+        customContentView.addConstraints(imageHorizontalConstraints)
+        customContentView.addConstraints(spotHorizontalConstraints)
     }
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        profileImageView.layer.cornerRadius = profileImageView.frame.size.width / 2.0
+    override func layoutIfNeeded() {
+        super.layoutIfNeeded()
+        if let image = profileImage {
+            profileImageView.hidden = false
+            profileImageView.image = image
+            profileImageView.layer.cornerRadius = profileImageView.frame.size.width / 2.0
+        } else {
+            profileImageView.hidden = true
+        }
     }
 
     func markAsRead() {

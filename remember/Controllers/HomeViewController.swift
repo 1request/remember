@@ -40,6 +40,10 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     var activePlayerIndexPath: NSIndexPath?
 
     var player: AVAudioPlayer?
+    
+    @IBOutlet weak var groupInfoContainerView: UIView!
+    
+    var groupInfoVC: GroupInformationViewController?
 
     //MARK: - UIView Lifecycle
     override func viewDidLoad() {
@@ -236,12 +240,18 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         if let locationsVC = segue.destinationViewController as? LocationsViewController {
             locationsVC.managedObjectContext = managedObjectContext
         }
-        if let editGroupVC = segue.destinationViewController as? EditGroupViewController {
-            if let group = sender as? Group {
-                editGroupVC.group = group
-                editGroupVC.managedObjectContext = managedObjectContext
-            }
+//        if let editGroupVC = segue.destinationViewController as? EditGroupViewController {
+//            if let group = sender as? Group {
+//                editGroupVC.group = group
+//                editGroupVC.managedObjectContext = managedObjectContext
+//            }
+//        }
+        
+        if segue.identifier == "embedGroupInformation" {
+            groupInfoVC = segue.destinationViewController as? GroupInformationViewController
+            groupInfoVC?.delegate = self
         }
+        
         if let recorderVC = segue.destinationViewController as? RecorderViewController {
             recorderViewController = recorderVC
             recorderViewController?.delegate = self
@@ -434,7 +444,10 @@ extension HomeViewController: SwipeableTableViewCellDelegate {
                     setSelectedGroupObjectID()
                 } else {
                     if let group = object as? Group {
-                        performSegueWithIdentifier("editGroup", sender: group)
+//                        performSegueWithIdentifier("editGroup", sender: group)
+                        groupInfoVC?.group = group
+                        groupInfoContainerView.hidden = false
+                        groupInfoContainerView.showAnimated()
                     }
                 }
             } else {
@@ -660,5 +673,11 @@ extension HomeViewController: RecorderViewControllerDelegate {
         let data = (key: "audio[audioclip]", data: audioData, type: "audio/x-m4a", filename: "audio.m4a")
         let parameters = ["audio[group_id]": groupId, "audio[user_id]": userId]
         APIManager.postMultipartData(data, parameters: parameters, url: NSURL(string: kAudiosURL)!, nil)
+    }
+}
+
+extension HomeViewController: GroupInformationViewControllerDelegate {
+    func closeButtonPressed() {
+        groupInfoContainerView.hidden = true
     }
 }

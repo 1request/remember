@@ -23,6 +23,7 @@ class PopUpView: UIView {
         view.layer.shadowColor = UIColor.blackColor().CGColor
         view.layer.shadowOpacity = 0.8
         view.layer.shadowRadius = 5.0
+        view.clipsToBounds = true
         
         return view
         }()
