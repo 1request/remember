@@ -470,7 +470,6 @@ class SwipeableTableViewCell: UITableViewCell, UIGestureRecognizerDelegate {
         case UIGestureRecognizerState.Ended:
             if movingHorizontally {
                 if let direction = openedDirection {
-                    println("direction: \(direction)")
                     if buttonsAtDirection(direction).count > 0 {
                         if startingRightLayoutConstraintConstant == 0 {
                             // opening

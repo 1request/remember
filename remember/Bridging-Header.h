@@ -10,6 +10,7 @@
 #import "iRate.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import <ISO8601DateFormatter/ISO8601DateFormatter.h>
+#import <UICollectionViewRightAlignedLayout/UICollectionViewRightAlignedLayout.h>
 
 #ifndef remember_Bridging_Header_h
 #define remember_Bridging_Header_h

@@ -126,6 +126,7 @@ extension Group {
                             location.updatedAt = location.createdAt
                             group.location = location
                         }
+                        
                         context.save(nil)
                     }
                     

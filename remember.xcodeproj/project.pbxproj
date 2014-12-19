@@ -14,6 +14,8 @@
 		7C088D9A19E631E2005A51D9 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C088D9919E631E2005A51D9 /* CoreLocation.framework */; };
 		7C088D9C19E63EE9005A51D9 /* BeaconFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C088D9B19E63EE9005A51D9 /* BeaconFactory.swift */; };
 		7C0B54C01A3545CD006B041A /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C0B54BF1A3545CD006B041A /* User.swift */; };
+		7C0C61101A43FE8400115DB8 /* UserImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C0C610F1A43FE8400115DB8 /* UserImageCollectionViewCell.swift */; };
+		7C0C61111A43FE8400115DB8 /* UserImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C0C610F1A43FE8400115DB8 /* UserImageCollectionViewCell.swift */; };
 		7C0E3A7F1A272DC900235C4C /* AddableTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C0E3A7E1A272DC900235C4C /* AddableTableViewCell.swift */; };
 		7C18BBE51A160145001F15CA /* MixpanelEventProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C18BBE41A160145001F15CA /* MixpanelEventProtocols.swift */; };
 		7C18BBE81A16018B001F15CA /* BeaconRegionEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C18BBE71A16018B001F15CA /* BeaconRegionEvent.swift */; };
@@ -163,6 +165,7 @@
 		7C088D9919E631E2005A51D9 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		7C088D9B19E63EE9005A51D9 /* BeaconFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BeaconFactory.swift; sourceTree = "<group>"; };
 		7C0B54BF1A3545CD006B041A /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = User.swift; path = Models/User.swift; sourceTree = "<group>"; };
+		7C0C610F1A43FE8400115DB8 /* UserImageCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UserImageCollectionViewCell.swift; path = Views/UserImageCollectionViewCell.swift; sourceTree = "<group>"; };
 		7C0E3A7E1A272DC900235C4C /* AddableTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AddableTableViewCell.swift; path = Views/AddableTableViewCell.swift; sourceTree = "<group>"; };
 		7C18BBE41A160145001F15CA /* MixpanelEventProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MixpanelEventProtocols.swift; path = Protocols/MixpanelEventProtocols.swift; sourceTree = "<group>"; };
 		7C18BBE71A16018B001F15CA /* BeaconRegionEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BeaconRegionEvent.swift; path = Structs/BeaconRegionEvent.swift; sourceTree = "<group>"; };
@@ -393,6 +396,7 @@
 				7CDFE6A01A2739DC00EC4B93 /* NearbyLocationsTableViewCell.swift */,
 				8ABFAA6A19E68AB600FCE6EF /* RadioButton.swift */,
 				8ABFAA6819E67CEB00FCE6EF /* UnreadSpotView.swift */,
+				7C0C610F1A43FE8400115DB8 /* UserImageCollectionViewCell.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -738,6 +742,7 @@
 				7C6109B019E793400082AC7B /* LocationsTableViewController.swift in Sources */,
 				8A76A0B319E63DEC0031202A /* HomeViewController.swift in Sources */,
 				7C69B1731A160089005494A3 /* GeographicRegionEvent.swift in Sources */,
+				7C0C61101A43FE8400115DB8 /* UserImageCollectionViewCell.swift in Sources */,
 				7C67AC901A42D555006CFE5C /* GroupInformationView.swift in Sources */,
 				7C4EA9BB1A316A0900CD2011 /* LocationMigrationPolicy_v4_to_v5.swift in Sources */,
 				7C319B5F1A2D78F90042BAB8 /* LocationToGroupMigrationPolicy.swift in Sources */,
@@ -809,6 +814,7 @@
 				D18E4E6B1A39718700ECB34F /* Membership.swift in Sources */,
 				D1D935AC1A31D6B300A6BA16 /* RememberMappingModel_v4_to_v5.xcmappingmodel in Sources */,
 				D1BD333F1A30AC6D00BF1811 /* LocationToGroupMigrationPolicy.swift in Sources */,
+				7C0C61111A43FE8400115DB8 /* UserImageCollectionViewCell.swift in Sources */,
 				7C67AC911A42D555006CFE5C /* GroupInformationView.swift in Sources */,
 				D1F62E891A28971900191D87 /* FeedbackViewController.swift in Sources */,
 				D1F62E8A1A28971900191D87 /* RecorderViewController.swift in Sources */,

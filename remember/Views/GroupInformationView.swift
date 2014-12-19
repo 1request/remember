@@ -26,6 +26,16 @@ class GroupInformationView: PopUpView {
         return label
         }()
     
+    lazy var imagesCollectionView: UICollectionView = {
+        let flowLayout = UICollectionViewRightAlignedLayout()
+        flowLayout.itemSize = CGSizeMake(50, 50)
+        flowLayout.scrollDirection = .Vertical
+        let view = UICollectionView(frame: self.frame, collectionViewLayout: flowLayout)
+        view.backgroundColor = UIColor.whiteColor()
+        view.setTranslatesAutoresizingMaskIntoConstraints(false)
+        return view
+        }()
+    
     var annotation: MKAnnotation? {
         didSet {
             mapView.addAnnotation(annotation)
@@ -42,20 +52,24 @@ class GroupInformationView: PopUpView {
         super.setup()
         frameView.addSubview(mapView)
         frameView.addSubview(groupNameLabel)
+        frameView.addSubview(imagesCollectionView)
         
-        let viewsDict = ["mapView": mapView, "groupNameLabel": groupNameLabel]
+        let viewsDict = ["mapView": mapView, "groupNameLabel": groupNameLabel, "collectionView": imagesCollectionView]
         
         let mapViewHorizontalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("H:|[mapView]|", options: NSLayoutFormatOptions.DirectionLeadingToTrailing, metrics: nil, views: viewsDict)
         
-        let mapViewVerticalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("V:|[mapView]-[groupNameLabel]", options: .DirectionLeadingToTrailing, metrics: nil, views: viewsDict)
+        let mapViewVerticalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("V:|[mapView]-[groupNameLabel]-[collectionView]|", options: .DirectionLeadingToTrailing, metrics: nil, views: viewsDict)
         
         let mapViewHeightConstraint = NSLayoutConstraint(item: mapView, attribute: .Height, relatedBy: .Equal, toItem: frameView, attribute: .Height, multiplier: 0.7, constant: 0)
         
         let groupNameLabelHorizontalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("H:|-[groupNameLabel]", options: .DirectionLeadingToTrailing, metrics: nil, views: viewsDict)
         
+        let imagesCollectionViewHorizontalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("H:|-[collectionView]-|", options: .DirectionLeadingToTrailing, metrics: nil, views: viewsDict)
+        
         frameView.addConstraint(mapViewHeightConstraint)
         frameView.addConstraints(mapViewHorizontalConstraints)
         frameView.addConstraints(mapViewVerticalConstraints)
         frameView.addConstraints(groupNameLabelHorizontalConstraints)
+        frameView.addConstraints(imagesCollectionViewHorizontalConstraints)
     }
 }
