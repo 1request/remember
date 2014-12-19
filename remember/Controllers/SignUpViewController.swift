@@ -87,16 +87,16 @@ extension SignUpViewController: UIImagePickerControllerDelegate, UINavigationCon
 
 extension SignUpViewController: SignUpViewDelegate {
     func cameraButtonPressed() {
+        let imagePickerController = UIImagePickerController()
+        imagePickerController.delegate = self
+        imagePickerController.mediaTypes = [kUTTypeImage]
+        imagePickerController.allowsEditing = true
         if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera) {
-            let imagePickerController = UIImagePickerController()
-            imagePickerController.delegate = self
-            imagePickerController.mediaTypes = [kUTTypeImage]
-            imagePickerController.allowsEditing = true
             imagePickerController.sourceType = UIImagePickerControllerSourceType.Camera
-            presentViewController(imagePickerController, animated: true, completion: nil)
-        } else {
-            NSLog("No camera")
+        } else if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.PhotoLibrary) {
+            imagePickerController.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
         }
+        presentViewController(imagePickerController, animated: true, completion: nil)
     }
     
     func closeButtonPressed() {
