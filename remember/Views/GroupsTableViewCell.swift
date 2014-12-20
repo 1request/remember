@@ -99,7 +99,7 @@ class GroupsTableViewCell: SwipeableTableViewCell {
 
 extension GroupsTableViewCell: SwipeableTableViewCellDataSource {
     func numberOfRightButtonsInSwipeableCell(cell: SwipeableTableViewCell) -> Int {
-        return 2
+        return 3
     }
     
     func numberOfLeftButtonsInSwipeableCell(cell: SwipeableTableViewCell) -> Int {
@@ -110,8 +110,10 @@ extension GroupsTableViewCell: SwipeableTableViewCellDataSource {
         if atDirection == SwipeableTableViewCell.Direction.right.rawValue {
             if index == 0 {
                 return UIImage(named: "trash")
-            } else {
+            } else if index == 1 {
                 return UIImage(named: "edit")
+            } else {
+                return UIImage(named: "map")
             }
         } else {
             return nil

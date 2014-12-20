@@ -251,12 +251,13 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         if let locationsVC = segue.destinationViewController as? LocationsViewController {
             locationsVC.managedObjectContext = managedObjectContext
         }
-//        if let editGroupVC = segue.destinationViewController as? EditGroupViewController {
-//            if let group = sender as? Group {
-//                editGroupVC.group = group
-//                editGroupVC.managedObjectContext = managedObjectContext
-//            }
-//        }
+        
+        if let editGroupVC = segue.destinationViewController as? EditGroupViewController {
+            if let group = sender as? Group {
+                editGroupVC.group = group
+                editGroupVC.managedObjectContext = managedObjectContext
+            }
+        }
         
         if segue.identifier == "embedGroupInformation" {
             groupInfoVC = segue.destinationViewController as? GroupInformationViewController
@@ -458,9 +459,12 @@ extension HomeViewController: SwipeableTableViewCellDelegate {
                     deleteObjectAtIndexPath(indexPath)
                     setObjectsInTable()
                     setSelectedGroupObjectID()
+                } else if index == 1 {
+                    if let group = object as? Group {
+                        performSegueWithIdentifier("editGroup", sender: group)
+                    }
                 } else {
                     if let group = object as? Group {
-//                        performSegueWithIdentifier("editGroup", sender: group)
                         groupInfoVC?.group = group
                         groupInfoContainerView.hidden = false
                         groupInfoContainerView.showAnimated()
