@@ -241,9 +241,6 @@ class SwipeableTableViewCell: UITableViewCell, UIGestureRecognizerDelegate {
         
         if direction == Direction.right {
             xOrigin = previousMinX - CGRectGetWidth(button.frame)
-            
-        } else {
-            
         }
         
         button.frame = CGRectMake(xOrigin, 0, CGRectGetWidth(button.frame), CGRectGetHeight(frame))
@@ -485,11 +482,9 @@ class SwipeableTableViewCell: UITableViewCell, UIGestureRecognizerDelegate {
                             // closing
                             if abs(contentViewRightConstraint!.constant) >= halfOfLastButtonXPositionAtDirection(openedDirection!) {
                                 // Re-open all the way
-                                println("re-open cell")
                                 setConstraintsToShowAllButtons(true, notifyDelegateDidOpen: true)
                             } else {
                                 // Close
-                                println("close cell")
                                 resetConstraintContstantsToZero(true, notifyDelegateDidClose: true)
                             }
                         }

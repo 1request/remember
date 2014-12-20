@@ -28,7 +28,14 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     @IBOutlet weak var pressHereImageView: UIImageView!
     var alertView: UIAlertView? = nil
 
-    var editingObjectID: NSManagedObjectID? = nil
+    var editingObjectID: NSManagedObjectID? = nil {
+        didSet {
+            if editingObjectID == nil {
+                closeEditingCell()
+            }
+        }
+    }
+    
     var openedCellDirection: SwipeableTableViewCell.Direction?
 
     weak var managedObjectContext: NSManagedObjectContext!
@@ -94,7 +101,6 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         unmonitorEnterLocationNotification()
         unmonitorApproveMemberNotification()
         unmonitorAudioRouteChange()
-        resetEditMode()
     }
 
     //MARK: - UITableViewDataSource
@@ -192,7 +198,6 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if editingObjectID != nil {
-            // has editing cell, close cell
             resetEditMode()
         }
 
@@ -227,7 +232,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         return 60
     }
 
-    func resetEditMode () {
+    func resetEditMode() {
         editingObjectID = nil
         openedCellDirection = nil
         recorderViewController?.recordButton.enabled = true
@@ -251,12 +256,13 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         if let locationsVC = segue.destinationViewController as? LocationsViewController {
             locationsVC.managedObjectContext = managedObjectContext
         }
-//        if let editGroupVC = segue.destinationViewController as? EditGroupViewController {
-//            if let group = sender as? Group {
-//                editGroupVC.group = group
-//                editGroupVC.managedObjectContext = managedObjectContext
-//            }
-//        }
+        
+        if let editGroupVC = segue.destinationViewController as? EditGroupViewController {
+            if let group = sender as? Group {
+                editGroupVC.group = group
+                editGroupVC.managedObjectContext = managedObjectContext
+            }
+        }
         
         if segue.identifier == "embedGroupInformation" {
             groupInfoVC = segue.destinationViewController as? GroupInformationViewController
@@ -304,6 +310,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "updatedAt", ascending: false)]
 
         fetchedResultController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: managedObjectContext, sectionNameKeyPath: nil, cacheName: nil)
+        
         return fetchedResultController
     }
 
@@ -330,9 +337,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 
                 objectsInTable.addObjectsFromArray(sortedMessages)
             }
-
         }
-        
         setSelectedGroupObjectID()
     }
 
@@ -458,9 +463,14 @@ extension HomeViewController: SwipeableTableViewCellDelegate {
                     deleteObjectAtIndexPath(indexPath)
                     setObjectsInTable()
                     setSelectedGroupObjectID()
+                } else if index == 1 {
+                    if let group = object as? Group {
+                        performSegueWithIdentifier("editGroup", sender: group)
+                        editingObjectID = nil
+                        cell.closeCell(animated: false, direction: SwipeableTableViewCell.Direction.right)
+                    }
                 } else {
                     if let group = object as? Group {
-//                        performSegueWithIdentifier("editGroup", sender: group)
                         groupInfoVC?.group = group
                         groupInfoContainerView.hidden = false
                         groupInfoContainerView.showAnimated()
@@ -479,9 +489,6 @@ extension HomeViewController: SwipeableTableViewCellDelegate {
                 }
             }
         }
-        resetEditMode()
-        setObjectsInTable()
-        reloadSection()
     }
 
     func deleteObjectAtIndexPath(indexPath: NSIndexPath) {
@@ -600,6 +607,7 @@ extension HomeViewController: RecorderViewControllerDelegate {
         if editingObjectID != nil {
             closeEditingCell()
             resetEditMode()
+            return
         }
 
         if let player = player {
