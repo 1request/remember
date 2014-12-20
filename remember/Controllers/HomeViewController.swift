@@ -16,7 +16,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     //MARK: - Constants
     let APPROVE = NSLocalizedString("APPROVE", comment: "alert action for approving new member")
     let REJECT = NSLocalizedString("REJECT", comment: "alert action for rejecting new member")
-    
+    let INVITATION = NSLocalizedString("INVITATION", comment: "app invitation text")
     
     var hudView = HUD()
 
@@ -141,6 +141,17 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
             } else {
                 cell.radioButton.checked = false
             }
+            
+            if group.type == "personal" {
+                cell.inviteButton.hidden = true
+            }
+            
+            cell.didPressInviteButtonBlock = {[weak self] in
+                if let weakself = self {
+                    weakself.showActivityViewController()
+                }
+            }
+            
             return cell
         } else {
             let message = object as Message
@@ -375,7 +386,12 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         player?.stop()
     }
 
-    //MARK: - Monitor Location
+    //MARK: - UIActivityViewController
+    func showActivityViewController() {
+        let url = NSURL(string: "http://app.rememberthere.com/dl/")!
+        let activityViewController = UIActivityViewController(activityItems: [INVITATION, url], applicationActivities: nil)
+        presentViewController(activityViewController, animated: true, completion: nil)
+    }
 }
 
 //MARK: - AVAudioPlayerDelegate
