@@ -54,7 +54,7 @@ class GroupsTableViewCell: SwipeableTableViewCell {
         let viewsDict = ["radioButton": radioButton, "groupNameLabel": groupNameLabel, "inviteButton": inviteButton]
         let metricsDict = ["radioButtonLeftMargin": 20, "radioButtonWidth": 24, "radioButtonRightMargin": 16, "groupNameLabelRightMargin": 16]
 
-        let horizontalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("|-radioButtonLeftMargin-[radioButton(radioButtonWidth)]-radioButtonRightMargin-[groupNameLabel]-groupNameLabelRightMargin-[inviteButton(radioButtonWidth)]-|", options: NSLayoutFormatOptions.AlignAllCenterY, metrics: metricsDict, views: viewsDict)
+        let horizontalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("|-radioButtonLeftMargin-[radioButton(radioButtonWidth)]-radioButtonRightMargin-[groupNameLabel]-groupNameLabelRightMargin-[inviteButton]-|", options: NSLayoutFormatOptions.AlignAllCenterY, metrics: metricsDict, views: viewsDict)
 
         let radioButtonHeightConstraint = NSLayoutConstraint(item: radioButton, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: radioButton, attribute: NSLayoutAttribute.Width, multiplier: 1.0, constant: 0.0)
 
@@ -99,7 +99,7 @@ class GroupsTableViewCell: SwipeableTableViewCell {
 
 extension GroupsTableViewCell: SwipeableTableViewCellDataSource {
     func numberOfRightButtonsInSwipeableCell(cell: SwipeableTableViewCell) -> Int {
-        return 2
+        return 3
     }
     
     func numberOfLeftButtonsInSwipeableCell(cell: SwipeableTableViewCell) -> Int {
@@ -110,8 +110,10 @@ extension GroupsTableViewCell: SwipeableTableViewCellDataSource {
         if atDirection == SwipeableTableViewCell.Direction.right.rawValue {
             if index == 0 {
                 return UIImage(named: "trash")
-            } else {
+            } else if index == 1 {
                 return UIImage(named: "edit")
+            } else {
+                return UIImage(named: "map")
             }
         } else {
             return nil
