@@ -38,7 +38,7 @@ class User: NSObject {
             "user[nickname]": nickname
         ]
         
-        #if !DEBUG
+        #if !TARGET_IPHONE_SIMULATOR
             parameters["user[device_token]"] = NSUserDefaults.standardUserDefaults().valueForKey("token") as? String
         #endif
         
