@@ -141,6 +141,15 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
             } else {
                 cell.radioButton.checked = false
             }
+            
+            if group.type == "personal" {
+                cell.inviteButton.hidden = true
+            }
+            
+            cell.didPressInviteButtonBlock = {[weak self] in
+                println("invite button pressed")
+            }
+            
             return cell
         } else {
             let message = object as Message

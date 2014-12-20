@@ -9,37 +9,61 @@
 import UIKit
 
 class GroupsTableViewCell: SwipeableTableViewCell {
-
-    let radioButton = RadioButton()
-    let groupNameLabel = UILabel()
-
+    
+    lazy var didPressInviteButtonBlock: () -> () = {}
+    
+    func inviteButtonPressed(sender: UIButton) {
+        if didPressInviteButtonBlock != nil {
+            didPressInviteButtonBlock()
+        }
+    }
+    
+    let radioButton: RadioButton = {
+        let button = RadioButton()
+        button.setTranslatesAutoresizingMaskIntoConstraints(false)
+        button.backgroundColor = UIColor.clearColor()
+        return button
+        }()
+    
+    lazy var groupNameLabel: UILabel = {
+        let label = UILabel()
+        label.setTranslatesAutoresizingMaskIntoConstraints(false)
+        label.textColor = UIColor.appGreenTextColor()
+        return label
+        }()
+    
+    lazy var inviteButton: UIButton = {
+        let button = UIButton()
+        button.setTranslatesAutoresizingMaskIntoConstraints(false)
+        button.setImage(UIImage(named: "invite"), forState: .Normal)
+        button.addTarget(self, action: "inviteButtonPressed", forControlEvents: .TouchUpInside)
+        return button
+        }()
+    
     override func commonInit() {
         super.commonInit()
         dataSource = self
         makeLayout()
     }
-
+    
     private func makeLayout() {
-        radioButton.setTranslatesAutoresizingMaskIntoConstraints(false)
-        groupNameLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
-        groupNameLabel.textColor = UIColor.appGreenTextColor()
-
         customContentView.addSubview(radioButton)
         customContentView.addSubview(groupNameLabel)
+        customContentView.addSubview(inviteButton)
 
-        radioButton.backgroundColor = UIColor.clearColor()
-
-        let viewsDict = ["radioButton": radioButton, "groupNameLabel": groupNameLabel]
+        let viewsDict = ["radioButton": radioButton, "groupNameLabel": groupNameLabel, "inviteButton": inviteButton]
         let metricsDict = ["radioButtonLeftMargin": 20, "radioButtonWidth": 24, "radioButtonRightMargin": 16, "groupNameLabelRightMargin": 16]
 
-        let horizontalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("|-radioButtonLeftMargin-[radioButton(radioButtonWidth)]-radioButtonRightMargin-[groupNameLabel]-groupNameLabelRightMargin-|", options: NSLayoutFormatOptions.AlignAllCenterY, metrics: metricsDict, views: viewsDict)
+        let horizontalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("|-radioButtonLeftMargin-[radioButton(radioButtonWidth)]-radioButtonRightMargin-[groupNameLabel]-groupNameLabelRightMargin-[inviteButton(radioButtonWidth)]-|", options: NSLayoutFormatOptions.AlignAllCenterY, metrics: metricsDict, views: viewsDict)
 
         let radioButtonHeightConstraint = NSLayoutConstraint(item: radioButton, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: radioButton, attribute: NSLayoutAttribute.Width, multiplier: 1.0, constant: 0.0)
 
         let radioButtonCenterYConstraint = NSLayoutConstraint(item: radioButton, attribute: NSLayoutAttribute.CenterY, relatedBy: NSLayoutRelation.Equal, toItem: customContentView, attribute: NSLayoutAttribute.CenterY, multiplier: 1.0, constant: 0.0)
+        
+        let inviteButtonHeightConstraint = NSLayoutConstraint(item: inviteButton, attribute: .Height, relatedBy: .Equal, toItem: inviteButton, attribute: .Width, multiplier: 1, constant: 0)
 
         customContentView.addConstraints(horizontalConstraints)
-        customContentView.addConstraints([radioButtonHeightConstraint, radioButtonCenterYConstraint])
+        customContentView.addConstraints([radioButtonHeightConstraint, radioButtonCenterYConstraint, inviteButtonHeightConstraint])
     }
     
     override func setHighlighted(highlighted: Bool, animated: Bool) {
@@ -62,6 +86,14 @@ class GroupsTableViewCell: SwipeableTableViewCell {
                 button.hidden = false
             }
         }
+    }
+    
+    func inviteButtonPressed() {
+        didPressInviteButtonBlock()
+    }
+    
+    override func prepareForReuse() {
+        inviteButton.hidden = false
     }
 }
 
