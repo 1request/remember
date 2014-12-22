@@ -93,6 +93,7 @@ class GroupsTableViewCell: SwipeableTableViewCell {
     }
     
     override func prepareForReuse() {
+        super.prepareForReuse()
         inviteButton.hidden = false
     }
 }
