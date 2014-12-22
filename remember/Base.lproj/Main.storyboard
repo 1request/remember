@@ -89,6 +89,7 @@
                         </variation>
                     </view>
                     <navigationItem key="navigationItem" id="TfE-9W-SDK">
+                        <barButtonItem key="leftBarButtonItem" image="profile" id="DHO-em-VL4"/>
                         <barButtonItem key="rightBarButtonItem" image="add" id="3Zs-g6-TBH">
                             <connections>
                                 <segue destination="QKQ-nC-9kv" kind="show" identifier="toLocations" id="SWE-az-BDu"/>
@@ -609,25 +610,25 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Group Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IWR-Ao-Er3">
-                                <rect key="frame" x="16" y="72" width="98" height="21"/>
+                                <rect key="frame" x="16" y="72" width="98" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Group Type:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V90-1G-plF">
-                                <rect key="frame" x="16" y="139" width="94" height="21"/>
+                                <rect key="frame" x="16" y="138" width="93.5" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="type" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DBl-Pu-dSN">
-                                <rect key="frame" x="118" y="139" width="34" height="21"/>
+                                <rect key="frame" x="117" y="138" width="33.5" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="8p8-a3-arm">
-                                <rect key="frame" x="16" y="101" width="568" height="30"/>
+                                <rect key="frame" x="16" y="100" width="568" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
@@ -635,7 +636,7 @@
                                 </connections>
                             </textField>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LiJ-ss-xJa">
-                                <rect key="frame" x="0.0" y="190" width="600" height="410"/>
+                                <rect key="frame" x="0.0" y="189" width="600" height="411"/>
                                 <connections>
                                     <segue destination="udq-jD-xuf" kind="embed" identifier="embedMapFromEditLocation" id="toF-11-ln9"/>
                                 </connections>
@@ -778,11 +779,11 @@
                         <viewControllerLayoutGuide type="bottom" id="Hj9-bV-RAP"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="AWB-Aa-lVE">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="410"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="411"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="rR2-st-zXA">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="410"/>
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="411"/>
                             </mapView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -960,10 +961,11 @@
     </scenes>
     <resources>
         <image name="Separator" width="640" height="11"/>
-        <image name="add" width="38" height="38"/>
+        <image name="add" width="22" height="22"/>
         <image name="device" width="90" height="98"/>
         <image name="pin" width="73" height="82"/>
         <image name="press-here" width="305" height="272"/>
+        <image name="profile" width="22" height="22"/>
         <image name="record-button" width="160" height="166"/>
     </resources>
     <inferredMetricsTieBreakers>
