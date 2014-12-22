@@ -52,9 +52,9 @@ class GroupsTableViewCell: SwipeableTableViewCell {
         customContentView.addSubview(inviteButton)
 
         let viewsDict = ["radioButton": radioButton, "groupNameLabel": groupNameLabel, "inviteButton": inviteButton]
-        let metricsDict = ["radioButtonLeftMargin": 20, "radioButtonWidth": 24, "radioButtonRightMargin": 16, "groupNameLabelRightMargin": 16]
+        let metricsDict = ["radioButtonLeftMargin": 20, "buttonWidth": 22, "radioButtonRightMargin": 16, "groupNameLabelRightMargin": 16, "inviteButtonRightMargin": 20]
 
-        let horizontalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("|-radioButtonLeftMargin-[radioButton(radioButtonWidth)]-radioButtonRightMargin-[groupNameLabel]-groupNameLabelRightMargin-[inviteButton]-|", options: NSLayoutFormatOptions.AlignAllCenterY, metrics: metricsDict, views: viewsDict)
+        let horizontalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("|-radioButtonLeftMargin-[radioButton(buttonWidth)]-radioButtonRightMargin-[groupNameLabel]-groupNameLabelRightMargin-[inviteButton(buttonWidth)]-inviteButtonRightMargin-|", options: NSLayoutFormatOptions.AlignAllCenterY, metrics: metricsDict, views: viewsDict)
 
         let radioButtonHeightConstraint = NSLayoutConstraint(item: radioButton, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: radioButton, attribute: NSLayoutAttribute.Width, multiplier: 1.0, constant: 0.0)
 
