@@ -50,8 +50,11 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     @IBOutlet weak var groupInfoContainerView: UIView!
     
+    @IBOutlet weak var profileContainerView: UIView!
+    
     var groupInfoVC: GroupInformationViewController?
-
+    
+    var profileVC: ProfileViewController?
     //MARK: - UIView Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -273,6 +276,16 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
             recorderViewController = recorderVC
             recorderViewController?.delegate = self
         }
+        
+        if segue.identifier == "embedProfile" {
+            profileVC = segue.destinationViewController as? ProfileViewController
+            profileVC?.delegate = self
+        }
+    }
+    
+    @IBAction func profileButtonPressed(sender: UIBarButtonItem) {
+        profileContainerView.hidden = false
+        profileContainerView.showAnimated()
     }
 
     //MARK: - NSFetchedResultControllerDelegate
@@ -696,12 +709,23 @@ extension HomeViewController: RecorderViewControllerDelegate {
         let audioData = NSData(contentsOfURL: url)!
         let data = (key: "audio[audioclip]", data: audioData, type: "audio/x-m4a", filename: "audio.m4a")
         let parameters = ["audio[group_id]": groupId, "audio[user_id]": userId]
-        APIManager.postMultipartData(data, parameters: parameters, url: NSURL(string: kAudiosURL)!, nil)
+        
+        APIManager.sendMultipartData(data, parameters: parameters, url: NSURL(string: kAudiosURL)!, type: .POST, callback: nil)
     }
 }
 
 extension HomeViewController: GroupInformationViewControllerDelegate {
-    func closeButtonPressed() {
+    func groupInformationViewControllerCloseButtonPressed() {
         groupInfoContainerView.hidden = true
+    }
+}
+
+extension HomeViewController: ProfileViewControllerDelegate {
+    func closeButtonPressed() {
+        profileContainerView.hidden = true
+    }
+    
+    func feedbackButtonClicked() {
+        performSegueWithIdentifier("toFeedback", sender: self)
     }
 }

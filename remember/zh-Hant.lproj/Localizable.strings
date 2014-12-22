@@ -29,3 +29,4 @@ NAME = "名稱";
 OK = "確認";
 CREATING_ACCOUNT = "創建賬號中";
 INVITATION = "馬上下載 \"記得\"，在指定地點提示你的備忘錄。";
+FEEDBACK = "我要反饋>";

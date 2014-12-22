@@ -10,7 +10,7 @@ import UIKit
 import MapKit
 
 protocol GroupInformationViewControllerDelegate {
-    func closeButtonPressed()
+    func groupInformationViewControllerCloseButtonPressed()
 }
 
 class GroupInformationViewController: UIViewController {
@@ -86,7 +86,7 @@ extension GroupInformationViewController: UICollectionViewDataSource, UICollecti
 
 extension GroupInformationViewController: PopUpViewDelegate {
     func closeButtonPressed() {
-        delegate?.closeButtonPressed()
+        delegate?.groupInformationViewControllerCloseButtonPressed()
         imagesUrls.removeAll()
     }
 }

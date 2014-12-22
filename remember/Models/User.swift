@@ -29,6 +29,24 @@ class User: NSObject {
         }
     }
     
+    class func updateProfilePicture(image: UIImage, callback: (() -> Void)?) {
+        if let userId = User.currentUserId() {
+            
+            let url = NSURL(string: kUsersURL + "/\(userId)")!
+            let data = UIImagePNGRepresentation(image)
+            let dataDetails = (key: "user[profile_picture]", data: data!, type: "image/png", filename: "\(UIDevice.currentDevice().identifierForVendor.UUIDString).png")
+            APIManager.sendMultipartData(dataDetails, parameters: nil, url: url, type: .PATCH) { (response, error, jsonObject) -> Void in
+                if let id = jsonObject["id"].number {
+                    NSUserDefaults.standardUserDefaults().setValue(id, forKey: "userId")
+                    println("saved server user id: \(id)")
+                    if let cb = callback {
+                        cb()
+                    }
+                }
+            }
+        }
+    }
+    
     func createAccount(callback: (() -> Void)?) {
         let data = UIImagePNGRepresentation(image)
         let dataDetails = (key: "user[profile_picture]", data: data!, type: "image/png", filename: "\(UIDevice.currentDevice().identifierForVendor.UUIDString).png")
@@ -44,7 +62,9 @@ class User: NSObject {
         
         image.saveImageAsPNGWithName("user")
         
-        APIManager.postMultipartData(dataDetails, parameters: parameters, url: NSURL(string: kUsersURL)!) { (response, error, jsonObject) -> Void in
+        NSUserDefaults.standardUserDefaults().setValue(nickname, forKey: "nickname")
+        
+        APIManager.sendMultipartData(dataDetails, parameters: parameters, url: NSURL(string: kUsersURL)!, type: .POST) { (response, error, jsonObject) -> Void in
             if let id = jsonObject["id"].number {
                 NSUserDefaults.standardUserDefaults().setValue(id, forKey: "userId")
                 println("saved server user id: \(id)")
