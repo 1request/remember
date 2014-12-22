@@ -50,6 +50,7 @@ extension ProfileViewController: ProfileViewDelegate {
     
     func feedbackButtonClicked() {
         delegate?.feedbackButtonClicked()
+        delegate?.closeButtonPressed()
     }
     
     func cameraButtonPressed() {
