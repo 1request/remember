@@ -52,7 +52,7 @@ class FeedbackViewController: UIViewController, UITextFieldDelegate {
         let id = UIDevice.currentDevice().identifierForVendor.UUIDString
         let name = nameTextField.text
         let parameters: [String: String] = ["name": name, "deviceId": id, "deviceType": UIDevice.currentDevice().model]
-        APIManager.postMultipartData(data, parameters: parameters, url: NSURL(string: kFeedbackPOSTURL)!, callback: nil)
+        APIManager.sendMultipartData(data, parameters: parameters, url: NSURL(string: kFeedbackPOSTURL)!, type: HTTPMethodType.POST, callback: nil)
         navigationController?.popViewControllerAnimated(true)
         Mixpanel.sharedInstance().track("feedbackSent")
     }

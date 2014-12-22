@@ -17,12 +17,12 @@ enum HTTPMethodType: String {
 
 class APIManager: NSObject {
 
-    class func postMultipartData(data: (key: String, data: NSData, type: String, filename: String), parameters: [String: NSObject], url:NSURL, callback: ((response: NSURLResponse, error: NSError?, jsonObject: JSON) -> Void)?) {
+    class func sendMultipartData(data: (key: String, data: NSData, type: String, filename: String), parameters: [String: NSObject]?, url:NSURL, type: HTTPMethodType, callback: ((response: NSURLResponse, error: NSError?, jsonObject: JSON) -> Void)?) {
         let request = NSMutableURLRequest(URL: url)
         request.cachePolicy = NSURLRequestCachePolicy.ReloadIgnoringLocalCacheData
         request.HTTPShouldHandleCookies = false
         request.timeoutInterval = 30
-        request.HTTPMethod = "POST"
+        request.HTTPMethod = type.rawValue
         
         let contentType = "multipart/form-data; boundary=\(kBoundary)"
         request.setValue(contentType, forHTTPHeaderField: "Content-Type")
@@ -30,14 +30,18 @@ class APIManager: NSObject {
         var body = NSMutableData()
         
         let boundary = "--\(kBoundary)\r\n"
-        for (key, value) in parameters {
-            let contentDisposition = "Content-Disposition: form-data; name=\"\(key)\"\r\n\r\n"
-            let paramKey = "\(value)\r\n"
-            
-            body.appendString(boundary)
-            body.appendString(contentDisposition)
-            body.appendString(paramKey)
+        
+        if let params = parameters {
+            for (key, value) in params {
+                let contentDisposition = "Content-Disposition: form-data; name=\"\(key)\"\r\n\r\n"
+                let paramKey = "\(value)\r\n"
+                
+                body.appendString(boundary)
+                body.appendString(contentDisposition)
+                body.appendString(paramKey)
+            }
         }
+        
         let dataContentDisposition = "Content-Disposition: form-data; name=\"\(data.key)\"; filename=\"\(data.filename)\"\r\n"
         let mimeType = "Content-Type: \(data.type)\r\n\r\n"
         body.appendString(boundary)

@@ -62,6 +62,12 @@
 		7C6A35261A1B2610004FD2FD /* ObjCToSwiftMigrationPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6A35251A1B2610004FD2FD /* ObjCToSwiftMigrationPolicy.swift */; };
 		7C6A35281A1B3695004FD2FD /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6A35271A1B3695004FD2FD /* CoreDataStack.swift */; };
 		7C6C8A261A358B670068B56C /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6C8A251A358B670068B56C /* SwiftyJSON.swift */; };
+		7C6DAC9C1A47FF5B008393DE /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6DAC9B1A47FF5B008393DE /* ProfileViewController.swift */; };
+		7C6DAC9D1A47FF5B008393DE /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6DAC9B1A47FF5B008393DE /* ProfileViewController.swift */; };
+		7C6DAC9F1A4800A7008393DE /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6DAC9E1A4800A7008393DE /* ProfileView.swift */; };
+		7C6DACA01A4800A7008393DE /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6DAC9E1A4800A7008393DE /* ProfileView.swift */; };
+		7C6DACA21A480363008393DE /* UserInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6DACA11A480363008393DE /* UserInfoView.swift */; };
+		7C6DACA31A480363008393DE /* UserInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6DACA11A480363008393DE /* UserInfoView.swift */; };
 		7C8357DF1A35767300580BC0 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C0B54BF1A3545CD006B041A /* User.swift */; };
 		7C86C3E01A25672000702D80 /* AudioRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB6F6831A24666100C2A60E /* AudioRecorder.swift */; };
 		7C8EDC521A3B3B00000EF661 /* PopUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C8EDC511A3B3B00000EF661 /* PopUpView.swift */; };
@@ -208,6 +214,9 @@
 		7C6A35271A1B3695004FD2FD /* CoreDataStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CoreDataStack.swift; path = Models/CoreDataStack.swift; sourceTree = "<group>"; };
 		7C6C8A241A358B670068B56C /* SwiftyJSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SwiftyJSON.h; path = SwiftyJSON/Source/SwiftyJSON.h; sourceTree = SOURCE_ROOT; };
 		7C6C8A251A358B670068B56C /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftyJSON.swift; path = SwiftyJSON/Source/SwiftyJSON.swift; sourceTree = SOURCE_ROOT; };
+		7C6DAC9B1A47FF5B008393DE /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ProfileViewController.swift; path = Controllers/ProfileViewController.swift; sourceTree = "<group>"; };
+		7C6DAC9E1A4800A7008393DE /* ProfileView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ProfileView.swift; path = Views/ProfileView.swift; sourceTree = "<group>"; };
+		7C6DACA11A480363008393DE /* UserInfoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UserInfoView.swift; path = Views/UserInfoView.swift; sourceTree = "<group>"; };
 		7C84AFAE1A0CB0DB00D905A0 /* remember 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "remember 4.xcdatamodel"; sourceTree = "<group>"; };
 		7C8EDC511A3B3B00000EF661 /* PopUpView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PopUpView.swift; path = Views/PopUpView.swift; sourceTree = "<group>"; };
 		7C9FB4DF1A30336C00A4B907 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -376,6 +385,7 @@
 				7C2D71BF1A2EFD87003224C1 /* AddGroupTableViewController.swift */,
 				7CB0A6101A300F5300BA48C1 /* AddLocationViewController.swift */,
 				7CB0A6131A300F7000BA48C1 /* SignUpViewController.swift */,
+				7C6DAC9B1A47FF5B008393DE /* ProfileViewController.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -385,7 +395,9 @@
 			children = (
 				8ABFAA6419E6665700FCE6EF /* GroupsTableViewCell.swift */,
 				7C8EDC511A3B3B00000EF661 /* PopUpView.swift */,
+				7C6DACA11A480363008393DE /* UserInfoView.swift */,
 				7C0603921A3BFB9800FB7A0D /* SignUpView.swift */,
+				7C6DAC9E1A4800A7008393DE /* ProfileView.swift */,
 				7C67AC8F1A42D555006CFE5C /* GroupInformationView.swift */,
 				7CF32E621A0B21B00056F873 /* HUD.swift */,
 				8ABFAA6619E668DB00FCE6EF /* MessagesTableViewCell.swift */,
@@ -755,6 +767,7 @@
 				8ABFAA6519E6665700FCE6EF /* GroupsTableViewCell.swift in Sources */,
 				7C6A35281A1B3695004FD2FD /* CoreDataStack.swift in Sources */,
 				7C6A351F1A1B0B40004FD2FD /* DataMigrationManager.swift in Sources */,
+				7C6DAC9F1A4800A7008393DE /* ProfileView.swift in Sources */,
 				7C2D71C01A2EFD87003224C1 /* AddGroupTableViewController.swift in Sources */,
 				8A76A0B119E63C590031202A /* NavigationController.swift in Sources */,
 				7C51BE291A3699D8001894BF /* Group.swift in Sources */,
@@ -777,10 +790,12 @@
 				7CCE375E1A28229800A6BDA6 /* RecorderViewController.swift in Sources */,
 				7CB0A6111A300F5300BA48C1 /* AddLocationViewController.swift in Sources */,
 				7C0E3A7F1A272DC900235C4C /* AddableTableViewCell.swift in Sources */,
+				7C6DACA21A480363008393DE /* UserInfoView.swift in Sources */,
 				7C18BBE81A16018B001F15CA /* BeaconRegionEvent.swift in Sources */,
 				7C67AC8D1A42D4B5006CFE5C /* GroupInformationViewController.swift in Sources */,
 				7C18BBEA1A1601BD001F15CA /* VisitEvent.swift in Sources */,
 				7C51BE2B1A3699D9001894BF /* Location.swift in Sources */,
+				7C6DAC9C1A47FF5B008393DE /* ProfileViewController.swift in Sources */,
 				7C6A35241A1B2567004FD2FD /* RememberMappingModel_objc_to_v4.xcmappingmodel in Sources */,
 				7C3C44591A4140B30033B3AC /* Location+CoreLocation.swift in Sources */,
 				7CDFE6A11A2739DC00EC4B93 /* NearbyLocationsTableViewCell.swift in Sources */,
@@ -827,6 +842,7 @@
 				D14B83591A27576200D12EDF /* LocationsViewController.swift in Sources */,
 				D1A673791A1B6C8F00C05D2C /* RememberMappingModel_objc_to_v4.xcmappingmodel in Sources */,
 				D1A673761A1B6C6D00C05D2C /* DataMigrationManager.swift in Sources */,
+				7C6DACA01A4800A7008393DE /* ProfileView.swift in Sources */,
 				D1A673771A1B6C6D00C05D2C /* ObjCToSwiftMigrationPolicy.swift in Sources */,
 				D1A673781A1B6C6D00C05D2C /* CoreDataStack.swift in Sources */,
 				7CCFFE9B1A25CEF500A346E4 /* GooglePlaces.swift in Sources */,
@@ -849,10 +865,12 @@
 				D1EE65141A0740A600A65EF0 /* LocationsTableViewController.swift in Sources */,
 				D1EE65151A0740A600A65EF0 /* HomeViewController.swift in Sources */,
 				D1EE65161A0740A600A65EF0 /* MessagesTableViewCell.swift in Sources */,
+				7C6DACA31A480363008393DE /* UserInfoView.swift in Sources */,
 				D1EE65171A0740A600A65EF0 /* GroupsTableViewCell.swift in Sources */,
 				7C67AC8E1A42D4B5006CFE5C /* GroupInformationViewController.swift in Sources */,
 				D1EE65181A0740A600A65EF0 /* NavigationController.swift in Sources */,
 				7C2D71C11A2F0087003224C1 /* AddGroupTableViewController.swift in Sources */,
+				7C6DAC9D1A47FF5B008393DE /* ProfileViewController.swift in Sources */,
 				7CD8853F1A2ED7070093E579 /* AddLocationEvent.swift in Sources */,
 				7C3C445A1A4140B30033B3AC /* Location+CoreLocation.swift in Sources */,
 				7CB0A6121A300F5300BA48C1 /* AddLocationViewController.swift in Sources */,

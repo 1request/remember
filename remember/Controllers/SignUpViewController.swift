@@ -47,8 +47,7 @@ class SignUpViewController: UIViewController {
     
     @IBAction func cameraButtonPressed(sender: UIButton) {
         view.endEditing(true)
-        
-            }
+    }
     
     func checkUserData() {
         if signUpView.usernameTextField.text != "" && userImage != nil {
