@@ -150,6 +150,14 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
             let cell = tableView.dequeueReusableCellWithIdentifier("groupCell", forIndexPath: indexPath) as GroupsTableViewCell
             cell.groupNameLabel.text = group.name
             
+            if let userId = User.currentUserId() {
+                if userId == group.creatorId {
+                    cell.showEdit = true
+                } else {
+                    cell.showEdit = false
+                }
+            }
+            
             if group.objectID == selectedGroupObjectID {
                 cell.radioButton.checked = true
             } else {

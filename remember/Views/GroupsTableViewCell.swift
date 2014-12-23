@@ -11,6 +11,7 @@ import UIKit
 class GroupsTableViewCell: SwipeableTableViewCell {
     
     lazy var didPressInviteButtonBlock: () -> () = {}
+    var showEdit = true
     
     func inviteButtonPressed(sender: UIButton) {
         if didPressInviteButtonBlock != nil {
@@ -100,7 +101,11 @@ class GroupsTableViewCell: SwipeableTableViewCell {
 
 extension GroupsTableViewCell: SwipeableTableViewCellDataSource {
     func numberOfRightButtonsInSwipeableCell(cell: SwipeableTableViewCell) -> Int {
-        return 3
+        if showEdit {
+            return 3
+        } else {
+            return 2
+        }
     }
     
     func numberOfLeftButtonsInSwipeableCell(cell: SwipeableTableViewCell) -> Int {
@@ -109,10 +114,15 @@ extension GroupsTableViewCell: SwipeableTableViewCellDataSource {
     
     func swipeableCell(cell: SwipeableTableViewCell, backgroundImageForButtonAtIndex index: Int, atDirection: Int) -> UIImage? {
         if atDirection == SwipeableTableViewCell.Direction.right.rawValue {
+            
             if index == 0 {
                 return UIImage(named: "trash")
             } else if index == 1 {
-                return UIImage(named: "edit")
+                if showEdit {
+                    return UIImage(named: "edit")
+                } else {
+                    return UIImage(named: "map")
+                }
             } else {
                 return UIImage(named: "map")
             }
