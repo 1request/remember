@@ -34,6 +34,7 @@ class SignUpViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         signUpView.delegate = self
+        signUpView.confirmButton.enabled = false
     }
     
     @IBAction func cancelButtonPressed(sender: AnyObject) {
@@ -42,7 +43,7 @@ class SignUpViewController: UIViewController {
     }
     
     @IBAction func usernameTextFieldEditingChanged(sender: UITextField) {
-//        checkUserData()
+        checkUserData()
     }
     
     @IBAction func cameraButtonPressed(sender: UIButton) {
@@ -52,13 +53,11 @@ class SignUpViewController: UIViewController {
     func checkUserData() {
         if signUpView.usernameTextField.text != "" && userImage != nil {
             signUpView.confirmButton.enabled = true
+            signUpView.confirmButton.backgroundColor = UIColor.appGreenTextColor()
         } else {
             signUpView.confirmButton.enabled = false
+            signUpView.confirmButton.backgroundColor = UIColor.appDarkGrayColor()
         }
-    }
-    
-    func handleSingleTap(recognizer: UITapGestureRecognizer) {
-        view.endEditing(true)
     }
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {

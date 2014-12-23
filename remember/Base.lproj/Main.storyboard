@@ -133,6 +133,7 @@
                     <connections>
                         <outlet property="groupInfoContainerView" destination="jdI-MR-YMI" id="eRF-eF-M3v"/>
                         <outlet property="pressHereImageView" destination="eeq-nU-IfG" id="Byf-Y3-znG"/>
+                        <outlet property="profileBarButtonItem" destination="DHO-em-VL4" id="56b-rQ-MJ8"/>
                         <outlet property="profileContainerView" destination="zlc-Yn-PGK" id="Yex-57-k17"/>
                         <outlet property="tableView" destination="Dtd-qO-gU9" id="bLx-Xg-VIw"/>
                         <segue destination="1fN-WH-tHk" kind="show" identifier="editGroup" id="I2H-A1-na7"/>

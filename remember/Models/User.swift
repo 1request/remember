@@ -47,6 +47,16 @@ class User: NSObject {
         }
     }
     
+    class func updateNickname(name: String) {
+        if let userId = User.currentUserId() {
+            let paramJson: JSON = ["nickname": name]
+            let url = NSURL(string: kUsersURL + "/\(userId)")!
+            APIManager.sendRequest(toURL: url, method: .PATCH, json: paramJson, callback: { (response, error, jsonObject) -> Void in
+                println("response: \(response)")
+            })
+        }
+    }
+    
     func createAccount(callback: (() -> Void)?) {
         let data = UIImagePNGRepresentation(image)
         let dataDetails = (key: "user[profile_picture]", data: data!, type: "image/png", filename: "\(UIDevice.currentDevice().identifierForVendor.UUIDString).png")
