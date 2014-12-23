@@ -23,6 +23,10 @@
 		7C18BBEC1A1601DB001F15CA /* AddGroupEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C18BBEB1A1601DB001F15CA /* AddGroupEvent.swift */; };
 		7C1AA2691A242BF900F37AE5 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7C1AA26C1A242BF900F37AE5 /* Localizable.strings */; };
 		7C1AA26A1A242BF900F37AE5 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7C1AA26C1A242BF900F37AE5 /* Localizable.strings */; };
+		7C1C12211A493CB100AC9713 /* RememberMappingModel_v6_to_v7.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 7C1C12201A493CB100AC9713 /* RememberMappingModel_v6_to_v7.xcmappingmodel */; };
+		7C1C12221A493CB100AC9713 /* RememberMappingModel_v6_to_v7.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 7C1C12201A493CB100AC9713 /* RememberMappingModel_v6_to_v7.xcmappingmodel */; };
+		7C1C12241A493D0100AC9713 /* GroupMigrationPolicy_v6_to_v7.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1C12231A493D0100AC9713 /* GroupMigrationPolicy_v6_to_v7.swift */; };
+		7C1C12251A493D0100AC9713 /* GroupMigrationPolicy_v6_to_v7.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1C12231A493D0100AC9713 /* GroupMigrationPolicy_v6_to_v7.swift */; };
 		7C1EEF8B1A38276C000759BB /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C51BE2A1A3699D9001894BF /* Location.swift */; };
 		7C1EEF8C1A382770000759BB /* Group.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C51BE281A3699D8001894BF /* Group.swift */; };
 		7C1EEF8D1A382773000759BB /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C51BE2C1A3699D9001894BF /* Message.swift */; };
@@ -181,6 +185,9 @@
 		7C1AA2701A24317300F37AE5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		7C1AA2711A2432D400F37AE5 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		7C1AA2721A2432DA00F37AE5 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		7C1C121F1A493B5C00AC9713 /* remember 7.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "remember 7.xcdatamodel"; sourceTree = "<group>"; };
+		7C1C12201A493CB100AC9713 /* RememberMappingModel_v6_to_v7.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; name = RememberMappingModel_v6_to_v7.xcmappingmodel; path = Migrations/RememberMappingModel_v6_to_v7.xcmappingmodel; sourceTree = "<group>"; };
+		7C1C12231A493D0100AC9713 /* GroupMigrationPolicy_v6_to_v7.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GroupMigrationPolicy_v6_to_v7.swift; path = Migrations/GroupMigrationPolicy_v6_to_v7.swift; sourceTree = "<group>"; };
 		7C1EEF8E1A383237000759BB /* Membership.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Membership.swift; path = Models/Membership.swift; sourceTree = "<group>"; };
 		7C28F48D1A0A0B40006A7CA0 /* EditGroupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EditGroupViewController.swift; path = Controllers/EditGroupViewController.swift; sourceTree = "<group>"; };
 		7C2D71BF1A2EFD87003224C1 /* AddGroupTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AddGroupTableViewController.swift; path = Controllers/AddGroupTableViewController.swift; sourceTree = "<group>"; };
@@ -356,6 +363,8 @@
 				7C4EA9BD1A3173F600CD2011 /* RememberMappingModel_v4_to_v5.xcmappingmodel */,
 				7C4EA9B71A3169F700CD2011 /* MessageMigrationPolicy_v4_to_v5.swift */,
 				7C4EA9BA1A316A0900CD2011 /* LocationMigrationPolicy_v4_to_v5.swift */,
+				7C1C12201A493CB100AC9713 /* RememberMappingModel_v6_to_v7.xcmappingmodel */,
+				7C1C12231A493D0100AC9713 /* GroupMigrationPolicy_v6_to_v7.swift */,
 				7C6A351E1A1B0B40004FD2FD /* DataMigrationManager.swift */,
 			);
 			name = Migrations;
@@ -779,6 +788,7 @@
 				7C0B54C01A3545CD006B041A /* User.swift in Sources */,
 				7C3475EB1A2EC0B300559E0E /* AddLocationEvent.swift in Sources */,
 				8A9F0F6619E62C50007FB36B /* AppDelegate.swift in Sources */,
+				7C1C12241A493D0100AC9713 /* GroupMigrationPolicy_v6_to_v7.swift in Sources */,
 				8ABFAA6B19E68AB600FCE6EF /* RadioButton.swift in Sources */,
 				7C088D9819E631CA005A51D9 /* LocationManager.swift in Sources */,
 				7C6C8A261A358B670068B56C /* SwiftyJSON.swift in Sources */,
@@ -795,6 +805,7 @@
 				7C67AC8D1A42D4B5006CFE5C /* GroupInformationViewController.swift in Sources */,
 				7C18BBEA1A1601BD001F15CA /* VisitEvent.swift in Sources */,
 				7C51BE2B1A3699D9001894BF /* Location.swift in Sources */,
+				7C1C12211A493CB100AC9713 /* RememberMappingModel_v6_to_v7.xcmappingmodel in Sources */,
 				7C6DAC9C1A47FF5B008393DE /* ProfileViewController.swift in Sources */,
 				7C6A35241A1B2567004FD2FD /* RememberMappingModel_objc_to_v4.xcmappingmodel in Sources */,
 				7C3C44591A4140B30033B3AC /* Location+CoreLocation.swift in Sources */,
@@ -854,6 +865,7 @@
 				D12E82CE1A165B040016778F /* BeaconRegionEvent.swift in Sources */,
 				D12E82CF1A165B040016778F /* VisitEvent.swift in Sources */,
 				7C8357DF1A35767300580BC0 /* User.swift in Sources */,
+				7C1C12251A493D0100AC9713 /* GroupMigrationPolicy_v6_to_v7.swift in Sources */,
 				D12E82D01A165B040016778F /* AddGroupEvent.swift in Sources */,
 				D12E82D11A165B040016778F /* Constants.swift in Sources */,
 				D122493B1A0D03FE008AC2BD /* GPSLocationTableViewCell.swift in Sources */,
@@ -870,6 +882,7 @@
 				7C67AC8E1A42D4B5006CFE5C /* GroupInformationViewController.swift in Sources */,
 				D1EE65181A0740A600A65EF0 /* NavigationController.swift in Sources */,
 				7C2D71C11A2F0087003224C1 /* AddGroupTableViewController.swift in Sources */,
+				7C1C12221A493CB100AC9713 /* RememberMappingModel_v6_to_v7.xcmappingmodel in Sources */,
 				7C6DAC9D1A47FF5B008393DE /* ProfileViewController.swift in Sources */,
 				7CD8853F1A2ED7070093E579 /* AddLocationEvent.swift in Sources */,
 				7C3C445A1A4140B30033B3AC /* Location+CoreLocation.swift in Sources */,
@@ -1179,6 +1192,7 @@
 		8A9F0F6719E62C50007FB36B /* remember.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				7C1C121F1A493B5C00AC9713 /* remember 7.xcdatamodel */,
 				7CD9A1AB1A41350100FD6CB8 /* remember 6.xcdatamodel */,
 				7C319B431A2D69500042BAB8 /* remember 5.xcdatamodel */,
 				7C6A35201A1B1E47004FD2FD /* remember-objc.xcdatamodel */,
@@ -1187,7 +1201,7 @@
 				7C516BB51A0A1526005AEF24 /* remember 2.xcdatamodel */,
 				8A9F0F6819E62C50007FB36B /* remember.xcdatamodel */,
 			);
-			currentVersion = 7CD9A1AB1A41350100FD6CB8 /* remember 6.xcdatamodel */;
+			currentVersion = 7C1C121F1A493B5C00AC9713 /* remember 7.xcdatamodel */;
 			path = remember.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

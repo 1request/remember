@@ -13,6 +13,7 @@ class Group: NSManagedObject {
 
     @NSManaged var createdAt: NSDate
     @NSManaged var identifier: String
+    @NSManaged var creatorId: NSNumber
     @NSManaged var lastTriggerDate: NSDate
     @NSManaged var messagesCount: NSNumber
     @NSManaged var name: String

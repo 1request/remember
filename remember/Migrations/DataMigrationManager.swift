@@ -85,6 +85,11 @@ class DataMigrationManager {
                     NSInferMappingModelAutomaticallyOption: true]
                 let destinationModel = NSManagedObjectModel.version6()
                 migrateStoreAt(OldURL: storeURL, fromModel: storeModel, toNewURL: storeURL, toModel: destinationModel, mappingModel: nil)
+                performMigration()
+            } else if storeModel.isVersion6() {
+                let destinationModel = NSManagedObjectModel.version7()
+                let mappingModel = NSMappingModel(fromBundles: nil, forSourceModel: storeModel, destinationModel: destinationModel)
+                migrateStoreAt(OldURL: storeURL, fromModel: storeModel, toNewURL: storeURL, toModel: destinationModel, mappingModel: mappingModel)
             }
         }
     }
@@ -163,6 +168,14 @@ extension NSManagedObjectModel {
         return NSManagedObjectModel(contentsOfURL:modelURL!)!
     }
     
+    class func version7() -> NSManagedObjectModel {
+        return rememberModelNamed("remember 7")
+    }
+    
+    func isVersion7() -> Bool {
+        return self == self.dynamicType.version7()
+    }
+    
     class func version6() -> NSManagedObjectModel {
         return rememberModelNamed("remember 6")
     }
@@ -193,6 +206,30 @@ extension NSManagedObjectModel {
     
     func isObjc() -> Bool {
         return self == self.dynamicType.objc()
+    }
+    
+    class func version3() -> NSManagedObjectModel {
+        return rememberModelNamed("remember 3")
+    }
+    
+    func isVersion3() -> Bool {
+        return self == self.dynamicType.version3()
+    }
+    
+    class func version2() -> NSManagedObjectModel {
+        return rememberModelNamed("remember 2")
+    }
+    
+    func isVersion2() -> Bool {
+        return self == self.dynamicType.version2()
+    }
+    
+    class func version1() -> NSManagedObjectModel {
+        return rememberModelNamed("remember")
+    }
+    
+    func isVersion1() -> Bool {
+        return self == self.dynamicType.version1()
     }
 }
 
