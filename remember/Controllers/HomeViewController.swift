@@ -21,6 +21,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     var hudView = HUD()
 
     var recorderViewController: RecorderViewController? = nil
+    var userImage = UIImage.loadPNGImageWithName("user")
 
     //MARK: - Variables
 
@@ -100,6 +101,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         setSelectedGroupObjectID()
         Group.updateAcceptedGroupsInContext(managedObjectContext, nil)
         setProfileButton()
+        userImage = UIImage.loadPNGImageWithName("user")
     }
 
     override func viewDidDisappear(animated: Bool) {
@@ -169,9 +171,19 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
             let message = object as Message
             let cell = tableView.dequeueReusableCellWithIdentifier("messageCell", forIndexPath: indexPath) as MessagesTableViewCell
             cell.messageLabel.text = message.name
+            
             if message.userId != 0 {
-                cell.profileImage = UIImage.loadPNGImageWithName("user-\(message.userId).png")
+                let url = NSURL(string: kUsersURL + "/\(message.userId)/thumbnail")!
+                let manager = SDWebImageManager.sharedManager()
+                manager.downloadImageWithURL(url, options: .AllowInvalidSSLCertificates, progress: nil, completed: { (image, error, cacheType, finished, imageUrl) -> Void in
+                    dispatch_async(dispatch_get_main_queue()) {
+                        cell.profileImage = image
+                    }
+                })
+            } else {
+                cell.profileImage = userImage
             }
+            
             if message.isRead.boolValue {
                 cell.markAsRead()
             } else {
