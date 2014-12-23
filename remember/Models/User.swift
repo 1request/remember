@@ -31,7 +31,7 @@ class User: NSObject {
     
     class func updateProfilePicture(image: UIImage, callback: (() -> Void)?) {
         if let userId = User.currentUserId() {
-            
+            image.saveImageAsPNGWithName("user")
             let url = NSURL(string: kUsersURL + "/\(userId)")!
             let data = UIImagePNGRepresentation(image)
             let dataDetails = (key: "user[profile_picture]", data: data!, type: "image/png", filename: "\(UIDevice.currentDevice().identifierForVendor.UUIDString).png")
