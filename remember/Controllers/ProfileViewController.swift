@@ -29,13 +29,14 @@ class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         profileView.delegate = self
+        profileView.usernameTextField.delegate = self
+        profileView.usernameTextField.returnKeyType = UIReturnKeyType.Done
     }
     
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
-        if let image = userImage {
-            profileView.cameraButtonImage = userImage
-        }
+    func setup() {
+        userImage = UIImage.loadPNGImageWithName("user")
+        let nickname = NSUserDefaults.standardUserDefaults().valueForKey("nickname") as String
+        profileView.usernameTextField.text = nickname
     }
 }
 
@@ -71,6 +72,13 @@ extension ProfileViewController: UITextFieldDelegate {
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
+    }
+    
+    func textFieldDidEndEditing(textField: UITextField) {
+        let name = textField.text
+        User.updateNickname(name)
+        
+        NSUserDefaults.standardUserDefaults().setValue(name, forKey: "nickname")
     }
 }
 

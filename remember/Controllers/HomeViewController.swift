@@ -26,6 +26,8 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var pressHereImageView: UIImageView!
+    @IBOutlet weak var profileBarButtonItem: UIBarButtonItem!
+    
     var alertView: UIAlertView? = nil
 
     var editingObjectID: NSManagedObjectID? = nil {
@@ -89,14 +91,15 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         }
     }
     
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
         checkNewMember()
         monitorEnterLocationNotification()
         monitorApproveMemberNotification()
         monitorAudioRouteChange()
         setSelectedGroupObjectID()
         Group.updateAcceptedGroupsInContext(managedObjectContext, nil)
+        setProfileButton()
     }
 
     override func viewDidDisappear(animated: Bool) {
@@ -285,7 +288,20 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     @IBAction func profileButtonPressed(sender: UIBarButtonItem) {
         profileContainerView.hidden = false
+        profileVC?.setup()
         profileContainerView.showAnimated()
+    }
+    
+    func setProfileButton() {
+        if User.currentUserId() != nil {
+            profileBarButtonItem.style = UIBarButtonItemStyle.Bordered
+            profileBarButtonItem.enabled = true
+            profileBarButtonItem.image = UIImage(named: "profile")
+        } else {
+            profileBarButtonItem.style = UIBarButtonItemStyle.Plain
+            profileBarButtonItem.enabled = false
+            profileBarButtonItem.image = nil
+        }
     }
 
     //MARK: - NSFetchedResultControllerDelegate
@@ -716,13 +732,13 @@ extension HomeViewController: RecorderViewControllerDelegate {
 
 extension HomeViewController: GroupInformationViewControllerDelegate {
     func groupInformationViewControllerCloseButtonPressed() {
-        groupInfoContainerView.hidden = true
+        groupInfoContainerView.dismissAnimated()
     }
 }
 
 extension HomeViewController: ProfileViewControllerDelegate {
     func closeButtonPressed() {
-        profileContainerView.hidden = true
+        profileContainerView.dismissAnimated()
     }
     
     func feedbackButtonClicked() {

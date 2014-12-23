@@ -42,6 +42,7 @@ class SignUpView: UserInfoView {
     override func setup() {
         super.setup()
         frameView.addSubview(confirmButton)
+        usernameTextField.delegate = self
         
         loadingLabel.text = CREATING_ACCOUNT
         
