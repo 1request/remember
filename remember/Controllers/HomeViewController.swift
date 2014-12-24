@@ -151,7 +151,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
             cell.groupNameLabel.text = group.name
             
             if let userId = User.currentUserId() {
-                if userId == group.creatorId {
+                if userId == group.creatorId || group.type == "personal" {
                     cell.showEdit = true
                 } else {
                     cell.showEdit = false

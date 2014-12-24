@@ -71,6 +71,7 @@ class AddGroupTableViewController: UITableViewController, UIGestureRecognizerDel
             groupToBeAdded.type = "personal"
         } else {
             groupToBeAdded.type = "private"
+            groupToBeAdded.creatorId = User.currentUserId()!
         }
         
         var locationToBeAdded: Location?
