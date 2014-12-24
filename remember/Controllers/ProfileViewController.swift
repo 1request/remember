@@ -35,7 +35,10 @@ class ProfileViewController: UIViewController {
     
     func setup() {
         userImage = UIImage.loadPNGImageWithName("user")
-        let nickname = NSUserDefaults.standardUserDefaults().valueForKey("nickname") as String
+        var nickname = ""
+        if (NSUserDefaults.standardUserDefaults().valueForKey("nickname") != nil) {
+            nickname = NSUserDefaults.standardUserDefaults().valueForKey("nickname") as String
+        }
         profileView.usernameTextField.text = nickname
     }
 }
