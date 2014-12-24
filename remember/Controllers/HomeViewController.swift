@@ -514,15 +514,17 @@ extension HomeViewController: SwipeableTableViewCellDelegate {
                     setSelectedGroupObjectID()
                 } else if index == 1 {
                     if let group = object as? Group {
-                        performSegueWithIdentifier("editGroup", sender: group)
-                        editingObjectID = nil
-                        cell.closeCell(animated: false, direction: SwipeableTableViewCell.Direction.right)
+                        if group.type == "personal" || group.creatorId == User.currentUserId()! {
+                            performSegueWithIdentifier("editGroup", sender: group)
+                            editingObjectID = nil
+                            cell.closeCell(animated: false, direction: SwipeableTableViewCell.Direction.right)
+                        } else {
+                            showGroupInfo(group)
+                        }
                     }
                 } else {
                     if let group = object as? Group {
-                        groupInfoVC?.group = group
-                        groupInfoContainerView.hidden = false
-                        groupInfoContainerView.showAnimated()
+                        showGroupInfo(group)
                     }
                 }
             } else {
@@ -538,6 +540,12 @@ extension HomeViewController: SwipeableTableViewCellDelegate {
                 }
             }
         }
+    }
+    
+    func showGroupInfo(group: Group) {
+        groupInfoVC?.group = group
+        groupInfoContainerView.hidden = false
+        groupInfoContainerView.showAnimated()
     }
 
     func deleteObjectAtIndexPath(indexPath: NSIndexPath) {
