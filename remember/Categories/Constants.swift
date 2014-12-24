@@ -57,11 +57,13 @@ let kVisitsNotificationUserInfoVisitKey = "visit"
     let kGroupsURL = "http://dev.rememberthere.com:3000/groups"
     let kMembershipsURL = "http://dev.rememberthere.com:3000/memberships"
     let kAudiosURL = "http://dev.rememberthere.com:3000/audios"
+    let kUnregisterURL = "http://dev.rememberthere.com:3000/memberships/unregister"
 #else
     let kUsersURL = "http://app.rememberthere.com/users"
     let kGroupsURL = "http://app.rememberthere.com/groups"
     let kMembershipsURL = "http://app.rememberthere.com/memberships"
     let kAudiosURL = "http://app.rememberthere.com/audios"
+    let kUnregisterURL = "http://app.rememberthere.com/memberships/unregister"
 #endif
 
 let kFeedbackPOSTURL = "http://app.rememberthere.com/api/feedbacks/send"

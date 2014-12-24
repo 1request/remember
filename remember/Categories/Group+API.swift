@@ -219,4 +219,12 @@ extension Group {
             }
         }
     }
+    
+    func fetchApplyingMemberships(callback: (members: [JSON]) -> Void) {
+        let url = NSURL(string: kGroupsURL + "/\(serverId)")!
+        APIManager.sendRequest(toURL: url, method: .GET, json: nil) { (response, error, jsonObject) -> Void in
+            let applyingMembers = jsonObject["applying_members"].arrayValue
+            callback(members: applyingMembers)
+        }
+    }
 }

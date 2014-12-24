@@ -82,6 +82,10 @@
 		7CB0A6121A300F5300BA48C1 /* AddLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB0A6101A300F5300BA48C1 /* AddLocationViewController.swift */; };
 		7CB0A6141A300F7000BA48C1 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB0A6131A300F7000BA48C1 /* SignUpViewController.swift */; };
 		7CB0A6151A300F7000BA48C1 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB0A6131A300F7000BA48C1 /* SignUpViewController.swift */; };
+		7CB37D881A4AAA6700C9BC51 /* MembershipsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB37D871A4AAA6700C9BC51 /* MembershipsTableViewCell.swift */; };
+		7CB37D891A4AAA6A00C9BC51 /* MembershipsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB37D871A4AAA6700C9BC51 /* MembershipsTableViewCell.swift */; };
+		7CB37D8B1A4AAF5500C9BC51 /* MembershipsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB37D8A1A4AAF5500C9BC51 /* MembershipsTableViewController.swift */; };
+		7CB37D8C1A4AB2F400C9BC51 /* MembershipsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB37D8A1A4AAF5500C9BC51 /* MembershipsTableViewController.swift */; };
 		7CB6F6801A2453DE00C2A60E /* FeedbackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB6F67F1A2453DE00C2A60E /* FeedbackViewController.swift */; };
 		7CB6F6841A24666100C2A60E /* AudioRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB6F6831A24666100C2A60E /* AudioRecorder.swift */; };
 		7CCE375E1A28229800A6BDA6 /* RecorderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCE375D1A28229800A6BDA6 /* RecorderViewController.swift */; };
@@ -230,6 +234,8 @@
 		7CA8AC711A07202D00566252 /* SwipeableTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwipeableTableViewCell.swift; path = Views/SwipeableTableViewCell.swift; sourceTree = "<group>"; };
 		7CB0A6101A300F5300BA48C1 /* AddLocationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AddLocationViewController.swift; path = Controllers/AddLocationViewController.swift; sourceTree = "<group>"; };
 		7CB0A6131A300F7000BA48C1 /* SignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SignUpViewController.swift; path = Controllers/SignUpViewController.swift; sourceTree = "<group>"; };
+		7CB37D871A4AAA6700C9BC51 /* MembershipsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MembershipsTableViewCell.swift; path = Views/MembershipsTableViewCell.swift; sourceTree = "<group>"; };
+		7CB37D8A1A4AAF5500C9BC51 /* MembershipsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MembershipsTableViewController.swift; path = Controllers/MembershipsTableViewController.swift; sourceTree = "<group>"; };
 		7CB6F67F1A2453DE00C2A60E /* FeedbackViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FeedbackViewController.swift; path = Controllers/FeedbackViewController.swift; sourceTree = "<group>"; };
 		7CB6F6831A24666100C2A60E /* AudioRecorder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioRecorder.swift; sourceTree = "<group>"; };
 		7CCE375D1A28229800A6BDA6 /* RecorderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RecorderViewController.swift; path = Controllers/RecorderViewController.swift; sourceTree = "<group>"; };
@@ -387,6 +393,7 @@
 				7C6109AF19E793400082AC7B /* LocationsTableViewController.swift */,
 				7C309F851A26F94700B36F2E /* MapViewController.swift */,
 				7C28F48D1A0A0B40006A7CA0 /* EditGroupViewController.swift */,
+				7CB37D8A1A4AAF5500C9BC51 /* MembershipsTableViewController.swift */,
 				7CB6F67F1A2453DE00C2A60E /* FeedbackViewController.swift */,
 				7CCE375D1A28229800A6BDA6 /* RecorderViewController.swift */,
 				7C67AC8C1A42D4B5006CFE5C /* GroupInformationViewController.swift */,
@@ -415,6 +422,7 @@
 				7CE2CA5A1A0C68A000369D8B /* GPSLocationTableViewCell.swift */,
 				7C6109B119E793730082AC7B /* DevicesTableViewCell.swift */,
 				7CDFE6A01A2739DC00EC4B93 /* NearbyLocationsTableViewCell.swift */,
+				7CB37D871A4AAA6700C9BC51 /* MembershipsTableViewCell.swift */,
 				8ABFAA6A19E68AB600FCE6EF /* RadioButton.swift */,
 				8ABFAA6819E67CEB00FCE6EF /* UnreadSpotView.swift */,
 				7C0C610F1A43FE8400115DB8 /* UserImageCollectionViewCell.swift */,
@@ -768,6 +776,7 @@
 				7C4EA9BB1A316A0900CD2011 /* LocationMigrationPolicy_v4_to_v5.swift in Sources */,
 				7C319B5F1A2D78F90042BAB8 /* LocationToGroupMigrationPolicy.swift in Sources */,
 				7C3B46551A3FDE59009DC0D1 /* Group+API.swift in Sources */,
+				7CB37D881A4AAA6700C9BC51 /* MembershipsTableViewCell.swift in Sources */,
 				7C4EA9B81A3169F800CD2011 /* MessageMigrationPolicy_v4_to_v5.swift in Sources */,
 				8ABFAA6719E668DB00FCE6EF /* MessagesTableViewCell.swift in Sources */,
 				7CF32E631A0B21B00056F873 /* HUD.swift in Sources */,
@@ -812,6 +821,7 @@
 				7CDFE6A11A2739DC00EC4B93 /* NearbyLocationsTableViewCell.swift in Sources */,
 				7C6109B419E796E00082AC7B /* Extensions.swift in Sources */,
 				7CA8AC721A07202D00566252 /* SwipeableTableViewCell.swift in Sources */,
+				7CB37D8B1A4AAF5500C9BC51 /* MembershipsTableViewController.swift in Sources */,
 				7C6A35261A1B2610004FD2FD /* ObjCToSwiftMigrationPolicy.swift in Sources */,
 				7C4EA9BE1A3173F600CD2011 /* RememberMappingModel_v4_to_v5.xcmappingmodel in Sources */,
 				7C28F48E1A0A0B40006A7CA0 /* EditGroupViewController.swift in Sources */,
@@ -845,6 +855,7 @@
 				D1F62E891A28971900191D87 /* FeedbackViewController.swift in Sources */,
 				D1F62E8A1A28971900191D87 /* RecorderViewController.swift in Sources */,
 				7C3B46561A3FDE59009DC0D1 /* Group+API.swift in Sources */,
+				7CB37D891A4AAA6A00C9BC51 /* MembershipsTableViewCell.swift in Sources */,
 				D14B83551A27576200D12EDF /* AddableTableViewCell.swift in Sources */,
 				D14B83561A27576200D12EDF /* NearbyLocationsTableViewCell.swift in Sources */,
 				7CB0A6151A300F7000BA48C1 /* SignUpViewController.swift in Sources */,
@@ -889,6 +900,7 @@
 				7CB0A6121A300F5300BA48C1 /* AddLocationViewController.swift in Sources */,
 				D1EE65191A0740A600A65EF0 /* UnreadSpotView.swift in Sources */,
 				7C86C3E01A25672000702D80 /* AudioRecorder.swift in Sources */,
+				7CB37D8C1A4AB2F400C9BC51 /* MembershipsTableViewController.swift in Sources */,
 				D1EE651A1A0740A600A65EF0 /* AppDelegate.swift in Sources */,
 				D1EE651B1A0740A600A65EF0 /* RadioButton.swift in Sources */,
 				D1EE651C1A0740A600A65EF0 /* LocationManager.swift in Sources */,
