@@ -21,17 +21,9 @@ class EditGroupViewController: UIViewController {
     
     @IBOutlet weak var groupTypeTextLabel: UILabel!
     
-    lazy var annotation: MKPointAnnotation? = {
-        if let currentGroup = self.group {
-            let coordinate = CLLocationCoordinate2D(latitude: CLLocationDegrees(currentGroup.location.latitude), longitude: CLLocationDegrees(currentGroup.location.longitude))         
-            
-            let annotation = MKPointAnnotation()
-            annotation.coordinate = coordinate
-            return annotation
-        } else {
-            return nil
-        }
-    }()
+    @IBOutlet weak var membershipsContainer: UIView!
+    
+    var membershipsVC: MembershipsTableViewController?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,16 +31,12 @@ class EditGroupViewController: UIViewController {
         groupTypeTextLabel.text = group?.type
     }
     
-    func mapAnnotation() {
-            }
-    
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.identifier == "embedMapFromEditLocation" {
-            let mapViewController = segue.destinationViewController as MapViewController
-            let span = MKCoordinateSpanMake(0.005, 0.005)
-            let region = MKCoordinateRegionMake(annotation!.coordinate, span)
-            mapViewController.region = region
-            mapViewController.annotations = [annotation!]
+        if segue.identifier == "embedMemberships" {
+            membershipsVC = segue.destinationViewController as? MembershipsTableViewController
+            membershipsVC?.group = self.group
+            println("group: \(membershipsVC)")
+            println("self group: \(self.group)")
         }
     }
     
