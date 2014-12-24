@@ -110,6 +110,7 @@ extension SignUpViewController: SignUpViewDelegate {
         
         if let image = userImage {
             let user = User(nickname: signUpView.usernameTextField.text, image: image)
+            Mixpanel.sharedInstance().people.set(["name": signUpView.usernameTextField.text])
             user.createAccount() { [weak self] in
                 if let weakself = self {
                     dispatch_async(dispatch_get_main_queue(), { [weak self]() -> Void in

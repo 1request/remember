@@ -77,6 +77,7 @@ extension ProfileViewController: UITextFieldDelegate {
     func textFieldDidEndEditing(textField: UITextField) {
         let name = textField.text
         User.updateNickname(name)
+        Mixpanel.sharedInstance().people.set(["name": name])
         
         NSUserDefaults.standardUserDefaults().setValue(name, forKey: "nickname")
     }

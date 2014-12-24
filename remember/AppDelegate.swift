@@ -34,8 +34,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let mixpanel = Mixpanel.sharedInstanceWithToken("3b27052c32a6e7426f27e17b0a1f2e7e")
         
 #if !DEBUG
-            mixpanel.track("Swift")
-            mixpanel.identify(UIDevice.currentDevice().identifierForVendor.UUIDString)
+        if (NSBundle.mainBundle().bundleIdentifier! == "request.remember") {
+            mixpanel.track("AppStore")
+        } else {
+            mixpanel.track("Enterprise")
+        }
+        mixpanel.identify(UIDevice.currentDevice().identifierForVendor.UUIDString)
 #else
             mixpanel.track("Debug")
             mixpanel.identify("Debug")
