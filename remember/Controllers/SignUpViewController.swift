@@ -30,24 +30,11 @@ class SignUpViewController: UIViewController {
             signUpView.cameraButtonImage = userImage
         }
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         signUpView.delegate = self
         signUpView.confirmButton.enabled = false
-    }
-    
-    @IBAction func cancelButtonPressed(sender: AnyObject) {
-        delegate?.cancelButtonClicked()
-        view.endEditing(true)
-    }
-    
-    @IBAction func usernameTextFieldEditingChanged(sender: UITextField) {
-        checkUserData()
-    }
-    
-    @IBAction func cameraButtonPressed(sender: UIButton) {
-        view.endEditing(true)
     }
     
     func checkUserData() {

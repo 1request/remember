@@ -33,8 +33,8 @@ class User: NSObject {
         if let userId = User.currentUserId() {
             image.saveImageAsPNGWithName("user")
             let url = NSURL(string: kUsersURL + "/\(userId)")!
-            let data = UIImagePNGRepresentation(image)
-            let dataDetails = (key: "user[profile_picture]", data: data!, type: "image/png", filename: "\(UIDevice.currentDevice().identifierForVendor.UUIDString).png")
+            let data = UIImageJPEGRepresentation(image, 0.6)
+            let dataDetails = (key: "user[profile_picture]", data: data!, type: "image/jpeg", filename: "\(UIDevice.currentDevice().identifierForVendor.UUIDString).jpeg")
             APIManager.sendMultipartData(dataDetails, parameters: nil, url: url, type: .PATCH) { (response, error, jsonObject) -> Void in
                 if let id = jsonObject["id"].number {
                     NSUserDefaults.standardUserDefaults().setValue(id, forKey: "userId")
@@ -58,8 +58,8 @@ class User: NSObject {
     }
     
     func createAccount(callback: (() -> Void)?) {
-        let data = UIImagePNGRepresentation(image)
-        let dataDetails = (key: "user[profile_picture]", data: data!, type: "image/png", filename: "\(UIDevice.currentDevice().identifierForVendor.UUIDString).png")
+        let data = UIImageJPEGRepresentation(image, 0.6)
+        let dataDetails = (key: "user[profile_picture]", data: data!, type: "image/jpeg", filename: "\(UIDevice.currentDevice().identifierForVendor.UUIDString).jpeg")
         var parameters = [
             "user[device_id]": UIDevice.currentDevice().identifierForVendor.UUIDString,
             "user[device_type]": "iOS",
@@ -90,11 +90,9 @@ class User: NSObject {
     class func downloadProfileImageForUserId(id: Int) {
         let url = NSURL(string: kUsersURL + "/\(id)")!
         let path = kApplicationPath.stringByAppendingPathComponent("user-\(id).png")
-        println("path: \(path)")
         if !NSFileManager.defaultManager().fileExistsAtPath(path) {
             APIManager.sendRequest(toURL: url, method: HTTPMethodType.GET, json: nil, callback: { (response, error, jsonObject) -> Void in
                 let imageUrl = NSURL(string: jsonObject["profile_picture_url"].stringValue)!
-                println("image url: \(imageUrl)")
                 let sessionConfig = NSURLSessionConfiguration.defaultSessionConfiguration()
                 let session = NSURLSession(configuration: sessionConfig)
                 let task = session.downloadTaskWithURL(imageUrl, completionHandler: { (location, response, error) -> Void in

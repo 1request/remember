@@ -13,12 +13,6 @@ class GroupsTableViewCell: SwipeableTableViewCell {
     lazy var didPressInviteButtonBlock: () -> () = {}
     var showEdit = true
     
-    func inviteButtonPressed(sender: UIButton) {
-        if didPressInviteButtonBlock != nil {
-            didPressInviteButtonBlock()
-        }
-    }
-    
     let radioButton: RadioButton = {
         let button = RadioButton()
         button.setTranslatesAutoresizingMaskIntoConstraints(false)
@@ -36,7 +30,9 @@ class GroupsTableViewCell: SwipeableTableViewCell {
     lazy var inviteButton: UIButton = {
         let button = UIButton()
         button.setTranslatesAutoresizingMaskIntoConstraints(false)
-        button.setImage(UIImage(named: "invite"), forState: .Normal)
+        let image = UIImage(named: "invite")
+        button.setImage(image, forState: .Normal)
+        button.imageEdgeInsets = UIEdgeInsetsMake(11, 11, 11, 11)
         button.addTarget(self, action: "inviteButtonPressed", forControlEvents: .TouchUpInside)
         return button
         }()
@@ -53,18 +49,20 @@ class GroupsTableViewCell: SwipeableTableViewCell {
         customContentView.addSubview(inviteButton)
 
         let viewsDict = ["radioButton": radioButton, "groupNameLabel": groupNameLabel, "inviteButton": inviteButton]
-        let metricsDict = ["radioButtonLeftMargin": 20, "buttonWidth": 22, "radioButtonRightMargin": 16, "groupNameLabelRightMargin": 16, "inviteButtonRightMargin": 20]
+        let metricsDict = ["radioButtonLeftMargin": 20, "buttonWidth": 22, "radioButtonRightMargin": 16, "groupNameLabelRightMargin": 16]
 
-        let horizontalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("|-radioButtonLeftMargin-[radioButton(buttonWidth)]-radioButtonRightMargin-[groupNameLabel]-groupNameLabelRightMargin-[inviteButton(buttonWidth)]-inviteButtonRightMargin-|", options: NSLayoutFormatOptions.AlignAllCenterY, metrics: metricsDict, views: viewsDict)
+        let horizontalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("|-radioButtonLeftMargin-[radioButton(buttonWidth)]-radioButtonRightMargin-[groupNameLabel]-groupNameLabelRightMargin-[inviteButton]|", options: NSLayoutFormatOptions.AlignAllCenterY, metrics: metricsDict, views: viewsDict)
 
         let radioButtonHeightConstraint = NSLayoutConstraint(item: radioButton, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: radioButton, attribute: NSLayoutAttribute.Width, multiplier: 1.0, constant: 0.0)
 
         let radioButtonCenterYConstraint = NSLayoutConstraint(item: radioButton, attribute: NSLayoutAttribute.CenterY, relatedBy: NSLayoutRelation.Equal, toItem: customContentView, attribute: NSLayoutAttribute.CenterY, multiplier: 1.0, constant: 0.0)
         
-        let inviteButtonHeightConstraint = NSLayoutConstraint(item: inviteButton, attribute: .Height, relatedBy: .Equal, toItem: inviteButton, attribute: .Width, multiplier: 1, constant: 0)
+        let inviteButtonHeightConstraint = NSLayoutConstraint(item: inviteButton, attribute: .Height, relatedBy: .Equal, toItem: customContentView, attribute: .Height, multiplier: 1, constant: 0)
+        
+        let inviteButtonWidthConstraint = NSLayoutConstraint(item: inviteButton, attribute: .Width, relatedBy: .Equal, toItem: inviteButton, attribute: .Height, multiplier: 1, constant: 0)
 
         customContentView.addConstraints(horizontalConstraints)
-        customContentView.addConstraints([radioButtonHeightConstraint, radioButtonCenterYConstraint, inviteButtonHeightConstraint])
+        customContentView.addConstraints([radioButtonHeightConstraint, radioButtonCenterYConstraint, inviteButtonHeightConstraint, inviteButtonWidthConstraint])
     }
     
     override func setHighlighted(highlighted: Bool, animated: Bool) {

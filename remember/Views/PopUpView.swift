@@ -49,6 +49,7 @@ class PopUpView: UIView {
     }
     
     var popUpDelegate: PopUpViewDelegate?
+    var frameViewTopConstraint: NSLayoutConstraint?
     
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -72,11 +73,13 @@ class PopUpView: UIView {
         
         let viewsDict = ["frameView": frameView, "overlayView": overlayView]
         
-        let verticalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("V:|-(frameTopSpacing)-[frameView]", options: .DirectionLeadingToTrailing, metrics: metricsDict, views: viewsDict)
-        let topConstraint = NSLayoutConstraint(item: frameView, attribute: .CenterY, relatedBy: .Equal, toItem: self, attribute: .CenterY, multiplier: 0.8, constant: 0)
+        let topConstraint = NSLayoutConstraint(item: frameView, attribute: .Top, relatedBy: NSLayoutRelation.LessThanOrEqual, toItem: self, attribute: .Top, multiplier: 1, constant: 50)
+
         let centerXConstraint = NSLayoutConstraint(item: frameView, attribute: .CenterX, relatedBy: .Equal, toItem: self, attribute: .CenterX, multiplier: 1, constant: 0)
         let widthConstraint = NSLayoutConstraint(item: frameView, attribute: .Width, relatedBy: .Equal, toItem: self, attribute: .Width, multiplier: 0.75, constant: 0)
         let heightConstraint = NSLayoutConstraint(item: frameView, attribute: .Height, relatedBy: .Equal, toItem: frameView, attribute: .Width, multiplier: 615/555.0, constant: 0)
+        
+        frameViewTopConstraint = topConstraint
 
         frameView.addConstraint(heightConstraint)
         addConstraints([centerXConstraint, widthConstraint, topConstraint])
