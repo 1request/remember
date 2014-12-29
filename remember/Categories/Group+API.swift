@@ -10,6 +10,7 @@ import Foundation
 import CoreData
 
 extension Group {
+    
     class func join(groupId: Int, callback: (() -> Void)?) {
         let url = NSURL(string: kMembershipsURL)!
         let json: JSON = ["group_id": groupId, "user_id": User.currentUserId()!]
@@ -157,7 +158,7 @@ extension Group {
         }
     }
     
-    func fetchMessages(callback: ()-> Void) {
+    func fetchMessages(callback: () -> Void) {
         if serverId != 0 {
             if let userId = User.currentUserId() {
                 let url = NSURL(string: kAudiosURL + "?group_id=\(serverId)")!
