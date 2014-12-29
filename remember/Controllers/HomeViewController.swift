@@ -342,7 +342,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     //MARK: - Layout
 
     func updateViewToBePresented() {
-        if fetchedResultController.fetchedObjects?.count == 0 {
+        if fetchedResultController.fetchedObjects?.count == 0 {            
             tableView.hidden = true
             recorderViewController?.recordButton.hidden = true
             pressHereImageView.hidden = false
