@@ -526,6 +526,10 @@ extension HomeViewController: SwipeableTableViewCellDelegate {
                                 self.setSelectedGroupObjectID()
                             }
                         }
+                    } else {
+                        deleteObjectAtIndexPath(indexPath)
+                        setObjectsInTable()
+                        setSelectedGroupObjectID()
                     }
                 } else if index == 1 {
                     if let group = object as? Group {
