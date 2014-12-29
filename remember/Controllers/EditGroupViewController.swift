@@ -23,7 +23,10 @@ class EditGroupViewController: UIViewController {
     
     @IBOutlet weak var membershipsContainer: UIView!
     
+    @IBOutlet weak var mapViewContainer: UIView!
+    
     var membershipsVC: MembershipsTableViewController?
+    var mapVC: MapViewController?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,10 +34,31 @@ class EditGroupViewController: UIViewController {
         groupTypeTextLabel.text = group?.type
     }
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        if group?.type == "personal" {
+            mapViewContainer.hidden = false
+        } else {
+            mapViewContainer.hidden = true
+        }
+        
+        if group?.location == nil {
+            if let l = Location.locationFromCurrentCoordinate(group!.managedObjectContext!) {
+                group?.location = l
+                group?.managedObjectContext?.save(nil)
+                updateMap()
+            }
+        }
+    }
+    
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "embedMemberships" {
             membershipsVC = segue.destinationViewController as? MembershipsTableViewController
             membershipsVC?.group = self.group
+        } else if segue.identifier == "embedMap" {
+            mapVC = segue.destinationViewController as? MapViewController
+            updateMap()
         }
     }
     
@@ -53,5 +77,16 @@ class EditGroupViewController: UIViewController {
             println("Cannot update location: \(error)")
         }
         navigationController?.popViewControllerAnimated(true)
+    }
+    
+    func updateMap() {
+        let coordinate = CLLocationCoordinate2D(latitude: CLLocationDegrees(group!.location.latitude), longitude: CLLocationDegrees(group!.location.longitude))
+        let annotation = MKPointAnnotation()
+        annotation.coordinate = coordinate
+        
+        let span = MKCoordinateSpanMake(0.03, 0.03)
+        let region = MKCoordinateRegionMake(coordinate, span)
+        mapVC?.annotations = [annotation]
+        mapVC?.region = region
     }
 }
