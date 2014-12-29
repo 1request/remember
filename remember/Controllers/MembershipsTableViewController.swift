@@ -69,14 +69,30 @@ extension MembershipsTableViewController: MembershipsTableViewCellDelegate {
     func membershipTableViewCellDidPressApproveButton(cell: MembershipsTableViewCell) {
         if let indexPath = tableView.indexPathForCell(cell) {
             let userId = applyingMembersJson![indexPath.row]["id"].intValue
-            println("accept user id: \(userId)")
+            if let id = group?.serverId {
+                let membership = Membership(groupId: id.integerValue, userId: userId)
+                membership.approve() {
+                    cell.approveButton.hidden = true
+                    cell.rejectButton.hidden = true
+                    cell.statusLabel.hidden = false
+                    cell.statusLabel.text = NSLocalizedString("APPROVED", comment: "approved status text")
+                }
+            }
         }
     }
     
     func membershipTableViewCellDidPressRejectButton(cell: MembershipsTableViewCell) {
         if let indexPath = tableView.indexPathForCell(cell) {
             let userId = applyingMembersJson![indexPath.row]["id"].intValue
-            println("reject user id: \(userId)")
+            if let id = group?.serverId {
+                let membership = Membership(groupId: id.integerValue, userId: userId)
+                membership.reject() {
+                    cell.approveButton.hidden = true
+                    cell.rejectButton.hidden = true
+                    cell.statusLabel.hidden = false
+                    cell.statusLabel.text = NSLocalizedString("REJECTED", comment: "rejected status text")
+                }
+            }
         }
     }
 }

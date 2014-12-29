@@ -630,12 +630,12 @@ extension HomeViewController: UIAlertViewDelegate {
     
     func approveMembership(membershipId: Int) {
         let membership = Membership(id: membershipId)
-        membership.approve()
+        membership.approve(){}
     }
     
     func rejectMembership(membershipId: Int) {
         let membership = Membership(id: membershipId)
-        membership.reject()
+        membership.reject(){}
     }
 }
 

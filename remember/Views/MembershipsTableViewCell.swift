@@ -15,6 +15,9 @@ protocol MembershipsTableViewCellDelegate {
 
 
 class MembershipsTableViewCell: UITableViewCell {
+    let ACCEPT = NSLocalizedString("APPROVE", comment: "approve button text")
+    let REJECT = NSLocalizedString("REJECT", comment: "reject button text")
+    
     @IBOutlet weak var statusLabel: UILabel!
     
     @IBOutlet weak var profileImageView: UIImageView!
@@ -39,5 +42,7 @@ class MembershipsTableViewCell: UITableViewCell {
         super.layoutSubviews()
         profileImageView.clipsToBounds = true
         profileImageView.layer.cornerRadius = profileImageView.frame.width / 2.0
+        approveButton.setTitle(ACCEPT, forState: .Normal)
+        rejectButton.setTitle(REJECT, forState: .Normal)
     }
 }
