@@ -35,8 +35,6 @@ class EditGroupViewController: UIViewController {
         if segue.identifier == "embedMemberships" {
             membershipsVC = segue.destinationViewController as? MembershipsTableViewController
             membershipsVC?.group = self.group
-            println("group: \(membershipsVC)")
-            println("self group: \(self.group)")
         }
     }
     

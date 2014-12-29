@@ -95,8 +95,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
-        
-        approveMemeberWithUserInfo(userInfo)
+        let message = userInfo["aps"] as [NSObject: AnyObject]
+        if let approveMemberDetails = userInfo["approve_member"] as? [NSObject: AnyObject] {
+            approveMemeberWithUserInfo(userInfo)
+        } else if let newAudio = userInfo["new_audio"] as? [NSObject: AnyObject] {
+            let groupId = newAudio["group_id"] as Int
+            fetchNewAudioWithGroupId(groupId)
+        }
     }
     
     func application(application: UIApplication, performFetchWithCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
@@ -226,6 +231,18 @@ extension AppDelegate {
             dict["membershipId"] = approveMemberDetails["membership_id"] as Int
             NSUserDefaults.standardUserDefaults().setValue(dict, forKey: "approveMember")
             NSNotificationCenter.defaultCenter().postNotificationName(kApproveMemberNotificationName, object: self, userInfo: dict)
+        }
+    }
+    
+    func fetchNewAudioWithGroupId(groupId: Int) {
+        let request = NSFetchRequest(entityName: "Group")
+        let predicate = NSPredicate(format: "serverId == %i", groupId)
+        request.predicate = predicate
+        if let groups = managedObjectContext.executeFetchRequest(request, error: nil) as? [Group] {
+            let group = groups[0]
+            group.fetchMessages() {
+                println("fetched message for group \(group.name)")
+            }
         }
     }
 }
