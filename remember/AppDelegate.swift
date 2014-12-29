@@ -89,8 +89,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         clearNotifications()
         let state = application.applicationState
         if state == UIApplicationState.Active {
-            AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
-            AudioServicesPlaySystemSound(1007)
+            playAlert()
         }
     }
     
@@ -99,6 +98,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if let approveMemberDetails = userInfo["approve_member"] as? [NSObject: AnyObject] {
             approveMemeberWithUserInfo(userInfo)
         } else if let newAudio = userInfo["new_audio"] as? [NSObject: AnyObject] {
+            let state = application.applicationState
+            if state == UIApplicationState.Active {
+                playAlert()
+            }
             let groupId = newAudio["group_id"] as Int
             fetchNewAudioWithGroupId(groupId)
         }
@@ -244,5 +247,10 @@ extension AppDelegate {
                 println("fetched message for group \(group.name)")
             }
         }
+    }
+    
+    func playAlert() {
+        AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
+        AudioServicesPlaySystemSound(1007)
     }
 }
