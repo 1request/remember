@@ -189,7 +189,6 @@ extension Group {
                         for (index, messageJson) in missingMessages {
                             let message = NSEntityDescription.insertNewObjectForEntityForName("Message", inManagedObjectContext: weakself.managedObjectContext!) as Message
                             message.userId = messageJson["user_id"].intValue
-                            User.downloadProfileImageForUserId(Int(message.userId))
                             message.serverId = messageJson["id"].intValue
                             let formatter = ISO8601DateFormatter()
                             let date = formatter.dateFromString(messageJson["created_at"].stringValue)
