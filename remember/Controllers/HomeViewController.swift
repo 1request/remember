@@ -385,6 +385,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 var sortedMessages = group.messages.sortedArrayUsingDescriptors([sortByIsRead, sortByCreatedAt])
                 
                 objectsInTable.addObjectsFromArray(sortedMessages)
+                group.fetchMessages(){}
             }
         }
         setSelectedGroupObjectID()
