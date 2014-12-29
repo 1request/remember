@@ -198,7 +198,7 @@ extension Group {
                             message.isRead = false
                             weakself.messagesCount = NSNumber(integer: (weakself.messagesCount.integerValue + 1))
                             message.name = String(format: RECORD_NAME, weakself.messagesCount)
-                            let url = NSURL(string: messageJson["audioclip_url"].stringValue)!
+                            let url = NSURL(string: kAPIUrl + messageJson["audioclip_url"].stringValue)!
 
                             let sessionConfig = NSURLSessionConfiguration.defaultSessionConfiguration()
                             let session = NSURLSession(configuration: sessionConfig)

@@ -51,27 +51,21 @@ let kGPSLocationUpdateNotificationUserInfoLocationKey = "location"
 let kVisitsNotificationName = "visitNotification"
 let kVisitsNotificationUserInfoVisitKey = "visit"
 
-let kDevAPIURL = "http://dev.rememberthere.com:3000/"
-let kProductionAPIURL = "http://app.rememberthere.com/"
 
 //API
 #if DEBUG
-    let kUsersURL = kDevAPIURL + "users"
-    let kGroupsURL = kDevAPIURL + "groups"
-    let kMembershipsURL = kDevAPIURL + "memberships"
-    let kAudiosURL = kDevAPIURL + "audios"
-    let kUnregisterURL = kDevAPIURL + "memberships/unregister"
-    let kAcceptURL = kDevAPIURL + "memberships/accept"
-    let kRejectURL = kDevAPIURL + "memberships/reject"
+    let kAPIUrl = "http://dev.rememberthere.com:3000"
 #else
-    let kUsersURL = kProductionAPIURL + "users"
-    let kGroupsURL = kProductionAPIURL + "groups"
-    let kMembershipsURL = kProductionAPIURL + "memberships"
-    let kAudiosURL = kProductionAPIURL + "audios"
-    let kUnregisterURL = kProductionAPIURL + "memberships/unregister"
-    let kAcceptURL = kProductionAPIURL + "memberships/accept"
-    let kRejectURL = kProductionAPIURL + "memberships/reject"
+    let kAPIUrl = "http://app.rememberthere.com"
 #endif
+
+let kUsersURL = kAPIUrl + "/users"
+let kGroupsURL = kAPIUrl + "/groups"
+let kMembershipsURL = kAPIUrl + "/memberships"
+let kAudiosURL = kAPIUrl + "/audios"
+let kUnregisterURL = kAPIUrl + "/memberships/unregister"
+let kAcceptURL = kAPIUrl + "/memberships/accept"
+let kRejectURL = kAPIUrl + "/memberships/reject"
 
 let kFeedbackPOSTURL = "http://app.rememberthere.com/api/feedbacks/send"
 let kBoundary = "testboundary"

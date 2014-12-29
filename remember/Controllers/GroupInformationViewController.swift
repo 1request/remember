@@ -44,9 +44,9 @@ class GroupInformationViewController: UIViewController {
                     if let weakself = self {
                         dispatch_async(dispatch_get_main_queue()) { () -> Void in
                             weakself.imagesUrls = map(jsonObject["accepted_members"]) {(index, user) -> NSURL in
-                                return NSURL(string: user["profile_picture_url"].stringValue)!
+                                return NSURL(string: kAPIUrl + user["profile_picture_url"].stringValue)!
                             }
-                            let creatorImageUrl = NSURL(string: jsonObject["creator_profile_url"].stringValue)!
+                            let creatorImageUrl = NSURL(string: kAPIUrl + jsonObject["creator_profile_url"].stringValue)!
                             weakself.imagesUrls.append(creatorImageUrl)
                         }
                     }

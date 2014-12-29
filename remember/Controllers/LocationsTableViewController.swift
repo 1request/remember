@@ -111,7 +111,7 @@ class LocationsTableViewController: UITableViewController, UITableViewDataSource
         cell.nameLabel.text = group["name"] as? String
         cell.addressLabel.text = range
         cell.addressLabel.sizeToFit()
-        let url = NSURL(string: group["url"] as String)!
+        let url = NSURL(string: kAPIUrl + (group["url"] as String))!
         let placeholderImage = UIImage(named: "device")!
         
         cell.creatorImageView.sd_setImageWithURL(url, placeholderImage: placeholderImage, options: SDWebImageOptions.CacheMemoryOnly)
