@@ -55,7 +55,7 @@ class APIManager: NSObject {
         let postLength = "\(body.length)"
         request.setValue(postLength, forHTTPHeaderField: "Content-Length")
         
-        postRequest(request) { (response, error, jsonObject) -> Void in
+        startRequest(request) { (response, error, jsonObject) -> Void in
             if let cb = callback {
                 cb(response: response, error: error, jsonObject: jsonObject)
             }
@@ -73,14 +73,14 @@ class APIManager: NSObject {
             request.setValue(length, forHTTPHeaderField: "Content-Length")
             request.HTTPBody = data
         }
-        postRequest(request) { (response, error, jsonObject) -> Void in
+        startRequest(request) { (response, error, jsonObject) -> Void in
             if let cb = callback {
                 cb(response: response, error: error, jsonObject: jsonObject)
             }
         }
     }
     
-    class func postRequest(request: NSURLRequest, callback: (response: NSURLResponse, error: NSError?, jsonObject: JSON) -> Void) {
+    private class func startRequest(request: NSURLRequest, callback: (response: NSURLResponse, error: NSError?, jsonObject: JSON) -> Void) {
         let session = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration())
         let task = session.dataTaskWithRequest(request, completionHandler: { (data, response, error) -> Void in
             let json = JSON(data: data)

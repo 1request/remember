@@ -59,4 +59,26 @@ class Membership: NSObject {
             }
         }
     }
+    
+    func unregister(callback: () -> Void) {
+        if let goupId = groupId {
+            let json: JSON = ["group_id": groupId!, "user_id": userId!]
+            APIManager.sendRequest(toURL: NSURL(string: kUnregisterURL)!, method: .POST, json: json) { (response, error, jsonObject) -> Void in
+                NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
+                    callback()
+                })
+            }
+        }
+    }
+    
+    func exitGroup(callback: () -> Void) {
+        if let goupId = groupId {
+            let url = NSURL(string: kGroupsURL + "/\(groupId!)")!
+            APIManager.sendRequest(toURL: url, method: .DELETE, json: nil) { (response, error, jsonObject) -> Void in
+                NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
+                    callback()
+                })
+            }
+        }
+    }
 }

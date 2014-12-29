@@ -510,9 +510,23 @@ extension HomeViewController: SwipeableTableViewCellDelegate {
 
             if direction == SwipeableTableViewCell.Direction.right.rawValue {
                 if index == 0 {
-                    deleteObjectAtIndexPath(indexPath)
-                    setObjectsInTable()
-                    setSelectedGroupObjectID()
+                    if let group = object as? Group {
+                        if group.creatorId == User.currentUserId()! {
+                            let membership = Membership(groupId: group.serverId.integerValue, userId: group.creatorId.integerValue)
+                            membership.exitGroup() {[unowned self] in
+                                self.deleteObjectAtIndexPath(indexPath)
+                                self.setObjectsInTable()
+                                self.setSelectedGroupObjectID()
+                            }
+                        } else {
+                            let membership = Membership(groupId: group.serverId.integerValue, userId: User.currentUserId()!)
+                            membership.unregister() {[unowned self] in
+                                self.deleteObjectAtIndexPath(indexPath)
+                                self.setObjectsInTable()
+                                self.setSelectedGroupObjectID()
+                            }
+                        }
+                    }
                 } else if index == 1 {
                     if let group = object as? Group {
                         if group.type == "personal" || group.creatorId == User.currentUserId()! {
