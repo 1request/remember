@@ -342,7 +342,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     //MARK: - Layout
 
     func updateViewToBePresented() {
-        if fetchedResultController.fetchedObjects?.count == 0 {
+        if fetchedResultController.fetchedObjects?.count == 0 {            
             tableView.hidden = true
             recorderViewController?.recordButton.hidden = true
             pressHereImageView.hidden = false
@@ -510,20 +510,22 @@ extension HomeViewController: SwipeableTableViewCellDelegate {
 
             if direction == SwipeableTableViewCell.Direction.right.rawValue {
                 if index == 0 {
-                    if let group = object as? Group {
-                        if group.creatorId == User.currentUserId()! {
-                            let membership = Membership(groupId: group.serverId.integerValue, userId: group.creatorId.integerValue)
-                            membership.exitGroup() {[unowned self] in
-                                self.deleteObjectAtIndexPath(indexPath)
-                                self.setObjectsInTable()
-                                self.setSelectedGroupObjectID()
-                            }
-                        } else {
-                            let membership = Membership(groupId: group.serverId.integerValue, userId: User.currentUserId()!)
-                            membership.unregister() {[unowned self] in
-                                self.deleteObjectAtIndexPath(indexPath)
-                                self.setObjectsInTable()
-                                self.setSelectedGroupObjectID()
+                    if let userId = User.currentUserId() {
+                        if let group = object as? Group {
+                            if group.creatorId == userId {
+                                let membership = Membership(groupId: group.serverId.integerValue, userId: group.creatorId.integerValue)
+                                membership.exitGroup() {[unowned self] in
+                                    self.deleteObjectAtIndexPath(indexPath)
+                                    self.setObjectsInTable()
+                                    self.setSelectedGroupObjectID()
+                                }
+                            } else {
+                                let membership = Membership(groupId: group.serverId.integerValue, userId: User.currentUserId()!)
+                                membership.unregister() {[unowned self] in
+                                    self.deleteObjectAtIndexPath(indexPath)
+                                    self.setObjectsInTable()
+                                    self.setSelectedGroupObjectID()
+                                }
                             }
                         }
                     } else {

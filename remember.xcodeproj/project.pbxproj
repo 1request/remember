@@ -17,6 +17,8 @@
 		7C0C61101A43FE8400115DB8 /* UserImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C0C610F1A43FE8400115DB8 /* UserImageCollectionViewCell.swift */; };
 		7C0C61111A43FE8400115DB8 /* UserImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C0C610F1A43FE8400115DB8 /* UserImageCollectionViewCell.swift */; };
 		7C0E3A7F1A272DC900235C4C /* AddableTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C0E3A7E1A272DC900235C4C /* AddableTableViewCell.swift */; };
+		7C1135431A5159D500AFCD7D /* Group+Seed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1135421A5159D500AFCD7D /* Group+Seed.swift */; };
+		7C1135441A5159D500AFCD7D /* Group+Seed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1135421A5159D500AFCD7D /* Group+Seed.swift */; };
 		7C18BBE51A160145001F15CA /* MixpanelEventProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C18BBE41A160145001F15CA /* MixpanelEventProtocols.swift */; };
 		7C18BBE81A16018B001F15CA /* BeaconRegionEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C18BBE71A16018B001F15CA /* BeaconRegionEvent.swift */; };
 		7C18BBEA1A1601BD001F15CA /* VisitEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C18BBE91A1601BD001F15CA /* VisitEvent.swift */; };
@@ -181,6 +183,7 @@
 		7C0B54BF1A3545CD006B041A /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = User.swift; path = Models/User.swift; sourceTree = "<group>"; };
 		7C0C610F1A43FE8400115DB8 /* UserImageCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UserImageCollectionViewCell.swift; path = Views/UserImageCollectionViewCell.swift; sourceTree = "<group>"; };
 		7C0E3A7E1A272DC900235C4C /* AddableTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AddableTableViewCell.swift; path = Views/AddableTableViewCell.swift; sourceTree = "<group>"; };
+		7C1135421A5159D500AFCD7D /* Group+Seed.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Group+Seed.swift"; sourceTree = "<group>"; };
 		7C18BBE41A160145001F15CA /* MixpanelEventProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MixpanelEventProtocols.swift; path = Protocols/MixpanelEventProtocols.swift; sourceTree = "<group>"; };
 		7C18BBE71A16018B001F15CA /* BeaconRegionEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BeaconRegionEvent.swift; path = Structs/BeaconRegionEvent.swift; sourceTree = "<group>"; };
 		7C18BBE91A1601BD001F15CA /* VisitEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VisitEvent.swift; path = Structs/VisitEvent.swift; sourceTree = "<group>"; };
@@ -515,6 +518,7 @@
 				7C6109B319E796E00082AC7B /* Extensions.swift */,
 				7C3C44581A4140B30033B3AC /* Location+CoreLocation.swift */,
 				7C3B46541A3FDE59009DC0D1 /* Group+API.swift */,
+				7C1135421A5159D500AFCD7D /* Group+Seed.swift */,
 				7CD4486B1A15FFC7004F4C19 /* Constants.swift */,
 			);
 			name = Categories;
@@ -778,6 +782,7 @@
 				7C3B46551A3FDE59009DC0D1 /* Group+API.swift in Sources */,
 				7CB37D881A4AAA6700C9BC51 /* MembershipsTableViewCell.swift in Sources */,
 				7C4EA9B81A3169F800CD2011 /* MessageMigrationPolicy_v4_to_v5.swift in Sources */,
+				7C1135431A5159D500AFCD7D /* Group+Seed.swift in Sources */,
 				8ABFAA6719E668DB00FCE6EF /* MessagesTableViewCell.swift in Sources */,
 				7CF32E631A0B21B00056F873 /* HUD.swift in Sources */,
 				7C0603931A3BFB9800FB7A0D /* SignUpView.swift in Sources */,
@@ -857,6 +862,7 @@
 				7C3B46561A3FDE59009DC0D1 /* Group+API.swift in Sources */,
 				7CB37D891A4AAA6A00C9BC51 /* MembershipsTableViewCell.swift in Sources */,
 				D14B83551A27576200D12EDF /* AddableTableViewCell.swift in Sources */,
+				7C1135441A5159D500AFCD7D /* Group+Seed.swift in Sources */,
 				D14B83561A27576200D12EDF /* NearbyLocationsTableViewCell.swift in Sources */,
 				7CB0A6151A300F7000BA48C1 /* SignUpViewController.swift in Sources */,
 				7C0603941A3BFB9800FB7A0D /* SignUpView.swift in Sources */,

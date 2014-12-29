@@ -115,4 +115,18 @@ extension Location {
             LocationManager.sharedInstance.startRangingBeaconRegions(beaconRegions as [CLBeaconRegion])
         }
     }
+    
+    class func locationFromCurrentCoordinate(context: NSManagedObjectContext) -> Location? {
+        if let currentLocation = LocationManager.sharedInstance.currentLocation {
+            let location = NSEntityDescription.insertNewObjectForEntityForName("Location", inManagedObjectContext: context) as Location
+            location.longitude = currentLocation.coordinate.longitude
+            location.latitude = currentLocation.coordinate.latitude
+            location.uuid = ""
+            location.major = 0
+            location.minor = 0
+            return location
+        } else {
+            return nil
+        }
+    }
 }

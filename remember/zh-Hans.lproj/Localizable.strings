@@ -32,3 +32,5 @@ OK = "确认";
 CREATING_ACCOUNT = "创建账号中";
 INVITATION = "马上下载“记得” ，在指定地点提示你的备忘录。";
 FEEDBACK = "我要反馈>";
+OFFICE = "办公室";
+HOME = "家";

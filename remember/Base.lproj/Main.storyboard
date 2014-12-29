@@ -653,19 +653,19 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Group Type:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V90-1G-plF">
-                                <rect key="frame" x="16" y="138.5" width="93.5" height="20.5"/>
+                                <rect key="frame" x="16" y="138" width="93.5" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="type" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DBl-Pu-dSN">
-                                <rect key="frame" x="117.5" y="138.5" width="33.5" height="20.5"/>
+                                <rect key="frame" x="117" y="138" width="33.5" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="8p8-a3-arm">
-                                <rect key="frame" x="16" y="100.5" width="568" height="30"/>
+                                <rect key="frame" x="16" y="100" width="568" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
@@ -676,6 +676,12 @@
                                 <rect key="frame" x="0.0" y="167" width="600" height="433"/>
                                 <connections>
                                     <segue destination="YZh-H1-fj4" kind="embed" identifier="embedMemberships" id="Fa4-yW-hbA"/>
+                                </connections>
+                            </containerView>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YLh-Jk-MP2">
+                                <rect key="frame" x="0.0" y="167" width="600" height="433"/>
+                                <connections>
+                                    <segue destination="udq-jD-xuf" kind="embed" identifier="embedMap" id="Lsx-ql-nx9"/>
                                 </connections>
                             </containerView>
                         </subviews>
@@ -689,9 +695,13 @@
                             <constraint firstItem="q1T-8Z-uzo" firstAttribute="leading" secondItem="hb0-f0-zlz" secondAttribute="leading" id="Aid-i6-Smu"/>
                             <constraint firstAttribute="trailing" secondItem="8p8-a3-arm" secondAttribute="trailing" constant="16" id="BeM-m1-zk0"/>
                             <constraint firstItem="IWR-Ao-Er3" firstAttribute="leading" secondItem="hb0-f0-zlz" secondAttribute="leading" constant="16" id="CjJ-Mq-aHs"/>
+                            <constraint firstItem="YLh-Jk-MP2" firstAttribute="top" secondItem="DBl-Pu-dSN" secondAttribute="bottom" constant="8" id="DlZ-2x-xJp"/>
                             <constraint firstItem="8p8-a3-arm" firstAttribute="leading" secondItem="hb0-f0-zlz" secondAttribute="leading" constant="16" id="MYM-u6-9nX"/>
+                            <constraint firstAttribute="trailing" secondItem="YLh-Jk-MP2" secondAttribute="trailing" id="NZp-G3-fVA"/>
                             <constraint firstItem="DBl-Pu-dSN" firstAttribute="top" secondItem="8p8-a3-arm" secondAttribute="bottom" constant="8" id="XMS-Es-sbh"/>
                             <constraint firstItem="V90-1G-plF" firstAttribute="leading" secondItem="hb0-f0-zlz" secondAttribute="leading" constant="16" id="fYv-hb-8KD"/>
+                            <constraint firstItem="YLh-Jk-MP2" firstAttribute="leading" secondItem="hb0-f0-zlz" secondAttribute="leading" id="gUp-tn-MNT"/>
+                            <constraint firstItem="J8g-it-tXs" firstAttribute="top" secondItem="YLh-Jk-MP2" secondAttribute="bottom" id="h7c-qK-Aot"/>
                             <constraint firstItem="8p8-a3-arm" firstAttribute="top" secondItem="IWR-Ao-Er3" secondAttribute="bottom" constant="8" id="nWT-cL-crD"/>
                             <constraint firstItem="V90-1G-plF" firstAttribute="top" secondItem="8p8-a3-arm" secondAttribute="bottom" constant="8" id="vSU-oI-zcX"/>
                         </constraints>
@@ -706,6 +716,7 @@
                     <connections>
                         <outlet property="editGroupNameTextField" destination="8p8-a3-arm" id="LOU-Wp-hBi"/>
                         <outlet property="groupTypeTextLabel" destination="DBl-Pu-dSN" id="VbT-hN-Rc2"/>
+                        <outlet property="mapViewContainer" destination="YLh-Jk-MP2" id="SSC-bW-qcr"/>
                         <outlet property="membershipsContainer" destination="q1T-8Z-uzo" id="PS2-si-4K1"/>
                         <outlet property="saveButton" destination="VVu-78-Stu" id="z5A-78-w6X"/>
                     </connections>
@@ -811,11 +822,11 @@
                         <viewControllerLayoutGuide type="bottom" id="Hj9-bV-RAP"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="AWB-Aa-lVE">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="433"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="rR2-st-zXA">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="433"/>
                             </mapView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>

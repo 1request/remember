@@ -46,6 +46,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 #endif
         mixpanel.people.set(["language": "Swift", "name": UIDevice.currentDevice().name])
         
+        if NSUserDefaults.standardUserDefaults().valueForKey("firstInstallation") == nil {
+            Group.generateSeedData(managedObjectContext)
+        }
+        
         if let navigationController = window?.rootViewController as? NavigationController {
             if let homeViewController = navigationController.topViewController as? HomeViewController {
                 homeViewController.managedObjectContext = managedObjectContext

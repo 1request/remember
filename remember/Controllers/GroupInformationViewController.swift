@@ -27,6 +27,13 @@ class GroupInformationViewController: UIViewController {
     
     var group: Group? {
         didSet {
+            if group?.location == nil && group?.type == "personal" {
+                if let l = Location.locationFromCurrentCoordinate(group!.managedObjectContext!) {
+                    group?.location = l
+                    group?.managedObjectContext?.save(nil)
+                }
+            }
+            
             if let currentGroup = group {
                 groupInformationView.groupNameLabel.text = currentGroup.name
                 let coordinate = CLLocationCoordinate2D(latitude: CLLocationDegrees(currentGroup.location.latitude), longitude: CLLocationDegrees(currentGroup.location.longitude))
