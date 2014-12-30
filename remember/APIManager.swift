@@ -85,7 +85,9 @@ class APIManager: NSObject {
         let task = session.dataTaskWithRequest(request, completionHandler: { (data, response, error) -> Void in
             let json = JSON(data: data)
             session.invalidateAndCancel()
-            callback(response: response, error: error, jsonObject: json)
+            if response != nil {
+                callback(response: response, error: error, jsonObject: json)
+            }
         })
         task.resume()
     }

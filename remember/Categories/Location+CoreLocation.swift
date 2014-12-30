@@ -124,6 +124,9 @@ extension Location {
             location.uuid = ""
             location.major = 0
             location.minor = 0
+            location.createdAt = NSDate()
+            location.updatedAt = location.createdAt
+            location.createIndentifier()
             return location
         } else {
             return nil
